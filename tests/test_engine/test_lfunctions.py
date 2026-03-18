@@ -89,13 +89,14 @@ class TestXiFunction:
         """xi(s) = xi(1-s) for several test points."""
         from riemann.engine.lfunctions import xi_function
 
-        test_points = [
-            mpmath.mpc(0.3, 5),
-            mpmath.mpc(0.7, -5),
-        ]
-        # These two are related by 1-s: 1 - (0.3+5i) = 0.7-5i
-        xi_s = xi_function(test_points[0], dps=50)
-        xi_1ms = xi_function(test_points[1], dps=50)
+        # Use string-based construction and compute 1-s via mpmath arithmetic
+        # to avoid float64 truncation (e.g., Python float 0.7 != 7/10 exactly).
+        with mpmath.workdps(60):
+            s = mpmath.mpc("0.3", "5")
+            one_minus_s = 1 - s  # exact: (0.7 - 5j)
+
+        xi_s = xi_function(s, dps=50)
+        xi_1ms = xi_function(one_minus_s, dps=50)
         with mpmath.workdps(60):
             diff = abs(xi_s.value - xi_1ms.value)
             scale = max(abs(xi_s.value), abs(xi_1ms.value), mpmath.mpf(1))
@@ -108,11 +109,15 @@ class TestXiFunction:
         """xi(s) = xi(1-s) for additional test points."""
         from riemann.engine.lfunctions import xi_function
 
-        pairs = [
-            (mpmath.mpc(0.5, 10), mpmath.mpc(0.5, -10)),
-            (mpmath.mpc(2, 0), mpmath.mpc(-1, 0)),
-        ]
-        for s, one_minus_s in pairs:
+        # Use exact-precision inputs and compute 1-s via mpmath arithmetic
+        with mpmath.workdps(60):
+            test_s_values = [
+                mpmath.mpc("0.5", "10"),
+                mpmath.mpc("2", "0"),
+            ]
+        for s in test_s_values:
+            with mpmath.workdps(60):
+                one_minus_s = 1 - s
             xi_s = xi_function(s, dps=50)
             xi_1ms = xi_function(one_minus_s, dps=50)
             with mpmath.workdps(60):
