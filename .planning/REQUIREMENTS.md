@@ -17,7 +17,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Visualization
 
 - [ ] **VIZ-01**: User can visualize |zeta(1/2+it)| along the critical line with interactive zoom and pan
-- [ ] **VIZ-02**: User can view domain coloring of the zeta function in the complex plane (phase→hue, magnitude→brightness) with zoomable critical strip regions
+- [ ] **VIZ-02**: User can view domain coloring of the zeta function in the complex plane (phase->hue, magnitude->brightness) with zoomable critical strip regions
 - [ ] **VIZ-03**: User can interactively rotate through higher-dimensional mathematical spaces, watching how structures project into different 2D/3D views (projection theater)
 
 ### Research Infrastructure
@@ -29,7 +29,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Zero Analysis
 
 - [ ] **ZERO-01**: User can compute zero distribution statistics (nearest-neighbor spacing, pair correlation, n-level density) and compare against GUE predictions
-- [ ] **ZERO-02**: User can detect anomalies in zero structure — deviations from expected behavior (GUE statistics, Riemann-von Mangoldt formula) are automatically flagged
+- [ ] **ZERO-02**: User can detect anomalies in zero structure -- deviations from expected behavior (GUE statistics, Riemann-von Mangoldt formula) are automatically flagged
 
 ### Higher-Dimensional Framework
 
@@ -39,7 +39,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Spectral Theory
 
 - [ ] **SPEC-01**: User can construct, discretize, and analyze candidate self-adjoint operators (Berry-Keating Hamiltonian and variants) and compare their eigenvalue spectra against zeta zeros
-- [ ] **SPEC-02**: User can explore trace formula connections — Selberg trace formula, Weil explicit formula — interactively computing partial sums and visualizing zeros↔primes duality
+- [ ] **SPEC-02**: User can explore trace formula connections -- Selberg trace formula, Weil explicit formula -- interactively computing partial sums and visualizing zeros-to-primes duality
 
 ### Random Matrix Theory
 
@@ -71,7 +71,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Formalization
 
 - [ ] **FORM-01**: User can translate conjectures from the research workbench into Lean 4 theorem statements
-- [ ] **FORM-02**: User can track formalization progress (statement formalized → proof attempted → proof complete) with Mathlib integration for existing formalized mathematics
+- [ ] **FORM-02**: User can track formalization progress (statement formalized -> proof attempted -> proof complete) with Mathlib integration for existing formalized mathematics
 
 ## v2 Requirements
 
@@ -98,10 +98,10 @@ Explicitly excluded. Documented to prevent scope creep.
 
 | Feature | Reason |
 |---------|--------|
-| General-purpose CAS | SageMath, Mathematica, SymPy exist — reimplementing symbolic algebra is a multi-decade project |
-| General-purpose proof assistant | Lean 4 exists and is actively maintained — we build a pipeline TO it, not a replacement |
+| General-purpose CAS | SageMath, Mathematica, SymPy exist -- reimplementing symbolic algebra is a multi-decade project |
+| General-purpose proof assistant | Lean 4 exists and is actively maintained -- we build a pipeline TO it, not a replacement |
 | Reimplemented zeta function | mpmath and Arb have decades of work; only implement custom evaluation for novel function variants |
-| Classical proof strategy tooling | Deliberately avoided — well-studied approaches that haven't worked |
+| Classical proof strategy tooling | Deliberately avoided -- well-studied approaches that haven't worked |
 | Web deployment / multi-user | Single-user local research tool; web adds complexity with zero benefit |
 | Publication/typesetting | LaTeX and Overleaf exist; irrelevant to proof discovery |
 | Teaching/tutorial system | Claude is the teacher on demand; no curriculum infrastructure |
@@ -114,42 +114,42 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| COMP-01 | — | Pending |
-| COMP-02 | — | Pending |
-| COMP-03 | — | Pending |
-| COMP-04 | — | Pending |
-| VIZ-01 | — | Pending |
-| VIZ-02 | — | Pending |
-| VIZ-03 | — | Pending |
-| RSRCH-01 | — | Pending |
-| RSRCH-02 | — | Pending |
-| RSRCH-03 | — | Pending |
-| ZERO-01 | — | Pending |
-| ZERO-02 | — | Pending |
-| HDIM-01 | — | Pending |
-| HDIM-02 | — | Pending |
-| SPEC-01 | — | Pending |
-| SPEC-02 | — | Pending |
-| RMT-01 | — | Pending |
-| RMT-02 | — | Pending |
-| INFO-01 | — | Pending |
-| INFO-02 | — | Pending |
-| MOD-01 | — | Pending |
-| MOD-02 | — | Pending |
-| ADEL-01 | — | Pending |
-| ADEL-02 | — | Pending |
-| XDISC-01 | — | Pending |
-| XDISC-02 | — | Pending |
-| XDISC-03 | — | Pending |
-| XDISC-04 | — | Pending |
-| FORM-01 | — | Pending |
-| FORM-02 | — | Pending |
+| COMP-01 | Phase 1 | Pending |
+| COMP-02 | Phase 1 | Pending |
+| COMP-03 | Phase 1 | Pending |
+| COMP-04 | Phase 1 | Pending |
+| VIZ-01 | Phase 1 | Pending |
+| VIZ-02 | Phase 1 | Pending |
+| VIZ-03 | Phase 2 | Pending |
+| RSRCH-01 | Phase 1 | Pending |
+| RSRCH-02 | Phase 1 | Pending |
+| RSRCH-03 | Phase 3 | Pending |
+| ZERO-01 | Phase 2 | Pending |
+| ZERO-02 | Phase 2 | Pending |
+| HDIM-01 | Phase 2 | Pending |
+| HDIM-02 | Phase 2 | Pending |
+| SPEC-01 | Phase 3 | Pending |
+| SPEC-02 | Phase 3 | Pending |
+| RMT-01 | Phase 2 | Pending |
+| RMT-02 | Phase 2 | Pending |
+| INFO-01 | Phase 2 | Pending |
+| INFO-02 | Phase 2 | Pending |
+| MOD-01 | Phase 3 | Pending |
+| MOD-02 | Phase 3 | Pending |
+| ADEL-01 | Phase 3 | Pending |
+| ADEL-02 | Phase 3 | Pending |
+| XDISC-01 | Phase 3 | Pending |
+| XDISC-02 | Phase 3 | Pending |
+| XDISC-03 | Phase 3 | Pending |
+| XDISC-04 | Phase 3 | Pending |
+| FORM-01 | Phase 4 | Pending |
+| FORM-02 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 30 total
-- Mapped to phases: 0
-- Unmapped: 30 ⚠️
+- Mapped to phases: 30
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-18*
-*Last updated: 2026-03-18 after initial definition*
+*Last updated: 2026-03-18 after roadmap creation*
