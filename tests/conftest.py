@@ -35,11 +35,12 @@ def odlyzko_zeros() -> list[mpmath.mpf]:
     assert zeros_file.exists(), f"Odlyzko zeros file not found at {zeros_file}"
 
     zeros = []
-    with open(zeros_file) as f:
-        for line in f:
-            line = line.strip()
-            if line and not line.startswith('#'):
-                zeros.append(mpmath.mpf(line))
+    with mpmath.workdps(1050):  # Odlyzko file has ~1026-digit values
+        with open(zeros_file) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    zeros.append(mpmath.mpf(line))
     assert len(zeros) >= 10, f"Expected at least 10 zeros, got {len(zeros)}"
     return zeros
 
@@ -52,7 +53,15 @@ def temp_db():
     try:
         yield db_path
     finally:
-        os.unlink(db_path)
+        # On Windows, SQLite WAL/journal files may hold locks briefly after
+        # connection context managers exit (they commit but don't close).
+        # Force garbage collection to release any lingering connections.
+        import gc
+        gc.collect()
+        try:
+            os.unlink(db_path)
+        except PermissionError:
+            pass  # Windows file locking -- temp dir will clean up
 
 
 @pytest.fixture

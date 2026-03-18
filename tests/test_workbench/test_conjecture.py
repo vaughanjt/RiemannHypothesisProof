@@ -217,7 +217,6 @@ class TestEvidenceLinks:
                    VALUES (?, ?, ?, ?)""",
                 (eid, "Test experiment", json.dumps({"n": 100}), now),
             )
-            conn.commit()
 
         link_id = link_evidence(
             conjecture_id=cid,
@@ -263,24 +262,28 @@ class TestEvidenceLinks:
             db_path=temp_db,
         )
 
+        # Create experiments first
         now = datetime.now(timezone.utc).isoformat()
-        with get_connection(temp_db) as conn:
-            for i in range(3):
-                eid = str(uuid.uuid4())
+        eids = []
+        for i in range(3):
+            eid = str(uuid.uuid4())
+            eids.append(eid)
+            with get_connection(temp_db) as conn:
                 conn.execute(
                     """INSERT INTO experiments
                        (id, description, parameters, created_at)
                        VALUES (?, ?, ?, ?)""",
                     (eid, f"Experiment {i}", json.dumps({"n": i}), now),
                 )
-                conn.commit()
 
-                link_evidence(
-                    conjecture_id=cid,
-                    experiment_id=eid,
-                    relationship="supports",
-                    db_path=temp_db,
-                )
+        # Link each experiment to the conjecture
+        for eid in eids:
+            link_evidence(
+                conjecture_id=cid,
+                experiment_id=eid,
+                relationship="supports",
+                db_path=temp_db,
+            )
 
         links = get_evidence_for_conjecture(cid, db_path=temp_db)
         assert len(links) == 3
