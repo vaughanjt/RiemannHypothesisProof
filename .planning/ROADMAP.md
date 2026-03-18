@@ -29,12 +29,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can visualize |zeta(1/2+it)| along the critical line with interactive zoom/pan, and view domain coloring of the complex plane with zoomable critical strip regions
   4. User can create, annotate, and revisit experiments with full parameter reproducibility, and track conjectures with formal status and evidence levels
   5. User can stress-test any observed pattern against expanded data (more zeros, higher precision, varied parameters) to distinguish genuine structure from numerical artifacts
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Project initialization, type system, precision management, test scaffolds
+- [ ] 01-02-PLAN.md -- Zeta evaluation engine and zero computation/cataloging with Odlyzko validation
+- [ ] 01-03-PLAN.md -- Related functions (Hardy Z, Dirichlet L, xi, Selberg stub) and stress-test framework
+- [ ] 01-04-PLAN.md -- Critical line visualization and domain coloring
+- [ ] 01-05-PLAN.md -- Research workbench: conjecture tracking and experiment reproducibility
 
 ### Phase 2: Higher-Dimensional Analysis
 **Goal**: User can embed mathematical objects in N-dimensional spaces, explore them through interactive projections, and compare zero distributions against random matrix theory and information-theoretic baselines -- unlocking the platform's core differentiator of seeing structure invisible in lower dimensions
@@ -91,7 +93,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Computational Foundation and Research Workbench | 0/3 | Not started | - |
+| 1. Computational Foundation and Research Workbench | 0/5 | Planning complete | - |
 | 2. Higher-Dimensional Analysis | 0/3 | Not started | - |
 | 3. Deep Domain Modules and Cross-Disciplinary Synthesis | 0/3 | Not started | - |
 | 4. Lean 4 Formalization Pipeline | 0/2 | Not started | - |
