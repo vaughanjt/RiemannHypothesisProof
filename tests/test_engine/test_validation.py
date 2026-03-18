@@ -78,14 +78,17 @@ class TestStressTestConsistency:
         call_count = [0]
 
         def unstable_func():
-            """Returns different values depending on precision level.
+            """Returns different values based on call count.
 
-            At low precision, pretends a pattern holds.
-            At high precision, the 'pattern' vanishes.
+            validated_computation calls func twice per level (P and 2P).
+            Calls 1-4 (levels 1 & 2) return 3.14159.
+            Calls 5+ (level 3) return 2.71828.
+
+            This passes P-vs-2P within each level but the cross-level
+            comparison in stress_test detects the value changed.
             """
             call_count[0] += 1
-            if mpmath.mp.dps > 80:
-                # At high precision, return a different value
+            if call_count[0] > 4:
                 return mpmath.mpf("2.71828")
             return mpmath.mpf("3.14159")
 
