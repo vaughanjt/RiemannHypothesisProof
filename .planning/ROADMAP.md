@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 5 plans
 
 Plans:
-- [ ] 01-01-PLAN.md -- Project initialization, type system, precision management, test scaffolds
+- [x] 01-01-PLAN.md -- Project initialization, type system, precision management, test scaffolds
 - [ ] 01-02-PLAN.md -- Zeta evaluation engine and zero computation/cataloging with Odlyzko validation
 - [ ] 01-03-PLAN.md -- Related functions (Hardy Z, Dirichlet L, xi, Selberg stub) and stress-test framework
 - [ ] 01-04-PLAN.md -- Critical line visualization and domain coloring
@@ -93,7 +93,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Computational Foundation and Research Workbench | 0/5 | Planning complete | - |
+| 1. Computational Foundation and Research Workbench | 1/5 | In progress | - |
 | 2. Higher-Dimensional Analysis | 0/3 | Not started | - |
 | 3. Deep Domain Modules and Cross-Disciplinary Synthesis | 0/3 | Not started | - |
 | 4. Lean 4 Formalization Pipeline | 0/2 | Not started | - |

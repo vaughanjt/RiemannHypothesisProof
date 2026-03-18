@@ -9,21 +9,21 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Computation
 
-- [ ] **COMP-01**: User can evaluate the Riemann zeta function at any complex point to arbitrary precision (hundreds/thousands of digits)
-- [ ] **COMP-02**: User can compute and catalog non-trivial zeros of the zeta function, with verification against known tables (Odlyzko)
-- [ ] **COMP-03**: User can evaluate related functions (Dirichlet L-functions, Hardy's Z-function, xi function, Selberg zeta) to arbitrary precision
-- [ ] **COMP-04**: User can stress-test any discovered pattern against expanded data (more zeros, higher precision, varied parameters) to distinguish genuine structure from numerical artifacts
+- [x] **COMP-01**: User can evaluate the Riemann zeta function at any complex point to arbitrary precision (hundreds/thousands of digits)
+- [x] **COMP-02**: User can compute and catalog non-trivial zeros of the zeta function, with verification against known tables (Odlyzko)
+- [x] **COMP-03**: User can evaluate related functions (Dirichlet L-functions, Hardy's Z-function, xi function, Selberg zeta) to arbitrary precision
+- [x] **COMP-04**: User can stress-test any discovered pattern against expanded data (more zeros, higher precision, varied parameters) to distinguish genuine structure from numerical artifacts
 
 ### Visualization
 
-- [ ] **VIZ-01**: User can visualize |zeta(1/2+it)| along the critical line with interactive zoom and pan
-- [ ] **VIZ-02**: User can view domain coloring of the zeta function in the complex plane (phase->hue, magnitude->brightness) with zoomable critical strip regions
+- [x] **VIZ-01**: User can visualize |zeta(1/2+it)| along the critical line with interactive zoom and pan
+- [x] **VIZ-02**: User can view domain coloring of the zeta function in the complex plane (phase->hue, magnitude->brightness) with zoomable critical strip regions
 - [ ] **VIZ-03**: User can interactively rotate through higher-dimensional mathematical spaces, watching how structures project into different 2D/3D views (projection theater)
 
 ### Research Infrastructure
 
-- [ ] **RSRCH-01**: User can track conjectures (formal statement, evidence for/against, status, confidence) in a structured research workbench
-- [ ] **RSRCH-02**: User can save, annotate, and revisit experiments with full parameter reproducibility (seeds, serialization, checksums)
+- [x] **RSRCH-01**: User can track conjectures (formal statement, evidence for/against, status, confidence) in a structured research workbench
+- [x] **RSRCH-02**: User can save, annotate, and revisit experiments with full parameter reproducibility (seeds, serialization, checksums)
 - [ ] **RSRCH-03**: User can invoke AI-guided analysis that examines computational results, identifies patterns, generates formal conjectures, and suggests next experiments
 
 ### Zero Analysis
@@ -114,15 +114,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| COMP-01 | Phase 1 | Pending |
-| COMP-02 | Phase 1 | Pending |
-| COMP-03 | Phase 1 | Pending |
-| COMP-04 | Phase 1 | Pending |
-| VIZ-01 | Phase 1 | Pending |
-| VIZ-02 | Phase 1 | Pending |
+| COMP-01 | Phase 1 | Complete |
+| COMP-02 | Phase 1 | Complete |
+| COMP-03 | Phase 1 | Complete |
+| COMP-04 | Phase 1 | Complete |
+| VIZ-01 | Phase 1 | Complete |
+| VIZ-02 | Phase 1 | Complete |
 | VIZ-03 | Phase 2 | Pending |
-| RSRCH-01 | Phase 1 | Pending |
-| RSRCH-02 | Phase 1 | Pending |
+| RSRCH-01 | Phase 1 | Complete |
+| RSRCH-02 | Phase 1 | Complete |
 | RSRCH-03 | Phase 3 | Pending |
 | ZERO-01 | Phase 2 | Pending |
 | ZERO-02 | Phase 2 | Pending |
