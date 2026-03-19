@@ -70,12 +70,34 @@ class TestEigenvalueSpacings:
         assert abs(spacings.mean() - 1.0) < 0.05
 
     def test_convergence_with_matrix_size(self):
-        """GUE(N=50) should have narrower spacing variance than GUE(N=10)."""
-        eigs_small = generate_gue(n=10, num_matrices=200, seed=42)
-        eigs_large = generate_gue(n=50, num_matrices=200, seed=42)
+        """GUE(N=200) spacings should match Wigner surmise better than GUE(N=10).
+
+        As N increases, the spacing distribution converges to the universal
+        Wigner surmise. We measure this via chi-squared distance from the
+        theoretical GUE Wigner surmise distribution.
+        """
+        eigs_small = generate_gue(n=10, num_matrices=300, seed=42)
+        eigs_large = generate_gue(n=200, num_matrices=300, seed=42)
         spacings_small = eigenvalue_spacings(eigs_small)
         spacings_large = eigenvalue_spacings(eigs_large)
-        assert spacings_large.var() < spacings_small.var()
+
+        # Measure distance from Wigner surmise for each
+        bins = np.linspace(0, 4, 41)
+        centers = (bins[:-1] + bins[1:]) / 2
+        wigner = wigner_surmise(centers, beta=2)
+
+        hist_small, _ = np.histogram(spacings_small, bins=bins, density=True)
+        hist_large, _ = np.histogram(spacings_large, bins=bins, density=True)
+
+        mask = wigner > 0.01
+        chi_sq_small = np.sum((hist_small[mask] - wigner[mask]) ** 2 / wigner[mask])
+        chi_sq_large = np.sum((hist_large[mask] - wigner[mask]) ** 2 / wigner[mask])
+
+        # Larger N should be closer to Wigner surmise (smaller chi-squared)
+        assert chi_sq_large < chi_sq_small, (
+            f"GUE(N=200) chi-sq={chi_sq_large:.4f} should be less than "
+            f"GUE(N=10) chi-sq={chi_sq_small:.4f}"
+        )
 
 
 class TestWignerSurmise:
