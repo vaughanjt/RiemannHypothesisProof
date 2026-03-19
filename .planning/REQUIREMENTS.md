@@ -43,8 +43,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Random Matrix Theory
 
-- [ ] **RMT-01**: User can generate GUE/GOE/GSE random matrix ensembles, compute eigenvalue statistics, and overlay with zeta zero statistics in interactive linked views
-- [ ] **RMT-02**: User can vary matrix size and ensemble type and observe how the fit to zero statistics changes
+- [x] **RMT-01**: User can generate GUE/GOE/GSE random matrix ensembles, compute eigenvalue statistics, and overlay with zeta zero statistics in interactive linked views
+- [x] **RMT-02**: User can vary matrix size and ensemble type and observe how the fit to zero statistics changes
 
 ### Information Theory
 
@@ -130,8 +130,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HDIM-02 | Phase 2 | Pending |
 | SPEC-01 | Phase 3 | Pending |
 | SPEC-02 | Phase 3 | Pending |
-| RMT-01 | Phase 2 | Pending |
-| RMT-02 | Phase 2 | Pending |
+| RMT-01 | Phase 2 | Complete |
+| RMT-02 | Phase 2 | Complete |
 | INFO-01 | Phase 2 | Pending |
 | INFO-02 | Phase 2 | Pending |
 | MOD-01 | Phase 3 | Pending |
