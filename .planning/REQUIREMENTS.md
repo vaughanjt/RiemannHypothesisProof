@@ -58,14 +58,14 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Adelic & p-adic Computation
 
-- [ ] **ADEL-01**: User can perform p-adic arithmetic and compute p-adic zeta functions for various primes
-- [ ] **ADEL-02**: User can visualize p-adic structures (fractal geometry) and connect p-adic and archimedean pictures of zeta
+- [x] **ADEL-01**: User can perform p-adic arithmetic and compute p-adic zeta functions for various primes
+- [x] **ADEL-02**: User can visualize p-adic structures (fractal geometry) and connect p-adic and archimedean pictures of zeta
 
 ### Cross-Disciplinary Synthesis
 
 - [x] **XDISC-01**: User can define and test analogy mappings between domains (e.g., {eigenvalues:zeros, Hamiltonian:???, trace formula:explicit formula}) and computationally explore unknown correspondences
-- [ ] **XDISC-02**: User can apply topological data analysis (persistent homology) to zero distributions and other mathematical objects to detect hidden topological structure
-- [ ] **XDISC-03**: User can analyze the zeta function and zero dynamics through dynamical systems tools (Lyapunov exponents, phase portraits, strange attractors)
+- [x] **XDISC-02**: User can apply topological data analysis (persistent homology) to zero distributions and other mathematical objects to detect hidden topological structure
+- [x] **XDISC-03**: User can analyze the zeta function and zero dynamics through dynamical systems tools (Lyapunov exponents, phase portraits, strange attractors)
 - [x] **XDISC-04**: User can compute in noncommutative geometric frameworks relevant to Connes' approach to RH
 
 ### Formalization
@@ -136,11 +136,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFO-02 | Phase 2 | Complete |
 | MOD-01 | Phase 3 | Complete |
 | MOD-02 | Phase 3 | Complete |
-| ADEL-01 | Phase 3 | Pending |
-| ADEL-02 | Phase 3 | Pending |
+| ADEL-01 | Phase 3 | Complete |
+| ADEL-02 | Phase 3 | Complete |
 | XDISC-01 | Phase 3 | Complete |
-| XDISC-02 | Phase 3 | Pending |
-| XDISC-03 | Phase 3 | Pending |
+| XDISC-02 | Phase 3 | Complete |
+| XDISC-03 | Phase 3 | Complete |
 | XDISC-04 | Phase 3 | Complete |
 | FORM-01 | Phase 4 | Pending |
 | FORM-02 | Phase 4 | Pending |
