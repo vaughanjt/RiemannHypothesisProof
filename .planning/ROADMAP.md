@@ -48,12 +48,14 @@ Plans:
   3. User can compute zero spacing statistics (nearest-neighbor, pair correlation, n-level density) and overlay them with GUE random matrix predictions in linked interactive views
   4. User can apply information-theoretic measures (entropy, mutual information, compression-based distances) to zero sequences and compare signatures across different mathematical objects to surface hidden structural similarities
   5. User sees automatic anomaly flags when zero distributions deviate from expected behavior (GUE statistics, Riemann-von Mangoldt formula)
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
+- [ ] 02-01-PLAN.md -- Zero statistics engine (spacing, pair correlation, n-level density) and embedding configuration registry
+- [ ] 02-02-PLAN.md -- Random matrix theory laboratory (GUE/GOE/GSE generation, eigenvalue statistics, Wigner surmise)
+- [ ] 02-03-PLAN.md -- Embedding pipeline (feature extractors, HDF5 storage) and projection methods (PCA, t-SNE, UMAP, stereographic)
+- [ ] 02-04-PLAN.md -- Information-theoretic analysis (entropy, MI, LZ complexity) and SPC anomaly detection with workbench auto-logging
+- [ ] 02-05-PLAN.md -- Projection theater (3D visualization, animation, dimension slicing) and comparison views (RMT overlay, info heatmap)
 
 ### Phase 3: Deep Domain Modules and Cross-Disciplinary Synthesis
 **Goal**: User can explore the deepest cross-disciplinary connections to the Riemann Hypothesis -- spectral operators, trace formulas, modular forms, p-adic structures, topological invariants, dynamical systems, and noncommutative geometry -- with an analogy engine and AI-guided analysis that synthesize insights across all domains
@@ -94,6 +96,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Computational Foundation and Research Workbench | 1/5 | In progress | - |
-| 2. Higher-Dimensional Analysis | 0/3 | Not started | - |
+| 2. Higher-Dimensional Analysis | 0/5 | Planned | - |
 | 3. Deep Domain Modules and Cross-Disciplinary Synthesis | 0/3 | Not started | - |
 | 4. Lean 4 Formalization Pipeline | 0/2 | Not started | - |
