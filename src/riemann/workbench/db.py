@@ -87,6 +87,38 @@ CREATE TABLE IF NOT EXISTS conjecture_history (
     tags TEXT,
     archived_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS formalizations (
+    id TEXT PRIMARY KEY,
+    conjecture_id TEXT NOT NULL,
+    lean_file_path TEXT NOT NULL,
+    formalization_state TEXT NOT NULL DEFAULT 'not_formalized'
+        CHECK(formalization_state IN (
+            'not_formalized', 'statement_formalized',
+            'proof_attempted', 'proof_complete'
+        )),
+    sorry_count INTEGER NOT NULL DEFAULT 0,
+    error_count INTEGER NOT NULL DEFAULT 0,
+    last_build_success BOOLEAN DEFAULT 0,
+    last_build_output TEXT,
+    mathlib_imports TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS build_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    formalization_id TEXT NOT NULL,
+    build_timestamp TEXT NOT NULL,
+    success BOOLEAN NOT NULL,
+    sorry_count INTEGER NOT NULL,
+    error_count INTEGER NOT NULL,
+    warning_count INTEGER NOT NULL,
+    build_duration_ms REAL,
+    output TEXT,
+    errors_json TEXT,
+    created_at TEXT NOT NULL
+);
 """
 
 
