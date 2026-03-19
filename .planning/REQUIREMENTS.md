@@ -24,7 +24,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **RSRCH-01**: User can track conjectures (formal statement, evidence for/against, status, confidence) in a structured research workbench
 - [x] **RSRCH-02**: User can save, annotate, and revisit experiments with full parameter reproducibility (seeds, serialization, checksums)
-- [ ] **RSRCH-03**: User can invoke AI-guided analysis that examines computational results, identifies patterns, generates formal conjectures, and suggests next experiments
+- [x] **RSRCH-03**: User can invoke AI-guided analysis that examines computational results, identifies patterns, generates formal conjectures, and suggests next experiments
 
 ### Zero Analysis
 
@@ -123,7 +123,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VIZ-03 | Phase 2 | Complete |
 | RSRCH-01 | Phase 1 | Complete |
 | RSRCH-02 | Phase 1 | Complete |
-| RSRCH-03 | Phase 3 | Pending |
+| RSRCH-03 | Phase 3 | Complete |
 | ZERO-01 | Phase 2 | Complete |
 | ZERO-02 | Phase 2 | Pending |
 | HDIM-01 | Phase 2 | Complete |
