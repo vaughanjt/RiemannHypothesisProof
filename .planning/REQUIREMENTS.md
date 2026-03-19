@@ -28,12 +28,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Zero Analysis
 
-- [ ] **ZERO-01**: User can compute zero distribution statistics (nearest-neighbor spacing, pair correlation, n-level density) and compare against GUE predictions
+- [x] **ZERO-01**: User can compute zero distribution statistics (nearest-neighbor spacing, pair correlation, n-level density) and compare against GUE predictions
 - [ ] **ZERO-02**: User can detect anomalies in zero structure -- deviations from expected behavior (GUE statistics, Riemann-von Mangoldt formula) are automatically flagged
 
 ### Higher-Dimensional Framework
 
-- [ ] **HDIM-01**: User can represent mathematical objects (zeros, function values, operator spectra) in N-dimensional spaces with configurable coordinate mappings
+- [x] **HDIM-01**: User can represent mathematical objects (zeros, function values, operator spectra) in N-dimensional spaces with configurable coordinate mappings
 - [ ] **HDIM-02**: User can apply multiple projection methods (PCA, UMAP, t-SNE, stereographic, custom mathematical projections) and compare results side-by-side
 
 ### Spectral Theory
@@ -124,9 +124,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RSRCH-01 | Phase 1 | Complete |
 | RSRCH-02 | Phase 1 | Complete |
 | RSRCH-03 | Phase 3 | Pending |
-| ZERO-01 | Phase 2 | Pending |
+| ZERO-01 | Phase 2 | Complete |
 | ZERO-02 | Phase 2 | Pending |
-| HDIM-01 | Phase 2 | Pending |
+| HDIM-01 | Phase 2 | Complete |
 | HDIM-02 | Phase 2 | Pending |
 | SPEC-01 | Phase 3 | Pending |
 | SPEC-02 | Phase 3 | Pending |
