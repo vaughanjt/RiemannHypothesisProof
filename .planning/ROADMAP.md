@@ -84,11 +84,12 @@ Plans:
   1. User can select a conjecture from the research workbench and translate it into a Lean 4 theorem statement (with sorry placeholders for unproven parts)
   2. User can track formalization progress per conjecture (statement formalized, proof attempted, proof complete) with Mathlib integration for leveraging existing formalized mathematics
   3. User can build and check Lean 4 proofs from within the platform, with structured error reporting and sorry-count tracking
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
+- [ ] 04-01-PLAN.md -- WSL2 Lean 4 environment setup, build runner, and output parser
+- [ ] 04-02-PLAN.md -- Formalization tracker (state machine, sorry tracking, auto-promotion) and conjecture-to-Lean translator
+- [ ] 04-03-PLAN.md -- Triage module, package exports, and full formalization assault with human verification
 
 ## Progress
 
@@ -100,4 +101,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Computational Foundation and Research Workbench | 1/5 | In progress | - |
 | 2. Higher-Dimensional Analysis | 4/5 | In Progress|  |
 | 3. Deep Domain Modules and Cross-Disciplinary Synthesis | 0/5 | Complete    | 2026-03-19 |
-| 4. Lean 4 Formalization Pipeline | 0/2 | Not started | - |
+| 4. Lean 4 Formalization Pipeline | 0/3 | Not started | - |
