@@ -27,6 +27,14 @@ from riemann.analysis.information import (
     mutual_information_spacings,
     spacing_entropy,
 )
+from riemann.analysis.lmfdb_client import (
+    LMFDBError,
+    clear_cache,
+    get_lfunction,
+    get_modular_form,
+    get_number_field,
+    query_lmfdb,
+)
 from riemann.analysis.modular_forms import (
     ModularFormResult,
     compute_q_expansion,
@@ -84,6 +92,12 @@ __all__ = [
     "generate_gse",
     "generate_gue",
     "hecke_eigenvalues",
+    "clear_cache",
+    "get_lfunction",
+    "get_modular_form",
+    "get_number_field",
+    "query_lmfdb",
+    "LMFDBError",
     "gue_pair_correlation",
     "lempel_ziv_complexity",
     "load_analogy_from_workbench",
