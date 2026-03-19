@@ -18,7 +18,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **VIZ-01**: User can visualize |zeta(1/2+it)| along the critical line with interactive zoom and pan
 - [x] **VIZ-02**: User can view domain coloring of the zeta function in the complex plane (phase->hue, magnitude->brightness) with zoomable critical strip regions
-- [ ] **VIZ-03**: User can interactively rotate through higher-dimensional mathematical spaces, watching how structures project into different 2D/3D views (projection theater)
+- [x] **VIZ-03**: User can interactively rotate through higher-dimensional mathematical spaces, watching how structures project into different 2D/3D views (projection theater)
 
 ### Research Infrastructure
 
@@ -49,7 +49,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Information Theory
 
 - [ ] **INFO-01**: User can apply information-theoretic measures (entropy, mutual information, Kolmogorov complexity estimates, compression-based distances) to zero sequences and related data
-- [ ] **INFO-02**: User can compare information-theoretic signatures across different mathematical objects (zeros, eigenvalues, primes) to surface hidden structural similarities
+- [x] **INFO-02**: User can compare information-theoretic signatures across different mathematical objects (zeros, eigenvalues, primes) to surface hidden structural similarities
 
 ### Modular Forms & Automorphic Representations
 
@@ -120,7 +120,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | COMP-04 | Phase 1 | Complete |
 | VIZ-01 | Phase 1 | Complete |
 | VIZ-02 | Phase 1 | Complete |
-| VIZ-03 | Phase 2 | Pending |
+| VIZ-03 | Phase 2 | Complete |
 | RSRCH-01 | Phase 1 | Complete |
 | RSRCH-02 | Phase 1 | Complete |
 | RSRCH-03 | Phase 3 | Pending |
@@ -133,7 +133,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RMT-01 | Phase 2 | Complete |
 | RMT-02 | Phase 2 | Complete |
 | INFO-01 | Phase 2 | Pending |
-| INFO-02 | Phase 2 | Pending |
+| INFO-02 | Phase 2 | Complete |
 | MOD-01 | Phase 3 | Pending |
 | MOD-02 | Phase 3 | Pending |
 | ADEL-01 | Phase 3 | Pending |
