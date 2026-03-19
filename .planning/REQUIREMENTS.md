@@ -38,8 +38,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Spectral Theory
 
-- [ ] **SPEC-01**: User can construct, discretize, and analyze candidate self-adjoint operators (Berry-Keating Hamiltonian and variants) and compare their eigenvalue spectra against zeta zeros
-- [ ] **SPEC-02**: User can explore trace formula connections -- Selberg trace formula, Weil explicit formula -- interactively computing partial sums and visualizing zeros-to-primes duality
+- [x] **SPEC-01**: User can construct, discretize, and analyze candidate self-adjoint operators (Berry-Keating Hamiltonian and variants) and compare their eigenvalue spectra against zeta zeros
+- [x] **SPEC-02**: User can explore trace formula connections -- Selberg trace formula, Weil explicit formula -- interactively computing partial sums and visualizing zeros-to-primes duality
 
 ### Random Matrix Theory
 
@@ -63,10 +63,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Cross-Disciplinary Synthesis
 
-- [ ] **XDISC-01**: User can define and test analogy mappings between domains (e.g., {eigenvalues:zeros, Hamiltonian:???, trace formula:explicit formula}) and computationally explore unknown correspondences
+- [x] **XDISC-01**: User can define and test analogy mappings between domains (e.g., {eigenvalues:zeros, Hamiltonian:???, trace formula:explicit formula}) and computationally explore unknown correspondences
 - [ ] **XDISC-02**: User can apply topological data analysis (persistent homology) to zero distributions and other mathematical objects to detect hidden topological structure
 - [ ] **XDISC-03**: User can analyze the zeta function and zero dynamics through dynamical systems tools (Lyapunov exponents, phase portraits, strange attractors)
-- [ ] **XDISC-04**: User can compute in noncommutative geometric frameworks relevant to Connes' approach to RH
+- [x] **XDISC-04**: User can compute in noncommutative geometric frameworks relevant to Connes' approach to RH
 
 ### Formalization
 
@@ -128,8 +128,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ZERO-02 | Phase 2 | Pending |
 | HDIM-01 | Phase 2 | Complete |
 | HDIM-02 | Phase 2 | Complete |
-| SPEC-01 | Phase 3 | Pending |
-| SPEC-02 | Phase 3 | Pending |
+| SPEC-01 | Phase 3 | Complete |
+| SPEC-02 | Phase 3 | Complete |
 | RMT-01 | Phase 2 | Complete |
 | RMT-02 | Phase 2 | Complete |
 | INFO-01 | Phase 2 | Pending |
@@ -138,10 +138,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MOD-02 | Phase 3 | Complete |
 | ADEL-01 | Phase 3 | Pending |
 | ADEL-02 | Phase 3 | Pending |
-| XDISC-01 | Phase 3 | Pending |
+| XDISC-01 | Phase 3 | Complete |
 | XDISC-02 | Phase 3 | Pending |
 | XDISC-03 | Phase 3 | Pending |
-| XDISC-04 | Phase 3 | Pending |
+| XDISC-04 | Phase 3 | Complete |
 | FORM-01 | Phase 4 | Pending |
 | FORM-02 | Phase 4 | Pending |
 
