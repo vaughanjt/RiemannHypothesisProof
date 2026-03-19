@@ -71,7 +71,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Formalization
 
 - [x] **FORM-01**: User can translate conjectures from the research workbench into Lean 4 theorem statements
-- [ ] **FORM-02**: User can track formalization progress (statement formalized -> proof attempted -> proof complete) with Mathlib integration for existing formalized mathematics
+- [x] **FORM-02**: User can track formalization progress (statement formalized -> proof attempted -> proof complete) with Mathlib integration for existing formalized mathematics
 
 ## v2 Requirements
 
@@ -143,7 +143,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | XDISC-03 | Phase 3 | Complete |
 | XDISC-04 | Phase 3 | Complete |
 | FORM-01 | Phase 4 | Complete |
-| FORM-02 | Phase 4 | Pending |
+| FORM-02 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 30 total
