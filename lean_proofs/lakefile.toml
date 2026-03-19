@@ -1,0 +1,14 @@
+name = "RiemannProofs"
+version = "0.1.0"
+keywords = ["math"]
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+
+[[lean_lib]]
+name = "RiemannProofs"
