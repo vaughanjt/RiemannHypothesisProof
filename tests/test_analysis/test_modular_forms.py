@@ -170,12 +170,12 @@ class TestHeckeEigenvalues:
         evals = hecke_eigenvalues(weight=12, level=1, primes=[3])
         assert abs(evals[3] - 252.0) < 1e-2
 
-    def test_delta_tau_5_is_minus_4830(self):
-        """tau(5) = -4830."""
+    def test_delta_tau_5_is_4830(self):
+        """tau(5) = 4830 (OEIS A000594: verified via product formula)."""
         from riemann.analysis.modular_forms import hecke_eigenvalues
 
         evals = hecke_eigenvalues(weight=12, level=1, primes=[5])
-        assert abs(evals[5] - (-4830.0)) < 1e-1
+        assert abs(evals[5] - 4830.0) < 1e-1
 
     def test_returns_dict(self):
         from riemann.analysis.modular_forms import hecke_eigenvalues
@@ -191,9 +191,9 @@ class TestHeckeEigenvalues:
         evals = hecke_eigenvalues(weight=12, level=1)
         assert set(evals.keys()) == {2, 3, 5, 7, 11, 13}
 
-    def test_delta_tau_7_is_16744(self):
-        """tau(7) = 16744 (known value)."""
+    def test_delta_tau_7_is_minus_16744(self):
+        """tau(7) = -16744 (OEIS A000594: verified via product formula)."""
         from riemann.analysis.modular_forms import hecke_eigenvalues
 
         evals = hecke_eigenvalues(weight=12, level=1, primes=[7])
-        assert abs(evals[7] - 16744.0) < 1.0
+        assert abs(evals[7] - (-16744.0)) < 1.0
