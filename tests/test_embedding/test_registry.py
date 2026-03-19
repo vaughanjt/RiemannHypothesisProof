@@ -74,17 +74,10 @@ class TestFeatureExtractors:
     def test_has_9_extractors(self):
         assert len(FEATURE_EXTRACTORS) == 9
 
-    def test_each_stub_raises_not_implemented(self):
-        """All feature extractor stubs should raise NotImplementedError."""
-        dummy_zero = ZetaZero(
-            index=1,
-            value=mpc(0.5, 14.13),
-            precision_digits=15,
-            validated=False,
-        )
+    def test_extractors_are_callable(self):
+        """All feature extractors should be callable (stubs replaced by Plan 02-03)."""
         for name, extractor in FEATURE_EXTRACTORS.items():
-            with pytest.raises(NotImplementedError, match=name):
-                extractor(dummy_zero)
+            assert callable(extractor), f"{name} is not callable"
 
 
 class TestPresetConfigs:
