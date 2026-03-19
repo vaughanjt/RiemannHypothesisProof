@@ -67,12 +67,14 @@ Plans:
   3. User can compute modular forms and Hecke eigenvalues, query LMFDB for known data, and perform p-adic arithmetic with visualized fractal structure connecting p-adic and archimedean pictures
   4. User can define analogy mappings between domains, apply topological data analysis to detect hidden structure in zero distributions, analyze zeta dynamics through dynamical systems tools, and compute in noncommutative geometric frameworks
   5. User can invoke AI-guided analysis that examines computational results across all domains, identifies cross-domain patterns, generates formal conjectures, and suggests next experiments
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md -- Spectral operators (Berry-Keating Hamiltonian, spectrum comparison) and trace formulas (Weil explicit formula, Chebyshev psi)
+- [ ] 03-02-PLAN.md -- Modular forms (q-series, Hecke eigenvalues) and LMFDB REST API client with SQLite caching
+- [ ] 03-03-PLAN.md -- p-adic arithmetic with Kubota-Leopoldt zeta, TDA via ripser, and dynamical systems tools
+- [ ] 03-04-PLAN.md -- Noncommutative geometry (Bost-Connes system) and analogy engine with correspondence testing
+- [ ] 03-05-PLAN.md -- AI-guided conjecture generation and Phase 3 module integration wiring
 
 ### Phase 4: Lean 4 Formalization Pipeline
 **Goal**: User can translate mature conjectures from the research workbench into machine-verified Lean 4 proofs, with Mathlib integration and progress tracking -- closing the loop from computational exploration to rigorous mathematics
@@ -97,5 +99,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Computational Foundation and Research Workbench | 1/5 | In progress | - |
 | 2. Higher-Dimensional Analysis | 4/5 | In Progress|  |
-| 3. Deep Domain Modules and Cross-Disciplinary Synthesis | 0/3 | Not started | - |
+| 3. Deep Domain Modules and Cross-Disciplinary Synthesis | 0/5 | Planning complete | - |
 | 4. Lean 4 Formalization Pipeline | 0/2 | Not started | - |
