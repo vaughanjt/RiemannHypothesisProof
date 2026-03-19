@@ -34,7 +34,7 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Higher-Dimensional Framework
 
 - [x] **HDIM-01**: User can represent mathematical objects (zeros, function values, operator spectra) in N-dimensional spaces with configurable coordinate mappings
-- [ ] **HDIM-02**: User can apply multiple projection methods (PCA, UMAP, t-SNE, stereographic, custom mathematical projections) and compare results side-by-side
+- [x] **HDIM-02**: User can apply multiple projection methods (PCA, UMAP, t-SNE, stereographic, custom mathematical projections) and compare results side-by-side
 
 ### Spectral Theory
 
@@ -127,7 +127,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ZERO-01 | Phase 2 | Complete |
 | ZERO-02 | Phase 2 | Pending |
 | HDIM-01 | Phase 2 | Complete |
-| HDIM-02 | Phase 2 | Pending |
+| HDIM-02 | Phase 2 | Complete |
 | SPEC-01 | Phase 3 | Pending |
 | SPEC-02 | Phase 3 | Pending |
 | RMT-01 | Phase 2 | Complete |
