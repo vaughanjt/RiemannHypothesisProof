@@ -53,8 +53,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Modular Forms & Automorphic Representations
 
-- [ ] **MOD-01**: User can compute modular forms, Hecke eigenvalues, and Fourier coefficients, and visualize them in the upper half-plane
-- [ ] **MOD-02**: User can query LMFDB for known L-function data, modular form data, and number field data and integrate it with the platform's analysis tools
+- [x] **MOD-01**: User can compute modular forms, Hecke eigenvalues, and Fourier coefficients, and visualize them in the upper half-plane
+- [x] **MOD-02**: User can query LMFDB for known L-function data, modular form data, and number field data and integrate it with the platform's analysis tools
 
 ### Adelic & p-adic Computation
 
@@ -134,8 +134,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RMT-02 | Phase 2 | Complete |
 | INFO-01 | Phase 2 | Pending |
 | INFO-02 | Phase 2 | Complete |
-| MOD-01 | Phase 3 | Pending |
-| MOD-02 | Phase 3 | Pending |
+| MOD-01 | Phase 3 | Complete |
+| MOD-02 | Phase 3 | Complete |
 | ADEL-01 | Phase 3 | Pending |
 | ADEL-02 | Phase 3 | Pending |
 | XDISC-01 | Phase 3 | Pending |
