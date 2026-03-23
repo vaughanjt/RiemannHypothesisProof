@@ -68,7 +68,7 @@ For an N x N GUE matrix H, the analogous quantity is:
 | ~2.7 x 10^11 | 200 | **+0.800** | +0.596 | beta = 2.47 |
 | GUE (N=200) | 16,000 | +0.043 | ~0.04 | beta ~ 0 |
 
-The peak-gap correlation for zeta zeros is 17-20x larger than for GUE eigenvalues. The excess is *not* a finite-size effect: it *increases* with T, from r = 0.75 at T ~ 458 to r = 0.80 at T ~ 2.7 x 10^11. The power law exponent beta doubles from 1.6 to 2.5, indicating that larger gaps produce disproportionately taller peaks.
+The peak-gap correlation for zeta zeros is 17-20x larger than for GUE eigenvalues. At T ~ 458 (499 pairs), Fisher-z gives a 95% confidence interval of r in [0.70, 0.79]. At T ~ 2.7 x 10^11 (200 pairs), the interval is [0.74, 0.85]. The two intervals overlap but the point estimates suggest an increasing trend; confirmation at intermediate heights (e.g., Odlyzko's 10^6 or 10^9 blocks) would strengthen this claim. The power law exponent beta increases from 1.6 to 2.5, indicating that larger gaps produce disproportionately taller peaks. An independent check by Grok on the first 100 zeros (T up to ~236) yields r ~ 0.96, consistent with strongest coupling at lowest T settling into the 0.75-0.80 range at higher T.
 
 In GUE, eigenvectors are Haar-distributed and essentially decoupled from eigenvalue positions. The near-zero r = 0.04 reflects only the trivial geometric effect that the characteristic polynomial must vanish at eigenvalues and thus tends to be slightly larger at midpoints of wider gaps.
 
@@ -86,7 +86,7 @@ After regressing log|Z(mid)| on the gap (removing the peak-gap link), we test wh
 
 At T ~ 2.7 x 10^11 (200 intervals), 4 out of 15 primes are significant at the Bonferroni-corrected threshold: p = 11, 13, 17, 31. At T ~ 458 (499 intervals), prime 3 is significant (r = +0.17, p = 0.0002). The set of significant primes shifts with height, paralleling the height-dependent shift of anomalous lags in the pair correlation.
 
-This demonstrates *direct arithmetic modulation* of the wave function amplitude, not mediated by the eigenvalue gaps. The Hilbert-Polya operator's eigenvectors must "know about" primes.
+This is suggestive of direct arithmetic modulation of the wave function amplitude, not mediated by the eigenvalue gaps. However, with N = 200 at high T and a harsh Bonferroni threshold across 15 primes, 4/15 surviving is indicative rather than overwhelming. We frame this as a secondary arithmetic imprint on top of the dominant structural effect identified in Section 4. Confirmation with larger datasets at multiple heights is needed before claiming the Hilbert-Polya operator's eigenvectors must "know about" primes.
 
 ---
 
@@ -155,17 +155,17 @@ The eigenvector rigidity places a sixth constraint on any candidate Hilbert-Poly
 | 3. Phase-free (real contributions) | Rayleigh test | Complex form factors |
 | 4. Inseparable from GUE | Spectral surgery tests | GUE + perturbation models |
 | 5. First-harmonic dominant | Harmonic decomposition | Prime-power structures |
-| 6. **Eigenvector rigidity** | **Peak-gap correlation** | **All random matrix models** |
+| 6. **Eigenvector rigidity** | **Peak-gap correlation** | **Haar-eigenvector and independent-eigenvector ensembles** |
 
-Constraint 6 is the most restrictive. It requires the operator's eigenvectors to be determined by the same structure that determines its eigenvalues, with coupling that grows with the spectral parameter. This rules out *all* random matrix models, including generalized ensembles with non-Haar eigenvector distributions, because the coupling must arise from the specific Riemann-Siegel sum structure.
+Constraint 6 requires the operator's eigenvectors to be coupled to its eigenvalues through a Riemann-Siegel sum structure, with coupling that does not vanish in the large-N limit. This rules out standard random matrix ensembles (GUE, GOE, GSE) and their generalizations with independent or Haar-distributed eigenvectors. It does not rule out structured ensembles whose eigenvector distributions are explicitly constructed from arithmetic data, but it does require any such construction to reproduce the specific cosine-sum-over-integers form.
 
-The operator that satisfies all six constraints must have a resolvent whose trace produces a Riemann-Siegel-type sum:
+The natural requirement is that the operator's resolvent trace produces a Riemann-Siegel-type sum:
 
 Tr((zI - H)^{-1}) ~ sum_n a_n(z) cos(f_n(z))
 
 with integer-indexed terms, decaying amplitudes, and a stationary phase from a functional-equation-type symmetry.
 
-Transfer operators of arithmetical dynamical systems (e.g., the Mayer transfer operator for the Gauss map, whose Fredholm determinant relates to the Selberg zeta function) are natural candidates. Their traces are sums over periodic orbits indexed by integers, with weights and phases determined by the dynamics.
+Transfer operators of arithmetical dynamical systems are promising candidates in this direction. The Mayer transfer operator for the Gauss map, whose Fredholm determinant relates to the Selberg zeta function, has a trace that is a sum over periodic orbits indexed by integers, with weights and phases determined by the dynamics. Whether such operators can simultaneously produce GUE eigenvalue statistics and the observed eigenvector rigidity remains an open question.
 
 ---
 
