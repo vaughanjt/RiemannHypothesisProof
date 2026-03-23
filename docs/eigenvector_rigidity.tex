@@ -9,6 +9,7 @@
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{microtype}
+\usepackage{graphicx}
 
 \newtheorem{prediction}{Prediction}
 
@@ -112,11 +113,21 @@ GUE ($N\!=\!200$)    & 16{,}000 & $+0.043$        & ${\sim}0.04$ & ${\sim}0$ \\
 \label{tab:peakgap}
 \end{table}
 
-The peak-gap correlation for zeta zeros is 17--20$\times$ larger than for GUE eigenvalues (Table~\ref{tab:peakgap}).
-At $T \sim 458$ (499~pairs), Fisher-$z$ gives a 95\% confidence interval $r \in [0.70, 0.79]$.
-At $T \sim 2.7\times10^{11}$ (200~pairs), the interval is $r \in [0.74, 0.85]$.
-The two intervals overlap, but the point estimates suggest an increasing trend; confirmation at intermediate heights would strengthen this claim.
+The peak-gap correlation for zeta zeros is 17--20$\times$ larger than for GUE eigenvalues (Table~\ref{tab:peakgap}, Figure~\ref{fig:scatter}).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{fig1_scatter.pdf}
+\caption{Scatter plots of normalized gap vs.\ $\log|Z(\mathrm{mid})|$ (left: zeta zeros at $T \sim 458$, Pearson $r = +0.747$) and normalized gap vs.\ $\log|\det(z_{\mathrm{mid}} - H)|$ (right: GUE ensemble, $r = +0.043$). Lines show ordinary least-squares fits. The zeta wave function amplitude is tightly determined by the eigenvalue gap; the GUE characteristic polynomial is not.}
+\label{fig:scatter}
+\end{figure}
+At $T \sim 458$ (499~pairs), a 10{,}000-trial bootstrap gives $r = 0.752$ with 95\% CI $[0.679, 0.818]$.
+At $T \sim 2.7\times10^{11}$ (200~pairs), Fisher-$z$ gives $r \in [0.74, 0.85]$.
+The two intervals overlap, but the point estimates suggest an increasing trend; confirmation at intermediate heights (e.g., Odlyzko's $10^6$ or $10^9$ blocks) would strengthen this claim.
 An independent check on the first 100~zeros ($T$ up to $\sim\!236$) yields $r \approx 0.96$, consistent with strongest coupling at lowest~$T$ settling into the $0.75$--$0.80$ range at higher~$T$.
+
+The power-law exponent~$\beta$ is estimated by ordinary least squares on $\log|\!Z(\mathrm{mid})| = \beta\,\log(\mathrm{gap}) + \mathrm{const}$, restricted to gaps $> 0.1$ to avoid $\log 0$.
+At $T \sim 458$, bootstrap (10{,}000 trials) gives $\beta = 1.61$ with 95\% CI $[1.49, 1.72]$.
 
 In GUE, eigenvectors are Haar-distributed and essentially decoupled from eigenvalue positions.
 The near-zero $r \approx 0.04$ reflects only the trivial geometric effect that the characteristic polynomial vanishes at eigenvalues and thus tends to be slightly larger at midpoints of wider gaps.
@@ -205,7 +216,14 @@ Level 3: full $\theta(t)$ & $+0.699$ \\
 \label{tab:phase}
 \end{table}
 
-The entire coupling derives from the leading term of~$\theta$ (Table~\ref{tab:phase}).
+The entire coupling derives from the leading term of~$\theta$ (Table~\ref{tab:phase}, Figure~\ref{fig:phase}).
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.65\textwidth]{fig2_phase_hierarchy.pdf}
+\caption{Peak-gap correlation $r$ under progressive phase approximations. The generic leading term gives $r = 0.670$; the functional equation's constant phase $-\pi/8 = \arg\Gamma(\frac{1}{4})$ adds $+0.029$; all higher corrections add zero. The GUE baseline ($r = 0.04$) is shown for reference.}
+\label{fig:phase}
+\end{figure}
 The constant phase $-\pi/8 = \arg\Gamma(\tfrac{1}{4})$---the fingerprint of the functional equation---contributes $+0.029$ to~$r$.
 All Stirling corrections and higher-order terms contribute exactly zero.
 
