@@ -194,7 +194,29 @@ Our findings constrain any candidate self-adjoint operator whose eigenvalues rep
 4. **Inseparable**: The correction cannot be achieved by additive perturbation of a GUE matrix — it must arise structurally from the operator's construction.
 5. **First-harmonic**: Only the fundamental frequency log(p)/log(*T*/2π) contributes; prime power harmonics are negligible.
 
-These five constraints significantly narrow the space of candidate operators. In particular, constraint (4) rules out the Berry–Keating Hamiltonian H = xp and all its regularizations, which we confirmed by testing 14 perturbation variants (all fail to reproduce the lag-2 autocorrelation and the beat frequency pattern).
+These five constraints significantly narrow the space of candidate operators. In particular, constraint (4) rules out the Berry-Keating Hamiltonian H = xp and all its regularizations, which we confirmed by testing 14 perturbation variants.
+
+### 4.4 Wave function anomaly: eigenvalue-eigenvector coupling
+
+We measure the Riemann-Siegel Z function at the midpoint between consecutive zeros and test its correlation with the surrounding gap size. For comparison, we compute the same quantity for GUE: the characteristic polynomial |det(z - H)| evaluated at eigenvalue midpoints.
+
+| Height | N | r(gap, log|Z|) | |Z| ~ gap^beta |
+|---|---|---|---|
+| *T* ~ 458 | 499 | +0.747 | beta = 1.61 |
+| *T* ~ 2.7 x 10^11 | 200 | +0.800 | beta = 2.47 |
+| GUE (N = 200) | 16,000 | +0.043 | beta ~ 0 |
+
+The peak-gap correlation is **20x stronger** for zeta zeros than for GUE eigenvalues. In GUE, eigenvectors are Haar-distributed and essentially independent of eigenvalues, giving near-zero correlation. For zeta, the wave function amplitude is tightly determined by the zero gap, following a power law |Z(mid)| ~ gap^beta with beta >> 1.
+
+Critically, beta **increases** with *T*: from 1.6 at *T* ~ 458 to 2.5 at *T* ~ 2.7 x 10^11. While the eigenvalue statistics (spacing ACF) converge toward GUE as *T* -> infinity (Montgomery), the eigenvalue-eigenvector coupling **diverges** from GUE. The zeta wave function becomes MORE structured, not less, at higher observation heights.
+
+This divergence has a natural explanation via the Riemann-Siegel formula: Z(t) = 2 * sum_{n <= N(t)} n^{-1/2} cos(theta(t) - t log n), where N(t) = floor(sqrt(t/2*pi)). Both the zero positions and the inter-zero Z values are determined by the SAME finite sum. At higher *T*, the sum has more terms (N ~ sqrt(T)), making both quantities more constrained by the arithmetic structure and thus more correlated.
+
+After controlling for the gap dependence (residualizing log|Z| on gap), 4 out of 15 primes modulate the residual wave function amplitude at Bonferroni-corrected significance (p = 11, 13, 17, 31 at *T* ~ 2.7 x 10^11). This represents **direct arithmetic modulation of the wave function** not mediated by the eigenvalue gaps.
+
+This constitutes a sixth constraint on the Hilbert-Polya operator:
+
+6. **Eigenvector rigidity**: The operator's eigenvectors must be arithmetically determined by the same prime structure that determines its eigenvalues, with coupling strength that GROWS with the spectral parameter. This rules out any operator with Haar-distributed eigenvectors, including all random matrix models.
 
 ---
 
