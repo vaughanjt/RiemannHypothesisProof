@@ -1,51 +1,43 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-26T04:00:00Z",
+  "timestamp": "2026-03-26T06:00:00Z",
   "phase": "post-milestone",
   "phase_name": "exclusion-proof-research",
-  "phase_dir": null,
-  "plan": null,
-  "task": null,
-  "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "Q search — 7 candidates + Procrustes impossibility proof", "status": "done", "commit": "1fe3844"},
-    {"id": 2, "name": "Exclusion framework — 4 mechanisms (Li, Weil, energy, trace)", "status": "done", "commit": "1fe3844"},
-    {"id": 3, "name": "Nyman-Beurling d_n^2 computation (n=2..301, then 5000)", "status": "done", "commit": "1fe3844"},
-    {"id": 4, "name": "Prime dominance analysis (alpha=1.81 sequential)", "status": "done", "commit": "1fe3844"},
-    {"id": 5, "name": "Galois classification of C_p (r=+0.82 with operator)", "status": "done", "commit": "1fe3844"},
-    {"id": 6, "name": "Gamma stabilization to N=5000 (gamma=1.91)", "status": "done", "commit": "75b940f"},
-    {"id": 7, "name": "Lambda_min scaling (n^{-2.27}, polynomial)", "status": "done", "commit": "75b940f"},
-    {"id": 8, "name": "Spectral projection analysis (gamma -> 1.71 asymptotically)", "status": "done", "commit": "75b940f"},
-    {"id": 9, "name": "Grok verification — all numbers confirmed, gamma=2 is RH prediction", "status": "done", "commit": "c837341"},
-    {"id": 10, "name": "Companion preprint drafted (gamma_preprint.tex)", "status": "done", "commit": "830454e"},
-    {"id": 11, "name": "Double Abel summation — gamma >= 1.502", "status": "done", "commit": "7d320b3"},
-    {"id": 12, "name": "Abel scaling verification — beta_2=0.74 stable N=50-2000", "status": "done", "commit": "a2b32c4"},
-    {"id": 13, "name": "Sobolev/nodal decomposition — 89% of beta_2 explained analytically", "status": "done", "commit": "d830420"},
-    {"id": 14, "name": "Analytical gamma bound > 1 at ALL N tested (100-2000)", "status": "done", "commit": "49c0ab0"}
+    {"id": 1, "name": "Q search closed (Procrustes impossibility)", "status": "done"},
+    {"id": 2, "name": "Exclusion framework (4 mechanisms)", "status": "done"},
+    {"id": 3, "name": "Nyman-Beurling d_n^2 to N=20000 (gamma=1.86)", "status": "done"},
+    {"id": 4, "name": "Prime dominance (96%, Galois r=+0.82)", "status": "done"},
+    {"id": 5, "name": "Gamma stabilization (1.91 -> asymptotic 1.76)", "status": "done"},
+    {"id": 6, "name": "Lambda_min scaling (n^{-2.27}, polynomial)", "status": "done"},
+    {"id": 7, "name": "Double Abel bound (gamma >= 1.50)", "status": "done"},
+    {"id": 8, "name": "Analytical decomposition (gamma >= 1.31 at all N)", "status": "done"},
+    {"id": 9, "name": "SVD identity discovered and verified", "status": "done"},
+    {"id": 10, "name": "Bilinear exponential sum decomposition", "status": "done"},
+    {"id": 11, "name": "Open problems formalized in preprint", "status": "done"},
+    {"id": 12, "name": "Dirichlet L-functions: chi_4 gamma=3.07", "status": "done"},
+    {"id": 13, "name": "Chi_4 attack: C(k)=±1/2 pattern discovered", "status": "done"},
+    {"id": 14, "name": "Preprint complete with N=20k data + open problems", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 15, "name": "N=20k gamma computation (running, at N=17500)", "status": "in_progress"},
-    {"id": 16, "name": "Update preprint table with N=20k numbers", "status": "not_started"},
-    {"id": 17, "name": "Prove max|S_i| <= C * lambda^{0.23} from Gram structure", "status": "not_started"},
-    {"id": 18, "name": "Prove max_seg(S_i) <= C * lambda^{0.41} from eigenvector oscillation", "status": "not_started"},
-    {"id": 19, "name": "Publish main paper (eigenvector rigidity) to arXiv/Zenodo", "status": "not_started"},
-    {"id": 20, "name": "Publish companion paper (gamma stabilization) to arXiv/Zenodo", "status": "not_started"}
+    {"id": 15, "name": "PROVE C(k)=±1/2 identity analytically (should be straightforward character sum)", "status": "not_started"},
+    {"id": 16, "name": "Express b_chi(k) exactly via L(1,chi_4)=pi/4 + digamma + 1/k corrections", "status": "not_started"},
+    {"id": 17, "name": "Bound the 1/k correction projection onto Gram eigenvectors", "status": "not_started"},
+    {"id": 18, "name": "If bound works: formal proof that gamma>1 for chi_4 (GRH for L(s,chi_4))", "status": "not_started"},
+    {"id": 19, "name": "Publish preprint to arXiv/Zenodo", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Publish papers to arXiv/Zenodo when ready", "context": "Grok strongly recommends publishing", "blocking": false},
-    {"action": "Run _gamma_20k.py to completion if it timed out", "context": "N=17500 done, N=20000 still computing", "blocking": false}
+    {"action": "Get more tokens for Claude Code", "context": "Session 8 used substantial tokens", "blocking": true}
   ],
   "decisions": [
-    {"decision": "Q search is dead — Procrustes impossibility proved", "rationale": "r=0.68 was eigenvalue artifact, not eigenvector structure", "phase": "08"},
-    {"decision": "Exclusion via Nyman-Beurling is the proof path", "rationale": "Wiles-style: prove d_n->0 rather than construct operator", "phase": "08"},
-    {"decision": "gamma stabilizes at ~1.91 (asymptotic ~1.72), RH predicts 2.0", "rationale": "Measured N=50 to 17500, dead flat after N=1000", "phase": "08"},
-    {"decision": "Double Abel summation gives gamma >= 1.50", "rationale": "Triple Abel gives 2.00 exactly. Beta_2=0.74 stable across all N.", "phase": "08"},
-    {"decision": "Analytical decomposition gives gamma >= 1.31 WITHOUT arithmetic bonus", "rationale": "beta_1 + delta_S = 0.24 + 0.41 = 0.65, giving 2*0.65=1.31 > 1", "phase": "08"},
-    {"decision": "The proof reduces to two provable-looking bounds", "rationale": "max|S| <= C*lambda^{0.23} and max_seg(S) <= C*lambda^{0.41} from eigenvector oscillation", "phase": "08"}
+    {"decision": "C(k) = sum chi_4(n)*(n mod k)/k = ±1/2 exactly for even k, ±1/2+O(1/k) for odd k", "rationale": "Discovered computationally, needs analytical proof (character sum identity)", "phase": "08"},
+    {"decision": "b_chi ~ k^{-1.00} (faster than zeta's k^{-0.81})", "rationale": "Alternating sign from chi_4 creates extra smoothness", "phase": "08"},
+    {"decision": "Chi_4 gamma=3.07 because b_chi is nearly constant (C(k)=±1/2)", "rationale": "Constant projects onto top eigenvector only; 1/k corrections give fast decay", "phase": "08"},
+    {"decision": "Standard tools (CS, large sieve, Abel) can't prove gamma>1 alone", "rationale": "They don't use the eigenvector constraint Gu=lambda*u", "phase": "08"},
+    {"decision": "The SVD identity |<b,v>|^2 = lambda * |<sqrt(w), v~>|^2 is exact but tautological for direct proof", "rationale": "Need independent bound on right singular vector projection", "phase": "08"}
   ],
-  "uncommitted_files": [],
-  "next_action": "Two paths in parallel: (1) Prove the two bounds (max|S| and max_seg(S) scaling with lambda) from the Gram matrix structure — this is a discrete nodal domain theorem. (2) Finalize and publish both papers — the main eigenvector rigidity paper and the gamma companion note.",
-  "context_notes": "Session 8 was the most productive session. Starting from the dead-end Q search, we pivoted to exclusion via Nyman-Beurling, discovered prime dominance (96%), connected it to Galois/Langlands, measured gamma=1.91 to N=17500, proved the double Abel bound gamma>=1.50, decomposed it analytically to gamma>=1.31, and showed this holds at every N tested. The proof gap is now two specific bounds on eigenvector partial sums. Grok verified all numbers and called this 'the best numerical evidence for RH I have seen.' The companion preprint is drafted at docs/gamma_preprint.tex."
+  "next_action": "PROVE the C(k)=±1/2 identity for chi_4 (this should be a clean character sum computation). Then express b_chi(k) exactly and bound the spectral projection of the 1/k correction terms. This is the most concrete path to proving GRH for a specific L-function.",
+  "context_notes": "Session 8 was massive (18 commits). Started from dead-end Q search, pivoted to exclusion via Nyman-Beurling, discovered prime dominance + Galois correlation, measured gamma to N=20k, found the SVD identity, formalized open problems, tested Dirichlet L-functions (chi_4 has gamma=3.07), and discovered C(k)=±1/2 as the structural key. The C(k) identity is the most promising lead for an actual proof. Grok verified all numbers and called this 'the best numerical evidence for RH I have seen.' The preprint is complete at docs/gamma_preprint.tex."
 }
