@@ -1,49 +1,43 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-24T20:06:57Z",
-  "phase": "04",
-  "phase_name": "lean-4-formalization-pipeline",
-  "phase_dir": "04-lean-4-formalization-pipeline",
+  "timestamp": "2026-03-25T22:00:00Z",
+  "phase": "post-milestone",
+  "phase_name": "exclusion-proof-research",
+  "phase_dir": null,
   "plan": null,
   "task": null,
   "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "Transfer operator deep dive (6 variants, gauge theorem)", "status": "done", "commit": "6364fc8"},
-    {"id": 2, "name": "RS operator v2 + Z-Toeplitz analysis", "status": "done", "commit": "1fa512f"},
-    {"id": 3, "name": "Berry-Keating xp + Lanczos Jacobi", "status": "done", "commit": "db5b2d3"},
-    {"id": 4, "name": "Jacobi arithmetic content (prime structure)", "status": "done", "commit": "8ede1fd"},
-    {"id": 5, "name": "Explicit formula Jacobi (primes in, zeros out)", "status": "done", "commit": "e1ad8bb"},
-    {"id": 6, "name": "Beta correction + banded operator", "status": "done", "commit": "03083fa"},
-    {"id": 7, "name": "Ulam spiral multi-mode decomposition", "status": "done", "commit": "080d6fe"},
-    {"id": 8, "name": "Mode resolution (inert/split asymmetry)", "status": "done", "commit": "c734daf"},
-    {"id": 9, "name": "Ulam spiral 3D + dimension cadence", "status": "done", "commit": "293a375"},
-    {"id": 10, "name": "Primorial tower framework", "status": "done", "commit": "6ea5d2c"},
-    {"id": 11, "name": "Convergence + self-adjointness analysis", "status": "done", "commit": "c63a0f0"},
-    {"id": 12, "name": "Analytic continuation of operator", "status": "done", "commit": "309fb6c"},
-    {"id": 13, "name": "Trace formula identity verification", "status": "done", "commit": "ef84d1e"},
-    {"id": 14, "name": "Grok v2 corrections (C, phase, L-weights)", "status": "done", "commit": "f004f89"},
-    {"id": 15, "name": "Hybrid: index-space GCD + explicit diagonal", "status": "done", "commit": "18bb2cf"},
-    {"id": 16, "name": "Hybrid: value-space GCD", "status": "done", "commit": "7dc567e"},
-    {"id": 17, "name": "Hybrid: gap-normalized GCD", "status": "done", "commit": "13746fe"}
+    {"id": 1, "name": "Q search — 7 candidates + Procrustes impossibility proof", "status": "done", "commit": "1fe3844"},
+    {"id": 2, "name": "Exclusion framework — 4 mechanisms (Li, Weil, energy, trace)", "status": "done", "commit": "1fe3844"},
+    {"id": 3, "name": "Nyman-Beurling d_n^2 computation (n=2..301)", "status": "done", "commit": "1fe3844"},
+    {"id": 4, "name": "Prime dominance analysis (alpha=1.81 sequential)", "status": "done", "commit": "1fe3844"},
+    {"id": 5, "name": "Galois classification of C_p (r=+0.82 with operator)", "status": "done", "commit": "1fe3844"},
+    {"id": 6, "name": "Independent vs sequential alpha (0.60 vs 1.81)", "status": "done", "commit": "1fe3844"},
+    {"id": 7, "name": "Grok briefing document written", "status": "done", "commit": null}
   ],
   "remaining_tasks": [
-    {"id": 18, "name": "Find basis transformation Q between GCD and spectral spaces", "status": "not_started"},
-    {"id": 19, "name": "Paper 3: gauge symmetry + operator framework", "status": "not_started"},
-    {"id": 20, "name": "Lean 4 formalization of proof structure", "status": "not_started"}
+    {"id": 8, "name": "Composite decomposition by prime factorization — do interaction terms converge?", "status": "not_started"},
+    {"id": 9, "name": "Prove interaction-mediated acceleration: why alpha jumps from 0.6 to 1.8", "status": "not_started"},
+    {"id": 10, "name": "Connect Gram matrix conditioning to Euler product structure (R=T moment)", "status": "not_started"},
+    {"id": 11, "name": "Paper 3: exclusion framework + Nyman-Beurling + Galois structure", "status": "not_started"},
+    {"id": 12, "name": "Lean 4 formalization of exclusion proof structure", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Submit papers to Zenodo", "context": "Papers 1+2 ready since session 6", "blocking": false},
-    {"action": "Grok cross-verification with operator_for_grok.py", "context": "Grok has the spec, awaiting final operator iteration", "blocking": false}
+    {"action": "Share session8_grok_briefing.md with Grok for cross-verification", "context": "docs/session8_grok_briefing.md has 5 specific questions", "blocking": false},
+    {"action": "Submit papers 1+2 to Zenodo", "context": "Ready since session 6", "blocking": false}
   ],
   "decisions": [
-    {"decision": "Gauge symmetry theorem rules out all Hermitian transfer operators", "rationale": "L(t)=D(t)L(0)D(t)^{-1} proven algebraically", "phase": "07"},
-    {"decision": "Inert primes (3 mod 8) dominate operator coupling, split primes (5 mod 8) silent", "rationale": "Multi-start optimization over mod-8 residue classes", "phase": "07"},
-    {"decision": "Analytic continuation gives finite ||V|| = 2.69 at sigma=1/2", "rationale": "|zeta'(1/2)/zeta(1/2)| is finite even though term-by-term sum diverges", "phase": "07"},
-    {"decision": "GCD kernel and explicit formula diagonal operate on incompatible scales", "rationale": "Index space (1-200) has rich GCD; value space (14-400) has sparse GCD", "phase": "07"}
+    {"decision": "Q search is a dead end — Procrustes test proves r comes from eigenvalue patterns not eigenvectors", "rationale": "GCD vecs + zero eigenvalues gives r=0.04, not 0.68", "phase": "08"},
+    {"decision": "Pivot from construction (Hilbert-Polya) to exclusion (contrapositive)", "rationale": "Inspired by Wiles FLT proof — prove zeros can't be off-line rather than constructing operator", "phase": "08"},
+    {"decision": "Independent prime projections L_p have alpha=0.60 (divergent)", "rationale": "L_p = <rho_1/p, chi>^2 / <rho_1/p, rho_1/p> decays as p^{-0.60}", "phase": "08"},
+    {"decision": "Sequential prime drops C_p have alpha=1.81 (convergent)", "rationale": "Marginal contribution given all previous basis functions — interactions accelerate decay", "phase": "08"},
+    {"decision": "The acceleration from 0.6 to 1.8 IS the proof target", "rationale": "Wiles parallel: local factors alone diverge, global structure creates convergence", "phase": "08"},
+    {"decision": "Galois structure predicts Beurling contributions (r=+0.82)", "rationale": "Same mod-8 classification from session 7 operator coupling", "phase": "08"}
   ],
-  "uncommitted_files": [".planning/phases/04-lean-4-formalization-pipeline/.continue-here.md"],
-  "next_action": "Find the change-of-basis matrix Q between the Lanczos/multiplicative basis (where GCD works, r=0.68) and the spectral basis (where eigenvalues are correct). Q may be the discrete Mellin transform or Ramanujan sum expansion.",
-  "context_notes": "The r-vs-eigenvalue-accuracy tradeoff is the central obstacle. log(k) diagonal + GCD gives r=0.68 but wrong eigenvalues. Explicit formula gives right eigenvalues but r=0.03. The basis Q that maps between them is the missing piece. Grok is actively cross-verifying and suggested the value-space GCD and gap normalization (both tested, both insufficient). The next breakthrough needs fresh mathematical thinking about Q."
+  "uncommitted_files": ["docs/session8_grok_briefing.md"],
+  "next_action": "Close the gap: prove that the Euler product structure of zeta forces the sequential alpha above 1 in the Nyman-Beurling Gram matrix. This is the R=T moment — show the arithmetic interaction structure (Gram matrix from Euler product) necessarily creates convergent sequential contributions. Grok's perspective on questions 1-5 in the briefing doc may illuminate the path.",
+  "context_notes": "The proof strategy is now exclusion via Nyman-Beurling: RH iff d_n -> 0. We've shown d_n is decreasing and that off-line zeros would inflate it. The gap is proving the interaction-mediated acceleration (alpha 0.6 -> 1.8) is unconditional. The Galois classification (inert primes 123x stronger than split) connects the Beurling convergence to the operator coupling from session 7 and to the Langlands program. The Wiles FLT proof template (local-global, R=T, exclusion by contradiction) is the guiding framework."
 }
