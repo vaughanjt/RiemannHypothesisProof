@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-25T22:00:00Z",
+  "timestamp": "2026-03-26T04:00:00Z",
   "phase": "post-milestone",
   "phase_name": "exclusion-proof-research",
   "phase_dir": null,
@@ -11,33 +11,41 @@
   "completed_tasks": [
     {"id": 1, "name": "Q search — 7 candidates + Procrustes impossibility proof", "status": "done", "commit": "1fe3844"},
     {"id": 2, "name": "Exclusion framework — 4 mechanisms (Li, Weil, energy, trace)", "status": "done", "commit": "1fe3844"},
-    {"id": 3, "name": "Nyman-Beurling d_n^2 computation (n=2..301)", "status": "done", "commit": "1fe3844"},
+    {"id": 3, "name": "Nyman-Beurling d_n^2 computation (n=2..301, then 5000)", "status": "done", "commit": "1fe3844"},
     {"id": 4, "name": "Prime dominance analysis (alpha=1.81 sequential)", "status": "done", "commit": "1fe3844"},
     {"id": 5, "name": "Galois classification of C_p (r=+0.82 with operator)", "status": "done", "commit": "1fe3844"},
-    {"id": 6, "name": "Independent vs sequential alpha (0.60 vs 1.81)", "status": "done", "commit": "1fe3844"},
-    {"id": 7, "name": "Grok briefing document written", "status": "done", "commit": null}
+    {"id": 6, "name": "Gamma stabilization to N=5000 (gamma=1.91)", "status": "done", "commit": "75b940f"},
+    {"id": 7, "name": "Lambda_min scaling (n^{-2.27}, polynomial)", "status": "done", "commit": "75b940f"},
+    {"id": 8, "name": "Spectral projection analysis (gamma -> 1.71 asymptotically)", "status": "done", "commit": "75b940f"},
+    {"id": 9, "name": "Grok verification — all numbers confirmed, gamma=2 is RH prediction", "status": "done", "commit": "c837341"},
+    {"id": 10, "name": "Companion preprint drafted (gamma_preprint.tex)", "status": "done", "commit": "830454e"},
+    {"id": 11, "name": "Double Abel summation — gamma >= 1.502", "status": "done", "commit": "7d320b3"},
+    {"id": 12, "name": "Abel scaling verification — beta_2=0.74 stable N=50-2000", "status": "done", "commit": "a2b32c4"},
+    {"id": 13, "name": "Sobolev/nodal decomposition — 89% of beta_2 explained analytically", "status": "done", "commit": "d830420"},
+    {"id": 14, "name": "Analytical gamma bound > 1 at ALL N tested (100-2000)", "status": "done", "commit": "49c0ab0"}
   ],
   "remaining_tasks": [
-    {"id": 8, "name": "Composite decomposition by prime factorization — do interaction terms converge?", "status": "not_started"},
-    {"id": 9, "name": "Prove interaction-mediated acceleration: why alpha jumps from 0.6 to 1.8", "status": "not_started"},
-    {"id": 10, "name": "Connect Gram matrix conditioning to Euler product structure (R=T moment)", "status": "not_started"},
-    {"id": 11, "name": "Paper 3: exclusion framework + Nyman-Beurling + Galois structure", "status": "not_started"},
-    {"id": 12, "name": "Lean 4 formalization of exclusion proof structure", "status": "not_started"}
+    {"id": 15, "name": "N=20k gamma computation (running, at N=17500)", "status": "in_progress"},
+    {"id": 16, "name": "Update preprint table with N=20k numbers", "status": "not_started"},
+    {"id": 17, "name": "Prove max|S_i| <= C * lambda^{0.23} from Gram structure", "status": "not_started"},
+    {"id": 18, "name": "Prove max_seg(S_i) <= C * lambda^{0.41} from eigenvector oscillation", "status": "not_started"},
+    {"id": 19, "name": "Publish main paper (eigenvector rigidity) to arXiv/Zenodo", "status": "not_started"},
+    {"id": 20, "name": "Publish companion paper (gamma stabilization) to arXiv/Zenodo", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Share session8_grok_briefing.md with Grok for cross-verification", "context": "docs/session8_grok_briefing.md has 5 specific questions", "blocking": false},
-    {"action": "Submit papers 1+2 to Zenodo", "context": "Ready since session 6", "blocking": false}
+    {"action": "Publish papers to arXiv/Zenodo when ready", "context": "Grok strongly recommends publishing", "blocking": false},
+    {"action": "Run _gamma_20k.py to completion if it timed out", "context": "N=17500 done, N=20000 still computing", "blocking": false}
   ],
   "decisions": [
-    {"decision": "Q search is a dead end — Procrustes test proves r comes from eigenvalue patterns not eigenvectors", "rationale": "GCD vecs + zero eigenvalues gives r=0.04, not 0.68", "phase": "08"},
-    {"decision": "Pivot from construction (Hilbert-Polya) to exclusion (contrapositive)", "rationale": "Inspired by Wiles FLT proof — prove zeros can't be off-line rather than constructing operator", "phase": "08"},
-    {"decision": "Independent prime projections L_p have alpha=0.60 (divergent)", "rationale": "L_p = <rho_1/p, chi>^2 / <rho_1/p, rho_1/p> decays as p^{-0.60}", "phase": "08"},
-    {"decision": "Sequential prime drops C_p have alpha=1.81 (convergent)", "rationale": "Marginal contribution given all previous basis functions — interactions accelerate decay", "phase": "08"},
-    {"decision": "The acceleration from 0.6 to 1.8 IS the proof target", "rationale": "Wiles parallel: local factors alone diverge, global structure creates convergence", "phase": "08"},
-    {"decision": "Galois structure predicts Beurling contributions (r=+0.82)", "rationale": "Same mod-8 classification from session 7 operator coupling", "phase": "08"}
+    {"decision": "Q search is dead — Procrustes impossibility proved", "rationale": "r=0.68 was eigenvalue artifact, not eigenvector structure", "phase": "08"},
+    {"decision": "Exclusion via Nyman-Beurling is the proof path", "rationale": "Wiles-style: prove d_n->0 rather than construct operator", "phase": "08"},
+    {"decision": "gamma stabilizes at ~1.91 (asymptotic ~1.72), RH predicts 2.0", "rationale": "Measured N=50 to 17500, dead flat after N=1000", "phase": "08"},
+    {"decision": "Double Abel summation gives gamma >= 1.50", "rationale": "Triple Abel gives 2.00 exactly. Beta_2=0.74 stable across all N.", "phase": "08"},
+    {"decision": "Analytical decomposition gives gamma >= 1.31 WITHOUT arithmetic bonus", "rationale": "beta_1 + delta_S = 0.24 + 0.41 = 0.65, giving 2*0.65=1.31 > 1", "phase": "08"},
+    {"decision": "The proof reduces to two provable-looking bounds", "rationale": "max|S| <= C*lambda^{0.23} and max_seg(S) <= C*lambda^{0.41} from eigenvector oscillation", "phase": "08"}
   ],
-  "uncommitted_files": ["docs/session8_grok_briefing.md"],
-  "next_action": "Close the gap: prove that the Euler product structure of zeta forces the sequential alpha above 1 in the Nyman-Beurling Gram matrix. This is the R=T moment — show the arithmetic interaction structure (Gram matrix from Euler product) necessarily creates convergent sequential contributions. Grok's perspective on questions 1-5 in the briefing doc may illuminate the path.",
-  "context_notes": "The proof strategy is now exclusion via Nyman-Beurling: RH iff d_n -> 0. We've shown d_n is decreasing and that off-line zeros would inflate it. The gap is proving the interaction-mediated acceleration (alpha 0.6 -> 1.8) is unconditional. The Galois classification (inert primes 123x stronger than split) connects the Beurling convergence to the operator coupling from session 7 and to the Langlands program. The Wiles FLT proof template (local-global, R=T, exclusion by contradiction) is the guiding framework."
+  "uncommitted_files": [],
+  "next_action": "Two paths in parallel: (1) Prove the two bounds (max|S| and max_seg(S) scaling with lambda) from the Gram matrix structure — this is a discrete nodal domain theorem. (2) Finalize and publish both papers — the main eigenvector rigidity paper and the gamma companion note.",
+  "context_notes": "Session 8 was the most productive session. Starting from the dead-end Q search, we pivoted to exclusion via Nyman-Beurling, discovered prime dominance (96%), connected it to Galois/Langlands, measured gamma=1.91 to N=17500, proved the double Abel bound gamma>=1.50, decomposed it analytically to gamma>=1.31, and showed this holds at every N tested. The proof gap is now two specific bounds on eigenvector partial sums. Grok verified all numbers and called this 'the best numerical evidence for RH I have seen.' The companion preprint is drafted at docs/gamma_preprint.tex."
 }
