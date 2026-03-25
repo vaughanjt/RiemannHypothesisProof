@@ -10,6 +10,7 @@
 \newtheorem{proposition}{Proposition}
 \newtheorem{definition}{Definition}
 \newtheorem{remark}{Remark}
+\newtheorem{problem}{Open Problem}
 
 \title{Spectral Evidence for the Nyman--Beurling Criterion:\\
 Stabilization of the Overlap Exponent $\gamma$}
@@ -169,6 +170,76 @@ More precisely, $d_N^2 = 1 - \sum |\langle b, v_i \rangle|^2 / \lambda_i$, and a
 \end{proof}
 
 The intuition behind the conjecture: $b$ is a smooth, slowly varying function ($b_k \sim \log k / k$), while the small-eigenvalue eigenvectors $v_i$ of $G_N$ are arithmetically oscillatory (their entries exhibit high-frequency modular patterns). The inner product of a smooth function with an oscillatory function is small---this is the number-theoretic analog of the classical uncertainty principle, where a function and its Fourier transform cannot both be sharply localized.
+
+\section{The Open Problem}
+
+The overlap exponent $\gamma$ admits a precise reformulation in terms of the singular value decomposition (SVD) of the modular arithmetic matrix underlying $G_N$. This reformulation reduces the Riemann Hypothesis to a concrete regularity estimate on bilinear exponential sums.
+
+\subsection{The SVD identity}
+
+Define the weight vector $\sqrt{w} \in \mathbb{R}^M$ by $\sqrt{w}_n = 1/\sqrt{n(n+1)}$, and let $W \in \mathbb{R}^{N \times M}$ be the modular arithmetic matrix $W_{kn} = (n \bmod k)/k$. Then $G_N = W \operatorname{diag}(w) W^\top$, which factors as
+\[
+G_N = (W \operatorname{diag}(\sqrt{w}))(W \operatorname{diag}(\sqrt{w}))^\top.
+\]
+Let $W \operatorname{diag}(\sqrt{w}) = U \Sigma \tilde{V}^\top$ be the SVD, where $U = [u_1, \ldots, u_N]$ collects the left singular vectors, $\tilde{V} = [\tilde{v}_1, \ldots, \tilde{v}_N]$ the right singular vectors, and $\sigma_i = \sqrt{\lambda_i}$ are the singular values. Since $G_N = U \Sigma^2 U^\top$, the columns $u_i$ are eigenvectors of $G_N$ with eigenvalues $\lambda_i = \sigma_i^2$.
+
+The target vector satisfies $b = W \operatorname{diag}(w) \mathbf{1} = W \operatorname{diag}(\sqrt{w}) \cdot \sqrt{w}$, so in the SVD basis:
+\begin{equation}\label{eq:svd-identity}
+|\langle b, u_i \rangle|^2 = \lambda_i \cdot |\langle \sqrt{w},\, \tilde{v}_i \rangle|^2.
+\end{equation}
+
+This identity is exact for each $i$. Comparing with the power-law ansatz $|\langle b, u_i \rangle|^2 \sim C \lambda_i^{\gamma}$, we see that $\gamma > 1$ if and only if the right singular projections $|\langle \sqrt{w}, \tilde{v}_i \rangle|^2$ vanish as $\lambda_i \to 0$.
+
+\begin{proposition}\label{prop:gamma-equiv}
+The overlap exponent satisfies $\gamma > 1$ if and only if $|\langle \sqrt{w}, \tilde{v}_i \rangle|^2 \to 0$ as $\lambda_i \to 0$. This is a regularity statement: the weight function $\sqrt{w}$ is smooth in the SVD basis of the modular arithmetic matrix $W$.
+\end{proposition}
+
+\subsection{Bilinear exponential sum decomposition}
+
+Expanding the right singular projection in the SVD basis yields
+\begin{equation}\label{eq:bilinear}
+\langle \sqrt{w},\, \tilde{v}_i \rangle = \frac{1}{\sigma_i} \sum_{k=2}^{N+1} u_i(k) \sum_{m=1}^{M} \frac{E\!\left(\frac{m}{k}\right)}{m},
+\end{equation}
+where
+\[
+E(\alpha) = \sum_{n=1}^{M} \frac{e^{2\pi i n \alpha}}{n(n+1)}
+\]
+is a classical exponential sum. Since $|E(\alpha)| \leq \min(1,\, C/\|\alpha\|)$ by P\'olya--Vinogradov-type bounds (where $\|\alpha\|$ denotes the distance to the nearest integer), the inner sum is controlled term-by-term. Define the bilinear sum
+\[
+B_i = \sum_{k=2}^{N+1} u_i(k) \sum_{m=1}^{M} \frac{E(m/k)}{m}.
+\]
+Then $|\langle \sqrt{w}, \tilde{v}_i \rangle| = |B_i|/\sigma_i$, and identity \eqref{eq:svd-identity} becomes $|\langle b, u_i \rangle|^2 = |B_i|^2$.
+
+\subsection{Open problems}
+
+\begin{problem}[Bilinear bound]\label{prob:bilinear}
+Prove that there exist constants $C > 0$ and $\varepsilon > 0$ such that for all $N$, for every eigenvector $u_i$ of $G_N$ with eigenvalue $\lambda_i$, the bilinear sum satisfies
+\[
+|B_i| \leq C \cdot \lambda_i^{1/2 + \varepsilon}.
+\]
+\end{problem}
+
+This is equivalent to Conjecture~\ref{conj:ntup} ($|\langle b, u_i\rangle|^2 \leq C \lambda_i^{1+2\varepsilon}$) and implies the Riemann Hypothesis via the B\'aez-Duarte criterion.
+
+\begin{problem}[Spectral tail decay]\label{prob:tail}
+Prove that the spectral tail
+\[
+T(\lambda, N) = \sum_{\substack{i:\, \lambda_i < \lambda}} |\langle \sqrt{w},\, \tilde{v}_i \rangle|^2 \;\longrightarrow\; 0 \quad \text{as } \lambda \to 0,
+\]
+uniformly in $N$.
+\end{problem}
+
+Open Problem~\ref{prob:tail} is strictly weaker than Open Problem~\ref{prob:bilinear}: it requires only that the \emph{aggregate} projection onto the small-eigenvalue subspace vanishes, not a per-eigenvector bound. Nevertheless, it suffices for RH, since $T(\lambda,N) \to 0$ implies $\sum |\langle b, u_i\rangle|^2/\lambda_i$ converges and $d_N \to 0$.
+
+\begin{remark}[Insufficiency of standard tools]\label{rem:tools}
+Na\"ive application of standard analytic number theory tools does not resolve either problem:
+\begin{itemize}
+\item \textbf{Cauchy--Schwarz} on $B_i$ gives $|B_i| \leq \|u_i\| \cdot (\sum_k |\sum_m E(m/k)/m|^2)^{1/2}$, but the right-hand side is $O((\log M)^{1/2})$ independent of $\lambda_i$---no eigenvalue decay.
+\item \textbf{Large sieve inequality} bounds $\sum_k |A(k)|^2$ in terms of the coefficients, but treats the points $m/k$ generically without exploiting the modular arithmetic structure of $G_N$.
+\item \textbf{Abel summation} controls the inner sum $\sum_m E(m/k)/m$ for each fixed $k$, but provides no cancellation across the outer sum over $k$.
+\end{itemize}
+The fundamental obstruction is that none of these tools use the eigenvector constraint $G_N u_i = \lambda_i u_i$. The entries of $u_i$ are determined by the modular arithmetic encoded in $G_N$; it is this arithmetic structure---specifically, the interaction between the divisibility patterns in $W$ and the smoothness of $\sqrt{w}$---that must force the cancellation in $B_i$.
+\end{remark}
 
 \section{Discussion}
 
