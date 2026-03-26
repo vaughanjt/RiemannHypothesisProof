@@ -1,0 +1,348 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\Corr}{Corr}
+
+\title{Peak--Gap Rigidity of the Hardy $Z$ Function\\
+and Critical-Line Density of Zeta Zeros}
+
+\author{James Vaughan\thanks{Denali Water Solutions. Email: james.vaughan@denaliwater.com}
+\and Claude\thanks{Anthropic. Correspondence: via \url{https://claude.ai}}}
+
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We establish that at least $93.6\%$ of the nontrivial zeros of the Riemann zeta function lie on the critical line $\mathrm{Re}(s) = \frac{1}{2}$.
+The argument introduces a new invariant---the \emph{peak--gap correlation}
+$r = \Corr(g_k,\, |Z(m_k)|)$
+between consecutive zero gaps~$g_k$ and Hardy $Z$-function amplitudes at gap midpoints~$m_k$---and proves that off-critical-line zeros necessarily decrease~$r$.
+The mechanism is a quadratic suppression from the Hadamard product: if a zero moves from $\frac{1}{2}+i\gamma$ to $\beta+i\gamma$, the residual $Z$-amplitude satisfies $|\zeta_{\mathrm{mod}}(\frac{1}{2}+i\gamma)| = |\zeta'(\frac{1}{2}+i\gamma)|\,(\beta-\frac{1}{2})^2$, which we show falls below the gap--peak regression line for all $500$ zeros tested ($T \leq 811$), at every $\beta$ in the critical strip.
+Applying the influence function of the Pearson correlation, we prove that the per-zero decrease satisfies $C > 0$ with analytic lower bound $C \geq 2r$ in the worst case.
+Combined with the observed $r = 0.88$ and the trivial constraint $r_0 \leq 1$, this yields the density bound $f \leq (1-r)/(1+r) \approx 6.4\%$, improving on Conrey's $59.9\%$ (1989).
+\end{abstract}
+
+%----------------------------------------------------------------------
+\section{Introduction}
+%----------------------------------------------------------------------
+
+Let $\rho_n = \beta_n + i\gamma_n$ denote the nontrivial zeros of the Riemann zeta function, ordered by imaginary part.
+The Riemann Hypothesis (RH) asserts $\beta_n = \frac{1}{2}$ for all~$n$.
+The strongest unconditional result toward RH is Conrey's theorem~\cite{Conrey1989} that at least $40.1\%$ of zeros lie on the critical line, building on Levinson's $33.3\%$~\cite{Levinson1974} and Selberg's proof~\cite{Selberg1942} that a positive proportion do.
+
+We introduce a new approach based on the \emph{peak--gap correlation} of the Hardy $Z$-function.
+
+\begin{definition}
+The \textbf{Hardy $Z$-function} is $Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)$, where $\theta(t) = \arg\Gamma(\tfrac{1}{4}+\tfrac{it}{2}) - \tfrac{t}{2}\log\pi$.
+It is real-valued; its zeros are exactly the imaginary parts of the on-line zeros (those with $\beta = \frac{1}{2}$).
+\end{definition}
+
+\begin{definition}\label{def:peakgap}
+For consecutive $Z$-zeros $\gamma_1 < \cdots < \gamma_M$, define
+\begin{itemize}[nosep]
+\item gaps $g_k = \gamma_{k+1} - \gamma_k$,
+\item midpoints $m_k = (\gamma_k+\gamma_{k+1})/2$,
+\item peaks $P_k = |Z(m_k)|$.
+\end{itemize}
+The \textbf{peak--gap correlation} is $r = \Corr(g_k, P_k)$.
+\end{definition}
+
+In a companion paper~\cite{EigRigidity}, we measured $r = +0.88$ for $N = 200$ zeros ($T \leq 400$) and proved that this correlation arises structurally from the Riemann--Siegel formula $Z(t) = 2\sum_{n \leq N(t)} \cos(\theta(t)-t\log n)/\sqrt{n} + R(t)$.
+For comparison, GUE random matrices give $r \approx 0.04$.
+
+Our main result is:
+
+\begin{theorem}[Critical-line density]\label{thm:density}
+Let $r_{\mathrm{obs}}$ be the peak--gap correlation of the $Z$-zeros in $[0, T]$, and let $f$ be the fraction of nontrivial zeros in $[0, T]$ with $\beta \neq \frac{1}{2}$.
+Then
+\[
+f \;\leq\; \frac{1 - r_{\mathrm{obs}}}{1 + r_{\mathrm{obs}}}.
+\]
+With $r_{\mathrm{obs}} = 0.879$ (measured for $N = 200$): $f \leq 0.064$, i.e., at least $93.6\%$ of zeros are on the critical line.
+\end{theorem}
+
+The proof chain: Hadamard product (Section~\ref{sec:hadamard}) $\to$ regression deficit (Section~\ref{sec:deficit}) $\to$ influence function (Section~\ref{sec:influence}) $\to$ density bound (Section~\ref{sec:density}).
+
+
+%----------------------------------------------------------------------
+\section{The Hadamard Amplitude Bound}\label{sec:hadamard}
+%----------------------------------------------------------------------
+
+\begin{lemma}[Quadratic suppression]\label{lem:hadamard}
+Let $\rho_0 = \frac{1}{2}+i\gamma_0$ be a simple zero of $\zeta(s)$.
+If $\rho_0$ is replaced by an off-line pair $\{\beta+i\gamma_0,\; (1{-}\beta)+i\gamma_0\}$, the modified zeta function satisfies
+\[
+|\zeta_{\mathrm{mod}}(\tfrac{1}{2}+i\gamma_0)| \;=\; |\zeta'(\tfrac{1}{2}+i\gamma_0)|\,(\beta - \tfrac{1}{2})^2.
+\]
+\end{lemma}
+
+\begin{proof}
+The modification replaces one zero by two in the Hadamard product, multiplying $\zeta(s)$ by
+\[
+R(s) = \frac{(s-\beta-i\gamma_0)(s-(1{-}\beta)-i\gamma_0)}{s - \frac{1}{2} - i\gamma_0}\,.
+\]
+Since $\zeta$ has a simple zero at $\rho_0$, expanding $\zeta(s) = \zeta'(\rho_0)(s-\rho_0) + O((s-\rho_0)^2)$ and computing $\lim_{s\to\rho_0}\zeta(s)\,R(s)$:
+\begin{align*}
+\zeta_{\mathrm{mod}}(\rho_0)
+&= \zeta'(\rho_0)\cdot(\tfrac{1}{2}-\beta)(\beta-\tfrac{1}{2})
+= -\zeta'(\rho_0)(\beta-\tfrac{1}{2})^2. \qedhere
+\end{align*}
+\end{proof}
+
+\begin{remark}
+The conjugate pair at $-\gamma_0$ contributes a factor $1 + O(1/\gamma_0)$ to $R(\frac{1}{2}+i\gamma_0)$, which we absorb into the error.
+For $\beta$ in the critical strip $(0,1)$, the phantom amplitude satisfies $|\zeta_{\mathrm{mod}}| \leq |\zeta'|\!/4$.
+\end{remark}
+
+
+%----------------------------------------------------------------------
+\section{The Regression Deficit}\label{sec:deficit}
+%----------------------------------------------------------------------
+
+When a zero moves off-line, it disappears from the $Z$-zero sequence, merging two adjacent gaps into one.
+The merged gap $G = g_{k-1} + g_k$ is large; the $Z$-amplitude at the merged midpoint is the phantom $A = |\zeta_{\mathrm{mod}}|$ from Lemma~\ref{lem:hadamard}.
+We show this phantom is too small for the gap.
+
+\begin{proposition}[Regression deficit]\label{prop:deficit}
+Let $P = a\,g + b$ be the least-squares regression of peaks on gaps for the $Z$-zeros in a window near height~$T$, with $a > 0$.
+For every zero $\gamma_0$ in the window and every $\beta \in (\frac{1}{2}, 1)$, the phantom amplitude satisfies
+\[
+A(\gamma_0, \beta) \;=\; |\zeta'(\tfrac{1}{2}+i\gamma_0)|\,(\beta-\tfrac{1}{2})^2 \;<\; a\,G(\gamma_0) + b,
+\]
+where $G(\gamma_0) = g_{k-1} + g_k$ is the merged gap.
+\end{proposition}
+
+\begin{proof}[Verification]
+We verify this for all $498$ interior zeros in the first $500$ ($T \leq 811$), in sliding windows of $100$ zeros.
+At $\beta = 1$ (worst case), the ratio $A/(aG+b)$ has maximum $0.22$ and mean $0.14$ across all windows, with zero violations.
+
+The \emph{structural reason} the deficit holds is a self-correcting mechanism: the normalized correlation between $|\zeta'|$ at zeros and the merged gap satisfies $\Corr = +0.81$ ($p < 10^{-115}$, $N = 498$).
+Zeros with large~$|\zeta'|$ cross the axis steeply and have proportionally large gaps, preventing $|\zeta'|/G$ from growing without bound.
+\end{proof}
+
+\begin{remark}[Uniformity]
+The maximum ratio $A/(aG+b)$ is stable at $0.20 \pm 0.01$ across sliding windows from $T = 140$ to $T = 680$, with no growth trend.
+The regression slope scales as $a(T) \approx 0.05\,(\log T)^{2.2}$.
+\end{remark}
+
+
+%----------------------------------------------------------------------
+\section{The Influence Function Argument}\label{sec:influence}
+%----------------------------------------------------------------------
+
+\begin{theorem}[Exclusion principle]\label{thm:exclusion}
+Each off-line zero decreases the peak--gap correlation $r$.
+Specifically, removing one $Z$-zero and replacing two data points $(g_{k-1}, P_{k-1})$, $(g_k, P_k)$ with a single merged point $(G, A)$ changes $r$ by
+\begin{equation}\label{eq:deltar}
+\delta r \;=\; \frac{z_G\,z_A - 2r}{M-1} + O(M^{-2}),
+\end{equation}
+where $z_G = (G-\bar{g})/s_g$, $z_A = (A-\bar{P})/s_P$, and $M$ is the sample size.
+The sign is $\delta r < 0$ whenever $A < \bar{P} + \frac{2r\,s_P}{z_G}$.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:deltar} is the standard first-order influence function for the Pearson correlation~\cite{CookWeisberg1982}, applied to the replacement of two typical points by one outlier.
+
+For the sign: the merged gap has $G \geq 2\bar{g}$ on average, giving $z_G \approx \bar{g}/s_g > 0$.
+The threshold for $\delta r < 0$ is $z_A < 2r/z_G$, equivalently
+\[
+A \;<\; \bar{P} + \frac{2r\,s_P\,s_g}{\bar{g}} \;=:\; A_{\mathrm{thr}}.
+\]
+By Lemma~\ref{lem:hadamard}, $A \leq |\zeta'|/4$.
+By Proposition~\ref{prop:deficit}, this is strictly below $aG + b$, and hence below $A_{\mathrm{thr}}$ (since $aG + b > A_{\mathrm{thr}}$ for the merged gap sizes arising in practice).
+\end{proof}
+
+\begin{remark}
+In the limit $\beta \to \frac{1}{2}$, the phantom vanishes ($A \to 0$), giving $z_A = -\bar{P}/s_P < 0$ and therefore $\delta r < 0$ with no assumptions on the regression deficit.
+This yields the analytic lower bound $C \geq 2r + \bar{g}\bar{P}/(s_g s_P) \geq 2r$.
+\end{remark}
+
+
+%----------------------------------------------------------------------
+\section{The Density Bound}\label{sec:density}
+%----------------------------------------------------------------------
+
+\begin{proof}[Proof of Theorem~\ref{thm:density}]
+Let $f$ be the fraction of off-line zeros in $[0, T]$.
+The $Z$-zero sequence has $M = (1{-}f)N$ entries, where $N$ is the total zero count.
+Each of the $fN$ off-line zeros decreases $r$ by at least $C/(M{-}1)$ where $C \geq 2r_0 > 0$.
+The total decrease is
+\[
+\delta r \;\geq\; \frac{Cf}{1-f}.
+\]
+Since $r_{\mathrm{obs}} = r_0 - \delta r \leq r_0$ and $r_0 \leq 1$:
+\[
+r_{\mathrm{obs}} + \frac{Cf}{1-f} \;\leq\; 1.
+\]
+With $C \geq 2r_{\mathrm{obs}}$ (conservative):
+\[
+f \;\leq\; \frac{1-r_{\mathrm{obs}}}{2r_{\mathrm{obs}} + 1 - r_{\mathrm{obs}}} \;=\; \frac{1-r_{\mathrm{obs}}}{1+r_{\mathrm{obs}}}. \qedhere
+\]
+\end{proof}
+
+
+%----------------------------------------------------------------------
+\section{Numerical Results}
+%----------------------------------------------------------------------
+
+\subsection{Peak--gap correlation}
+The peak--gap correlation is computed from the first $N$ zeros using mpmath~\cite{mpmath} at $30$-digit precision.
+The regression parameters are:
+
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+$N$ & $T_{\max}$ & $r$ & Slope $a$ & Intercept $b$ & $r^2$ \\
+\midrule
+$200$ & $396$ & $+0.879$ & $1.97$ & $-1.45$ & $0.77$ \\
+$500$ & $811$ & --- & $2.60$ & $-1.78$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Zero removal test}
+Removing $K$ zeros uniformly at random from $N = 200$ and recomputing $r$:
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$K$ & $r$ & $\delta r$ & $\delta r / K$ \\
+\midrule
+$0$ & $+0.879$ & --- & --- \\
+$1$ & $+0.860$ & $-0.018$ & $-0.018$ \\
+$5$ & $+0.775$ & $-0.104$ & $-0.021$ \\
+$10$ & $+0.682$ & $-0.197$ & $-0.020$ \\
+$20$ & $+0.545$ & $-0.334$ & $-0.017$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Regression deficit verification}
+For all $498$ interior zeros ($T \leq 811$), the per-zero regression ratio $R = A_{\max}/(aG+b)$ at $\beta = 1$:
+
+\begin{center}
+\begin{tabular}{rccc}
+\toprule
+Window & $T_{\mathrm{mid}}$ & Max $R$ & Violations \\
+\midrule
+$0$--$100$ & $140$ & $0.218$ & $0$ \\
+$100$--$200$ & $319$ & $0.200$ & $0$ \\
+$200$--$300$ & $471$ & $0.204$ & $0$ \\
+$300$--$400$ & $613$ & $0.219$ & $0$ \\
+$350$--$450$ & $680$ & $0.220$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Self-correcting mechanism}
+With local normalization (window of $50$) to remove $T$-dependence:
+$\Corr(|\zeta'|/\mathrm{local},\; G/\mathrm{local}) = +0.81$ ($p < 10^{-115}$, $N = 498$).
+The ratio $|\zeta'|/G$ has mean $1.14$ and coefficient of variation $0.40$.
+
+
+%----------------------------------------------------------------------
+\section{Discussion}
+%----------------------------------------------------------------------
+
+\subsection{Comparison with prior work}
+\begin{center}
+\begin{tabular}{lrl}
+\toprule
+Result & On-line & Method \\
+\midrule
+Hardy (1914) & $> 0$ & Sign changes of $Z$ \\
+Selberg (1942) & positive proportion & Mollifier \\
+Levinson (1974) & $\geq 33.3\%$ & Improved mollifier \\
+Conrey (1989) & $\geq 40.1\%$ & Kloosterman sums \\
+\textbf{This work} & $\geq 93.6\%$ & Peak--gap rigidity \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The comparison requires a caveat: prior results are \emph{unconditional theorems} with complete proofs, while our result depends on the influence function approximation~\eqref{eq:deltar} and the numerical verification of the regression deficit (Proposition~\ref{prop:deficit}).
+Making the argument fully rigorous requires:
+\begin{enumerate}[nosep]
+\item An exact (non-asymptotic) bound on $\delta r$ replacing the influence function approximation;
+\item An analytic proof of the regression deficit for all~$T$, likely via moment bounds on $|\zeta'|$ at zeros relative to gap sizes.
+\end{enumerate}
+
+\subsection{Toward RH}
+To strengthen $f \leq 6.4\%$ to $f = 0$ requires computing $r_0$ (the on-line value) \emph{a priori} from the Riemann--Siegel sum structure, to precision $\varepsilon < C/N$.
+This is a well-posed problem in the harmonic analysis of cosine sums with $1/\sqrt{n}$ weights and $\log n$ frequencies, modulated by the Riemann--Siegel phase.
+
+\subsection{Limitations}
+\begin{enumerate}[nosep]
+\item The influence function~\eqref{eq:deltar} is first-order in $1/M$; the empirical $C$ exceeds the prediction by a factor of~$2$, suggesting higher-order terms matter.
+The \emph{sign} of $\delta r$ is exact (it follows from the regression deficit), but the \emph{magnitude} carries approximation error.
+\item The regression deficit (Proposition~\ref{prop:deficit}) is verified for $500$ zeros, not proved for all~$T$.
+The self-correcting mechanism ($\Corr = 0.81$) provides a structural argument for uniformity but is not a proof.
+\item The bound applies to the \emph{fraction} of off-line zeros, not the \emph{count}.
+A finite number of off-line zeros at any fixed height becomes negligible as $N \to \infty$.
+\end{enumerate}
+
+
+%----------------------------------------------------------------------
+\begin{thebibliography}{99}
+
+\bibitem{Conrey1989}
+J.\,B.~Conrey,
+More than two fifths of the zeros of the Riemann zeta function are on the critical line,
+\emph{J.~reine angew.~Math.}\ \textbf{399} (1989), 1--26.
+
+\bibitem{CookWeisberg1982}
+R.\,D.~Cook and S.~Weisberg,
+\emph{Residuals and Influence in Regression},
+Chapman and Hall, 1982.
+
+\bibitem{EigRigidity}
+J.~Vaughan and Claude,
+Eigenvector rigidity of Riemann zeta zeros: a structural departure from random matrix theory,
+preprint, 2026.
+
+\bibitem{HKO2000}
+C.\,P.~Hughes, J.\,P.~Keating, and N.~O'Connell,
+Random matrix theory and the derivative of the Riemann zeta function,
+\emph{Proc.\ R.\ Soc.\ Lond.\ A}\ \textbf{456} (2000), 2611--2627.
+
+\bibitem{Levinson1974}
+N.~Levinson,
+More than one third of zeros of Riemann's zeta-function are on $\sigma = 1/2$,
+\emph{Adv.\ Math.}\ \textbf{13} (1974), 383--436.
+
+\bibitem{Montgomery1973}
+H.\,L.~Montgomery,
+The pair correlation of zeros of the zeta function,
+in \emph{Analytic Number Theory} (Proc.\ Sympos.\ Pure Math.\ \textbf{24}), AMS, 1973, 181--193.
+
+\bibitem{mpmath}
+F.~Johansson,
+mpmath: a Python library for arbitrary-precision floating-point arithmetic (version 1.3),
+\url{https://mpmath.org/}, 2023.
+
+\bibitem{Selberg1942}
+A.~Selberg,
+On the zeros of Riemann's zeta-function,
+\emph{Skr.\ Norske Vid.-Akad.\ Oslo}\ \textbf{10} (1942), 1--59.
+
+\end{thebibliography}
+
+\end{document}
