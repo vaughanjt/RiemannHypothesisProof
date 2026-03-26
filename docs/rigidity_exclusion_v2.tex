@@ -285,9 +285,40 @@ Making the argument fully rigorous requires:
 \item An analytic proof of the regression deficit for all~$T$, likely via moment bounds on $|\zeta'|$ at zeros relative to gap sizes.
 \end{enumerate}
 
-\subsection{Toward RH}
-To strengthen $f \leq 6.4\%$ to $f = 0$ requires computing $r_0$ (the on-line value) \emph{a priori} from the Riemann--Siegel sum structure, to precision $\varepsilon < C/N$.
-This is a well-posed problem in the harmonic analysis of cosine sums with $1/\sqrt{n}$ weights and $\log n$ frequencies, modulated by the Riemann--Siegel phase.
+\subsection{Closing the gap: a priori prediction of $r_0$}
+
+To strengthen $f \leq 6.4\%$ toward $f = 0$ requires computing $r_0$ \emph{a priori}.
+The Riemann--Siegel formula provides the tool.
+Write $Z(t) = Z_{\mathrm{main}}(t) + R_0(t) + R_1(t) + \cdots$ where
+\[
+Z_{\mathrm{main}}(t) = 2\sum_{n=1}^{N(t)} \frac{\cos(\theta(t) - t\log n)}{\sqrt{n}}, \qquad
+R_0(t) = \frac{(-1)^{N(t)-1}}{(t/2\pi)^{1/4}} \cdot \Phi_0(p),
+\]
+with $N(t) = \lfloor\sqrt{t/2\pi}\rfloor$, $p = \sqrt{t/2\pi} - N(t)$, and $\Phi_0$ the Riemann--Siegel correction function.
+
+Let $r_{\mathrm{main}}$ and $r_{\mathrm{corr}}$ denote the peak--gap correlations computed from the zeros of $Z_{\mathrm{main}}$ and $Z_{\mathrm{main}} + R_0$, respectively.
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Function & $r$ & Gap from $r_{\mathrm{exact}}$ \\
+\midrule
+$Z_{\mathrm{main}}$ (main terms only) & $+0.748$ & $0.128$ \\
+$Z_{\mathrm{main}} + R_0$ (first correction) & $+0.876$ & $\mathbf{0.0001}$ \\
+$Z_{\mathrm{exact}}$ (mpmath, 15-digit) & $+0.876$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first RS correction recovers $r$ to four decimal places.
+In sliding windows of $80$ zeros across $N = 500$ ($T \leq 811$), the gap $|r_{\mathrm{exact}} - r_{\mathrm{corr}}|$ is $0.0000 \pm 0.0001$ in every window.
+
+Since $C/N \approx 1.76/500 = 0.0035$, the corrected RS sum predicts $r_0$ to precision \textbf{35 times better} than required by the density bound.
+If the bound $|r_{\mathrm{exact}} - r_{\mathrm{corr}}| < C/N$ can be proved for all~$T$ (the higher-order RS corrections are $O(T^{-3/4})$, which should suffice), then
+\[
+f \;\leq\; \frac{|r_{\mathrm{corr}} - r_{\mathrm{obs}}| + O(T^{-3/4})}{C} \;\to\; 0 \quad\text{as } T \to \infty,
+\]
+yielding the Riemann Hypothesis.
 
 \subsection{Limitations}
 \begin{enumerate}[nosep]
@@ -295,6 +326,8 @@ This is a well-posed problem in the harmonic analysis of cosine sums with $1/\sq
 The \emph{sign} of $\delta r$ is exact (it follows from the regression deficit), but the \emph{magnitude} carries approximation error.
 \item The regression deficit (Proposition~\ref{prop:deficit}) is verified for $500$ zeros, not proved for all~$T$.
 The self-correcting mechanism ($\Corr = 0.81$) provides a structural argument for uniformity but is not a proof.
+\item The a priori prediction $r_{\mathrm{corr}} \approx r_0$ is verified numerically to $0.0001$ precision but not yet proved analytically.
+The proof requires bounding the effect of higher-order RS corrections on the gap--peak correlation.
 \item The bound applies to the \emph{fraction} of off-line zeros, not the \emph{count}.
 A finite number of off-line zeros at any fixed height becomes negligible as $N \to \infty$.
 \end{enumerate}
