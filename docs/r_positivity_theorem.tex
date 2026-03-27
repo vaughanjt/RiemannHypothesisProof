@@ -7,13 +7,15 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem{remark}[theorem]{Remark}
 
 \DeclareMathOperator{\Corr}{Corr}
 \DeclareMathOperator{\Cov}{Cov}
 \DeclareMathOperator{\Var}{Var}
 
-\title{Positivity of the Peak--Gap Correlation\\for Riemann--Siegel Type Sums}
+\title{Peak--Gap Correlation for Riemann--Siegel Sums:\\
+A Gaussian-Process Reduction to a Single Moment Inequality}
 \author{James Vaughan and Claude}
 \date{March 2026}
 
@@ -21,18 +23,32 @@
 \maketitle
 
 \begin{abstract}
-We prove that the peak--gap correlation $r = \Corr(g_k, |Z(m_k)|)$ is strictly positive
-for the Gaussian process limit of Riemann--Siegel type trigonometric sums.
-The proof uses three ingredients:
-(1) the central limit theorem for the RS sum,
-(2) an explicit computation showing the Gaussian bridge variance at the midpoint
-is monotonically increasing in the gap length, and
-(3) Chebyshev's covariance inequality.
-The result implies that the peak--gap density bound of the companion paper
-holds for all sufficiently large~$T$.
+We study the peak--gap correlation $r = \Corr(g_k, |Z(m_k)|)$ for Riemann--Siegel
+type trigonometric sums.
+We establish three results.
+First, the \emph{spectral variance identity}
+$1 + C(g) - 2C(g/2)^2 = 2\Var_p[\cos(\omega g/2)]$ (Theorem~\ref{thm:variance}),
+which bounds the Gaussian bridge variance by~$1$.
+Second, the \emph{exact MVT identity} (Theorem~\ref{thm:mvt}): the midpoint peak
+of every zero-free excursion satisfies $P = \frac{g}{2}\,|\bar{f}'|$, where
+$\bar{f}'$ is the average derivative over the first half-interval. This is
+an identity, not an approximation.
+Third, combining these, we decompose
+\[
+\Cov(g, P) \;=\; \tfrac{1}{2}\bigl[\,
+\underbrace{\mathbb{E}[|\bar{f}'|]\,\Var(g)}_{\text{always } > \,0}
+\;+\; \underbrace{\Cov(|\bar{f}'|,\; g(g - \mu_g))}_{\text{negative, smaller}}\,\bigr].
+\]
+The first term is manifestly positive; the second is negative
+(larger gaps have smaller excursion derivatives) but smaller in magnitude.
+We verify this margin computationally ($1.1\times$--$1.3\times$ at $N = 10$ to $500$)
+and conjecture $r > 0$ for all~$N$.
 \end{abstract}
 
+
+%----------------------------------------------------------------------
 \section{Setup}
+%----------------------------------------------------------------------
 
 Consider the trigonometric sum
 \[
@@ -50,261 +66,284 @@ and $P_k = |f_N(m_k)|$ the midpoint peaks.
 The peak--gap correlation is $r = \Corr(g_k, P_k)$.
 
 
+%----------------------------------------------------------------------
 \section{The Gaussian Process Limit}
+%----------------------------------------------------------------------
 
 \begin{proposition}[CLT]\label{prop:clt}
 For random i.i.d.\ uniform phases $\phi_n$, the process $f_N(t)/\sigma_N$
-converges in distribution (in the space of continuous functions) to a
+converges in distribution to a
 stationary Gaussian process $\mathcal{G}(t)$ with unit variance and
 correlation function
-\[
-C(\tau) = \lim_{N\to\infty} \frac{1}{\sigma_N^2} \sum_{n=1}^{N}
-\frac{\cos(\omega_n \tau)}{n},
-\qquad \sigma_N^2 = \sum_{n=1}^{N} \frac{1}{n} \approx \log N.
-\]
+$C(\tau) = \sum p_n \cos(\omega_n \tau)$,
+where $p_n = (1/n) / \sum (1/k)$.
 \end{proposition}
 
-The spectral moments of $\mathcal{G}$ are:
-\[
-m_k = \lim_{N\to\infty} \frac{1}{\sigma_N^2} \sum_{n=1}^{N}
-\frac{\omega_n^k}{n}
-= \lim_{N\to\infty} \frac{\sum_{n=1}^N (\log(n+1))^k / n}{\sum_{n=1}^N 1/n}.
-\]
-By partial summation: $m_0 = 1$, $m_2 = (\log N)^2/3 + O(\log N)$,
-$m_4 = (\log N)^4/5 + O((\log N)^3)$.
-
-\begin{remark}[Bounded irregularity]
-The irregularity index
-\[
-\alpha^2 = \frac{m_0 m_4}{m_2^2} - 1 \;\to\; \frac{9}{5} - 1 = \frac{4}{5} = 0.8
-\]
-is bounded and independent of $N$.
-This ensures the spectral shape converges to a well-defined limit.
-\end{remark}
+The spectral moments $m_k = \sum p_n \omega_n^k$ satisfy
+$m_0 = 1$, $m_2 \sim (\log N)^2/3$, $m_4 \sim (\log N)^4/5$,
+so the irregularity index $\alpha^2 = m_0 m_4/m_2^2 - 1 \to 4/5$
+is bounded, ensuring convergence to a well-defined spectral shape.
 
 
-\section{The Gaussian Bridge Variance}
+%----------------------------------------------------------------------
+\section{The Spectral Variance Identity}
+%----------------------------------------------------------------------
 
 \begin{lemma}[Bridge midpoint variance]\label{lem:bridge}
-For the stationary Gaussian process $\mathcal{G}$ with correlation $C(\tau)$,
-conditioned on $\mathcal{G}(0) = \mathcal{G}(g) = 0$, the variance at the midpoint is
-\[
-V(g) := \Var\bigl(\mathcal{G}(g/2) \mid \mathcal{G}(0)=0,\, \mathcal{G}(g)=0\bigr)
-= 1 - \frac{2\,C(g/2)^2}{1 + C(g)}.
-\]
+Conditioned on $\mathcal{G}(0) = \mathcal{G}(g) = 0$, the midpoint variance is
+$V(g) = 1 - 2\,C(g/2)^2/(1 + C(g))$.
 \end{lemma}
 
-\begin{proof}
-Standard Gaussian conditioning. With $\Sigma = \begin{pmatrix} 1 & C(g) \\ C(g) & 1 \end{pmatrix}$:
-\[
-V(g) = C(0) - \mathbf{c}^T \Sigma^{-1} \mathbf{c}, \quad
-\mathbf{c} = \begin{pmatrix} C(g/2) \\ C(g/2) \end{pmatrix}.
-\]
-Computing $\Sigma^{-1}$ and the quadratic form gives the result.
-\end{proof}
-
-\begin{lemma}[Spectral variance identity]\label{lem:variance}
-The numerator of $V(g)$ satisfies
-\[
-1 + C(g) - 2C(g/2)^2 \;=\; 2\,\Var_{\!p}\!\bigl[\cos(\omega_n g/2)\bigr],
-\]
-where $\Var_p$ denotes the variance over the spectral weights $p_n = (1/n) / \sum (1/k)$.
-In particular, $V(g) \geq 0$ for all~$g$, with equality only at $g = 0$.
-\end{lemma}
-
-\begin{proof}
-Write $C(\tau) = \sum p_n \cos(\omega_n \tau)$.
-Using $\cos^2 x = (1+\cos 2x)/2$:
-\begin{align*}
-1 + C(g) - 2C(g/2)^2
-&= \sum p_n (1 + \cos \omega_n g) - 2\Bigl(\sum p_n \cos(\omega_n g/2)\Bigr)^2 \\
-&= 2\sum p_n \cos^2(\omega_n g/2) - 2\Bigl(\sum p_n \cos(\omega_n g/2)\Bigr)^2 \\
-&= 2\,\Var_{\!p}\!\bigl[\cos(\omega_n g/2)\bigr].
-\end{align*}
-The variance is nonneg., and equals zero iff all $\cos(\omega_n g/2)$ are equal.
-At $g=0$, all cosines equal~$1$; for $g>0$, the incommensurability of
-$\omega_n = \log(n{+}1)$ (which follows from the fundamental theorem of arithmetic)
-ensures the cosines take distinct values, so $\Var > 0$.
-\end{proof}
-
-\begin{proposition}[Monotonicity]\label{prop:mono}
-$V(g)$ is strictly increasing on $(0, \infty)$ for the RS spectral density,
-with $V(0) = 0$ and $V(g) \to 1$ as $g \to \infty$.
-\end{proposition}
-
-\begin{proof}
-At $g = 0$: $C(0) = 1$, so $V(0) = 1 - 2/2 = 0$.
-
-As $g \to \infty$: $C(g) \to 0$ and $C(g/2) \to 0$ (by the Riemann--Lebesgue lemma
-applied to the spectral density), so $V(g) \to 1$.
-
-\emph{Refined statement.}
-Numerical computation at $N = 50, 200, 1000$ reveals that $V(g)$ is \emph{not} globally monotone:
-it is strictly increasing for $g/\bar{g} \in (0, 1.1)$ and oscillates weakly for $g/\bar{g} > 1.2$,
-with $V(g)$ remaining between $0.90$ and $1.00$ in the oscillatory regime.
-The oscillations come from the oscillations of $C(\tau)$, which arise from the discrete
-spectral density.
-However, $V(g)$ is increasing throughout the \emph{core} of the gap distribution
-(containing $\gtrsim 85\%$ of probability mass), which suffices for the covariance argument
-in Theorem~\ref{thm:main}.
-\end{proof}
-
-
-\section{The Main Theorem}
-
-\begin{theorem}[Positivity of $r$]\label{thm:main}
-For the Gaussian process $\mathcal{G}$ with RS spectral density,
-the peak--gap correlation $r = \Corr(g_k, P_k)$ is strictly positive.
+\begin{theorem}[Spectral variance identity]\label{thm:variance}
+$1 + C(g) - 2C(g/2)^2 = 2\,\Var_{\!p}[\cos(\omega_n g/2)]$.
+In particular, $0 \leq V(g) \leq 1$ for all~$g$, with $V = 0$ only at $g = 0$.
 \end{theorem}
 
 \begin{proof}
-\textbf{Step 1: Conditional expectation.}
-By the law of total covariance:
-\[
-\Cov(g, P) = \Cov(g,\, h(g)),
-\]
-where $h(g) = \mathbb{E}[P \mid g_k = g] = \sqrt{2V(g)/\pi}$
-(Lemma~\ref{lem:bridge}) and the residual $P - h(g)$ is independent of $g$
-by the Gaussian property.
-
-\textbf{Step 2: Shape of $h$.}
-By Lemma~\ref{lem:variance}, $V(0) = 0$ and $V(g) > 0$ for $g > 0$
-(incommensurability).
-By the Riemann--Lebesgue lemma, $V(g) \to 1$ as $g \to \infty$.
-Therefore $h(g) = \sqrt{2V(g)/\pi}$ satisfies:
-\[
-h(0) = 0, \quad h(g) > 0 \text{ for } g > 0, \quad
-h(g) \to \sqrt{2/\pi} \approx 0.798 \text{ as } g \to \infty.
-\]
-
-\textbf{Step 3: Every sub-interval contributes positively.}
-Let $\bar{h} = \mathbb{E}[h(g)]$.
-Since $h$ rises from~$0$ to $\sim 0.80$ with most of the transition occurring
-for $g \leq \bar{g}$, while the gap density is concentrated near~$\bar{g}$:
-\begin{itemize}
-\item For $g < \bar{g}$: $\; g - \bar{g} < 0$ and $h(g) < \bar{h}$, so
-$(g-\bar{g})(h(g)-\bar{h}) > 0$.
-\item For $g > \bar{g}$: $\; g - \bar{g} > 0$ and $h(g) \geq \bar{h}$
-(since $h$ has reached its plateau), so
-$(g-\bar{g})(h(g)-\bar{h}) \geq 0$.
-\end{itemize}
-Numerically verified: for the RS spectral density with $N = 200$ terms
-and the actual GP gap distribution ($50$ realizations, $115{,}000$ gaps),
-\emph{every} sub-interval $[0, g^*]$ and $[g^*, \infty)$ contributes positively
-to $\Cov(g, h(g))$, for all $g^*$ from $0.1\bar{g}$ to $4\bar{g}$.
-
-\textbf{Step 4: Conclusion.}
-$\Cov(g, P) = \Cov(g, h(g)) > 0$, so $r = \Cov(g,P)/(\sigma_g \sigma_P) > 0$.
-\qedhere
+Expand using $\cos^2 x = (1+\cos 2x)/2$:
+\begin{align*}
+1 + C(g) - 2C(g/2)^2
+&= 2\sum p_n \cos^2(\omega_n g/2) - 2\bigl(\sum p_n \cos(\omega_n g/2)\bigr)^2
+= 2\,\Var_{\!p}[\cos(\omega_n g/2)].
+\end{align*}
+The variance is nonnegative, and vanishes iff all $\cos(\omega_n g/2)$ are equal.
+At $g=0$, all equal~$1$; for $g>0$, incommensurability of $\log(n{+}1)$
+ensures distinct values. For $V \leq 1$: $C(g/2)^2 \geq 0$ and $1 + C(g) > 0$.
 \end{proof}
 
-\begin{corollary}[Lower bound on $r$]\label{cor:lower}
-For the Gaussian process with the RS spectral density at $N$ terms,
-$r \geq r_\infty > 0$ where $r_\infty \approx 0.13$ (determined by the spectral shape).
-\end{corollary}
-
-This follows because $\alpha^2 \to 4/5$ is bounded, so the normalized gap distribution
-and the function $h(g/\bar{g})$ converge, giving a limiting $r$.
-Numerically: $r = +0.13 \pm 0.02$ for $N = 50$ to $500$.
-
-
-\section{From the Gaussian Process to Fixed Phases}\label{sec:ergodic}
-
-Theorem~\ref{thm:main} establishes $r > 0$ for the Gaussian process (equivalently,
-for the \emph{ensemble average} over random phases).
-We now extend to a \emph{single realization} with fixed phases $\phi_n$---in particular,
-to the Riemann--Siegel phases $\phi_n = \theta(t) - t\log n$.
-
-\subsection{The ergodic argument}
-
-The trigonometric sum $f_N(t) = \sum a_n \cos(\omega_n t + \phi_n)$ with
-incommensurate frequencies $\omega_n = \log(n{+}1)$ is \emph{almost periodic}
-in the sense of Bohr.
-By the multi-dimensional equidistribution theorem (Weyl, 1916):
-for any continuous functional~$F$,
-\begin{equation}\label{eq:ergodic}
-\lim_{L\to\infty} \frac{1}{L}\int_0^L F\bigl(f_N(t), f_N'(t), \ldots\bigr)\,dt
-\;=\; \mathbb{E}_{\phi}\bigl[F(f_N, f_N', \ldots)\bigr],
-\end{equation}
-where $\mathbb{E}_\phi$ denotes the average over i.i.d.\ uniform phases---i.e., the
-Gaussian process expectation.
-
-The peak--gap correlation $r$ is a continuous functional of the zero and peak statistics,
-which are themselves continuous functionals of $f_N$ in the appropriate topology.
-Therefore:
-\[
-r_{\text{time}}(L) \;\xrightarrow{L \to \infty}\; r_{\text{GP}} > 0.
-\]
-
-\begin{proposition}[Universality of $r > 0$]\label{prop:ergodic}
-For any fixed phases $\phi_n \in [0, 2\pi)$ and any $N \geq N_0$,
-the peak--gap correlation computed from the zeros of $f_N$ in the interval $[0, L]$
-satisfies $r > 0$ for all sufficiently large~$L$.
+\begin{proposition}[Structure of $V$]\label{prop:structure}
+Let $g^* = 2\tau_0$ where $\tau_0$ is the first positive zero of~$C(\tau)$.
+Then $V(g^*) = 1$, and $V$ is strictly increasing on $[0, g^*]$
+(verified computationally for $N = 10$ to $1000$; $g^*/\bar{g} \approx 1.18$).
+For $g > g^*$, $V$ oscillates in $[V_{\min}, 1]$ with $V_{\min} \to 1$ as $N \to \infty$.
 \end{proposition}
 
+
+%----------------------------------------------------------------------
+\section{The Exact MVT Identity}\label{sec:mvt}
+%----------------------------------------------------------------------
+
+\begin{theorem}[Exact MVT identity]\label{thm:mvt}
+For every zero-free excursion $[\gamma_k, \gamma_{k+1}]$ of the process~$f$,
+the midpoint peak satisfies
+\begin{equation}\label{eq:mvt}
+P_k \;=\; \frac{g_k}{2}\,|\bar{f}'_k|,
+\end{equation}
+where $\bar{f}'_k = \frac{2}{g_k}\int_{\gamma_k}^{m_k} f'(t)\,dt$ is the
+average derivative over the first half of the excursion.
+\end{theorem}
+
 \begin{proof}
-By~\eqref{eq:ergodic}, the empirical $r$ from $[0, L]$ converges to $r_{\text{GP}}$.
-By Theorem~\ref{thm:main}, $r_{\text{GP}} > 0$.
-Since $r$ is a continuous function of the empirical moments, for $L$ sufficiently large,
-$|r_{\text{time}} - r_{\text{GP}}| < r_{\text{GP}}/2$, so $r_{\text{time}} > r_{\text{GP}}/2 > 0$.
+By the fundamental theorem of calculus, $f(m_k) = f(\gamma_k) + \int_{\gamma_k}^{m_k} f'(t)\,dt$.
+Since $f(\gamma_k) = 0$, we have $f(m_k) = \int_{\gamma_k}^{m_k} f'(t)\,dt = (g_k/2)\,\bar{f}'_k$.
+Taking absolute values gives~\eqref{eq:mvt}.
 \end{proof}
 
 \begin{remark}
-This argument uses Weyl equidistribution, which requires the frequencies $\omega_n$ to be
-linearly independent over~$\mathbb{Q}$.
-For $\omega_n = \log(n{+}1)$: the set $\{\log 2, \log 3, \log 5, \ldots\}$ (prime values)
-is linearly independent over $\mathbb{Q}$ by the fundamental theorem of arithmetic,
-and $\log(n{+}1)$ for composite $n{+}1$ is a rational linear combination of these.
-The equidistribution still holds because the ``effective'' frequencies
-$\{\log p : p \text{ prime}\}$ are independent, and the composite frequencies
-do not destroy the equidistribution (they are in the span).
-\end{remark}
-
-\begin{remark}[Numerical verification]
-We verify~\eqref{eq:ergodic} computationally.
-For $N = 100$ and fixed deterministic phases, the time-averaged $r$ from $[0, L]$
-converges to $+0.17$ as $L \to 20{,}000$, agreeing with the ensemble average of $+0.16$
-to within $1.5$ standard errors (from $100$ random-phase realizations).
-Out of $1{,}000$ random phase configurations tested at $L = 3{,}000$,
-\textbf{zero} give $r \leq 0$.
+This is an identity, not an approximation.
+It holds for \emph{any} differentiable function vanishing at $\gamma_k$,
+regardless of the Gaussian structure. Verified numerically:
+$\Corr(P,\, (g/2)|\bar{f}'|) = 0.99997$ at $N = 50$.
 \end{remark}
 
 
-\subsection{Extension to the Riemann zeta function}
+%----------------------------------------------------------------------
+\section{Decomposition of the Covariance}\label{sec:decomp}
+%----------------------------------------------------------------------
 
-The Hardy $Z$-function satisfies
-$Z(t) = 2f_{N(T)}(t) + R(t)$
-where $f_N$ is the RS sum with phases $\phi_n = \theta(t) - t\log n$
-and $R(t) = O(T^{-1/4})$ is the RS remainder.
+\begin{theorem}[Covariance decomposition]\label{thm:decomp}
+The peak--gap covariance satisfies
+\begin{equation}\label{eq:decomp}
+\Cov(g,\, P) \;=\; \frac{1}{2}\Bigl[\,
+\mathbb{E}\bigl[|\bar{f}'|\bigr]\,\Var(g)
+\;+\; \Cov\bigl(|\bar{f}'|,\; g(g - \mu_g)\bigr)
+\,\Bigr].
+\end{equation}
+\end{theorem}
 
-\begin{enumerate}
-\item \textbf{Ergodic argument applies}: By Proposition~\ref{prop:ergodic},
-the RS sum component has $r > 0$ for any sufficiently long window, regardless of the
-specific phases $\theta(t) - t\log n$.
+\begin{proof}
+By Theorem~\ref{thm:mvt}, $P = (g/2)|\bar{f}'|$, so
+$\Cov(g, P) = \tfrac{1}{2}\Cov(g, g|\bar{f}'|)$.
+Expanding:
+\begin{align*}
+\Cov(g, g|\bar{f}'|)
+&= \mathbb{E}[g^2|\bar{f}'|] - \mu_g\,\mathbb{E}[g|\bar{f}'|] \\
+&= \mathbb{E}[|\bar{f}'|]\,\mathbb{E}[g^2]
++ \Cov(|\bar{f}'|, g^2)
+- \mu_g\bigl(\mathbb{E}[|\bar{f}'|]\,\mu_g + \Cov(|\bar{f}'|, g)\bigr) \\
+&= \mathbb{E}[|\bar{f}'|]\,\Var(g) + \Cov(|\bar{f}'|, g^2 - \mu_g g) \\
+&= \mathbb{E}[|\bar{f}'|]\,\Var(g) + \Cov(|\bar{f}'|, g(g-\mu_g)).
+\qedhere
+\end{align*}
+\end{proof}
 
-\item \textbf{The RS remainder is negligible}: Since $R = O(T^{-1/4})$ while
-$f_N = O(\sqrt{\log T})$, the remainder does not change the sign of $r$ for $T$
-sufficiently large.
-
-\item \textbf{The functional equation phase enhances $r$}:
-The specific phases from the functional equation create a positive correlation
-$\Corr(|\zeta'|, G) \approx 0.81$ between the derivative at zeros and the gap
-(the ``self-correcting mechanism''), boosting $r$ from the GP baseline of~$0.13$
-to $0.63$--$0.93$ for the actual zeta function.
-
-\item \textbf{Combining}: $r(T) > 0$ for all $T > T_0$ for some explicit $T_0$.
-\end{enumerate}
-
-\begin{remark}[Density bound implication]
-Combined with the mean-influence argument of our companion paper,
-$r > 0$ implies that the fraction of off-line zeros satisfies
-$f < 1$ for all $T$---i.e., a positive proportion of zeros lie on the critical line.
-The specific bound $f \leq (1-r)/(1+r)$ with $r \geq 0.13$ gives $f \leq 0.77$,
-or at least $23\%$ on the critical line.
-With the actual zeta $r \geq 0.63$ (at $T = 2.68 \times 10^{11}$):
-at least $77\%$ on the critical line.
+\begin{remark}[Sign analysis]
+The first term $\mathbb{E}[|\bar{f}'|]\,\Var(g)$ is \textbf{manifestly positive}:
+$|\bar{f}'| > 0$ a.s.\ (the excursion has nonzero slope) and $\Var(g) > 0$
+(gaps are non-degenerate). The second term
+$\Cov(|\bar{f}'|, g(g-\mu_g))$ is \textbf{negative}: larger gaps correspond
+to excursions that ``hug zero'' with smaller average derivatives
+($\Corr(|\bar{f}'|, g) \approx -0.32$ at $N = 50$).
+Conjecture~\ref{conj:main} reduces to showing the first term dominates.
 \end{remark}
 
+
+\subsection{Computational verification}
+
+\begin{center}
+\begin{tabular}{rcccccc}
+\hline
+$N$ & $\mathbb{E}[|\bar{f}'|]\Var(g)$ & $\Cov(|\bar{f}'|, g(g{-}\mu))$ & Sum & $\Cov(g,P)$ & Margin \\
+\hline
+50 & $+0.873$ & $-0.766$ & $+0.108$ & $+0.054$ & $1.14\times$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The identity~\eqref{eq:decomp} is verified:
+$(1/2) \times 0.108 = 0.054 = \Cov(g, P)$.
+The margin (Term~1 / $|$Term~2$|$) is $1.14\times$---positive but thin.
+
+\medskip
+Direct simulation of $r(g, P)$ across all~$N$:
+
+\begin{center}
+\begin{tabular}{rcccc}
+\hline
+$N$ & \#gaps & $r(g, P)$ & 95\% bootstrap CI \\
+\hline
+5   & 241k & $+0.096$ & --- \\
+10  & 302k & $+0.105$ & --- \\
+50  & 471k & $+0.128$ & $[0.126,\; 0.131]$ \\
+200 & 632k & $+0.137$ & $[0.135,\; 0.139]$ \\
+500 & 594k & $+0.140$ & --- \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{conjecture}[Positivity of $r$]\label{conj:main}
+For the Gaussian process $\mathcal{G}$ with RS spectral density,
+$r > 0$ for all $N \geq 2$. Equivalently:
+\begin{equation}\label{eq:conj}
+\mathbb{E}\bigl[|\bar{f}'|\bigr]\,\Var(g)
+\;>\; \bigl|\Cov\bigl(|\bar{f}'|,\; g(g - \mu_g)\bigr)\bigr|.
+\end{equation}
+\end{conjecture}
+
+
+%----------------------------------------------------------------------
+\section{The Excursion Conditional Mean}\label{sec:excursion}
+%----------------------------------------------------------------------
+
+The identity $P = (g/2)|\bar{f}'|$ explains the shape of
+$h(g) := \mathbb{E}[P \mid g]$:
+
+\begin{center}
+\begin{tabular}{rcccl}
+\hline
+$g/\bar{g}$ & $h(g)$ & $\mathbb{E}[|\bar{f}'| \mid g]$ & $(g/2)\mathbb{E}[|\bar{f}'|\mid g]$ & regime \\
+\hline
+$0.10$ & $0.014$ & $\approx 0.20$ & $0.014$ & rising ($g$ small, $|\bar{f}'|$ small) \\
+$0.82$ & $0.975$ & $\approx 1.70$ & $0.98$ & rising ($g$ moderate, $|\bar{f}'|$ at peak) \\
+$\mathbf{1.10}$ & $\mathbf{1.188}$ & $\approx 1.54$ & $1.19$ & \textbf{peak} \\
+$1.99$ & $0.531$ & $\approx 0.38$ & $0.53$ & falling ($|\bar{f}'|$ collapses) \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{remark}[Why $h$ peaks then falls]
+The product $P = (g/2)|\bar{f}'|$ has two competing factors.
+For moderate gaps ($g \lesssim 1.1\,\bar{g}$), both $g$ and $|\bar{f}'|$ are
+increasing, so $h$ rises steeply.
+For large gaps ($g \gtrsim 1.2\,\bar{g}$), the excursion must avoid zero
+for an anomalously long time; the process ``hugs zero,'' collapsing $|\bar{f}'|$
+faster than $g$ grows, so $h$ decreases.
+This non-monotonicity is invisible to the bridge approximation
+$h_{\mathrm{bridge}} = \sqrt{2V/\pi}$, which predicts $h \to 0.80$;
+the true $h$ falls to $\sim 0.53$ at $g = 2\bar{g}$.
+\end{remark}
+
+
+%----------------------------------------------------------------------
+\section{The Bridge Variance as Mechanism}\label{sec:bridge}
+%----------------------------------------------------------------------
+
+The spectral variance identity explains \emph{why} $|\bar{f}'|$ is large for
+moderate gaps: as $g$ increases from~$0$ to $g^*$, the spectral phases
+$\omega_n g/2$ spread out, increasing $V(g)$ from~$0$ to~$1$
+(Proposition~\ref{prop:structure}). A larger bridge variance permits
+larger excursions, which in turn have steeper average derivatives.
+
+The bridge-based decomposition of $h_{\mathrm{bridge}} = \sqrt{2V/\pi}$ gives
+margins of $4$--$49\times$ (Table~\ref{tab:bridge}); however, these
+apply to $\Cov(g, h_{\mathrm{bridge}})$, which overestimates $\Cov(g, P)$
+by a factor of $\sim 2.7$ because it ignores the excursion conditioning.
+
+\begin{table}[h]
+\centering
+\caption{Bridge decomposition margins (supporting mechanism).}
+\label{tab:bridge}
+\begin{tabular}{rcccc}
+\hline
+$N$ & $\Cov_{\mathrm{core}}$ & $|\Cov_\delta|$ & Margin \\
+\hline
+10  & 0.2315 & 0.0525 & $4.4\times$ \\
+50  & 0.1658 & 0.0080 & $20.8\times$ \\
+200 & 0.1270 & 0.0031 & $41.4\times$ \\
+500 & 0.1086 & 0.0022 & $49.0\times$ \\
+\hline
+\end{tabular}
+\end{table}
+
+
+%----------------------------------------------------------------------
+\section{From the Gaussian Process to Fixed Phases}\label{sec:ergodic}
+%----------------------------------------------------------------------
+
+Assuming Conjecture~\ref{conj:main}:
+by the Weyl equidistribution theorem for incommensurate frequencies
+$\omega_n = \log(n{+}1)$, the time-averaged $r$ for any fixed phases
+converges to $r_{\mathrm{GP}} > 0$, extending the result to the
+Riemann--Siegel phases $\phi_n = \theta(t) - t\log n$.
+
+The functional equation creates a ``self-correcting mechanism''
+($\Corr(|\zeta'|, G) \approx 0.81$) that boosts $r$ from the GP baseline
+of $\sim 0.14$ to $0.63$--$0.93$ for the actual zeta function.
+
+\begin{remark}[Density bound]
+Conditional on Conjecture~\ref{conj:main} and the companion paper's
+mean-influence argument:
+$f \leq (1-r)/(1+r)$.
+With $r \geq 0.096$ (GP): $\geq 17.5\%$ on line.
+With $r \geq 0.63$ (zeta at $T = 2.68 \times 10^{11}$):
+$\geq 77\%$ on line.
+\end{remark}
+
+
+%----------------------------------------------------------------------
+\section{Discussion}
+%----------------------------------------------------------------------
+
+\textbf{What is proved.}
+The spectral variance identity (Theorem~\ref{thm:variance}), the bound
+$V \leq 1$, the exact MVT identity $P = (g/2)|\bar{f}'|$
+(Theorem~\ref{thm:mvt}), and the covariance decomposition~\eqref{eq:decomp}
+(Theorem~\ref{thm:decomp}) are all rigorous.
+
+\textbf{What remains.}
+The conjecture $r > 0$ reduces to the single inequality~\eqref{eq:conj}:
+the mean-times-variance term $\mathbb{E}[|\bar{f}'|]\Var(g)$ must exceed
+$|\Cov(|\bar{f}'|, g(g-\mu))|$ in the Gaussian excursion process.
+The margin is $1.1\times$--$1.3\times$ computationally. Proving it analytically
+requires bounding the joint moments of $(g, |\bar{f}'|)$ in the excursion.
+
+\textbf{Possible paths.}
+(a)~Express the joint density of $(g, \bar{f}')$ via Rice's formula and
+show~\eqref{eq:conj} as a manifestly positive integral.
+(b)~Bound $\Corr(|\bar{f}'|, g)$ from the conditional covariance
+structure (Section~\ref{sec:excursion}; the bridge gives
+$\Cov(f(m), f'(0) \mid \text{bridge}) > 0$ for $g < 1.5\bar{g}$).
+(c)~Interval-arithmetic verification at each~$N$.
 
 \begin{thebibliography}{99}
 \bibitem{CramerLeadbetter}
@@ -312,15 +351,16 @@ H.~Cram\'er and M.\,R.~Leadbetter,
 \emph{Stationary and Related Stochastic Processes},
 Wiley, 1967.
 
-\bibitem{LH1957}
-M.\,S.~Longuet-Higgins,
-The statistical analysis of a random, moving surface,
-\emph{Phil.\ Trans.\ R.\ Soc.\ A}\ \textbf{249} (1957), 321--387.
-
 \bibitem{AzaisWschebor}
 J.-M.~Aza\"is and M.~Wschebor,
 \emph{Level Sets and Extrema of Random Processes and Fields},
 Wiley, 2009.
+
+\bibitem{EigRigidity}
+J.~Vaughan and Claude,
+Peak--gap rigidity of the Hardy $Z$ function:
+numerical density bounds from $T=400$ to $T=2.68 \times 10^{11}$,
+2026.
 \end{thebibliography}
 
 \end{document}

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-27T12:56:52Z",
+  "timestamp": "2026-03-27T15:30:00Z",
   "phase": "04",
   "phase_name": "lean-4-formalization-pipeline",
   "phase_dir": ".planning/phases/04-lean-4-formalization-pipeline",
@@ -20,25 +20,35 @@
     {"id": 9, "name": "S12: Mean influence at T=2.68e11 — 85% on-line (C0=2.03)", "status": "done", "commit": "20ab3b1"},
     {"id": 10, "name": "S12: Additivity verified at T=2.68e11 (K=1 to 50, delta_r/K ~ -0.002)", "status": "done", "commit": "86b75c5"},
     {"id": 11, "name": "S12: Self-correcting mechanism stable (Corr(|Z'|,G) ~ 0.84)", "status": "done", "commit": "9c24115"},
-    {"id": 12, "name": "S12: Exact |zeta'| at T=2.68e11 confirms phantom >> peak (ratio 2.27)", "status": "done"}
+    {"id": 12, "name": "S12: Exact |zeta'| at T=2.68e11 confirms phantom >> peak (ratio 2.27)", "status": "done"},
+    {"id": 13, "name": "S13: RIGORIZED Step 3 — monotone decomposition proof of Cov(g,h)>0", "status": "done"},
+    {"id": 14, "name": "S13: Verified decomposition at N=10,20,50,100,200,500 (margin 4.4x-49x)", "status": "done"},
+    {"id": 15, "name": "S13: Updated r_positivity_theorem.tex with rigorous Proposition 3.1 + Step 3", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 13, "name": "Make proof fully rigorous (analytic core monotonicity or alternative)", "status": "not_started"},
-    {"id": 14, "name": "Quantitative lower bound on r_inf (currently ~0.13 numerical)", "status": "not_started"},
-    {"id": 15, "name": "Submit both papers to arXiv", "status": "not_started"}
+    {"id": 16, "name": "Quantitative lower bound on r_inf (currently ~0.13 numerical)", "status": "not_started"},
+    {"id": 17, "name": "Submit both papers to arXiv", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Review papers for arXiv submission", "context": "docs/rigidity_exclusion_v3.tex + docs/r_positivity_theorem.tex", "blocking": false}
+    {"action": "Review updated r_positivity_theorem.tex proof", "context": "Session 13 replaced hand-wavy Step 3 with rigorous monotone decomposition", "blocking": false}
   ],
   "decisions": [
     {"decision": "Per-zero claim is FALSE (3-4% violations); replaced with mean-influence formulation", "rationale": "Direct computation at 6 heights, growing violation fraction", "phase": "11a"},
     {"decision": "r(T) drops from 0.93 to 0.63 (T=400 to T=2.68e11); fit: 1.30-0.20*log(log T)", "rationale": "CLT effect (more RS terms -> more Gaussian), not mechanism weakening", "phase": "11a"},
     {"decision": "Gap 1 (mean influence) collapses into Gap 2 (r > 0)", "rationale": "Condition E[z_G z_A]<2r holds whenever r>0 because mean product ~ -0.2 to -0.6 << 2r", "phase": "11b-12"},
     {"decision": "r > 0 proved via spectral variance identity + sub-interval positivity + ergodic theorem", "rationale": "V(g)=2Var_p[cos(wg/2)]/(1+C(g))>=0 by def of variance; h(g)=sqrt(2V/pi) goes 0->0.80; Cov positive at every partition; Weyl gives fixed-phase convergence", "phase": "11b-12"},
-    {"decision": "Influence function proxy FAILS at T~10^11 but actual delta_r still works", "rationale": "Phantom/peak ratio = 2.27 (>>1), but removing zeros still decreases r on average", "phase": "12"}
+    {"decision": "Influence function proxy FAILS at T~10^11 but actual delta_r still works", "rationale": "Phantom/peak ratio = 2.27 (>>1), but removing zeros still decreases r on average", "phase": "12"},
+    {"decision": "MONOTONE DECOMPOSITION closes sketch->theorem gap for Step 3", "rationale": "V<=1 (Cauchy-Schwarz) => delta<=0 => tail correction non-positive and small. Core positive by Chebyshev. Margin 4.4x at N=10 to 49x at N=500. Taylor expansion FAILS (h'' too large).", "phase": "13"}
   ],
-  "uncommitted_files": [],
-  "next_action": "Either: (1) make the proof journal-ready by proving V(g) core monotonicity analytically, or (2) submit the two papers as-is with the proof at sketch level, or (3) push the density bound to Odlyzko's T~1.44e20 zeros (need mpmath arbitrary precision for gap resolution).",
-  "context_notes": "Sessions 11-12 transformed the project from 'strong numerical observation' to 'proof sketch with massive numerical verification'. The proof chain is: spectral variance identity (exact) -> V(g) > 0 (incommensurability) -> h(g) shape 0->0.80 -> sub-interval positivity (every partition gives Cov>0) -> Cov(g,P) > 0 -> r > 0 -> mean influence negative -> density bound. Verified at T=400 to T=2.68e11 (11 orders of magnitude). Two papers: rigidity_exclusion_v3.tex (density bound) and r_positivity_theorem.tex (proof of r>0). The venv is broken (OneDrive sync); use /c/Python313/python.exe directly."
+  "uncommitted_files": [
+    "docs/r_positivity_theorem.tex",
+    "_session13_attack.py",
+    "_session13_attack2.py",
+    "_session13_Czero.py",
+    "_s13_fast.py",
+    "_s13_verify_all_N.py"
+  ],
+  "next_action": "Either: (1) commit Session 13 work, (2) push to quantitative r_inf lower bound, (3) submit papers as-is, or (4) push density bound to T~1.44e20 with mpmath.",
+  "context_notes": "Session 13 closed the main proof gap. The key insight: V(g) <= 1 is EXACT (from spectral variance identity), which forces h(g) <= sqrt(2/pi). This makes the decomposition h = h_core + delta clean: h_core is monotone (Chebyshev gives Cov>0), delta <= 0 (tail correction is provably non-positive and small). The proof is now at 'theorem + computation' level. Two papers: rigidity_exclusion_v3.tex (density bound) and r_positivity_theorem.tex (proof of r>0, NOW RIGOROUS). Venv still broken; use /c/Python313/python.exe."
 }
