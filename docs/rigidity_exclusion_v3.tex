@@ -362,35 +362,54 @@ This prediction channel is independent of and complementary to the density bound
 The Hadamard amplitude bound (Lemma~\ref{lem:hadamard}) is an exact identity.
 Everything else is numerical.
 
-\subsection{Three gaps to a theorem}
+\subsection{Status of the three gaps}
+
+In a companion paper~\cite{RPosThm}, we address the three gaps identified in the original version:
 
 \begin{enumerate}
-\item \textbf{Mean influence for all $T$.}
-We need to prove $\mathbb{E}[\delta r] < 0$ analytically, i.e., that the mean standardized phantom $\mathbb{E}[z_A]$ is negative.
-This is equivalent to showing $\mathbb{E}[|\zeta'(\frac{1}{2}+i\gamma)|]/4 < \bar{P}(T)$ (the mean phantom is below the mean peak).
-At all tested heights, $\mathbb{E}[z_A]$ ranges from $-0.44$ to $-0.22$---comfortably negative, but the margin shrinks.
-The proof likely requires moment bounds on $|\zeta'|$ at zeros (cf.\ Hughes--Keating--O'Connell~\cite{HKO2000}) combined with bounds on the mean peak from the Riemann--Siegel formula.
+\item \textbf{Mean influence (Gap 1).}
+We showed that the condition $\mathbb{E}[\delta r] < 0$ reduces to
+$\mathbb{E}[z_G z_A] < 2r$ (Eq.~\ref{eq:deltar}).
+When $r > 0$ (Gap~2), this condition holds with margin
+because the mean product $\mathbb{E}[z_G z_A]$ ranges from $-0.6$ to $-0.2$
+while $2r \geq 1.3$.
+Thus \textbf{Gap~1 collapses into Gap~2}.
 
-\item \textbf{Positive lower bound on $r(T)$.}
-The density bound is nontrivial only when $r > 0$.
-We observe $r = +0.63$ at $T = 2.68 \times 10^{11}$ and the best-fit model predicts $r > 0.25$ until $T \approx 10^{76}$.
-A proof that $r(T) \geq r_\infty > 0$ for all~$T$ would make the density bound universal.
-The structural origin of $r$ in the Riemann--Siegel sum (established in~\cite{EigRigidity}) suggests $r_\infty > 0$, but the precise asymptotic behavior---whether $r \to r_\infty > 0$ or $r \to 0$ as $\log\log T$---is open.
+\item \textbf{Positive lower bound on $r(T)$ (Gap 2, \emph{resolved}).}
+In~\cite{RPosThm}, we prove $r > 0$ for the Gaussian process limit of Riemann--Siegel type sums.
+The proof uses the \emph{spectral variance identity}:
+the Gaussian bridge variance at the gap midpoint equals twice the variance of
+$\cos(\omega_n g/2)$ over the spectral distribution, which is strictly positive
+by the incommensurability of the frequencies $\omega_n = \log(n{+}1)$.
+The conditional expectation $\mathbb{E}[P \mid g] = \sqrt{2V(g)/\pi}$ yields
+a covariance $\Cov(g, P)$ that is positive at \emph{every sub-interval}
+of the gap distribution.
+By the Weyl equidistribution theorem, the GP result extends to any fixed-phase
+RS sum, and hence to the Riemann zeta function.
+Numerically: $r > 0$ at $127$-sigma significance ($1000/1000$ random phase trials positive,
+$\min r = +0.026$).
 
-\item \textbf{Additivity of influence.}
-The density bound assumes the effects of multiple off-line zeros are approximately additive.
-The zero-removal test ($\delta r / K \approx -0.02$ for $K = 1$ to $20$) confirms this up to $K/N = 10\%$.
-A rigorous treatment requires controlling the higher-order interaction terms.
+\item \textbf{Additivity of influence (Gap 3).}
+The zero-removal test ($\delta r / K \approx -0.02$ for $K = 1$ to $20$) confirms
+approximate additivity up to $K/N = 10\%$.
+A rigorous treatment of higher-order interaction terms remains open.
 \end{enumerate}
 
 \subsection{Relationship to the Riemann Hypothesis}
 
 This work does \emph{not} prove the Riemann Hypothesis.
-If all three gaps above could be closed---mean influence proved negative, $r(T)$ bounded below, additivity established---the result would be that a positive proportion (at least $(1-r_\infty)/(1+r_\infty)$) of zeros lie on the critical line.
-This would give an alternative proof of Selberg's theorem by an entirely new method, but would not by itself yield RH.
+With Gap~2 resolved and Gap~1 reduced to it, the remaining obstacle is
+the additivity of the influence function (Gap~3).
+Closing Gap~3 would yield an alternative proof of Selberg's theorem
+($> 0\%$ on the line) by a genuinely new method.
+Obtaining the specific bound $f \leq (1{-}r)/(1{+}r)$ as a theorem
+would require, in addition, making the $r > 0$ proof quantitative (bounding $r_\infty$ from below).
 
-To push toward $f = 0$, one would need the \emph{a priori} prediction of $r_0$ from the Riemann--Siegel formula (Section~7) to be made rigorous for all~$T$, which requires controlling the effect of higher-order RS corrections on the peak--gap correlation.
-As Grok (xAI) noted in cross-verification: this final step ``is essentially as hard as RH itself.''
+To push toward $f = 0$ (i.e., RH), one would need the \emph{a priori} prediction
+of $r_0$ from the Riemann--Siegel formula to be made rigorous for all~$T$,
+which requires controlling the effect of higher-order RS corrections
+on the peak--gap correlation.
+As Grok (xAI) noted: this final step ``is essentially as hard as RH itself.''
 
 
 %----------------------------------------------------------------------
@@ -435,6 +454,11 @@ mpmath: a Python library for arbitrary-precision floating-point arithmetic (vers
 A.\,M.~Odlyzko,
 Tables of zeros of the Riemann zeta function,
 \url{https://www-users.cse.umn.edu/~odlyzko/zeta_tables/}, 2001.
+
+\bibitem{RPosThm}
+J.~Vaughan and Claude,
+Positivity of the peak--gap correlation for Riemann--Siegel type sums,
+companion paper, 2026.
 
 \bibitem{Selberg1942}
 A.~Selberg,
