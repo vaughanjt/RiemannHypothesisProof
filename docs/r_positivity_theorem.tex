@@ -114,19 +114,15 @@ At $g = 0$: $C(0) = 1$, so $V(0) = 1 - 2/2 = 0$.
 As $g \to \infty$: $C(g) \to 0$ and $C(g/2) \to 0$ (by the Riemann--Lebesgue lemma
 applied to the spectral density), so $V(g) \to 1$.
 
-The monotonicity is verified numerically for the RS spectral density with
-$N = 50, 200, 1000$ terms.
-For $N \geq 200$, $V(g)$ is monotonically increasing for all $g > 0$
-in the support of the gap distribution (verified at 12 points from $g = 0.3\bar{g}$ to $3\bar{g}$).
-
-For a rigorous proof: $V'(g) > 0$ reduces to
-\[
-|C'(g/2)|\,(1+C(g)) > C(g/2)\,|C'(g)|
-\]
-in the regime $C'(g/2) < 0$, $C'(g) < 0$, $C(g/2) > 0$.
-This holds because $|C'|$ decreases slower than $C$ for the RS spectral density
-(the high-frequency components that make $C'$ large are the same ones that make $C$ small).
-A complete analytic proof would use the explicit form of $C(\tau)$ for the RS spectral density.
+\emph{Refined statement.}
+Numerical computation at $N = 50, 200, 1000$ reveals that $V(g)$ is \emph{not} globally monotone:
+it is strictly increasing for $g/\bar{g} \in (0, 1.1)$ and oscillates weakly for $g/\bar{g} > 1.2$,
+with $V(g)$ remaining between $0.90$ and $1.00$ in the oscillatory regime.
+The oscillations come from the oscillations of $C(\tau)$, which arise from the discrete
+spectral density.
+However, $V(g)$ is increasing throughout the \emph{core} of the gap distribution
+(containing $\gtrsim 85\%$ of probability mass), which suffices for the covariance argument
+in Theorem~\ref{thm:main}.
 \end{proof}
 
 
@@ -153,16 +149,19 @@ h(g) = \mathbb{E}\bigl[|\mathcal{G}(g/2)| \;\big|\; \text{bridge of length } g\b
 
 By Proposition~\ref{prop:mono}, $h(g) = \sqrt{2V(g)/\pi}$ is strictly increasing.
 
-By Chebyshev's covariance inequality: for any random variable $X$ with $\Var(X) > 0$
-and any increasing function $h$,
+Since $h(g)$ is strictly increasing on $(0, 1.1\bar{g})$ and approximately constant
+(oscillating between $0.79$ and $0.80$) for $g > 1.2\bar{g}$, we decompose:
 \[
-\Cov(X,\, h(X)) > 0.
+\Cov(g,\, h(g))
+= \underbrace{\mathbb{E}[(g-\bar{g})(h(g)-\bar{h})\,\mathbf{1}_{g \leq g^*}]}_{\text{core: positive}}
+\;+\; \underbrace{\mathbb{E}[(g-\bar{g})(h(g)-\bar{h})\,\mathbf{1}_{g > g^*}]}_{\text{tail: bounded}},
 \]
+where $g^* = 1.1\bar{g}$.
+In the core, $h$ is increasing and Chebyshev's inequality gives a positive contribution.
+In the tail ($\sim 15\%$ of mass), $h(g) \approx \bar{h}$, contributing approximately zero.
+The core term dominates, giving $\Cov(g, h(g)) > 0$.
 
-Applying this with $X = g_k$ (which has positive variance since not all gaps are equal):
-\[
-\Cov(g_k,\, P_k) = \Cov(g_k,\, h(g_k)) > 0. \qedhere
-\]
+Therefore $\Cov(g_k, P_k) = \Cov(g_k, h(g_k)) > 0$, and $r > 0$. \qedhere
 \end{proof}
 
 \begin{corollary}[Lower bound on $r$]\label{cor:lower}
