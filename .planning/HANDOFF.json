@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-26T23:30:00Z",
+  "timestamp": "2026-03-27T00:30:00Z",
   "phase": "04",
   "phase_name": "lean-4-formalization-pipeline",
   "phase_dir": ".planning/phases/04-lean-4-formalization-pipeline",
@@ -11,37 +11,34 @@
   "completed_tasks": [
     {"id": 1, "name": "Session 10: elimination approach + Gap 2 numerical", "status": "done"},
     {"id": 2, "name": "Grok cross-verification received", "status": "done"},
-    {"id": 3, "name": "Session 11: deficit scaling analysis (T=300 to T=24000)", "status": "done"},
-    {"id": 4, "name": "Session 11: direct influence test (ground truth delta_r)", "status": "done"},
-    {"id": 5, "name": "Session 11: r(T) trajectory (T=400 to T=2.68e11 via Odlyzko)", "status": "done"},
-    {"id": 6, "name": "Session 11: model fits for r(T) asymptotics", "status": "done"},
-    {"id": 7, "name": "Session 11: paper revised to v3 (honest framing)", "status": "done"}
+    {"id": 3, "name": "Session 11a: deficit scaling + influence tests + r(T) trajectory", "status": "done"},
+    {"id": 4, "name": "Session 11a: paper revised to v3 (honest framing)", "status": "done"},
+    {"id": 5, "name": "Session 11b: universal r test — r > 0 not universal, RS-specific", "status": "done"},
+    {"id": 6, "name": "Session 11b: GP simulation — r = 0.13 at 45-sigma for N=10 to 500", "status": "done"},
+    {"id": 7, "name": "Session 11b: irregularity index alpha^2 -> 4/5 (bounded, N-independent)", "status": "done"},
+    {"id": 8, "name": "Session 11b: Gaussian bridge variance V(g) increasing in core", "status": "done"},
+    {"id": 9, "name": "Session 11b: proof of r > 0 via bridge + Chebyshev (proof sketch level)", "status": "done"},
+    {"id": 10, "name": "Session 11b: r_positivity_theorem.tex written", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 8, "name": "Prove mean influence E[delta_r] < 0 analytically", "status": "not_started"},
-    {"id": 9, "name": "Prove or bound r(T) from below (r_inf > 0?)", "status": "not_started"},
-    {"id": 10, "name": "Prove additivity of influence for multiple off-line zeros", "status": "not_started"},
-    {"id": 11, "name": "Compute mean influence at T ~ 10^11 (Odlyzko data)", "status": "not_started"},
-    {"id": 12, "name": "Submit v3 paper to arXiv", "status": "not_started"}
+    {"id": 11, "name": "Rigorous proof of V(g) core monotonicity from spectral density", "status": "not_started"},
+    {"id": 12, "name": "CLT quantitative error bound for RS sum -> GP approximation", "status": "not_started"},
+    {"id": 13, "name": "Extend from GP to actual zeta (specific phase enhancement)", "status": "not_started"},
+    {"id": 14, "name": "Compute mean influence at T~10^11 from Odlyzko data", "status": "not_started"},
+    {"id": 15, "name": "Submit v3 paper + r-positivity paper to arXiv", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Review v3 paper (docs/rigidity_exclusion_v3.tex)", "context": "Major revision with honest framing", "blocking": false}
+    {"action": "Review v3 paper and r-positivity theorem", "context": "docs/rigidity_exclusion_v3.tex and docs/r_positivity_theorem.tex", "blocking": false}
   ],
   "decisions": [
-    {"decision": "Per-zero claim is FALSE — 3-4% of zeros increase r when removed", "rationale": "Direct computation at 6 heights, growing violation fraction", "phase": "11"},
-    {"decision": "Mean influence is robustly negative at all heights", "rationale": "mean(delta_r) = -0.018 to -0.025 across T=300 to T=24000", "phase": "11"},
-    {"decision": "Deficit ratio grows as 0.06*log(T), extrapolated failure T~3e8", "rationale": "Shape factor c=1.55 constant, growth from shrinking gaps", "phase": "11"},
-    {"decision": "r(T) = 0.63 at T=2.68e11 (Odlyzko zeros)", "rationale": "Best fit: r = 1.30 - 0.20*log(log T), RMSE=0.011", "phase": "11"},
-    {"decision": "Paper revised to v3: numerical observation, not theorem", "rationale": "Honest about gaps per Grok feedback and our own analysis", "phase": "11"}
+    {"decision": "r > 0 is NOT universal — cos(t)+cos(2t) gives r=-1", "rationale": "Commensurate frequencies can destroy peak-gap correlation", "phase": "11b"},
+    {"decision": "RS-like sums give r ~ 0.13 > 0 regardless of phases", "rationale": "45-sigma significance, N=10 to 500, log frequencies + 1/sqrt(n) amplitudes", "phase": "11b"},
+    {"decision": "Irregularity index alpha^2 -> 4/5 = 0.8 (bounded)", "rationale": "From spectral moments m0~logN, m2~(logN)^3/3, m4~(logN)^5/5", "phase": "11b"},
+    {"decision": "Bridge variance V(g) increasing in core (g < 1.1*g_bar)", "rationale": "Verified N=50,200,1000. Oscillates in tail but core has 85%+ mass.", "phase": "11b"},
+    {"decision": "Proof: r > 0 via bridge monotonicity + Chebyshev inequality", "rationale": "E[P|g] = sqrt(2V/pi) increasing in core, Cov(g,P) > 0 by core-tail decomposition", "phase": "11b"}
   ],
-  "uncommitted_files": [
-    "_deficit_scaling.py",
-    "_influence_direct.py",
-    "_r_asymptotic.py",
-    "_r_trajectory_fit.py",
-    "docs/rigidity_exclusion_v3.tex"
-  ],
-  "next_action": "Close gap 1 (prove E[delta_r] < 0) via moment bounds on |zeta'| at zeros, or compute mean influence at T~10^11 from Odlyzko data to extend verification",
-  "context_notes": "Session 11 was a deep diagnostic of the elimination approach. Three key discoveries: (1) the per-zero exclusion claim is false for 3-4% outlier zeros, (2) the deficit ratio grows as log(T), (3) r(T) drops to 0.63 at T=2.68e11 but stays well above Conrey's threshold. The paper has been revised from 'proof of 93.6%' to 'numerical density bound verified across 11 orders of magnitude'. Three gaps to a theorem identified: mean influence, r lower bound, additivity."
+  "uncommitted_files": [],
+  "next_action": "Make V(g) monotonicity rigorous (item 11), or extend GP result to actual zeta (item 13). The proof is at sketch level — needs either analytic or refined numerical verification of core monotonicity.",
+  "context_notes": "Session 11b was the 'Ralph Wiggum' deep dive. Key breakthrough: r > 0 can be proved from Gaussian process theory. The RS sum converges to a GP with bounded irregularity index (alpha^2 -> 4/5). For this GP, the bridge variance at the midpoint is increasing in gap length (verified numerically), which via Chebyshev's inequality gives Cov(g,P) > 0. The proof has one technical gap: the core monotonicity of V(g) needs to be made rigorous. Two papers produced: rigidity_exclusion_v3.tex (density bound) and r_positivity_theorem.tex (proof of r > 0)."
 }
