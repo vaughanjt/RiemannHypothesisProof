@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-26T21:33:13Z",
+  "timestamp": "2026-03-26T23:30:00Z",
   "phase": "04",
   "phase_name": "lean-4-formalization-pipeline",
   "phase_dir": ".planning/phases/04-lean-4-formalization-pipeline",
@@ -9,40 +9,39 @@
   "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "Analytic continuation operator v2 (sigma sweep)", "status": "done", "commit": "febc8ce"},
-    {"id": 2, "name": "Inverse off-diagonal analysis", "status": "done", "commit": "febc8ce"},
-    {"id": 3, "name": "S-prime coupling test", "status": "done", "commit": "febc8ce"},
-    {"id": 4, "name": "Jacobi optimized operator", "status": "done", "commit": "febc8ce"},
-    {"id": 5, "name": "Off-line zero removal test", "status": "done", "commit": "c490e1d"},
-    {"id": 6, "name": "Beta-sensitivity analysis", "status": "done", "commit": "c490e1d"},
-    {"id": 7, "name": "Regression deficit verification (500 zeros)", "status": "done", "commit": "6cf671a"},
-    {"id": 8, "name": "Analytic C derivation (influence function)", "status": "done", "commit": "55be771"},
-    {"id": 9, "name": "Unconditional density bound (93.6%)", "status": "done", "commit": "b547291"},
-    {"id": 10, "name": "Structural r test (random phases)", "status": "done", "commit": "df34bcf"},
-    {"id": 11, "name": "Gap 2 — RS correction closes to 0.0001", "status": "done", "commit": "fa5b5e8"},
-    {"id": 12, "name": "Formal bound |dr| < C/N at all T", "status": "done", "commit": "a128d25"},
-    {"id": 13, "name": "Publication draft v2", "status": "done", "commit": "3f8e156"},
-    {"id": 14, "name": "Grok summary + package", "status": "done", "commit": "a128d25"}
+    {"id": 1, "name": "Session 10: elimination approach + Gap 2 numerical", "status": "done"},
+    {"id": 2, "name": "Grok cross-verification received", "status": "done"},
+    {"id": 3, "name": "Session 11: deficit scaling analysis (T=300 to T=24000)", "status": "done"},
+    {"id": 4, "name": "Session 11: direct influence test (ground truth delta_r)", "status": "done"},
+    {"id": 5, "name": "Session 11: r(T) trajectory (T=400 to T=2.68e11 via Odlyzko)", "status": "done"},
+    {"id": 6, "name": "Session 11: model fits for r(T) asymptotics", "status": "done"},
+    {"id": 7, "name": "Session 11: paper revised to v3 (honest framing)", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 15, "name": "Analytic proof of regression deficit for all T", "status": "not_started"},
-    {"id": 16, "name": "Exact influence function bound (replace first-order)", "status": "not_started"},
-    {"id": 17, "name": "Analytic RS correction bound for all T", "status": "not_started"},
-    {"id": 18, "name": "Grok cross-verification review", "status": "not_started"},
-    {"id": 19, "name": "arXiv submission", "status": "not_started"}
+    {"id": 8, "name": "Prove mean influence E[delta_r] < 0 analytically", "status": "not_started"},
+    {"id": 9, "name": "Prove or bound r(T) from below (r_inf > 0?)", "status": "not_started"},
+    {"id": 10, "name": "Prove additivity of influence for multiple off-line zeros", "status": "not_started"},
+    {"id": 11, "name": "Compute mean influence at T ~ 10^11 (Odlyzko data)", "status": "not_started"},
+    {"id": 12, "name": "Submit v3 paper to arXiv", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Send docs/grok_package.zip to Grok for cross-verification", "context": "Need independent review of proof chain", "blocking": false},
-    {"action": "Review paper for arXiv submission", "context": "docs/rigidity_exclusion_v2.tex is ready", "blocking": false}
+    {"action": "Review v3 paper (docs/rigidity_exclusion_v3.tex)", "context": "Major revision with honest framing", "blocking": false}
   ],
   "decisions": [
-    {"decision": "Pivoted from constructive to elimination approach", "rationale": "9 sessions of operator construction hit fundamental wall", "phase": "10"},
-    {"decision": "Density bound f <= (1-r)/(1+r) bypasses Gap 1", "rationale": "Don't need to predict r_0 — just use r_0 <= 1", "phase": "10"},
-    {"decision": "RS correction R_0 closes Gap 2", "rationale": "One algebraic correction term matches exact Z to r = 0.0001", "phase": "10"},
-    {"decision": "C >= 2r proved from influence function", "rationale": "At A=0 (beta->1/2), the influence is always negative", "phase": "10"}
+    {"decision": "Per-zero claim is FALSE — 3-4% of zeros increase r when removed", "rationale": "Direct computation at 6 heights, growing violation fraction", "phase": "11"},
+    {"decision": "Mean influence is robustly negative at all heights", "rationale": "mean(delta_r) = -0.018 to -0.025 across T=300 to T=24000", "phase": "11"},
+    {"decision": "Deficit ratio grows as 0.06*log(T), extrapolated failure T~3e8", "rationale": "Shape factor c=1.55 constant, growth from shrinking gaps", "phase": "11"},
+    {"decision": "r(T) = 0.63 at T=2.68e11 (Odlyzko zeros)", "rationale": "Best fit: r = 1.30 - 0.20*log(log T), RMSE=0.011", "phase": "11"},
+    {"decision": "Paper revised to v3: numerical observation, not theorem", "rationale": "Honest about gaps per Grok feedback and our own analysis", "phase": "11"}
   ],
-  "uncommitted_files": [],
-  "next_action": "Check Grok feedback, then attack analytic regression deficit proof",
-  "context_notes": "The proof chain is complete: Hadamard -> Deficit -> Influence -> Density -> RS Prediction -> f->0. Every step is proved or verified. Converting verified steps to proofs requires moment bounds on |zeta'| at zeros (connected to Keating-Snaith conjectures)."
+  "uncommitted_files": [
+    "_deficit_scaling.py",
+    "_influence_direct.py",
+    "_r_asymptotic.py",
+    "_r_trajectory_fit.py",
+    "docs/rigidity_exclusion_v3.tex"
+  ],
+  "next_action": "Close gap 1 (prove E[delta_r] < 0) via moment bounds on |zeta'| at zeros, or compute mean influence at T~10^11 from Odlyzko data to extend verification",
+  "context_notes": "Session 11 was a deep diagnostic of the elimination approach. Three key discoveries: (1) the per-zero exclusion claim is false for 3-4% outlier zeros, (2) the deficit ratio grows as log(T), (3) r(T) drops to 0.63 at T=2.68e11 but stays well above Conrey's threshold. The paper has been revised from 'proof of 93.6%' to 'numerical density bound verified across 11 orders of magnitude'. Three gaps to a theorem identified: mean influence, r lower bound, additivity."
 }

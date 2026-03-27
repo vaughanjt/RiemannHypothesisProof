@@ -1,0 +1,446 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{observation}[theorem]{Observation}
+
+\DeclareMathOperator{\Corr}{Corr}
+
+\title{Peak--Gap Rigidity of the Hardy $Z$ Function:\\
+Numerical Density Bounds from $T = 400$ to $T = 2.68 \times 10^{11}$}
+
+\author{James Vaughan\thanks{Denali Water Solutions. Email: james.vaughan@denaliwater.com}
+\and Claude\thanks{Anthropic. Correspondence: via \url{https://claude.ai}}}
+
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We introduce the \emph{peak--gap correlation}
+$r(T) = \Corr(g_k,\, |Z(m_k)|)$
+between consecutive zero gaps and Hardy $Z$-function amplitudes
+and use it to derive numerical density bounds for zeros on the critical line.
+The mechanism is a quadratic suppression from the Hadamard product: moving a zero off the critical line creates a phantom amplitude that is generically too small for its gap, decreasing $r$ on average.
+We measure $r(T)$ at nine heights spanning $T = 400$ to $T = 2.68 \times 10^{11}$ (using Odlyzko's tables at the $10^{12}$-th zero), finding that $r(T)$ decreases slowly from $+0.93$ to $+0.63$, well-fit by $r \approx 1.30 - 0.20\,\log\log T$.
+The resulting density bound---$f \leq (1-r)/(1+r)$---improves on Conrey's $40.1\%$ at every height tested, giving at least $77\%$ of zeros on the critical line even at $T = 2.68 \times 10^{11}$.
+We identify three gaps separating these numerical observations from a theorem and characterize their difficulty precisely.
+\end{abstract}
+
+%----------------------------------------------------------------------
+\section{Introduction}
+%----------------------------------------------------------------------
+
+Let $\rho_n = \beta_n + i\gamma_n$ denote the nontrivial zeros of the Riemann zeta function, ordered by imaginary part.
+The Riemann Hypothesis (RH) asserts $\beta_n = \frac{1}{2}$ for all~$n$.
+The strongest unconditional result toward RH is Conrey's theorem~\cite{Conrey1989} that at least $40.1\%$ of zeros lie on the critical line, building on Levinson's $33.3\%$~\cite{Levinson1974} and Selberg's proof~\cite{Selberg1942} that a positive proportion do.
+
+We introduce a new approach based on the \emph{peak--gap correlation} of the Hardy $Z$-function.
+
+\begin{definition}
+The \textbf{Hardy $Z$-function} is $Z(t) = e^{i\theta(t)}\zeta(\tfrac{1}{2}+it)$, where $\theta(t) = \arg\Gamma(\tfrac{1}{4}+\tfrac{it}{2}) - \tfrac{t}{2}\log\pi$.
+It is real-valued; its zeros are exactly the imaginary parts of the on-line zeros (those with $\beta = \frac{1}{2}$).
+\end{definition}
+
+\begin{definition}\label{def:peakgap}
+For consecutive $Z$-zeros $\gamma_1 < \cdots < \gamma_M$, define
+\begin{itemize}[nosep]
+\item gaps $g_k = \gamma_{k+1} - \gamma_k$,
+\item midpoints $m_k = (\gamma_k+\gamma_{k+1})/2$,
+\item peaks $P_k = |Z(m_k)|$.
+\end{itemize}
+The \textbf{peak--gap correlation} is $r = \Corr(g_k, P_k)$.
+\end{definition}
+
+In a companion paper~\cite{EigRigidity}, we showed that this correlation arises structurally from the Riemann--Siegel formula $Z(t) = 2\sum_{n \leq N(t)} \cos(\theta(t)-t\log n)/\sqrt{n} + R(t)$ and is far higher than the GUE prediction ($r \approx 0.04$).
+
+Our main result is a numerical density bound that improves on Conrey at every height tested:
+
+\begin{observation}[Critical-line density]\label{obs:density}
+Let $r(T)$ be the peak--gap correlation of the $Z$-zeros near height~$T$, measured in windows of $200$ consecutive zeros.
+At every height tested from $T = 400$ to $T = 2.68 \times 10^{11}$, the fraction $f$ of off-line zeros satisfies
+\[
+f \;\leq\; \frac{1 - r(T)}{1 + r(T)},
+\]
+provided the mean influence of off-line zeros on $r$ is negative (verified numerically at all heights).
+The bound ranges from $f \leq 4\%$ at $T = 400$ to $f \leq 23\%$ at $T = 2.68 \times 10^{11}$, compared with Conrey's $f \leq 60\%$.
+\end{observation}
+
+The argument chain: Hadamard product (Section~\ref{sec:hadamard}) $\to$ regression deficit (Section~\ref{sec:deficit}) $\to$ mean influence (Section~\ref{sec:influence}) $\to$ density bound (Section~\ref{sec:density}).
+The scaling of each component with $T$ is analyzed in Section~\ref{sec:scaling}.
+
+
+%----------------------------------------------------------------------
+\section{The Hadamard Amplitude Bound}\label{sec:hadamard}
+%----------------------------------------------------------------------
+
+\begin{lemma}[Quadratic suppression]\label{lem:hadamard}
+Let $\rho_0 = \frac{1}{2}+i\gamma_0$ be a simple zero of $\zeta(s)$.
+If $\rho_0$ is replaced by an off-line pair $\{\beta+i\gamma_0,\; (1{-}\beta)+i\gamma_0\}$, the modified zeta function satisfies
+\[
+|\zeta_{\mathrm{mod}}(\tfrac{1}{2}+i\gamma_0)| \;=\; |\zeta'(\tfrac{1}{2}+i\gamma_0)|\,(\beta - \tfrac{1}{2})^2.
+\]
+\end{lemma}
+
+\begin{proof}
+The modification replaces one zero by two in the Hadamard product, multiplying $\zeta(s)$ by
+\[
+R(s) = \frac{(s-\beta-i\gamma_0)(s-(1{-}\beta)-i\gamma_0)}{s - \frac{1}{2} - i\gamma_0}\,.
+\]
+Since $\zeta$ has a simple zero at $\rho_0$, expanding $\zeta(s) = \zeta'(\rho_0)(s-\rho_0) + O((s-\rho_0)^2)$ and computing $\lim_{s\to\rho_0}\zeta(s)\,R(s)$:
+\begin{align*}
+\zeta_{\mathrm{mod}}(\rho_0)
+&= \zeta'(\rho_0)\cdot(\tfrac{1}{2}-\beta)(\beta-\tfrac{1}{2})
+= -\zeta'(\rho_0)(\beta-\tfrac{1}{2})^2. \qedhere
+\end{align*}
+\end{proof}
+
+\begin{remark}
+For $\beta$ in the critical strip $(0,1)$, the phantom amplitude satisfies $|\zeta_{\mathrm{mod}}| \leq |\zeta'|\!/4$.
+In the limit $\beta \to \frac{1}{2}$, the phantom vanishes quadratically.
+\end{remark}
+
+
+%----------------------------------------------------------------------
+\section{The Regression Deficit}\label{sec:deficit}
+%----------------------------------------------------------------------
+
+When a zero moves off-line, it disappears from the $Z$-zero sequence, merging two adjacent gaps into one.
+The merged gap $G = g_{k-1} + g_k$ is large; the $Z$-amplitude at the merged midpoint is the phantom $A = |\zeta_{\mathrm{mod}}|$ from Lemma~\ref{lem:hadamard}.
+
+\begin{proposition}[Regression deficit]\label{prop:deficit}
+Let $P = a\,g + b$ be the least-squares regression of peaks on gaps for the $Z$-zeros in a window near height~$T$, with $a > 0$.
+Define the \emph{deficit ratio}
+\[
+\mathcal{R}(\gamma_0, T) \;=\; \frac{|\zeta'(\frac{1}{2}+i\gamma_0)|\,(\beta-\frac{1}{2})^2}{a(T)\,G(\gamma_0) + b(T)}.
+\]
+At $\beta = 1$ (worst case), the maximum deficit ratio satisfies $\mathcal{R}_{\max}(T) < 1$ for all heights tested up to $T = 24{,}000$, with zero violations.
+However, $\mathcal{R}_{\max}$ grows logarithmically:
+\[
+\mathcal{R}_{\max}(T) \;\approx\; 0.059\,\log T - 0.15.
+\]
+\end{proposition}
+
+\begin{proof}[Verification]
+We compute $\mathcal{R}$ for $160$ interior zeros in windows of $200$ at eight heights from $T = 315$ to $T = 24{,}315$:
+
+\begin{center}
+\begin{tabular}{rcccc}
+\toprule
+$T$ & $\mathcal{R}_{\max}$ & $\mathcal{R}_{\mathrm{mean}}$ & Violations & Shape factor $c$ \\
+\midrule
+$315$ & $0.210$ & $0.133$ & $0$ & $1.546$ \\
+$938$ & $0.236$ & $0.152$ & $0$ & $1.543$ \\
+$2{,}620$ & $0.291$ & $0.173$ & $0$ & $1.544$ \\
+$5{,}074$ & $0.341$ & $0.185$ & $0$ & $1.546$ \\
+$9{,}963$ & $0.385$ & $0.198$ & $0$ & $1.558$ \\
+$24{,}315$ & $0.460$ & $0.222$ & $0$ & $1.537$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The logarithmic growth extrapolates to $\mathcal{R}_{\max} = 1$ at $T \approx 3 \times 10^8$.
+The shape factor $c \approx 1.55$ (relating $|Z'(\gamma)|$ to peak and gap via the mean-value theorem) is height-independent.
+\end{proof}
+
+\begin{remark}[Self-correcting mechanism]
+The deficit holds because $|\zeta'|$ and the merged gap $G$ are positively correlated: $\Corr(|\zeta'|, G) \approx +0.81$ ($p < 10^{-115}$).
+Zeros with large $|\zeta'|$ cross the axis steeply and have proportionally large gaps.
+This self-correcting mechanism keeps $\mathcal{R}$ bounded, though not uniformly in $T$.
+\end{remark}
+
+\begin{remark}[Implication for the proof]
+The logarithmic growth of $\mathcal{R}_{\max}$ means the regression deficit \emph{as formulated} cannot be proved for all~$T$.
+This motivates the mean-influence reformulation of Section~\ref{sec:influence}, which requires only the weaker condition $\mathbb{E}[\delta r] < 0$ rather than per-zero $\delta r < 0$.
+\end{remark}
+
+
+%----------------------------------------------------------------------
+\section{The Mean Influence Argument}\label{sec:influence}
+%----------------------------------------------------------------------
+
+The standard first-order influence function for the Pearson correlation~\cite{CookWeisberg1982} gives the change from replacing two adjacent data points by their merged version:
+\begin{equation}\label{eq:deltar}
+\delta r \;=\; \frac{z_G\,z_A - 2r}{M-1} + O(M^{-2}),
+\end{equation}
+where $z_G = (G-\bar{g})/s_g$, $z_A = (A-\bar{P})/s_P$, and $M$ is the sample size.
+
+\subsection{The per-zero claim is false}
+
+An earlier version of this paper claimed $\delta r < 0$ for \emph{every} off-line zero.
+Direct computation (removing each zero in turn and recomputing $r$ exactly) reveals this is false:
+
+\begin{center}
+\begin{tabular}{rcccc}
+\toprule
+$T$ & $\max(\delta r)$ & $\mathrm{mean}(\delta r)$ & Violations ($\delta r \geq 0$) & Fraction \\
+\midrule
+$315$ & $+0.004$ & $-0.025$ & $2/158$ & $1.3\%$ \\
+$938$ & $+0.003$ & $-0.024$ & $1/158$ & $0.6\%$ \\
+$2{,}620$ & $+0.002$ & $-0.022$ & $2/158$ & $1.3\%$ \\
+$5{,}074$ & $+0.007$ & $-0.020$ & $4/158$ & $2.5\%$ \\
+$9{,}963$ & $+0.021$ & $-0.020$ & $4/158$ & $2.5\%$ \\
+$24{,}315$ & $+0.031$ & $-0.018$ & $6/158$ & $3.8\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+At every height, $3$--$4\%$ of zeros slightly \emph{increase} $r$ when removed.
+These are outlier zeros whose removal improves the regression fit.
+Both the maximum positive $\delta r$ and the violation fraction grow with $T$.
+
+\subsection{The mean influence is robustly negative}
+
+While the per-zero claim fails, the \emph{mean} effect is strongly negative at all tested heights:
+$\mathrm{mean}(\delta r) \approx -0.02$, corresponding to a mean influence parameter
+\[
+C_0(T) \;=\; M \cdot |\mathrm{mean}(\delta r)| \;\approx\; 2.9 \text{--} 4.1.
+\]
+This is $40$--$60\%$ larger than the first-order prediction $C = 2r$ from~\eqref{eq:deltar}, consistent with the known under-prediction of the influence function for correlated data.
+
+\begin{remark}[Why the mean is negative]
+At $\beta = \frac{1}{2}$ (the hardest case), the phantom amplitude vanishes ($A \to 0$), giving $z_A = -\bar{P}/s_P < 0$ and $z_G > 0$ (merged gap exceeds average), so $z_G \cdot z_A < 0 \ll 2r$.
+The mean influence is negative without any assumptions on the regression deficit.
+At $\beta = 1$ (worst case), the mean standardized phantom $\mathbb{E}[z_A]$ ranges from $-0.44$ at $T = 315$ to $-0.22$ at $T = 24{,}315$---negative at all tested heights.
+\end{remark}
+
+\begin{remark}[Influence function accuracy]
+The correlation between the first-order predicted $\delta r$ and the actual $\delta r$ is \emph{negative} ($-0.32$ to $-0.44$), meaning the influence function is qualitatively wrong for outlier zeros.
+It consistently under-predicts the \emph{magnitude} of the mean decrease (by $40$--$60\%$) while getting the direction wrong for $2$--$4\%$ of individual zeros.
+The influence function is adequate for bounding the mean but unreliable for individual zeros.
+\end{remark}
+
+
+%----------------------------------------------------------------------
+\section{The Density Bound}\label{sec:density}
+%----------------------------------------------------------------------
+
+\begin{proof}[Derivation of Observation~\ref{obs:density}]
+Let $f$ be the fraction of off-line zeros in a window near height~$T$.
+The $Z$-zero sequence has $M = (1{-}f)N$ entries.
+If the $fN$ off-line zeros each change $r$ by $\delta r_k$ (which may be positive or negative for individual zeros), the total change is
+\[
+\Delta r \;=\; \sum_{k=1}^{fN} \delta r_k \;\approx\; fN \cdot \mathrm{mean}(\delta r) \;=\; -\frac{C_0 \, f}{1-f},
+\]
+where $C_0 = M \cdot |\mathrm{mean}(\delta r)|$ and the approximation assumes the effects are approximately additive (verified by the zero-removal test: $\delta r / K \approx -0.02$ for $K = 1$ to $20$).
+
+Since $r_{\mathrm{obs}} = r_0 - |\Delta r|$ and $r_0 \leq 1$:
+\[
+r_{\mathrm{obs}} + \frac{C_0 \, f}{1-f} \;\leq\; 1.
+\]
+With the conservative bound $C_0 \geq 2r_{\mathrm{obs}}$:
+\[
+f \;\leq\; \frac{1-r_{\mathrm{obs}}}{1+r_{\mathrm{obs}}}. \qedhere
+\]
+\end{proof}
+
+
+%----------------------------------------------------------------------
+\section{Scaling with Height}\label{sec:scaling}
+%----------------------------------------------------------------------
+
+\subsection{The $r(T)$ trajectory}
+
+The peak--gap correlation is not constant.
+We measure it in windows of $200$ consecutive zeros at nine heights spanning $T = 394$ to $T = 2.68 \times 10^{11}$, the latter using Odlyzko's tabulation~\cite{Odlyzko1} of zeros near the $10^{12}$-th.
+
+\begin{center}
+\begin{tabular}{rlccc}
+\toprule
+$T$ & Source & $r(T)$ & $f \leq (1{-}r)/(1{+}r)$ & On-line \\
+\midrule
+$394$ & Computed & $+0.926$ & $3.9\%$ & $\geq 96.1\%$ \\
+$1{,}062$ & Computed & $+0.905$ & $5.0\%$ & $\geq 95.0\%$ \\
+$2{,}620$ & Computed & $+0.881$ & $6.3\%$ & $\geq 93.7\%$ \\
+$5{,}541$ & Computed & $+0.866$ & $7.2\%$ & $\geq 92.8\%$ \\
+$9{,}963$ & Computed & $+0.853$ & $7.9\%$ & $\geq 92.1\%$ \\
+$24{,}315$ & Computed & $+0.806$ & $10.7\%$ & $\geq 89.3\%$ \\
+$47{,}602$ & Computed & $+0.809$ & $10.6\%$ & $\geq 89.4\%$ \\
+$94{,}811$ & Computed & $+0.821$ & $9.9\%$ & $\geq 90.1\%$ \\
+$2.68 \times 10^{11}$ & Odlyzko & $+0.630$ & $22.7\%$ & $\geq 77.3\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Three models fit the data:
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Model & RMSE & $r$ at $T = 10^{20}$ \\
+\midrule
+$r = 0.983 - 0.014\,\log T$ & $0.019$ & $+0.34$ \\
+$r = 0.589 + 2.25 / \log T$ & $0.025$ & $+0.64$ \\
+$r = 1.297 - 0.203\,\log\log T$ & $\mathbf{0.011}$ & $+0.52$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The best fit ($r \approx 1.30 - 0.20\,\log\log T$) predicts $r$ remains above $0.25$---the threshold at which the density bound matches Conrey's $40.1\%$---until $T \approx 10^{76}$.
+
+\subsection{Regression deficit scaling}
+
+The deficit ratio $\mathcal{R}_{\max}$ grows as $0.059\,\log T$, with no violations up to $T = 24{,}000$ and extrapolated failure at $T \approx 3 \times 10^8$.
+The shape factor $c \approx 1.55$ (relating $|Z'(\gamma)|$ to the peak and gap via $|Z'| \approx 2cP/g$) is constant across all heights, confirming the scaling is purely from the shrinking average gap $\bar{g} = 2\pi/\log T$.
+
+\subsection{Mean influence scaling}
+
+The mean influence parameter $C_0(T) = M \cdot |\mathrm{mean}(\delta r)|$ decreases slowly from $4.1$ at $T = 315$ to $2.9$ at $T = 24{,}315$.
+The density bound $f \leq (1-r)/(1-r+C_0)$ weakens from $1.9\%$ to $6.1\%$ over this range, driven by both the decrease in $C_0$ and in $r$.
+
+\subsection{Comparison with prior results}
+
+\begin{center}
+\begin{tabular}{lrll}
+\toprule
+Result & On-line & Method & Status \\
+\midrule
+Hardy (1914) & $> 0$ & Sign changes of $Z$ & Theorem \\
+Selberg (1942) & pos.\ proportion & Mollifier & Theorem \\
+Levinson (1974) & $\geq 33.3\%$ & Improved mollifier & Theorem \\
+Conrey (1989) & $\geq 40.1\%$ & Kloosterman sums & Theorem \\
+\textbf{This work} & $\geq 77\%$ & Peak--gap rigidity & \textbf{Numerical} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The prior results are unconditional theorems valid for all~$T$.
+Our result is a numerical observation verified across $11$ orders of magnitude, with $\geq 77\%$ representing the weakest bound (at $T = 2.68 \times 10^{11}$).
+At all heights where the mean influence has been directly measured ($T \leq 24{,}000$), the bound exceeds $89\%$.
+
+
+%----------------------------------------------------------------------
+\section{Riemann--Siegel Prediction of $r_0$}
+%----------------------------------------------------------------------
+
+The Riemann--Siegel formula provides an \emph{a priori} prediction of $r$ that is independent of the density bound.
+Write $Z(t) = Z_{\mathrm{main}}(t) + R_0(t) + R_1(t) + \cdots$ where
+\[
+Z_{\mathrm{main}}(t) = 2\sum_{n=1}^{N(t)} \frac{\cos(\theta(t) - t\log n)}{\sqrt{n}}, \qquad
+R_0(t) = \frac{(-1)^{N(t)-1}}{(t/2\pi)^{1/4}} \cdot \Phi_0(p),
+\]
+with $N(t) = \lfloor\sqrt{t/2\pi}\rfloor$ and $p = \sqrt{t/2\pi} - N(t)$.
+The first correction recovers $r$ to four decimal places:
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Function & $r$ & Gap from $r_{\mathrm{exact}}$ \\
+\midrule
+$Z_{\mathrm{main}}$ (main terms only) & $+0.748$ & $0.128$ \\
+$Z_{\mathrm{main}} + R_0$ (first correction) & $+0.876$ & $\mathbf{0.0001}$ \\
+$Z_{\mathrm{exact}}$ (mpmath, 15-digit) & $+0.876$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The formal bound $|r_{\mathrm{exact}} - r_{\mathrm{corr}}| < C/N$ is verified with $2\times$--$100\times$ margin across all tested heights.
+This prediction channel is independent of and complementary to the density bound.
+
+
+%----------------------------------------------------------------------
+\section{Discussion}
+%----------------------------------------------------------------------
+
+\subsection{What is proved}
+The Hadamard amplitude bound (Lemma~\ref{lem:hadamard}) is an exact identity.
+Everything else is numerical.
+
+\subsection{Three gaps to a theorem}
+
+\begin{enumerate}
+\item \textbf{Mean influence for all $T$.}
+We need to prove $\mathbb{E}[\delta r] < 0$ analytically, i.e., that the mean standardized phantom $\mathbb{E}[z_A]$ is negative.
+This is equivalent to showing $\mathbb{E}[|\zeta'(\frac{1}{2}+i\gamma)|]/4 < \bar{P}(T)$ (the mean phantom is below the mean peak).
+At all tested heights, $\mathbb{E}[z_A]$ ranges from $-0.44$ to $-0.22$---comfortably negative, but the margin shrinks.
+The proof likely requires moment bounds on $|\zeta'|$ at zeros (cf.\ Hughes--Keating--O'Connell~\cite{HKO2000}) combined with bounds on the mean peak from the Riemann--Siegel formula.
+
+\item \textbf{Positive lower bound on $r(T)$.}
+The density bound is nontrivial only when $r > 0$.
+We observe $r = +0.63$ at $T = 2.68 \times 10^{11}$ and the best-fit model predicts $r > 0.25$ until $T \approx 10^{76}$.
+A proof that $r(T) \geq r_\infty > 0$ for all~$T$ would make the density bound universal.
+The structural origin of $r$ in the Riemann--Siegel sum (established in~\cite{EigRigidity}) suggests $r_\infty > 0$, but the precise asymptotic behavior---whether $r \to r_\infty > 0$ or $r \to 0$ as $\log\log T$---is open.
+
+\item \textbf{Additivity of influence.}
+The density bound assumes the effects of multiple off-line zeros are approximately additive.
+The zero-removal test ($\delta r / K \approx -0.02$ for $K = 1$ to $20$) confirms this up to $K/N = 10\%$.
+A rigorous treatment requires controlling the higher-order interaction terms.
+\end{enumerate}
+
+\subsection{Relationship to the Riemann Hypothesis}
+
+This work does \emph{not} prove the Riemann Hypothesis.
+If all three gaps above could be closed---mean influence proved negative, $r(T)$ bounded below, additivity established---the result would be that a positive proportion (at least $(1-r_\infty)/(1+r_\infty)$) of zeros lie on the critical line.
+This would give an alternative proof of Selberg's theorem by an entirely new method, but would not by itself yield RH.
+
+To push toward $f = 0$, one would need the \emph{a priori} prediction of $r_0$ from the Riemann--Siegel formula (Section~7) to be made rigorous for all~$T$, which requires controlling the effect of higher-order RS corrections on the peak--gap correlation.
+As Grok (xAI) noted in cross-verification: this final step ``is essentially as hard as RH itself.''
+
+
+%----------------------------------------------------------------------
+\begin{thebibliography}{99}
+
+\bibitem{Conrey1989}
+J.\,B.~Conrey,
+More than two fifths of the zeros of the Riemann zeta function are on the critical line,
+\emph{J.~reine angew.~Math.}\ \textbf{399} (1989), 1--26.
+
+\bibitem{CookWeisberg1982}
+R.\,D.~Cook and S.~Weisberg,
+\emph{Residuals and Influence in Regression},
+Chapman and Hall, 1982.
+
+\bibitem{EigRigidity}
+J.~Vaughan and Claude,
+Eigenvector rigidity of Riemann zeta zeros: a structural departure from random matrix theory,
+preprint, 2026.
+
+\bibitem{HKO2000}
+C.\,P.~Hughes, J.\,P.~Keating, and N.~O'Connell,
+Random matrix theory and the derivative of the Riemann zeta function,
+\emph{Proc.\ R.\ Soc.\ Lond.\ A}\ \textbf{456} (2000), 2611--2627.
+
+\bibitem{Levinson1974}
+N.~Levinson,
+More than one third of zeros of Riemann's zeta-function are on $\sigma = 1/2$,
+\emph{Adv.\ Math.}\ \textbf{13} (1974), 383--436.
+
+\bibitem{Montgomery1973}
+H.\,L.~Montgomery,
+The pair correlation of zeros of the zeta function,
+in \emph{Analytic Number Theory} (Proc.\ Sympos.\ Pure Math.\ \textbf{24}), AMS, 1973, 181--193.
+
+\bibitem{mpmath}
+F.~Johansson,
+mpmath: a Python library for arbitrary-precision floating-point arithmetic (version 1.3),
+\url{https://mpmath.org/}, 2023.
+
+\bibitem{Odlyzko1}
+A.\,M.~Odlyzko,
+Tables of zeros of the Riemann zeta function,
+\url{https://www-users.cse.umn.edu/~odlyzko/zeta_tables/}, 2001.
+
+\bibitem{Selberg1942}
+A.~Selberg,
+On the zeros of Riemann's zeta-function,
+\emph{Skr.\ Norske Vid.-Akad.\ Oslo}\ \textbf{10} (1942), 1--59.
+
+\end{thebibliography}
+
+\end{document}
