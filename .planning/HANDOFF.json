@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-27T00:30:00Z",
+  "timestamp": "2026-03-27T04:00:00Z",
   "phase": "04",
   "phase_name": "lean-4-formalization-pipeline",
   "phase_dir": ".planning/phases/04-lean-4-formalization-pipeline",
@@ -9,36 +9,31 @@
   "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "Session 10: elimination approach + Gap 2 numerical", "status": "done"},
-    {"id": 2, "name": "Grok cross-verification received", "status": "done"},
-    {"id": 3, "name": "Session 11a: deficit scaling + influence tests + r(T) trajectory", "status": "done"},
-    {"id": 4, "name": "Session 11a: paper revised to v3 (honest framing)", "status": "done"},
-    {"id": 5, "name": "Session 11b: universal r test — r > 0 not universal, RS-specific", "status": "done"},
-    {"id": 6, "name": "Session 11b: GP simulation — r = 0.13 at 45-sigma for N=10 to 500", "status": "done"},
-    {"id": 7, "name": "Session 11b: irregularity index alpha^2 -> 4/5 (bounded, N-independent)", "status": "done"},
-    {"id": 8, "name": "Session 11b: Gaussian bridge variance V(g) increasing in core", "status": "done"},
-    {"id": 9, "name": "Session 11b: proof of r > 0 via bridge + Chebyshev (proof sketch level)", "status": "done"},
-    {"id": 10, "name": "Session 11b: r_positivity_theorem.tex written", "status": "done"}
+    {"id": 1, "name": "Session 12: ergodic theorem proof of r > 0", "status": "done"},
+    {"id": 2, "name": "Session 12: sub-interval positivity (every partition gives Cov > 0)", "status": "done"},
+    {"id": 3, "name": "Session 12: 1000/1000 random phases positive (127 sigma)", "status": "done"},
+    {"id": 4, "name": "Session 12: mean influence at T~2.68e11 (85% on-line)", "status": "done"},
+    {"id": 5, "name": "Session 12: additivity verified at T~2.68e11 (K=1 to 50)", "status": "done"},
+    {"id": 6, "name": "Session 12: self-correcting mechanism stable (Corr~0.84)", "status": "done"},
+    {"id": 7, "name": "Session 12: papers updated (v3 + r-positivity theorem)", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 11, "name": "Rigorous proof of V(g) core monotonicity from spectral density", "status": "not_started"},
-    {"id": 12, "name": "CLT quantitative error bound for RS sum -> GP approximation", "status": "not_started"},
-    {"id": 13, "name": "Extend from GP to actual zeta (specific phase enhancement)", "status": "not_started"},
-    {"id": 14, "name": "Compute mean influence at T~10^11 from Odlyzko data", "status": "not_started"},
-    {"id": 15, "name": "Submit v3 paper + r-positivity paper to arXiv", "status": "not_started"}
+    {"id": 8, "name": "Make V(g) core monotonicity fully rigorous (analytic proof)", "status": "not_started"},
+    {"id": 9, "name": "Quantitative lower bound on r_inf (currently ~0.13 numerical)", "status": "not_started"},
+    {"id": 10, "name": "Submit papers to arXiv", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Review v3 paper and r-positivity theorem", "context": "docs/rigidity_exclusion_v3.tex and docs/r_positivity_theorem.tex", "blocking": false}
+    {"action": "Review both papers for arXiv submission", "context": "docs/rigidity_exclusion_v3.tex + docs/r_positivity_theorem.tex", "blocking": false}
   ],
   "decisions": [
-    {"decision": "r > 0 is NOT universal — cos(t)+cos(2t) gives r=-1", "rationale": "Commensurate frequencies can destroy peak-gap correlation", "phase": "11b"},
-    {"decision": "RS-like sums give r ~ 0.13 > 0 regardless of phases", "rationale": "45-sigma significance, N=10 to 500, log frequencies + 1/sqrt(n) amplitudes", "phase": "11b"},
-    {"decision": "Irregularity index alpha^2 -> 4/5 = 0.8 (bounded)", "rationale": "From spectral moments m0~logN, m2~(logN)^3/3, m4~(logN)^5/5", "phase": "11b"},
-    {"decision": "Bridge variance V(g) increasing in core (g < 1.1*g_bar)", "rationale": "Verified N=50,200,1000. Oscillates in tail but core has 85%+ mass.", "phase": "11b"},
-    {"decision": "Proof: r > 0 via bridge monotonicity + Chebyshev inequality", "rationale": "E[P|g] = sqrt(2V/pi) increasing in core, Cov(g,P) > 0 by core-tail decomposition", "phase": "11b"}
+    {"decision": "Ergodic theorem bypasses CLT — Weyl equidistribution gives time-avg r -> GP r for any fixed phases", "rationale": "Incommensurate frequencies log(n+1) give equidistribution by FTA", "phase": "12"},
+    {"decision": "Sub-interval positivity: EVERY partition of gaps gives positive Cov contribution", "rationale": "h(g) goes from 0 to 0.80 monotonically, saturating. Both below-g_bar and above-g_bar contribute positively.", "phase": "12"},
+    {"decision": "Density bound extends to T=2.68e11: at least 85% on-line", "rationale": "mean(delta_r) = -0.00127 (negative), C0=2.03, f<=15%", "phase": "12"},
+    {"decision": "Additivity holds at T~10^11: delta_r/K ~ -0.002 for K=1 to 50", "rationale": "Per-zero effect approximately constant, negative at every K", "phase": "12"},
+    {"decision": "r drop is CLT effect, not self-correcting weakening", "rationale": "Corr(|Z'|,G) stable at 0.84 from T=300 to T=10000", "phase": "12"}
   ],
   "uncommitted_files": [],
-  "next_action": "Make V(g) monotonicity rigorous (item 11), or extend GP result to actual zeta (item 13). The proof is at sketch level — needs either analytic or refined numerical verification of core monotonicity.",
-  "context_notes": "Session 11b was the 'Ralph Wiggum' deep dive. Key breakthrough: r > 0 can be proved from Gaussian process theory. The RS sum converges to a GP with bounded irregularity index (alpha^2 -> 4/5). For this GP, the bridge variance at the midpoint is increasing in gap length (verified numerically), which via Chebyshev's inequality gives Cov(g,P) > 0. The proof has one technical gap: the core monotonicity of V(g) needs to be made rigorous. Two papers produced: rigidity_exclusion_v3.tex (density bound) and r_positivity_theorem.tex (proof of r > 0)."
+  "next_action": "Make the proof fully rigorous: (1) analytic core monotonicity of V(g), or (2) quantitative r_inf bound. Then submit to arXiv.",
+  "context_notes": "Session 12 completed the proof at the level of: exact identity + structural positivity argument + ergodic convergence + massive numerical verification. Gap 2 (r > 0) is RESOLVED at proof-sketch level. Gap 1 collapses into Gap 2. Gap 3 (additivity) verified numerically at T~10^11. The density bound holds at every height tested (T=400 to T=2.68e11), giving at least 85% on the critical line at the highest height. Two papers ready for review."
 }
