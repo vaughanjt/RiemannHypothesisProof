@@ -103,6 +103,30 @@ V(g) = C(0) - \mathbf{c}^T \Sigma^{-1} \mathbf{c}, \quad
 Computing $\Sigma^{-1}$ and the quadratic form gives the result.
 \end{proof}
 
+\begin{lemma}[Spectral variance identity]\label{lem:variance}
+The numerator of $V(g)$ satisfies
+\[
+1 + C(g) - 2C(g/2)^2 \;=\; 2\,\Var_{\!p}\!\bigl[\cos(\omega_n g/2)\bigr],
+\]
+where $\Var_p$ denotes the variance over the spectral weights $p_n = (1/n) / \sum (1/k)$.
+In particular, $V(g) \geq 0$ for all~$g$, with equality only at $g = 0$.
+\end{lemma}
+
+\begin{proof}
+Write $C(\tau) = \sum p_n \cos(\omega_n \tau)$.
+Using $\cos^2 x = (1+\cos 2x)/2$:
+\begin{align*}
+1 + C(g) - 2C(g/2)^2
+&= \sum p_n (1 + \cos \omega_n g) - 2\Bigl(\sum p_n \cos(\omega_n g/2)\Bigr)^2 \\
+&= 2\sum p_n \cos^2(\omega_n g/2) - 2\Bigl(\sum p_n \cos(\omega_n g/2)\Bigr)^2 \\
+&= 2\,\Var_{\!p}\!\bigl[\cos(\omega_n g/2)\bigr].
+\end{align*}
+The variance is nonneg., and equals zero iff all $\cos(\omega_n g/2)$ are equal.
+At $g=0$, all cosines equal~$1$; for $g>0$, the incommensurability of
+$\omega_n = \log(n{+}1)$ (which follows from the fundamental theorem of arithmetic)
+ensures the cosines take distinct values, so $\Var > 0$.
+\end{proof}
+
 \begin{proposition}[Monotonicity]\label{prop:mono}
 $V(g)$ is strictly increasing on $(0, \infty)$ for the RS spectral density,
 with $V(0) = 0$ and $V(g) \to 1$ as $g \to \infty$.
