@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-27T04:00:00Z",
+  "timestamp": "2026-03-27T12:56:52Z",
   "phase": "04",
   "phase_name": "lean-4-formalization-pipeline",
   "phase_dir": ".planning/phases/04-lean-4-formalization-pipeline",
@@ -9,31 +9,36 @@
   "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "Session 12: ergodic theorem proof of r > 0", "status": "done"},
-    {"id": 2, "name": "Session 12: sub-interval positivity (every partition gives Cov > 0)", "status": "done"},
-    {"id": 3, "name": "Session 12: 1000/1000 random phases positive (127 sigma)", "status": "done"},
-    {"id": 4, "name": "Session 12: mean influence at T~2.68e11 (85% on-line)", "status": "done"},
-    {"id": 5, "name": "Session 12: additivity verified at T~2.68e11 (K=1 to 50)", "status": "done"},
-    {"id": 6, "name": "Session 12: self-correcting mechanism stable (Corr~0.84)", "status": "done"},
-    {"id": 7, "name": "Session 12: papers updated (v3 + r-positivity theorem)", "status": "done"}
+    {"id": 1, "name": "S11a: Deficit scaling + direct influence + r(T) trajectory to T=2.68e11", "status": "done", "commit": "f61178c"},
+    {"id": 2, "name": "S11a: Paper revised to v3 (honest framing, numerical density bound)", "status": "done", "commit": "f61178c"},
+    {"id": 3, "name": "S11b: Universal r test — RS-class r~0.13>0, not universal (counter-examples exist)", "status": "done", "commit": "50a8ae7"},
+    {"id": 4, "name": "S11b: Spectral variance identity V(g) = 2*Var_p[cos(wg/2)]/(1+C(g)) >= 0", "status": "done", "commit": "b020eac"},
+    {"id": 5, "name": "S11b: Proof of r > 0 via bridge + Chebyshev (proof sketch level)", "status": "done", "commit": "11b959b"},
+    {"id": 6, "name": "S12: Ergodic theorem — time-avg r -> GP r for any fixed phases", "status": "done", "commit": "9c24115"},
+    {"id": 7, "name": "S12: Sub-interval positivity — EVERY partition gives Cov > 0", "status": "done", "commit": "9c24115"},
+    {"id": 8, "name": "S12: 1000/1000 random phase trials positive (127 sigma, min r=+0.026)", "status": "done", "commit": "9c24115"},
+    {"id": 9, "name": "S12: Mean influence at T=2.68e11 — 85% on-line (C0=2.03)", "status": "done", "commit": "20ab3b1"},
+    {"id": 10, "name": "S12: Additivity verified at T=2.68e11 (K=1 to 50, delta_r/K ~ -0.002)", "status": "done", "commit": "86b75c5"},
+    {"id": 11, "name": "S12: Self-correcting mechanism stable (Corr(|Z'|,G) ~ 0.84)", "status": "done", "commit": "9c24115"},
+    {"id": 12, "name": "S12: Exact |zeta'| at T=2.68e11 confirms phantom >> peak (ratio 2.27)", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 8, "name": "Make V(g) core monotonicity fully rigorous (analytic proof)", "status": "not_started"},
-    {"id": 9, "name": "Quantitative lower bound on r_inf (currently ~0.13 numerical)", "status": "not_started"},
-    {"id": 10, "name": "Submit papers to arXiv", "status": "not_started"}
+    {"id": 13, "name": "Make proof fully rigorous (analytic core monotonicity or alternative)", "status": "not_started"},
+    {"id": 14, "name": "Quantitative lower bound on r_inf (currently ~0.13 numerical)", "status": "not_started"},
+    {"id": 15, "name": "Submit both papers to arXiv", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Review both papers for arXiv submission", "context": "docs/rigidity_exclusion_v3.tex + docs/r_positivity_theorem.tex", "blocking": false}
+    {"action": "Review papers for arXiv submission", "context": "docs/rigidity_exclusion_v3.tex + docs/r_positivity_theorem.tex", "blocking": false}
   ],
   "decisions": [
-    {"decision": "Ergodic theorem bypasses CLT — Weyl equidistribution gives time-avg r -> GP r for any fixed phases", "rationale": "Incommensurate frequencies log(n+1) give equidistribution by FTA", "phase": "12"},
-    {"decision": "Sub-interval positivity: EVERY partition of gaps gives positive Cov contribution", "rationale": "h(g) goes from 0 to 0.80 monotonically, saturating. Both below-g_bar and above-g_bar contribute positively.", "phase": "12"},
-    {"decision": "Density bound extends to T=2.68e11: at least 85% on-line", "rationale": "mean(delta_r) = -0.00127 (negative), C0=2.03, f<=15%", "phase": "12"},
-    {"decision": "Additivity holds at T~10^11: delta_r/K ~ -0.002 for K=1 to 50", "rationale": "Per-zero effect approximately constant, negative at every K", "phase": "12"},
-    {"decision": "r drop is CLT effect, not self-correcting weakening", "rationale": "Corr(|Z'|,G) stable at 0.84 from T=300 to T=10000", "phase": "12"}
+    {"decision": "Per-zero claim is FALSE (3-4% violations); replaced with mean-influence formulation", "rationale": "Direct computation at 6 heights, growing violation fraction", "phase": "11a"},
+    {"decision": "r(T) drops from 0.93 to 0.63 (T=400 to T=2.68e11); fit: 1.30-0.20*log(log T)", "rationale": "CLT effect (more RS terms -> more Gaussian), not mechanism weakening", "phase": "11a"},
+    {"decision": "Gap 1 (mean influence) collapses into Gap 2 (r > 0)", "rationale": "Condition E[z_G z_A]<2r holds whenever r>0 because mean product ~ -0.2 to -0.6 << 2r", "phase": "11b-12"},
+    {"decision": "r > 0 proved via spectral variance identity + sub-interval positivity + ergodic theorem", "rationale": "V(g)=2Var_p[cos(wg/2)]/(1+C(g))>=0 by def of variance; h(g)=sqrt(2V/pi) goes 0->0.80; Cov positive at every partition; Weyl gives fixed-phase convergence", "phase": "11b-12"},
+    {"decision": "Influence function proxy FAILS at T~10^11 but actual delta_r still works", "rationale": "Phantom/peak ratio = 2.27 (>>1), but removing zeros still decreases r on average", "phase": "12"}
   ],
   "uncommitted_files": [],
-  "next_action": "Make the proof fully rigorous: (1) analytic core monotonicity of V(g), or (2) quantitative r_inf bound. Then submit to arXiv.",
-  "context_notes": "Session 12 completed the proof at the level of: exact identity + structural positivity argument + ergodic convergence + massive numerical verification. Gap 2 (r > 0) is RESOLVED at proof-sketch level. Gap 1 collapses into Gap 2. Gap 3 (additivity) verified numerically at T~10^11. The density bound holds at every height tested (T=400 to T=2.68e11), giving at least 85% on the critical line at the highest height. Two papers ready for review."
+  "next_action": "Either: (1) make the proof journal-ready by proving V(g) core monotonicity analytically, or (2) submit the two papers as-is with the proof at sketch level, or (3) push the density bound to Odlyzko's T~1.44e20 zeros (need mpmath arbitrary precision for gap resolution).",
+  "context_notes": "Sessions 11-12 transformed the project from 'strong numerical observation' to 'proof sketch with massive numerical verification'. The proof chain is: spectral variance identity (exact) -> V(g) > 0 (incommensurability) -> h(g) shape 0->0.80 -> sub-interval positivity (every partition gives Cov>0) -> Cov(g,P) > 0 -> r > 0 -> mean influence negative -> density bound. Verified at T=400 to T=2.68e11 (11 orders of magnitude). Two papers: rigidity_exclusion_v3.tex (density bound) and r_positivity_theorem.tex (proof of r>0). The venv is broken (OneDrive sync); use /c/Python313/python.exe directly."
 }
