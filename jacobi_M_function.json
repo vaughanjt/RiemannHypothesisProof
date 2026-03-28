@@ -1,0 +1,12 @@
+{
+  "n_violations": 0,
+  "grid_sigma": [
+    0.51,
+    3.0
+  ],
+  "grid_t": [
+    0.5,
+    100.0
+  ],
+  "min_M_critical_line": 1.4986666385082893e-06
+}
