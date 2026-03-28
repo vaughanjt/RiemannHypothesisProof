@@ -1,41 +1,38 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-28T18:30:00Z",
+  "timestamp": "2026-03-28T20:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "dBN analytical paths",
-  "phase_dir": null,
-  "plan": null,
-  "task": null,
-  "total_tasks": null,
+  "phase_name": "session 16 — dBN analytical + Jacobi matrix",
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "S16: N-scaling study (N=25,50,100,200) — chi2 best-match converges toward t=0", "status": "done"},
-    {"id": 2, "name": "S16: Collision time formula t=-g0^2/8 verified, factor-of-2 error corrected from S15", "status": "done"},
-    {"id": 3, "name": "S16: GUE mean-field correction from R2 pair correlation — alpha matches within 3-8%", "status": "done"},
-    {"id": 4, "name": "S16: Burgers/Cole-Hopf analysis — du/dz > 0 between all zeros confirmed", "status": "done"},
-    {"id": 5, "name": "S16: Log-concavity decomposition — f''_zeta dominates, both parts negative", "status": "done"},
-    {"id": 6, "name": "S16: Lambda bound — |t_coll(N)| ~ 2.33*N^{-1.05} -> 0 under Montgomery", "status": "done"},
-    {"id": 7, "name": "S16: Preprint written (docs/dbn_zero_dynamics.tex)", "status": "done"},
-    {"id": 8, "name": "S16: Jensen polynomials — all J_d^n hyperbolic, sigma^2 ~ 1.37", "status": "done"}
+    {"id": 1, "name": "N-scaling study: chi2 best-match converges to t=0", "status": "done"},
+    {"id": 2, "name": "Collision time t=-g0^2/8 (corrected), GUE correction ~5%", "status": "done"},
+    {"id": 3, "name": "Burgers/Cole-Hopf: du/dz > 0 confirmed, log-concavity verified", "status": "done"},
+    {"id": 4, "name": "Log-concavity decomposition: f''_zeta dominates", "status": "done"},
+    {"id": 5, "name": "Lambda bound: |t_coll| ~ N^{-1.05} under Montgomery", "status": "done"},
+    {"id": 6, "name": "Preprint: docs/dbn_zero_dynamics.tex (7 sections)", "status": "done"},
+    {"id": 7, "name": "Jensen polynomials: all hyperbolic, sigma^2 ~ 1.37", "status": "done"},
+    {"id": 8, "name": "Energy monotonicity: exact Lyapunov, triple-sum vanishing (analytical notes)", "status": "done"},
+    {"id": 9, "name": "Explicit formula: close pairs dominate S_N (61%), unconditional path blocked", "status": "done"},
+    {"id": 10, "name": "Jacobi matrix of zeta zeros: first computation, arithmetic signal 50x GUE", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 9, "name": "Push Jensen polynomial computation to higher n (need higher precision method)", "status": "not_started"},
-    {"id": 10, "name": "Add Jensen/GORZ section to preprint with sigma^2 result", "status": "not_started"},
-    {"id": 11, "name": "Test explicit bridge: does sigma^2=1.37 predict our log-concavity margins?", "status": "not_started"},
-    {"id": 12, "name": "Compile preprint on Overleaf and review", "status": "not_started"}
+    {"id": 11, "name": "Jacobi matrix: unfold zeros and recompute with full reorthogonalization", "status": "not_started"},
+    {"id": 12, "name": "Jacobi matrix: connect b_k oscillation periods to log(p) for small primes", "status": "not_started"},
+    {"id": 13, "name": "Jacobi matrix: characterize what {a_k,b_k} properties imply self-adjointness at N->inf", "status": "not_started"},
+    {"id": 14, "name": "Jacobi matrix: moment-explicit formula bridge (power sums of zeros <-> prime sums -> Jacobi params)", "status": "not_started"},
+    {"id": 15, "name": "Finalize preprint: add Jensen/GORZ section and explicit formula analysis", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Review preprint docs/dbn_zero_dynamics.tex", "context": "7-section paper with conditional theorem, ready for Overleaf", "blocking": false}
+    {"action": "Review preprint docs/dbn_zero_dynamics.tex on Overleaf", "blocking": false}
   ],
   "decisions": [
-    {"decision": "Collision time is t=-g0^2/8 (not g0^2/4 — Session 15 had factor-of-2 error)", "rationale": "Verified numerically: 2-body ODE dg/dt=+4/g gives g^2=g0^2+8t, collision at -g0^2/8", "phase": "16"},
-    {"decision": "GUE correction alpha ~ 1.05-1.10 (not 1.88)", "rationale": "The 1.88 was from the wrong formula. Neighbors slow collision by ~5-10%", "phase": "16"},
-    {"decision": "Log-concavity is necessary but NOT sufficient for RH", "rationale": "Complex zeros off the critical line can be hidden — their contribution to log|xi| on the real line doesn't create sign changes", "phase": "16"},
-    {"decision": "The proof barrier is identified: proving f''_zeta < 0 without Hadamard product is equivalent to RH", "rationale": "The Hadamard product proof of log-concavity assumes RH (all gamma_n real). Non-circular proof requires controlling zeta on the critical line from the Euler product side", "phase": "16"},
-    {"decision": "Conditional theorem: Montgomery -> Lambda squeezed to 0 from below", "rationale": "GUE gap statistics give g_min ~ N^{-1/3}, collision time ~ N^{-2/3}/log^2(N) -> 0", "phase": "16"}
+    {"decision": "dBN framework fully mapped — every path hits Montgomery or circularity", "rationale": "Log-concavity is RH in disguise, collision times need gap distribution (Montgomery), energy bound is too crude, Euler product controlled only 39% of S_N", "phase": "16"},
+    {"decision": "Pivot to Jacobi matrix approach (constructive Hilbert-Polya)", "rationale": "Genuinely new angle. Jacobi parameters capture arithmetic structure 50x above GUE noise. Connects to primes via moments and explicit formula. Self-adjointness of infinite Jacobi matrix would imply RH", "phase": "16"},
+    {"decision": "Collision time is t=-g0^2/8, not g0^2/4 (Session 15 error corrected)", "rationale": "2-body ODE dg/dt=+4/g gives g^2=g0^2+8t. Alpha correction is ~5-10%, not ~88%", "phase": "16"}
   ],
   "uncommitted_files": [],
-  "next_action": "Either: (1) Push Jensen computation to higher precision to get better sigma^2 estimate and extend Turan verification past n=20, or (2) Start new direction entirely — the dBN path has been thoroughly mapped and the barrier identified. The r>0 bridge variance identity from Sessions 11-14 or the spectral operator approach are alternative angles.",
-  "context_notes": "Session 16 was an analytical deep-dive into the dBN framework. Started by scaling the N-body ODE to 200 zeros, then systematically explored three proof paths: (1) collision time formula (clean, 5% GUE correction), (2) Burgers/log-concavity (barrier identified — circular), (3) Lambda convergence (conditional theorem under Montgomery). Found and corrected a factor-of-2 error from Session 15. Wrote a full preprint and connected to GORZ Jensen polynomials. The sigma^2 ~ 1.37 GORZ width parameter is the quantitative bridge between the algebraic and dynamical approaches. Environment: /c/Python313/python.exe, matplotlib Agg backend."
+  "next_action": "Continue Jacobi matrix investigation. Priority: (1) unfold zeros properly, (2) stabilize numerics with full reorthogonalization, (3) look for prime signature in b_k fluctuations, (4) derive moment-to-Jacobi connection analytically via explicit formula.",
+  "context_notes": "Session 16 was the deepest analytical session yet. Systematically explored and CLOSED four dBN proof paths (collision, log-concavity, energy, Euler product). Each barrier is structural, not computational. The session ended with a pivot to the Jacobi matrix approach — extracting the tridiagonal operator whose eigenvalues are zeta zeros. First computation shows strong arithmetic signal (50x GUE noise). This is the constructive Hilbert-Polya program made concrete. Environment: /c/Python313/python.exe, matplotlib Agg backend."
 }
