@@ -1,38 +1,36 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-28T20:00:00Z",
+  "timestamp": "2026-03-28T22:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "session 16 — dBN analytical + Jacobi matrix",
+  "phase_name": "session 16 — dBN complete, Jacobi + M-function",
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "N-scaling study: chi2 best-match converges to t=0", "status": "done"},
-    {"id": 2, "name": "Collision time t=-g0^2/8 (corrected), GUE correction ~5%", "status": "done"},
-    {"id": 3, "name": "Burgers/Cole-Hopf: du/dz > 0 confirmed, log-concavity verified", "status": "done"},
-    {"id": 4, "name": "Log-concavity decomposition: f''_zeta dominates", "status": "done"},
-    {"id": 5, "name": "Lambda bound: |t_coll| ~ N^{-1.05} under Montgomery", "status": "done"},
-    {"id": 6, "name": "Preprint: docs/dbn_zero_dynamics.tex (7 sections)", "status": "done"},
-    {"id": 7, "name": "Jensen polynomials: all hyperbolic, sigma^2 ~ 1.37", "status": "done"},
-    {"id": 8, "name": "Energy monotonicity: exact Lyapunov, triple-sum vanishing (analytical notes)", "status": "done"},
-    {"id": 9, "name": "Explicit formula: close pairs dominate S_N (61%), unconditional path blocked", "status": "done"},
-    {"id": 10, "name": "Jacobi matrix of zeta zeros: first computation, arithmetic signal 50x GUE", "status": "done"}
+    {"id": 1, "name": "dBN: scaling study, collision formula, Burgers, log-concavity, Lambda bound", "status": "done"},
+    {"id": 2, "name": "dBN: preprint written (docs/dbn_zero_dynamics.tex)", "status": "done"},
+    {"id": 3, "name": "dBN: Jensen polynomials, GORZ sigma^2 ~ 1.37", "status": "done"},
+    {"id": 4, "name": "dBN: energy monotonicity (exact Lyapunov), analytical notes", "status": "done"},
+    {"id": 5, "name": "dBN: explicit formula — close pairs dominate, unconditional path blocked", "status": "done"},
+    {"id": 6, "name": "Jacobi: first extraction from raw zeros (v1)", "status": "done"},
+    {"id": 7, "name": "Jacobi: unfolded + stabilized (v2), prime signature in b_k (SNR 3-5x at p=5,7,11,19)", "status": "done"},
+    {"id": 8, "name": "Jacobi: moment pipeline failed (divergent moments for unbounded spectrum)", "status": "done"},
+    {"id": 9, "name": "Jacobi: Schur algorithm — T(w) from primes works, extraction limited to 1 level", "status": "done"},
+    {"id": 10, "name": "Stieltjes property: Im(T(w))<0 verified at 1800 points — equivalent to RH", "status": "done"},
+    {"id": 11, "name": "M-function: RH as single inequality M(s)>0, verified at 4000 points", "status": "done"},
+    {"id": 12, "name": "M-function: decomposition shows Gamma dominates zeta by ~10% near critical line", "status": "done"},
+    {"id": 13, "name": "M-function: known bounds 20x too weak — needs angular control, not magnitude", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 11, "name": "Jacobi matrix: unfold zeros and recompute with full reorthogonalization", "status": "not_started"},
-    {"id": 12, "name": "Jacobi matrix: connect b_k oscillation periods to log(p) for small primes", "status": "not_started"},
-    {"id": 13, "name": "Jacobi matrix: characterize what {a_k,b_k} properties imply self-adjointness at N->inf", "status": "not_started"},
-    {"id": 14, "name": "Jacobi matrix: moment-explicit formula bridge (power sums of zeros <-> prime sums -> Jacobi params)", "status": "not_started"},
-    {"id": 15, "name": "Finalize preprint: add Jensen/GORZ section and explicit formula analysis", "status": "not_started"}
-  ],
-  "blockers": [],
-  "human_actions_pending": [
-    {"action": "Review preprint docs/dbn_zero_dynamics.tex on Overleaf", "blocking": false}
+    {"id": 14, "name": "Prove M(s)>0 for Re(s)>1 from Euler product (may be feasible for sigma>1)", "status": "not_started"},
+    {"id": 15, "name": "Connect M>0 to Levinson's method — is pointwise M>0 provable for sigma>3/4?", "status": "not_started"},
+    {"id": 16, "name": "Extend preprint with Jacobi/Stieltjes/M-function results", "status": "not_started"},
+    {"id": 17, "name": "Test M(s) at heights t > 10^5 using higher Odlyzko zeros", "status": "not_started"}
   ],
   "decisions": [
-    {"decision": "dBN framework fully mapped — every path hits Montgomery or circularity", "rationale": "Log-concavity is RH in disguise, collision times need gap distribution (Montgomery), energy bound is too crude, Euler product controlled only 39% of S_N", "phase": "16"},
-    {"decision": "Pivot to Jacobi matrix approach (constructive Hilbert-Polya)", "rationale": "Genuinely new angle. Jacobi parameters capture arithmetic structure 50x above GUE noise. Connects to primes via moments and explicit formula. Self-adjointness of infinite Jacobi matrix would imply RH", "phase": "16"},
-    {"decision": "Collision time is t=-g0^2/8, not g0^2/4 (Session 15 error corrected)", "rationale": "2-body ODE dg/dt=+4/g gives g^2=g0^2+8t. Alpha correction is ~5-10%, not ~88%", "phase": "16"}
+    {"decision": "RH equivalent to Stieltjes property of T(w)", "rationale": "T(w) = sum 1/(w-gamma_n^2) is Stieltjes iff all poles real positive iff gamma_n real iff RH. Non-circular: T computable from xi'/xi via mpmath.", "phase": "16"},
+    {"decision": "RH equivalent to M(s) > 0 for Re(s)>1/2, Im(s)>0", "rationale": "M = Im[(s-1/2)*conj(xi'/xi)] > 0. Decomposition: Gamma term (~t*log t) vs zeta term (~sqrt(t)*log t). Gamma wins by ~10% at sigma=0.6.", "phase": "16"},
+    {"decision": "Known bounds on zeta'/zeta are 20x too weak to prove M>0", "rationale": "Standard bound |zeta'/zeta| << log(t)/epsilon gives ratio epsilon/2 ~ 0.05, but actual ratio is ~1.1. The bound ignores angular cancellation in the specific linear combination.", "phase": "16"},
+    {"decision": "The gap is average vs pointwise argument control (Levinson generalization)", "rationale": "Levinson controls arg(xi) on average -> 1/3 of zeros on line. M>0 requires pointwise control -> all zeros on line. The bridge is the content of RH.", "phase": "16"}
   ],
-  "uncommitted_files": [],
-  "next_action": "Continue Jacobi matrix investigation. Priority: (1) unfold zeros properly, (2) stabilize numerics with full reorthogonalization, (3) look for prime signature in b_k fluctuations, (4) derive moment-to-Jacobi connection analytically via explicit formula.",
-  "context_notes": "Session 16 was the deepest analytical session yet. Systematically explored and CLOSED four dBN proof paths (collision, log-concavity, energy, Euler product). Each barrier is structural, not computational. The session ended with a pivot to the Jacobi matrix approach — extracting the tridiagonal operator whose eigenvalues are zeta zeros. First computation shows strong arithmetic signal (50x GUE noise). This is the constructive Hilbert-Polya program made concrete. Environment: /c/Python313/python.exe, matplotlib Agg backend."
+  "next_action": "Two viable next steps: (1) Try to prove M(s)>0 for sigma>1 from the Euler product — this is feasible because zeta'/zeta is bounded there. Would establish M>0 in half the domain. (2) Connect M-function to Levinson's method and check whether partial results (sigma > 3/4) are provable with current technology. Either extends the verified region analytically.",
+  "context_notes": "Session 16 was a marathon: 15+ commits across dBN (closed), Jacobi matrix (new direction), and M-function (cleanest formulation). The M-function M(s) = t*Re(xi'/xi) - (sigma-1/2)*Im(xi'/xi) > 0 is the single inequality equivalent to RH, with operator-theoretic origin (Stieltjes = self-adjoint). Verified at 4000+1800 points. Decomposition shows Gamma dominates zeta by ~10% at sigma=0.6 — tantalizingly close but existing bounds are 20x too weak. The path forward is angular control of zeta'/zeta (generalized Levinson). Environment: /c/Python313/python.exe."
 }
