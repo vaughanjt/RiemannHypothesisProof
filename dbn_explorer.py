@@ -813,16 +813,209 @@ def run_transition_analysis(n_zeros=50, t_back_max=-0.08, n_steps=500):
     print("  Saved: dbn_transition.json")
 
 
-if __name__ == '__main__':
-    t_full, z_full, stats = run_exploration(
-        n_zeros=50,
-        t_forward=0.10,
-        t_backward=-0.02,
-        n_steps=200,
-    )
+def run_scaling_study(n_values=None, t_forward=0.15, n_steps=400,
+                      save_plots=True):
+    """Study how the GUE variance crossing point scales with N.
 
-    run_transition_analysis(
-        n_zeros=50,
-        t_back_max=-0.08,
-        n_steps=400,
-    )
+    For each N in n_values, evolves zeros forward and finds the t where
+    spacing variance first drops below GUE (0.178). If the crossing
+    converges to t=0 as N increases, it means RH zeros are exactly GUE.
+
+    Returns:
+        dict with N values, crossing points, and per-N statistics.
+    """
+    if n_values is None:
+        n_values = [25, 50, 100, 200]
+
+    GUE_VAR = 0.178
+    all_zeros = np.load('_zeros_200.npy')
+
+    print("\n" + "=" * 60)
+    print("GUE CROSSING POINT vs N -- SCALING STUDY")
+    print("=" * 60)
+    print(f"  N values: {n_values}")
+    print(f"  Forward range: t = 0 -> {t_forward}")
+    print(f"  GUE variance target: {GUE_VAR}")
+
+    results = []
+
+    for n_z in n_values:
+        if n_z > len(all_zeros):
+            print(f"\n  Skipping N={n_z} (only {len(all_zeros)} zeros available)")
+            continue
+
+        z0 = all_zeros[:n_z].copy()
+        init_var = spacing_statistics(z0)['var']
+
+        print(f"\n  -- N = {n_z} --")
+        print(f"  Range: [{z0[0]:.2f}, {z0[-1]:.2f}]")
+        print(f"  Variance at t=0: {init_var:.4f}")
+
+        # Loosen tolerances for large N to keep runtime manageable
+        rtol = 1e-6 if n_z <= 100 else 1e-5
+        atol = 1e-8 if n_z <= 100 else 1e-7
+
+        t0 = time.time()
+        t_fwd, z_fwd = evolve_zeros_forward(
+            z0, t_start=0.0, t_end=t_forward, n_steps=n_steps,
+            rtol=rtol, atol=atol)
+        elapsed = time.time() - t0
+        print(f"  Forward ODE: {elapsed:.1f}s ({len(t_fwd)} steps)")
+
+        # Compute variance at each t
+        variances = []
+        chi2_vals = []
+        for i in range(len(t_fwd)):
+            s = spacing_statistics(z_fwd[i])
+            variances.append(s['var'])
+            chi2_vals.append(s.get('chi2_wigner', np.nan))
+
+        variances = np.array(variances)
+        t_arr = np.array(t_fwd)
+
+        # Find crossing: first t where variance drops below GUE_VAR
+        crossings = np.where(np.diff(np.sign(variances - GUE_VAR)))[0]
+        if len(crossings) > 0:
+            # Linear interpolation for precise crossing
+            idx = crossings[0]
+            v0, v1 = variances[idx], variances[idx + 1]
+            t0_c, t1_c = t_arr[idx], t_arr[idx + 1]
+            t_cross = t0_c + (GUE_VAR - v0) / (v1 - v0) * (t1_c - t0_c)
+            print(f"  GUE crossing: t = {t_cross:.6f}")
+        else:
+            t_cross = np.nan
+            if variances[-1] > GUE_VAR:
+                print(f"  No crossing (variance stays above GUE: min={variances.min():.4f})")
+            else:
+                print(f"  Variance starts below GUE — crossing at t <= 0")
+                t_cross = 0.0
+
+        # Also find chi2 minimum (best GUE match)
+        chi2_arr = np.array(chi2_vals)
+        if not np.all(np.isnan(chi2_arr)):
+            best_idx = np.nanargmin(chi2_arr)
+            t_best_gue = float(t_arr[best_idx])
+            chi2_min = float(chi2_arr[best_idx])
+            print(f"  Best GUE match: t = {t_best_gue:.6f} (chi2 = {chi2_min:.4f})")
+        else:
+            t_best_gue = np.nan
+            chi2_min = np.nan
+
+        results.append({
+            'N': n_z,
+            'var_at_t0': float(init_var),
+            't_cross_gue': float(t_cross),
+            't_best_gue': t_best_gue,
+            'chi2_at_best': chi2_min,
+            'var_min': float(variances.min()),
+            'var_max': float(variances.max()),
+            't_values': t_arr.tolist(),
+            'variances': variances.tolist(),
+            'elapsed_s': elapsed,
+        })
+
+    # ── Summary table ──
+    print("\n" + "=" * 60)
+    print("SCALING SUMMARY")
+    print("=" * 60)
+    print(f"  {'N':>5}  {'Var(t=0)':>10}  {'t_cross':>10}  {'t_best':>10}  {'chi2_best':>10}")
+    print(f"  {'-'*5}  {'-'*10}  {'-'*10}  {'-'*10}  {'-'*10}")
+    for r in results:
+        tc = f"{r['t_cross_gue']:.6f}" if not np.isnan(r['t_cross_gue']) else "N/A"
+        tb = f"{r['t_best_gue']:.6f}" if not np.isnan(r['t_best_gue']) else "N/A"
+        c2 = f"{r['chi2_at_best']:.4f}" if not np.isnan(r['chi2_at_best']) else "N/A"
+        print(f"  {r['N']:>5}  {r['var_at_t0']:>10.4f}  {tc:>10}  {tb:>10}  {c2:>10}")
+
+    # ── Convergence plot ──
+    if save_plots and len(results) >= 2:
+        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+
+        # (0,0) Variance vs t for all N values
+        ax = axes[0, 0]
+        colors = plt.cm.viridis(np.linspace(0.2, 0.9, len(results)))
+        for r, c in zip(results, colors):
+            ax.plot(r['t_values'], r['variances'], color=c, linewidth=1.5,
+                    label=f"N={r['N']}")
+        ax.axhline(y=GUE_VAR, color='orange', linestyle=':', linewidth=2,
+                   label=f'GUE = {GUE_VAR}')
+        ax.set_xlabel('t')
+        ax.set_ylabel('Spacing variance')
+        ax.set_title('Variance vs t for different N')
+        ax.legend(fontsize=9)
+        ax.grid(True, alpha=0.3)
+
+        # (0,1) Crossing point vs N
+        ax = axes[0, 1]
+        ns = [r['N'] for r in results if not np.isnan(r['t_cross_gue'])]
+        tcs = [r['t_cross_gue'] for r in results if not np.isnan(r['t_cross_gue'])]
+        if len(ns) >= 2:
+            ax.plot(ns, tcs, 'ro-', markersize=8, linewidth=2)
+            ax.axhline(y=0, color='gray', linestyle=':', alpha=0.5)
+            # Fit 1/N trend if enough points
+            if len(ns) >= 3:
+                ns_arr = np.array(ns, dtype=float)
+                tcs_arr = np.array(tcs)
+                # Fit t_cross = a/N + b
+                A = np.column_stack([1.0/ns_arr, np.ones(len(ns_arr))])
+                coeff, _, _, _ = np.linalg.lstsq(A, tcs_arr, rcond=None)
+                n_fit = np.linspace(min(ns)*0.8, max(ns)*2, 100)
+                t_fit = coeff[0] / n_fit + coeff[1]
+                ax.plot(n_fit, t_fit, 'b--', alpha=0.5,
+                        label=f'Fit: {coeff[0]:.3f}/N + {coeff[1]:.4f}')
+                ax.legend(fontsize=9)
+                print(f"\n  1/N fit: t_cross = {coeff[0]:.4f}/N + {coeff[1]:.6f}")
+                print(f"  Extrapolated t_cross(N->inf) = {coeff[1]:.6f}")
+        ax.set_xlabel('N (number of zeros)')
+        ax.set_ylabel('t at GUE variance crossing')
+        ax.set_title('GUE Crossing Point vs N')
+        ax.grid(True, alpha=0.3)
+
+        # (1,0) Variance at t=0 vs N
+        ax = axes[1, 0]
+        ns_all = [r['N'] for r in results]
+        v0s = [r['var_at_t0'] for r in results]
+        ax.plot(ns_all, v0s, 'gs-', markersize=8, linewidth=2)
+        ax.axhline(y=GUE_VAR, color='orange', linestyle=':', linewidth=2,
+                   label=f'GUE = {GUE_VAR}')
+        ax.set_xlabel('N')
+        ax.set_ylabel('Variance at t=0')
+        ax.set_title('How close are RH zeros to GUE?')
+        ax.legend(fontsize=9)
+        ax.grid(True, alpha=0.3)
+
+        # (1,1) Best chi2 vs N
+        ax = axes[1, 1]
+        chi2s = [r['chi2_at_best'] for r in results
+                 if not np.isnan(r['chi2_at_best'])]
+        ns_c2 = [r['N'] for r in results
+                 if not np.isnan(r['chi2_at_best'])]
+        t_bests = [r['t_best_gue'] for r in results
+                   if not np.isnan(r['t_best_gue'])]
+        if chi2s:
+            ax.plot(ns_c2, t_bests, 'ms-', markersize=8, linewidth=2)
+            ax.axhline(y=0, color='gray', linestyle=':', alpha=0.5)
+            ax.set_xlabel('N')
+            ax.set_ylabel('t at best GUE fit (min chi2)')
+            ax.set_title('Best GUE Match Point vs N')
+            ax.grid(True, alpha=0.3)
+
+        fig.suptitle('GUE Crossing Convergence Study', fontsize=14, y=1.01)
+        plt.tight_layout()
+        fig.savefig('dbn_scaling_study.png', dpi=150, bbox_inches='tight')
+        print("  Saved: dbn_scaling_study.png")
+        plt.close(fig)
+
+    # Save data
+    save_results = [{k: v for k, v in r.items()
+                     if k not in ('t_values', 'variances')}
+                    for r in results]
+    with open('dbn_scaling.json', 'w') as f:
+        json.dump({'results': save_results,
+                   'full': results}, f, indent=2)
+    print("  Saved: dbn_scaling.json")
+
+    return results
+
+
+if __name__ == '__main__':
+    run_scaling_study()
