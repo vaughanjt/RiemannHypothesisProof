@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-28T12:34:30Z",
+  "timestamp": "2026-03-28T13:55:11Z",
   "phase": "04",
   "phase_name": "lean-4-formalization-pipeline",
   "phase_dir": ".planning/phases/04-lean-4-formalization-pipeline",
@@ -9,46 +9,48 @@
   "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "S14: Derived Slepian bridge formulas a(g), sigma_res(g) from spectral density", "status": "done"},
-    {"id": 2, "name": "S14: Evaluated residual-only CV bound — fails for g < g_bar (R^2 too high)", "status": "done"},
-    {"id": 3, "name": "S14: Proved two-component CV bound: CV^2 >= (1-2/pi)(1-R^2) + c(g)^2*R^2", "status": "done"},
-    {"id": 4, "name": "S14: Proved chi(3) small-gap limit: c(g) -> 0.422 as g -> 0 (Slepian linearization)", "status": "done"},
-    {"id": 5, "name": "S14: Proved TP2 property of gap survival S(y,g) via pathwise coupling", "status": "done"},
-    {"id": 6, "name": "S14: Computed persistence psi_0 >= 0.31 via Gaussian orthant (deterministic)", "status": "done"},
-    {"id": 7, "name": "S14: Rician bound gives c(g) >= 0.49, closing Step 6 analytically", "status": "done"},
-    {"id": 8, "name": "S14: Full paper rewrite — 7 pages, all references resolved, PDF compiled", "status": "done"},
-    {"id": 9, "name": "S14: Grok review — confirms new ground in methodology, correctly notes not closer to full RH", "status": "done"},
-    {"id": 10, "name": "S14: Pivot decision — from peak-gap statistics to de Bruijn-Newman zero dynamics", "status": "done"},
-    {"id": 11, "name": "S14: Deep research on dBN constant, Jensen polynomials, PF5 failure, Grochenig equivalence", "status": "done"}
+    {"id": 1, "name": "S15: Compute H_t(z) = xi(1/2+iz) via mpmath (exact validation to <1e-18)", "status": "done"},
+    {"id": 2, "name": "S15: FFT-based heat evolution for H_t profiles at multiple t values", "status": "done"},
+    {"id": 3, "name": "S15: Coulomb ODE dz_j/dt = +2 sum 1/(z_j - z_k) with correct sign convention", "status": "done"},
+    {"id": 4, "name": "S15: Forward evolution (t: 0->0.1) — repulsion confirmed, min gap grows 1.38x", "status": "done"},
+    {"id": 5, "name": "S15: Backward evolution (t: 0->-0.08) — attraction confirmed, min gap shrinks to 42%", "status": "done"},
+    {"id": 6, "name": "S15: Zero trajectory visualization (50 zeros, t in [-0.02, 0.10])", "status": "done"},
+    {"id": 7, "name": "S15: Spacing statistics vs GUE at each t (variance, chi2, pair correlation)", "status": "done"},
+    {"id": 8, "name": "S15: GUE-arithmetic transition analysis — 6-panel diagnostic + closest pair tracking", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 12, "name": "Compute H_t(z) for the de Bruijn-Newman family using Riemann-Siegel approximation", "status": "not_started"},
-    {"id": 13, "name": "Implement zero dynamics ODE: dz_j/dt = -2 sum 1/(z_k - z_j)", "status": "not_started"},
-    {"id": 14, "name": "Visualize zero trajectories in complex plane as t decreases from 0.2 toward 0", "status": "not_started"},
-    {"id": 15, "name": "Compare spacing statistics at each t against GUE predictions", "status": "not_started"},
-    {"id": 16, "name": "Explore: what does the GUE -> arithmetic transition look like near t = 0?", "status": "not_started"}
+    {"id": 9, "name": "Scale to 200+ zeros using higher Odlyzko data for better statistics", "status": "not_started"},
+    {"id": 10, "name": "Zoom into the collision regime: push backward past t=-0.15 to find first collision", "status": "not_started"},
+    {"id": 11, "name": "Validate ODE-evolved zeros against direct H_t zero-finding (consistency check)", "status": "not_started"},
+    {"id": 12, "name": "Compare Dyson Brownian motion with noise against deterministic Coulomb ODE", "status": "not_started"},
+    {"id": 13, "name": "Explore: does the GUE crossing point (t~0.08) scale with N?", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Review final paper PDF docs/r_positivity_theorem.pdf", "context": "Revised 7-page paper with fully analytical proof", "blocking": false},
-    {"action": "Send revised paper to Grok for second critique", "context": "Paper now has no Monte Carlo, all analytical", "blocking": false}
+    {"action": "Review dbn_transition_analysis.png — the 6-panel transition plot", "context": "This is the key visual showing the GUE-arithmetic transition structure", "blocking": false},
+    {"action": "Review dbn_closest_pair.png — zero pair approaching collision", "context": "Shows the specific pair near z~111 converging under backward flow", "blocking": false}
   ],
   "decisions": [
-    {"decision": "Replaced ballot lemma with two-component Slepian bound + Gaussian orthant persistence", "rationale": "Ballot lemma (P(exc|y) ~ cy) was a red herring; the Slepian noise floor + Rician bound close the proof without it", "phase": "14"},
-    {"decision": "TP2 of gap survival proved via pathwise coupling argument", "rationale": "X_{y2}(t) >= X_{y1}(t) pathwise since r(t) > 0; hazard rate ordering follows from stochastic domination of conditional positions", "phase": "14"},
-    {"decision": "Pivot from peak-gap statistics to de Bruijn-Newman zero dynamics", "rationale": "Peak-gap approach is statistical (positive proportion), cannot reach RH (rigidity). dBN zero flow is visual and exploratory, connects to RMT tools we already have", "phase": "14"},
-    {"decision": "PF5 failure blocks naive TP approach to RH", "rationale": "arXiv:2602.20313 proves dBN kernel is NOT PF5. Cannot extend our TP2 result to PF_infinity for kernel. Jensen polynomial program (Prong 2) remains viable for future", "phase": "14"},
-    {"decision": "Prong 1 (visual exploration) chosen over Prong 2 (Jensen polynomial push)", "rationale": "User is explorer, wants to 'poke at visualizations and ask what if'. dBN zero dynamics is inherently visual and our platform has the RMT/viz tools", "phase": "14"}
+    {"decision": "H_0(z) = xi(1/2+iz) via mpmath direct evaluation, not Phi kernel integral", "rationale": "The theta-type Phi kernel has normalization ambiguities across literature sources; direct mpmath xi evaluation is exact to machine precision", "phase": "15"},
+    {"decision": "Standard dBN sign convention: ODE uses +2 (repulsion for forward t)", "rationale": "First run used -2 (attraction forward) which gave collapsing min gaps — wrong physics. Corrected to match forward heat = smoothing = repulsion", "phase": "15"},
+    {"decision": "FFT heat evolution for H_t profiles", "rationale": "hat{H_t}(k) = exp(-tk^2) hat{H_0}(k) — spectral method avoids convolution integral, works with pre-computed H_0 grid", "phase": "15"},
+    {"decision": "50 zeros for main exploration, 25 for quick tests", "rationale": "100+ zeros makes Coulomb ODE slow (O(N^2) RHS, tight step control near close pairs). 50 zeros gives 49 spacings — enough for histograms, fast ODE (~1s)", "phase": "15"},
+    {"decision": "DOP853 solver with rtol=1e-6, atol=1e-8", "rationale": "RK45 with tight tolerances was too slow. DOP853 with relaxed tol gives same physical results in fraction of time", "phase": "15"}
   ],
   "uncommitted_files": [
-    "docs/r_positivity_theorem.tex",
-    "docs/r_positivity_theorem.pdf",
-    "_ballot_analytical.py",
-    "_ballot_proof.py",
-    "_fisher_bound.py",
-    "_orthant_psi.py",
-    "_persistence_bound.py"
+    "dbn_explorer.py",
+    "dbn_H0_profile.png",
+    "dbn_Ht_profiles.png",
+    "dbn_trajectories.png",
+    "dbn_gap_evolution.png",
+    "dbn_spacing_evolution.png",
+    "dbn_statistics_vs_t.png",
+    "dbn_pair_correlation.png",
+    "dbn_transition_analysis.png",
+    "dbn_closest_pair.png",
+    "dbn_stats.json",
+    "dbn_transition.json"
   ],
-  "next_action": "Build the de Bruijn-Newman zero flow explorer. First: compute H_t(z) = integral exp(tu^2) Phi(u) cos(zu) du using numerical quadrature. Then implement the zero dynamics ODE dz_j/dt = -2 sum 1/(z_k - z_j). Visualize zero trajectories as t decreases from 0.2 toward 0. Use existing zeta zero data (_zeros_200.npy) as initial conditions at t = 0. Track GUE statistics at each t. Key reference: Polymath15 wiki and Tao's blog posts on dBN.",
-  "context_notes": "Session 14 was a marathon. Started by attacking the ballot lemma (the one remaining analytical gap in the r > 0 proof). Discovered the two-component Slepian bound which splits CV into noise floor + signal floor. Proved chi(3) limit analytically. Proved TP2 of gap survival via pathwise coupling. Closed the proof with Gaussian orthant persistence (psi_0 >= 0.31, deterministic). Revised paper to 7 pages, all analytical. Grok confirmed methodology is new but correctly noted it doesn't advance toward full RH. Pivoted to de Bruijn-Newman zero dynamics as the next exploration direction. Venv still broken; use /c/Python313/python.exe. MiKTeX at /c/Users/jvaughan/AppData/Local/Programs/MiKTeX/miktex/bin/x64/pdflatex.exe."
+  "next_action": "Scale exploration to 200 zeros (use _zeros_200.npy directly, may need to chunk the ODE or loosen tolerances further). The key open question is: does the GUE variance crossing at t~0.08 shift as N increases? If it converges to t=0, that would mean RH zeros are exactly GUE — strong evidence. Also push backward to find the actual collision point for the closest pair near z~111.",
+  "context_notes": "Session 15 built the full dBN zero flow explorer from scratch. Started with a Phi kernel approach that had normalization issues — switched to direct xi evaluation via mpmath which gives machine-precision zeros. Fixed the ODE sign convention (was -2 attraction, corrected to +2 repulsion for forward heat). Key finding: spacing variance crosses GUE value (0.178) near t~0.08 forward. At t=0 (RH boundary), variance is 0.204 — near-GUE but with arithmetic corrections. Backward, the closest pair (near z~111) converges linearly, extrapolated collision around t~-0.15. Environment: /c/Python313/python.exe, matplotlib Agg backend (no display), venv still broken."
 }
