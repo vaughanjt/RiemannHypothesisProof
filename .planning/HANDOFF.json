@@ -1,56 +1,41 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-28T13:55:11Z",
-  "phase": "04",
-  "phase_name": "lean-4-formalization-pipeline",
-  "phase_dir": ".planning/phases/04-lean-4-formalization-pipeline",
+  "timestamp": "2026-03-28T18:30:00Z",
+  "phase": "post-milestone",
+  "phase_name": "dBN analytical paths",
+  "phase_dir": null,
   "plan": null,
   "task": null,
   "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "S15: Compute H_t(z) = xi(1/2+iz) via mpmath (exact validation to <1e-18)", "status": "done"},
-    {"id": 2, "name": "S15: FFT-based heat evolution for H_t profiles at multiple t values", "status": "done"},
-    {"id": 3, "name": "S15: Coulomb ODE dz_j/dt = +2 sum 1/(z_j - z_k) with correct sign convention", "status": "done"},
-    {"id": 4, "name": "S15: Forward evolution (t: 0->0.1) — repulsion confirmed, min gap grows 1.38x", "status": "done"},
-    {"id": 5, "name": "S15: Backward evolution (t: 0->-0.08) — attraction confirmed, min gap shrinks to 42%", "status": "done"},
-    {"id": 6, "name": "S15: Zero trajectory visualization (50 zeros, t in [-0.02, 0.10])", "status": "done"},
-    {"id": 7, "name": "S15: Spacing statistics vs GUE at each t (variance, chi2, pair correlation)", "status": "done"},
-    {"id": 8, "name": "S15: GUE-arithmetic transition analysis — 6-panel diagnostic + closest pair tracking", "status": "done"}
+    {"id": 1, "name": "S16: N-scaling study (N=25,50,100,200) — chi2 best-match converges toward t=0", "status": "done"},
+    {"id": 2, "name": "S16: Collision time formula t=-g0^2/8 verified, factor-of-2 error corrected from S15", "status": "done"},
+    {"id": 3, "name": "S16: GUE mean-field correction from R2 pair correlation — alpha matches within 3-8%", "status": "done"},
+    {"id": 4, "name": "S16: Burgers/Cole-Hopf analysis — du/dz > 0 between all zeros confirmed", "status": "done"},
+    {"id": 5, "name": "S16: Log-concavity decomposition — f''_zeta dominates, both parts negative", "status": "done"},
+    {"id": 6, "name": "S16: Lambda bound — |t_coll(N)| ~ 2.33*N^{-1.05} -> 0 under Montgomery", "status": "done"},
+    {"id": 7, "name": "S16: Preprint written (docs/dbn_zero_dynamics.tex)", "status": "done"},
+    {"id": 8, "name": "S16: Jensen polynomials — all J_d^n hyperbolic, sigma^2 ~ 1.37", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 9, "name": "Scale to 200+ zeros using higher Odlyzko data for better statistics", "status": "not_started"},
-    {"id": 10, "name": "Zoom into the collision regime: push backward past t=-0.15 to find first collision", "status": "not_started"},
-    {"id": 11, "name": "Validate ODE-evolved zeros against direct H_t zero-finding (consistency check)", "status": "not_started"},
-    {"id": 12, "name": "Compare Dyson Brownian motion with noise against deterministic Coulomb ODE", "status": "not_started"},
-    {"id": 13, "name": "Explore: does the GUE crossing point (t~0.08) scale with N?", "status": "not_started"}
+    {"id": 9, "name": "Push Jensen polynomial computation to higher n (need higher precision method)", "status": "not_started"},
+    {"id": 10, "name": "Add Jensen/GORZ section to preprint with sigma^2 result", "status": "not_started"},
+    {"id": 11, "name": "Test explicit bridge: does sigma^2=1.37 predict our log-concavity margins?", "status": "not_started"},
+    {"id": 12, "name": "Compile preprint on Overleaf and review", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Review dbn_transition_analysis.png — the 6-panel transition plot", "context": "This is the key visual showing the GUE-arithmetic transition structure", "blocking": false},
-    {"action": "Review dbn_closest_pair.png — zero pair approaching collision", "context": "Shows the specific pair near z~111 converging under backward flow", "blocking": false}
+    {"action": "Review preprint docs/dbn_zero_dynamics.tex", "context": "7-section paper with conditional theorem, ready for Overleaf", "blocking": false}
   ],
   "decisions": [
-    {"decision": "H_0(z) = xi(1/2+iz) via mpmath direct evaluation, not Phi kernel integral", "rationale": "The theta-type Phi kernel has normalization ambiguities across literature sources; direct mpmath xi evaluation is exact to machine precision", "phase": "15"},
-    {"decision": "Standard dBN sign convention: ODE uses +2 (repulsion for forward t)", "rationale": "First run used -2 (attraction forward) which gave collapsing min gaps — wrong physics. Corrected to match forward heat = smoothing = repulsion", "phase": "15"},
-    {"decision": "FFT heat evolution for H_t profiles", "rationale": "hat{H_t}(k) = exp(-tk^2) hat{H_0}(k) — spectral method avoids convolution integral, works with pre-computed H_0 grid", "phase": "15"},
-    {"decision": "50 zeros for main exploration, 25 for quick tests", "rationale": "100+ zeros makes Coulomb ODE slow (O(N^2) RHS, tight step control near close pairs). 50 zeros gives 49 spacings — enough for histograms, fast ODE (~1s)", "phase": "15"},
-    {"decision": "DOP853 solver with rtol=1e-6, atol=1e-8", "rationale": "RK45 with tight tolerances was too slow. DOP853 with relaxed tol gives same physical results in fraction of time", "phase": "15"}
+    {"decision": "Collision time is t=-g0^2/8 (not g0^2/4 — Session 15 had factor-of-2 error)", "rationale": "Verified numerically: 2-body ODE dg/dt=+4/g gives g^2=g0^2+8t, collision at -g0^2/8", "phase": "16"},
+    {"decision": "GUE correction alpha ~ 1.05-1.10 (not 1.88)", "rationale": "The 1.88 was from the wrong formula. Neighbors slow collision by ~5-10%", "phase": "16"},
+    {"decision": "Log-concavity is necessary but NOT sufficient for RH", "rationale": "Complex zeros off the critical line can be hidden — their contribution to log|xi| on the real line doesn't create sign changes", "phase": "16"},
+    {"decision": "The proof barrier is identified: proving f''_zeta < 0 without Hadamard product is equivalent to RH", "rationale": "The Hadamard product proof of log-concavity assumes RH (all gamma_n real). Non-circular proof requires controlling zeta on the critical line from the Euler product side", "phase": "16"},
+    {"decision": "Conditional theorem: Montgomery -> Lambda squeezed to 0 from below", "rationale": "GUE gap statistics give g_min ~ N^{-1/3}, collision time ~ N^{-2/3}/log^2(N) -> 0", "phase": "16"}
   ],
-  "uncommitted_files": [
-    "dbn_explorer.py",
-    "dbn_H0_profile.png",
-    "dbn_Ht_profiles.png",
-    "dbn_trajectories.png",
-    "dbn_gap_evolution.png",
-    "dbn_spacing_evolution.png",
-    "dbn_statistics_vs_t.png",
-    "dbn_pair_correlation.png",
-    "dbn_transition_analysis.png",
-    "dbn_closest_pair.png",
-    "dbn_stats.json",
-    "dbn_transition.json"
-  ],
-  "next_action": "Scale exploration to 200 zeros (use _zeros_200.npy directly, may need to chunk the ODE or loosen tolerances further). The key open question is: does the GUE variance crossing at t~0.08 shift as N increases? If it converges to t=0, that would mean RH zeros are exactly GUE — strong evidence. Also push backward to find the actual collision point for the closest pair near z~111.",
-  "context_notes": "Session 15 built the full dBN zero flow explorer from scratch. Started with a Phi kernel approach that had normalization issues — switched to direct xi evaluation via mpmath which gives machine-precision zeros. Fixed the ODE sign convention (was -2 attraction, corrected to +2 repulsion for forward heat). Key finding: spacing variance crosses GUE value (0.178) near t~0.08 forward. At t=0 (RH boundary), variance is 0.204 — near-GUE but with arithmetic corrections. Backward, the closest pair (near z~111) converges linearly, extrapolated collision around t~-0.15. Environment: /c/Python313/python.exe, matplotlib Agg backend (no display), venv still broken."
+  "uncommitted_files": [],
+  "next_action": "Either: (1) Push Jensen computation to higher precision to get better sigma^2 estimate and extend Turan verification past n=20, or (2) Start new direction entirely — the dBN path has been thoroughly mapped and the barrier identified. The r>0 bridge variance identity from Sessions 11-14 or the spectral operator approach are alternative angles.",
+  "context_notes": "Session 16 was an analytical deep-dive into the dBN framework. Started by scaling the N-body ODE to 200 zeros, then systematically explored three proof paths: (1) collision time formula (clean, 5% GUE correction), (2) Burgers/log-concavity (barrier identified — circular), (3) Lambda convergence (conditional theorem under Montgomery). Found and corrected a factor-of-2 error from Session 15. Wrote a full preprint and connected to GORZ Jensen polynomials. The sigma^2 ~ 1.37 GORZ width parameter is the quantitative bridge between the algebraic and dynamical approaches. Environment: /c/Python313/python.exe, matplotlib Agg backend."
 }
