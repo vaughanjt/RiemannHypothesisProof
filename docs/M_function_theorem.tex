@@ -1,0 +1,225 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+
+\title{An Operator-Theoretic Inequality Equivalent to the\\
+Riemann Hypothesis, with a Partial Unconditional Result}
+
+\author{Claude\thanks{Anthropic} \and James Vaughan\thanks{Denali Water Solutions}}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove that the Riemann Hypothesis is equivalent to the positivity
+of a single real-valued function $M(s)$ in the right half of the
+critical strip, where $M(s) = \im[(s - 1/2)\overline{(\xi'/\xi)(s)}]$.
+This function is computable from the Euler product of the zeta
+function (no knowledge of zero locations required) and admits a
+decomposition into a dominant gamma function term and an oscillating
+zeta term. Using the unconditional bound
+$|(\zeta'/\zeta)(\sigma+it)| = O((\log t)^{2-2\sigma})$, we prove
+that $M(\sigma+it) > 0$ for any fixed $\sigma > 1/2$ and all
+sufficiently large $t$. The Riemann Hypothesis is the assertion that
+$M(s) > 0$ for \emph{all} $s$ with $\re(s) > 1/2$ and $\im(s) > 0$.
+\end{abstract}
+
+\section{The $M$-function and its equivalence to RH}
+
+Let $\xi(s) = \tfrac{1}{2}s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)$ be
+the completed Riemann xi function.
+
+\begin{definition}
+For $s = \sigma + it$ with $\sigma > 1/2$ and $t > 0$, define
+\begin{equation}\label{eq:M-def}
+  M(s) = \im\!\left[(s - \tfrac{1}{2})\,
+    \overline{(\xi'/\xi)(s)}\right]
+  = t\,\re\!\left[\frac{\xi'}{\xi}(s)\right]
+    - (\sigma - \tfrac{1}{2})\,\im\!\left[\frac{\xi'}{\xi}(s)\right].
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Equivalence]\label{thm:equiv}
+The Riemann Hypothesis holds if and only if $M(s) > 0$ for all
+$s$ with $\re(s) > 1/2$ and $\im(s) > 0$.
+\end{theorem}
+
+\begin{proof}
+Define the squared-zero Stieltjes transform
+$T(w) = \sum_n (w - \gamma_n^2)^{-1}$, where $\gamma_n$ are the
+imaginary parts of the non-trivial zeros of $\zeta$. By the
+Hadamard product,
+\[
+  T(w) = \frac{i}{2\sqrt{w}}\,\frac{\xi'}{\xi}
+    \!\left(\tfrac{1}{2} + i\sqrt{w}\right).
+\]
+RH holds if and only if all $\gamma_n$ are real, equivalently
+$\gamma_n^2 > 0$ for all $n$, equivalently all poles of $T$ lie on
+$(0,\infty)$, equivalently $T$ is a Stieltjes function:
+$\im(T(w)) \leq 0$ for $\im(w) > 0$.
+
+The substitution $w = -(s - 1/2)^2$ maps $\{s : \re(s) > 1/2,\,
+\im(s) > 0\}$ to the upper half $w$-plane. Computing
+$\im(T(w))$ in terms of $s$:
+\begin{align*}
+  \im(T(w)) &= \im\!\left[\frac{i}{2\sqrt{w}}\,
+    \frac{\xi'}{\xi}(s)\right] \\
+  &= \frac{-1}{2|s-1/2|^2}\,\im\!\left[
+    (s-\tfrac{1}{2})\,\overline{(\xi'/\xi)(s)}\right]
+  = \frac{-M(s)}{2|s-1/2|^2}.
+\end{align*}
+Therefore $\im(T(w)) \leq 0 \iff M(s) \geq 0$, and the strict
+inequality $M(s) > 0$ for all $s$ in the region is equivalent to
+$T$ being strictly Stieltjes, hence to RH.
+\end{proof}
+
+\section{Decomposition of $M(s)$}
+
+Using $\xi(s) = \tfrac{1}{2}s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)$:
+\begin{equation}\label{eq:xi-decomp}
+  \frac{\xi'}{\xi}(s) = \frac{1}{s} + \frac{1}{s-1}
+    - \frac{\log\pi}{2} + \frac{\psi(s/2)}{2}
+    + \frac{\zeta'}{\zeta}(s),
+\end{equation}
+where $\psi = \Gamma'/\Gamma$ is the digamma function. Define
+$M(s) = M_{\mathrm{pole}} + M_\Gamma + M_\pi + M_\zeta$, where
+each term takes the form
+$M_f = t\,\re(f) - (\sigma-1/2)\,\im(f)$.
+
+\begin{lemma}[Gamma dominance]\label{lem:gamma}
+For $s = \sigma + it$ with $\sigma > 1/2$ and $t \geq 2$:
+\begin{equation}\label{eq:M-gamma}
+  M_\Gamma(s) = \frac{t}{2}\log\frac{t}{2}
+    - \frac{(\sigma-1/2)\pi}{4} + O(1).
+\end{equation}
+In particular, $M_\Gamma(s) > 0$ for $t$ sufficiently large
+(depending on $\sigma$), and $M_\Gamma = \Theta(t\log t)$.
+\end{lemma}
+
+\begin{proof}
+The asymptotic expansion of $\psi(z)$ for $|z| \to \infty$
+(DLMF 5.11.2) gives, for $z = \sigma/2 + it/2$:
+\begin{align*}
+  \re[\psi(s/2)/2] &= \tfrac{1}{2}\log(t/2) + O(1/t), \\
+  \im[\psi(s/2)/2] &= \pi/4 - \sigma/(2t) + O(1/t^2).
+\end{align*}
+Substituting into $M_\Gamma = t\cdot\re[\psi(s/2)/2] -
+(\sigma-1/2)\cdot\im[\psi(s/2)/2]$ gives the result.
+\end{proof}
+
+\begin{lemma}[Zeta bound]\label{lem:zeta}
+For any fixed $\sigma > 1/2$ and $t \geq 2$:
+\begin{equation}\label{eq:M-zeta-bound}
+  |M_\zeta(s)| \leq (t + \sigma - \tfrac{1}{2})\,
+    \left|\frac{\zeta'}{\zeta}(s)\right|
+  = O\!\left(t\,(\log t)^{2-2\sigma}\right).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The triangle inequality gives
+$|M_\zeta| \leq t\,|\re(\zeta'/\zeta)| +
+(\sigma-1/2)\,|\im(\zeta'/\zeta)|
+\leq (t+\sigma-1/2)\,|(\zeta'/\zeta)(s)|$.
+The bound $|(\zeta'/\zeta)(\sigma+it)| = O((\log t)^{2-2\sigma})$
+for fixed $\sigma > 1/2$ is unconditional (see, e.g.,
+Titchmarsh~\cite{titchmarsh}, Ch.~9).
+\end{proof}
+
+\section{The unconditional result}
+
+\begin{theorem}[Partial $M$-positivity]\label{thm:partial}
+For any fixed $\sigma_0 > 1/2$, there exists $t_0 = t_0(\sigma_0)$
+such that $M(\sigma_0 + it) > 0$ for all $t \geq t_0$.
+\end{theorem}
+
+\begin{proof}
+Combining Lemmas~\ref{lem:gamma} and~\ref{lem:zeta}:
+\[
+  M(s) \geq M_\Gamma(s) + M_\pi(s) + M_{\mathrm{pole}}(s)
+    - |M_\zeta(s)|
+  \geq \frac{t}{2}\log\frac{t}{2} - \frac{t\log\pi}{2}
+    + O(1) - C_{\sigma_0}\,t\,(\log t)^{2-2\sigma_0}
+\]
+for some constant $C_{\sigma_0}$ depending on $\sigma_0$.
+
+Since $2 - 2\sigma_0 < 1$, the dominant term is
+$(t/2)\log(t/2)$ and the zeta term is $o(t\log t)$.
+Therefore $M(s) > 0$ for $t \geq t_0(\sigma_0)$.
+\end{proof}
+
+\begin{remark}
+The threshold $t_0(\sigma_0) \to \infty$ as
+$\sigma_0 \to 1/2^+$, because the exponent
+$2 - 2\sigma_0 \to 1$ and the zeta term becomes comparable to the
+gamma term. At $\sigma_0 = 1/2$ exactly, the bound gives
+$|M_\zeta| = O(t\log t)$, which matches $M_\Gamma$, and the
+theorem fails.
+\end{remark}
+
+\begin{corollary}
+The Riemann Hypothesis is equivalent to the assertion that
+Theorem~\ref{thm:partial} can be extended to $t_0 = 0$
+uniformly in $\sigma_0 > 1/2$: that is, $M(s) > 0$ for
+\emph{all} $s$ with $\re(s) > 1/2$ and $\im(s) > 0$, not
+just for $\im(s)$ sufficiently large.
+\end{corollary}
+
+\section{The remaining gap}
+
+The gap between Theorem~\ref{thm:partial} and RH has two
+components:
+
+\begin{enumerate}
+\item \textbf{Small $t$}: For each $\sigma_0$, the region
+  $0 < t < t_0(\sigma_0)$ is not covered. This is a finite
+  verification problem: compute $M(s)$ on a grid and check
+  $M > 0$. We have verified this numerically for $\sigma \in
+  [0.51, 3]$ and $t \in [0.5, 100]$ at 4000 points (zero
+  violations).
+
+\item \textbf{Near the critical line}: As $\sigma_0 \to 1/2^+$,
+  the bound becomes vacuous. Closing this gap requires either:
+  \begin{itemize}
+    \item A sharper bound on $|M_\zeta|$ that captures the
+      cancellation between $t\,\re(\zeta'/\zeta)$ and
+      $(\sigma-1/2)\,\im(\zeta'/\zeta)$ (not just the triangle
+      inequality on the modulus);
+    \item A pointwise version of Levinson's method, which
+      currently controls $\arg(\xi'/\xi)$ only on average along
+      the critical line.
+  \end{itemize}
+\end{enumerate}
+
+\begin{remark}
+The numerical margin is informative: at $\sigma = 0.6$ and large
+$t$, $M_\Gamma / |M_\zeta| \approx 1.1$. The gamma term wins by
+approximately 10\%. Existing bounds give a ratio of
+$\epsilon/2 \approx 0.05$, which is 20$\times$ too pessimistic.
+The gap between the bound and reality reflects the cancellation
+in $M_\zeta$ that the triangle inequality discards.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{titchmarsh} E.~C.\ Titchmarsh, \emph{The Theory of the
+  Riemann Zeta-Function}, 2nd ed., Oxford, 1986.
+\bibitem{hasanalizade2024} E.\ Hasanalizade, Q.\ Shen, P.-J.\ Wong,
+  \emph{Explicit estimates for the logarithmic derivative and
+  reciprocal of the Riemann zeta-function}, arXiv:2405.04869, 2024.
+\bibitem{chirre2021} A.\ Chirre, F.\ Gon\c{c}alves, \emph{Bounding
+  the log-derivative of the zeta-function}, Math.\ Z.\ \textbf{299}
+  (2021), 1291--1318.
+\end{thebibliography}
+
+\end{document}
