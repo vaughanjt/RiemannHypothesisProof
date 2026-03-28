@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-27T15:30:00Z",
+  "timestamp": "2026-03-27T21:00:00Z",
   "phase": "04",
   "phase_name": "lean-4-formalization-pipeline",
   "phase_dir": ".planning/phases/04-lean-4-formalization-pipeline",
@@ -9,46 +9,38 @@
   "total_tasks": null,
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "S11a: Deficit scaling + direct influence + r(T) trajectory to T=2.68e11", "status": "done", "commit": "f61178c"},
-    {"id": 2, "name": "S11a: Paper revised to v3 (honest framing, numerical density bound)", "status": "done", "commit": "f61178c"},
-    {"id": 3, "name": "S11b: Universal r test — RS-class r~0.13>0, not universal (counter-examples exist)", "status": "done", "commit": "50a8ae7"},
-    {"id": 4, "name": "S11b: Spectral variance identity V(g) = 2*Var_p[cos(wg/2)]/(1+C(g)) >= 0", "status": "done", "commit": "b020eac"},
-    {"id": 5, "name": "S11b: Proof of r > 0 via bridge + Chebyshev (proof sketch level)", "status": "done", "commit": "11b959b"},
-    {"id": 6, "name": "S12: Ergodic theorem — time-avg r -> GP r for any fixed phases", "status": "done", "commit": "9c24115"},
-    {"id": 7, "name": "S12: Sub-interval positivity — EVERY partition gives Cov > 0", "status": "done", "commit": "9c24115"},
-    {"id": 8, "name": "S12: 1000/1000 random phase trials positive (127 sigma, min r=+0.026)", "status": "done", "commit": "9c24115"},
-    {"id": 9, "name": "S12: Mean influence at T=2.68e11 — 85% on-line (C0=2.03)", "status": "done", "commit": "20ab3b1"},
-    {"id": 10, "name": "S12: Additivity verified at T=2.68e11 (K=1 to 50, delta_r/K ~ -0.002)", "status": "done", "commit": "86b75c5"},
-    {"id": 11, "name": "S12: Self-correcting mechanism stable (Corr(|Z'|,G) ~ 0.84)", "status": "done", "commit": "9c24115"},
-    {"id": 12, "name": "S12: Exact |zeta'| at T=2.68e11 confirms phantom >> peak (ratio 2.27)", "status": "done"},
-    {"id": 13, "name": "S13: RIGORIZED Step 3 — monotone decomposition proof of Cov(g,h)>0", "status": "done"},
-    {"id": 14, "name": "S13: Verified decomposition at N=10,20,50,100,200,500 (margin 4.4x-49x)", "status": "done"},
-    {"id": 15, "name": "S13: Updated r_positivity_theorem.tex with rigorous Proposition 3.1 + Step 3", "status": "done"}
+    {"id": 1, "name": "S13: Spectral variance identity V(g) <= 1 (Theorem)", "status": "done"},
+    {"id": 2, "name": "S13: Exact MVT identity P = (g/2)|f'_avg| (Theorem)", "status": "done"},
+    {"id": 3, "name": "S13: Covariance decomposition Term1 + Term2 (Theorem)", "status": "done"},
+    {"id": 4, "name": "S13: Noise dilution factorization |Corr|=|Corr(q,W)|*sqrt(R) (Theorem)", "status": "done"},
+    {"id": 5, "name": "S13: Slepian residual sigma_res(g), a(g) from spectral density (Theorem)", "status": "done"},
+    {"id": 6, "name": "S13: |f'(0)| ~ Rayleigh at crossings (Theorem, Rice formula)", "status": "done"},
+    {"id": 7, "name": "S13: CV(|f'(0)||g) >= 0.361 at N=10 (Certified, 2M gaps, 99.5% CI)", "status": "done"},
+    {"id": 8, "name": "S13: Chi(3) analytical framework — ballot lemma gives alpha<=1, CV>=0.422", "status": "done"},
+    {"id": 9, "name": "S13: h_true peaks then falls — new result about GP excursions", "status": "done"},
+    {"id": 10, "name": "S13: N=2 counterexample (r=-0.64), conjecture revised to N>=3", "status": "done"},
+    {"id": 11, "name": "S13: Complete sweep N=3..25 and N=30..300 (all r>0)", "status": "done"},
+    {"id": 12, "name": "S13: Paper rewritten with 10-step proof + chi(3) framework", "status": "done"},
+    {"id": 13, "name": "S13: PDF compiled, 6 figures generated, grok_final.zip packaged", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 16, "name": "Quantitative lower bound on r_inf (currently ~0.13 numerical)", "status": "not_started"},
-    {"id": 17, "name": "Submit both papers to arXiv", "status": "not_started"}
+    {"id": 14, "name": "Prove ballot lemma (alpha<=1) for smooth GP excursions analytically", "status": "not_started"},
+    {"id": 15, "name": "Submit paper to probability/stochastic processes journal", "status": "not_started"},
+    {"id": 16, "name": "Update density bound paper with final proof status", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [
-    {"action": "Review updated r_positivity_theorem.tex proof", "context": "Session 13 replaced hand-wavy Step 3 with rigorous monotone decomposition", "blocking": false}
+    {"action": "Review final paper PDF and figures", "context": "docs/grok_final.zip", "blocking": false},
+    {"action": "Send to Grok for critique of chi(3) framework", "context": "Step 6 analytical framework", "blocking": false}
   ],
   "decisions": [
-    {"decision": "Per-zero claim is FALSE (3-4% violations); replaced with mean-influence formulation", "rationale": "Direct computation at 6 heights, growing violation fraction", "phase": "11a"},
-    {"decision": "r(T) drops from 0.93 to 0.63 (T=400 to T=2.68e11); fit: 1.30-0.20*log(log T)", "rationale": "CLT effect (more RS terms -> more Gaussian), not mechanism weakening", "phase": "11a"},
-    {"decision": "Gap 1 (mean influence) collapses into Gap 2 (r > 0)", "rationale": "Condition E[z_G z_A]<2r holds whenever r>0 because mean product ~ -0.2 to -0.6 << 2r", "phase": "11b-12"},
-    {"decision": "r > 0 proved via spectral variance identity + sub-interval positivity + ergodic theorem", "rationale": "V(g)=2Var_p[cos(wg/2)]/(1+C(g))>=0 by def of variance; h(g)=sqrt(2V/pi) goes 0->0.80; Cov positive at every partition; Weyl gives fixed-phase convergence", "phase": "11b-12"},
-    {"decision": "Influence function proxy FAILS at T~10^11 but actual delta_r still works", "rationale": "Phantom/peak ratio = 2.27 (>>1), but removing zeros still decreases r on average", "phase": "12"},
-    {"decision": "MONOTONE DECOMPOSITION closes sketch->theorem gap for Step 3", "rationale": "V<=1 (Cauchy-Schwarz) => delta<=0 => tail correction non-positive and small. Core positive by Chebyshev. Margin 4.4x at N=10 to 49x at N=500. Taylor expansion FAILS (h'' too large).", "phase": "13"}
+    {"decision": "Proof structure: 10 analytical steps + 1 certified computation + chi(3) framework", "rationale": "Reduces entire proof to one GP excursion lemma (ballot problem alpha<=1)", "phase": "13"},
+    {"decision": "N=2 excluded (r<0), conjecture is N>=3", "rationale": "N=2 means T~25, only 2 spectral terms, irrelevant", "phase": "13"},
+    {"decision": "Paper targets probability/GP journal, not number theory", "rationale": "Core contribution is GP excursion theory; zeta application is conditional", "phase": "13"},
+    {"decision": "Quadratic test function approach abandoned", "rationale": "Gives wrong sign at every N — positivity is delicate cancellation across all moments", "phase": "13"},
+    {"decision": "Chi(3) bound: excursion probability grows as y^alpha, alpha~0.3, chi(3.01) fit", "rationale": "Ballot problem linearization gives alpha<=1, numerical fit confirms alpha~0.3", "phase": "13"}
   ],
-  "uncommitted_files": [
-    "docs/r_positivity_theorem.tex",
-    "_session13_attack.py",
-    "_session13_attack2.py",
-    "_session13_Czero.py",
-    "_s13_fast.py",
-    "_s13_verify_all_N.py"
-  ],
-  "next_action": "Either: (1) commit Session 13 work, (2) push to quantitative r_inf lower bound, (3) submit papers as-is, or (4) push density bound to T~1.44e20 with mpmath.",
-  "context_notes": "Session 13 closed the main proof gap. The key insight: V(g) <= 1 is EXACT (from spectral variance identity), which forces h(g) <= sqrt(2/pi). This makes the decomposition h = h_core + delta clean: h_core is monotone (Chebyshev gives Cov>0), delta <= 0 (tail correction is provably non-positive and small). The proof is now at 'theorem + computation' level. Two papers: rigidity_exclusion_v3.tex (density bound) and r_positivity_theorem.tex (proof of r>0, NOW RIGOROUS). Venv still broken; use /c/Python313/python.exe."
+  "uncommitted_files": [],
+  "next_action": "Prove the ballot lemma for smooth GP excursions: P(positive excursion of length g | slope y) ~ c*y as y->0. This gives alpha<=1, hence chi(3) bound, hence CV>=0.422>0.361, closing Step 6 analytically. Search Azais-Wschebor Ch.3, Leadbetter-Lindgren-Rootzen, or derive from Slepian linearization.",
+  "context_notes": "Session 13 was a marathon (13 commits). Started with hand-wavy Step 3, ended with 10-step proof where 9 steps are theorems and 1 step (the ballot lemma) is the remaining analytical gap. The chi(3) framework explains WHY the CV bound holds: the excursion probability reweighting turns the Rayleigh into a chi(3) distribution near y=0. Key dead ends: quadratic test function (wrong sign), Taylor expansion (diverges), strict induction (oscillations), Cauchy-Schwarz on correlation (fails by 2x). Venv still broken; use /c/Python313/python.exe. MiKTeX now installed."
 }
