@@ -1,32 +1,36 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T02:00:00Z",
+  "timestamp": "2026-03-29T03:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "sessions 17-19 complete — Li criterion fully explored",
+  "phase_name": "sessions 17-19 complete — Li criterion + Connes scaffolding",
   "status": "paused",
   "completed_tasks": [
     {"id": 1, "name": "S17: Li coefficients via FFT-Taylor for n=1..200 (200dp)", "status": "done"},
     {"id": 2, "name": "S17: Gamma/zeta decomposition — oscillation, M-function connection", "status": "done"},
-    {"id": 3, "name": "S18: N_0=11 Gamma dominance threshold, GUE suppression of zeta oscillation", "status": "done"},
-    {"id": 4, "name": "S18: Avenue 4 DEAD END — truncated Euler product fails in critical strip", "status": "done"},
-    {"id": 5, "name": "S18: B-L decomposition comparison — our split superior", "status": "done"},
-    {"id": 6, "name": "S19: PROVED lambda_n^Gamma > 0 for n >= 8 (exact g_k formula, monotone)", "status": "done"},
-    {"id": 7, "name": "S19: NEGATIVE RESULT — bounding |lambda_n^zeta| unconditionally IS equivalent to RH", "status": "done"},
-    {"id": 8, "name": "S19: Identified circularity: off-line zero -> singularity inside unit disk -> lambda_n < 0", "status": "done"}
+    {"id": 3, "name": "S18: N_0=11 Gamma dominance, GUE suppression, B-L comparison", "status": "done"},
+    {"id": 4, "name": "S18: Avenue 4 DEAD END — truncated Euler product", "status": "done"},
+    {"id": 5, "name": "S19: PROVED lambda_n^Gamma > 0 for n >= 8 (exact formula)", "status": "done"},
+    {"id": 6, "name": "S19: NEGATIVE RESULT — bounding zeta part IS equivalent to RH", "status": "done"},
+    {"id": 7, "name": "S19: Connes framework researched and scaffolding built", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 9, "name": "Avenue 5: Connes prolate operator (2024-2025) — requires research", "status": "not_started"},
-    {"id": 10, "name": "Write Li criterion preprint (LaTeX) — document the decomposition", "status": "not_started"},
-    {"id": 11, "name": "Return to M-function: can the Gamma dominance proof for sigma>1 be sharpened?", "status": "not_started"},
-    {"id": 12, "name": "Cross-pollinate: Li decomposition insights -> Jensen polynomial connection", "status": "not_started"}
+    {"id": 8, "name": "Implement proper W_R (archimedean Weil distribution) from arxiv:2511.22755 eqs 4.2-4.4", "status": "not_started"},
+    {"id": 9, "name": "Implement correct rank-one perturbation with Weil-modified inner product", "status": "not_started"},
+    {"id": 10, "name": "Reproduce paper's 10^{-60} accuracy zero matching with N=120", "status": "not_started"},
+    {"id": 11, "name": "Write Li criterion preprint documenting S17-19 decomposition results", "status": "not_started"},
+    {"id": 12, "name": "Prolate wave operator experiment: UV spectrum vs zeta zeros", "status": "not_started"}
   ],
-  "blockers": [],
-  "human_actions_pending": [],
+  "blockers": [
+    {"blocker": "Connes W_R formula requires reading arxiv:2511.22755 Section 4 in detail", "severity": "medium"}
+  ],
+  "human_actions_pending": [
+    {"action": "Optionally fetch arxiv:2511.22755 PDF for precise formula extraction", "blocking": false}
+  ],
   "decisions": [
-    {"decision": "Li criterion investigation complete — fundamental circularity identified", "rationale": "Proved Gamma > 0 for n >= 8 (analytical, exact formula). But bounding |zeta part| IS equivalent to RH: singularity structure of generating function F(x) = log_sz(1/(1-x)) directly encodes zero locations. Off-critical-line zero -> singularity inside unit disk -> exponential growth -> lambda_n < 0. No unconditional shortcut.", "phase": "19"},
-    {"decision": "Key analytical results worth documenting as preprint", "rationale": "The smooth_gamma + log_sz decomposition, exact g_k formula, N_0=11 threshold, and oscillation period = 2pi/arg(1-1/rho_1) are publishable observations even without proving RH.", "phase": "19"},
-    {"decision": "Connes prolate operator (Avenue 5) deferred to dedicated session", "rationale": "Requires web research into 2024-2025 papers. Entirely different framework — not a continuation of Li criterion work.", "phase": "19"}
+    {"decision": "Li criterion investigation reached fundamental circularity — bounding zeta part IS RH", "rationale": "Off-line zero creates singularity inside unit disk of generating function F(x) = log_sz(1/(1-x)), causing exponential growth and lambda_n < 0. No unconditional shortcut via Stieltjes constants.", "phase": "19"},
+    {"decision": "Connes construction is the most promising remaining avenue", "rationale": "2025 paper achieves 10^{-60} zero matching with only 6 primes and N=120. Explicit, computable operator. Gap to proof is one step: showing min eigenvector of QW approximated by prolate functions.", "phase": "19"},
+    {"decision": "Scaffolding built but needs precise paper formulas for accuracy", "rationale": "W_{0,2} and W_p components work. QW from zeros (circular) confirms structure. W_R and rank-one perturbation need exact formulas from Section 4 of arxiv:2511.22755.", "phase": "19"}
   ],
-  "next_action": "Choose direction: (1) Write Li criterion preprint documenting S17-19 findings, (2) Avenue 5: Connes prolate operator research session, (3) Return to M-function with sharpened tools, (4) Jensen polynomial connection (from S16 dbn_jensen.py). The Li investigation reached its natural conclusion — the decomposition is clean but the core difficulty (bounding the zeta part) is equivalent to RH itself.",
-  "context_notes": "Sessions 17-19 (2026-03-28/29) explored Li's criterion thoroughly. 8 scripts: li_criterion.py, li_prime_anatomy.py, li_extended.py, li_highorder.py, li_M_connection.py, li_asymptotics.py, li_euler_product.py, li_bombieri_lagarias.py, li_gamma_proof.py, li_zeta_bound.py. The decomposition lambda_n = lambda_n^Gamma + lambda_n^zeta is the central framework. Gamma part has exact formula g_k = (-1)^k*[(1-2^{-k})zeta(k)-1]/k. Python: /c/Python313/python.exe."
+  "next_action": "SESSION 20: Either (1) fetch arxiv:2511.22755 and implement exact W_R + perturbation formulas, or (2) write Li criterion preprint. The Connes approach is the most concrete path to RH ever constructed — reproducing the paper's numerics would be a major milestone.",
+  "context_notes": "Sessions 17-19 produced 10 Li scripts and 2 Connes scripts. Li framework: li_criterion.py, li_prime_anatomy.py, li_extended.py, li_highorder.py, li_M_connection.py, li_asymptotics.py, li_euler_product.py, li_bombieri_lagarias.py, li_gamma_proof.py, li_zeta_bound.py. Connes: connes_weil.py, connes_spectral.py. Key analytical result: g_k = (-1)^k*[(1-2^{-k})zeta(k)-1]/k. Python: /c/Python313/python.exe."
 }
