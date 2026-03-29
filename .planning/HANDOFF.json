@@ -1,21 +1,35 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T09:00:00Z",
+  "timestamp": "2026-03-29T12:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "sessions 17-21 — Li preprint + Connes N=120 running",
-  "status": "running",
+  "phase_name": "sessions 17-21 complete",
+  "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "S17-19: Li criterion fully explored", "status": "done"},
-    {"id": 2, "name": "S19-20: Connes formulas confirmed correct (Grok verification)", "status": "done"},
-    {"id": 3, "name": "S20: 200dp shows dramatic improvement (12.6 vs 2.5 for first zero)", "status": "done"},
-    {"id": 4, "name": "S21: Li preprint written (novel g_k formula, N_0=11, oscillation period)", "status": "done"},
-    {"id": 5, "name": "S21: Prolate overlap initial computation (0.345 at lambda=sqrt(14))", "status": "done"}
+    {"id": 1, "name": "S17-19: Li criterion — g_k formula, N_0=11, oscillation period, circularity", "status": "done"},
+    {"id": 2, "name": "S21: Li preprint written (docs/li_decomposition_preprint.tex)", "status": "done"},
+    {"id": 3, "name": "S19-21: Connes formulas confirmed correct (W02, WR, Wp — Grok verified twice)", "status": "done"},
+    {"id": 4, "name": "S21: Sign convention resolved — eigenvector near eval 0 is correct xi", "status": "done"},
+    {"id": 5, "name": "S21: N=30 proof of concept — xi_hat zero at 14.131 (0.003 from gamma_1)", "status": "done"},
+    {"id": 6, "name": "S21: N=120 runs — near-zero eigenvector degrades, quadrature suspected", "status": "done"},
+    {"id": 7, "name": "S21: Prolate overlap initial (0.345 at lambda=sqrt(14))", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 6, "name": "RUNNING: N=120 200dp computation (connes_N120.py in background)", "status": "in_progress"},
-    {"id": 7, "name": "Improve prolate overlap: actual prolate functions (not Hermite), larger lambda", "status": "not_started"},
-    {"id": 8, "name": "Fix diagonal gamma_L formula to eliminate 1.337 offset", "status": "not_started"}
+    {"id": 8, "name": "Eliminate ALL quadrature from gamma_L: resolve c(L) integral identity exactly", "status": "not_started"},
+    {"id": 9, "name": "Rayleigh quotient test: <k_lambda|tau|k_lambda>/<k_lambda|k_lambda> vs epsilon_N", "status": "not_started"},
+    {"id": 10, "name": "Brute-force eigenvector scan at N=120: which eigvec gives xi_hat(g1)~0?", "status": "not_started"},
+    {"id": 11, "name": "Improve prolate overlap with actual PSWF (not Hermite limit)", "status": "not_started"},
+    {"id": 12, "name": "Polish Li preprint for arxiv submission", "status": "not_started"}
   ],
-  "next_action": "Wait for connes_N120.py to complete. If xi_hat zeros match zeta zeros, this reproduces the paper's Table 1. Then scale prolate overlap to larger lambda.",
-  "context_notes": "20 scripts total. Li (10), Connes (10 including connes_N120.py). Preprint at docs/li_decomposition_preprint.tex. Background computation: byqa7l1fl. Python: /c/Python313/python.exe."
+  "blockers": [
+    {"blocker": "gamma_L correction integral uses numerical quadrature — last non-exact piece. May corrupt eigenvector at N=120.", "severity": "high"},
+    {"blocker": "Sign convention: eigenvector selection = nearest eval to 0, not most negative. Works at N=30 but not N=120.", "severity": "medium"}
+  ],
+  "decisions": [
+    {"decision": "QW sign: our convention is OPPOSITE to paper's. Eigenvector for eval nearest 0 = paper's smallest eval eigenvector.", "rationale": "Grok confirmed. At N=30: eval +0.38 eigenvector gives xi_hat zero at 14.131 (0.003 from gamma_1). Most negative eval eigenvector gives garbage.", "phase": "21"},
+    {"decision": "N=120 degradation from N=30 likely due to remaining quadrature in gamma_L correction", "rationale": "N=30 gives xi_hat(g1)=1.3e-4 (excellent), N=120 gives 0.11 (100x worse). Only difference: more modes amplify quadrature error. Fix: eliminate quadrature entirely.", "phase": "21"},
+    {"decision": "Rayleigh quotient test is the most promising path to close the prolate gap", "rationale": "Grok identifies: feed k_lambda into tau, compute quotient, compare with epsilon_N. Difference should be O(1/log^2 lambda). Standard variational argument from quantum mechanics.", "phase": "21"},
+    {"decision": "Li criterion g_k formula confirmed novel by Grok literature search", "rationale": "Maslanka 2004 has conceptual split, but exact g_k = (-1)^k[(1-2^{-k})zeta(k)-1]/k not in Coffey, Voros, Lagarias, or any other reference. N_0=11 and oscillation period also new.", "phase": "21"}
+  ],
+  "next_action": "SESSION 22: (1) Resolve gamma_L c(L) identity to eliminate ALL quadrature from a_n, (2) Rerun N=120 with fully exact a_n, (3) If zeros match: implement Rayleigh quotient test for multiple lambda values. The gamma_L fix is the key — it's the last numerical quadrature piece and likely causes the N=120 degradation.",
+  "context_notes": "21 scripts. Li (10): li_criterion.py through li_zeta_bound.py. Connes (11): connes_weil.py through connes_N120_exact.py + connes_prolate_overlap.py. Preprint: docs/li_decomposition_preprint.tex. Key numbers: N=30 xi_hat zero at 14.131 (0.003 from g1), gamma_L offset = 1.33691 (constant), sign convention = negate for paper's convention. Grok's Rayleigh quotient suggestion is the path to closing the prolate gap. Python: /c/Python313/python.exe, mp.dps=200."
 }
