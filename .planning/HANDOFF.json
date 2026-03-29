@@ -1,37 +1,36 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-28T23:30:00Z",
+  "timestamp": "2026-03-28T23:59:00Z",
   "phase": "post-milestone",
-  "phase_name": "session 16 complete — Li's criterion next",
+  "phase_name": "session 17 complete — Li criterion decomposition",
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "dBN framework: 4 paths closed (collision, log-concavity, energy, Euler product)", "status": "done"},
-    {"id": 2, "name": "Preprints: dbn_zero_dynamics.tex, M_function_theorem.tex, M_identity.tex, dbn_analytical_notes.tex", "status": "done"},
-    {"id": 3, "name": "Jensen polynomials: Turan verified, sigma^2~1.37, GORZ connection", "status": "done"},
-    {"id": 4, "name": "Jacobi matrix: prime signature in b_k, Stieltjes property verified (1800 pts)", "status": "done"},
-    {"id": 5, "name": "M-function: RH as single inequality, verified 4000 pts, decomposition into Gamma vs zeta", "status": "done"},
-    {"id": 6, "name": "M-positivity for sigma>1: PROVED from 2+gamma>log(4pi)", "status": "done"},
-    {"id": 7, "name": "M-positivity for large t: PROVED (Gamma dominance, unconditional)", "status": "done"},
-    {"id": 8, "name": "First-order identity: g'(t) = sum gamma_n/(t-gamma_n)^2 with factorization", "status": "done"},
-    {"id": 9, "name": "Quantitative dominance: fails by 110x (same Levinson gap)", "status": "done"},
-    {"id": 10, "name": "Grok 5-avenue assessment: scored 1-7/10, identified Li criterion as best next target", "status": "done"}
+    {"id": 1, "name": "Li coefficients lambda_n computed exactly (FFT-Taylor) for n=1..200", "status": "done"},
+    {"id": 2, "name": "Decomposition: lambda_n = lambda_n^Gamma + lambda_n^zeta via smooth_gamma + log_sz", "status": "done"},
+    {"id": 3, "name": "Gamma part: negative n=1..7, positive n>=8, grows like (n/2)*ln(n)", "status": "done"},
+    {"id": 4, "name": "Zeta part: oscillates, goes NEGATIVE at n=156-186 (min -1.026 at n=172)", "status": "done"},
+    {"id": 5, "name": "Total always positive — Gamma dominates for all n", "status": "done"},
+    {"id": 6, "name": "Stieltjes constant expansion validated against FFT", "status": "done"},
+    {"id": 7, "name": "Oscillation period ~89 matches 2*pi/arg(1-1/rho_1) from gamma_1=14.13", "status": "done"},
+    {"id": 8, "name": "M-function connection: Li coefficients average M-function over circle", "status": "done"},
+    {"id": 9, "name": "Tightest constraint: lambda_1 = 0.023 (4.2% margin, n=1 is hardest)", "status": "done"},
+    {"id": 10, "name": "Correction ratio: peaks at 1.010 (n=171), gamma floor breaks for n>=156", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 11, "name": "SESSION 17: Li's criterion attack — compute lambda_n from Euler product side", "status": "not_started"},
-    {"id": 12, "name": "Express lambda_n via explicit formula as prime sums, check positivity", "status": "not_started"},
-    {"id": 13, "name": "Connect lambda_n to M-function decomposition (same positivity in different basis?)", "status": "not_started"},
-    {"id": 14, "name": "Avenue 4: test M-function with truncated Euler product (finite sum)", "status": "not_started"},
-    {"id": 15, "name": "Avenue 5: engage with Connes prolate operator (2024-2025 papers)", "status": "not_started"}
+    {"id": 11, "name": "SESSION 18: Prove asymptotic bound |lambda_n^zeta| = O(sqrt(n*log n))", "status": "not_started"},
+    {"id": 12, "name": "Determine N_0 such that lambda_n^Gamma > |lambda_n^zeta| for all n >= N_0", "status": "not_started"},
+    {"id": 13, "name": "Express lambda_n^zeta growth rate via zero density theorems", "status": "not_started"},
+    {"id": 14, "name": "Test truncated Euler product approach (Avenue 4 from Grok)", "status": "not_started"},
+    {"id": 15, "name": "Connes prolate operator connection (Avenue 5 from Grok)", "status": "not_started"}
   ],
   "blockers": [],
-  "human_actions_pending": [
-    {"action": "Review preprints on Overleaf (dbn_zero_dynamics.tex, M_function_theorem.tex)", "blocking": false}
-  ],
+  "human_actions_pending": [],
   "decisions": [
-    {"decision": "Li's criterion is the priority for Session 17", "rationale": "Grok identifies it as cleanest identity-to-proof route. lambda_n have explicit formula representations as prime sums. Connects to our M-function decomposition. Scored 3/10 in session 16 — most underexplored high-potential avenue.", "phase": "16"},
-    {"decision": "The M-function M(s) = Im[(s-1/2)*conj(xi'/xi)] > 0 is equivalent to RH", "rationale": "Proved via Stieltjes property of squared-zero transform. Non-circular (computable from mpmath). Partial unconditional results: sigma>1 proved, large t proved.", "phase": "16"},
-    {"decision": "Quantitative gap for pointwise M-positivity is 110x", "rationale": "Off-line zero spike ~gamma/alpha^2 vs on-line background ~p*gamma*pi^2/(3d^2). Need c>5.48, have c~0.05. Same structural gap as Levinson (pointwise vs average).", "phase": "16"}
+    {"decision": "Li coefficient decomposition: Gamma part from smooth_gamma(s), zeta part from log((s-1)*zeta(s))", "rationale": "Natural split: Gamma/pi factors vs prime distribution. Gamma part is explicitly computable, zeta part encodes arithmetic.", "phase": "17"},
+    {"decision": "lambda_n^zeta CAN be negative (n=156-186), disproving initial hypothesis", "rationale": "Higher precision (200dp) computation revealed oscillation with growing amplitude. The 'gamma floor' argument (d_1=gamma dominates) fails for large n.", "phase": "17"},
+    {"decision": "Total lambda_n always positive because Gamma part grows like n*log(n), dominating bounded zeta oscillation", "rationale": "Gamma ~ (n/2)ln(n), zeta ~ O(sqrt(n*log n)) expected from equidistribution of zero phases. At n=172 where zeta=-1.03, Gamma=+268.", "phase": "17"},
+    {"decision": "Oscillation of lambda_n^zeta has period ~89, determined by first zero gamma_1=14.13", "rationale": "Phase angle alpha_rho = arg(1-1/rho) for rho on critical line. alpha_1 = 2/gamma_1 asymptotically. Period = 2*pi/alpha_1 = 88.8.", "phase": "17"}
   ],
-  "next_action": "Start Session 17 with Li's criterion: (1) Compute lambda_n directly, (2) Express via explicit formula as prime sums, (3) Check if M-function Gamma-vs-zeta decomposition maps to lambda_n positivity in a useful way. The lambda_n are defined as sum_rho [1-(1-1/rho)^n] and RH iff lambda_n > 0 for all n >= 1.",
-  "context_notes": "Session 16 was the longest single session: 20+ commits, 3 preprints, explored dBN (closed), Jacobi matrix (new), Stieltjes/M-function (new formulation of RH), first-order identity with factorization, quantitative dominance bound (110x gap). Scored against Grok's 5 avenues: best on Avenue 3 (spectral, 7/10), worst on Avenue 4 (truncated Euler, 1/10). Li's criterion (Avenue 2, scored 3/10) identified as most promising for next session. Key scripts: dbn_explorer.py, dbn_analytical.py, dbn_logconcavity.py, dbn_alpha_derivation.py, dbn_lambda_bound.py, dbn_jensen.py, dbn_explicit_formula.py, jacobi_zeta.py, jacobi_zeta_v2.py, jacobi_from_primes.py, jacobi_schur.py, jacobi_stieltjes.py, jacobi_M_function.py. Environment: /c/Python313/python.exe."
+  "next_action": "Session 18: (1) Prove asymptotic |lambda_n^zeta| = O(sqrt(n*log n)) using zero density, (2) Determine threshold N_0 for Gamma dominance, (3) Avenue 4: truncated Euler product in M-function, (4) Consider whether the decomposition reduces RH to a finite computation.",
+  "context_notes": "Session 17 explored Li's criterion (RH iff lambda_n > 0 for all n). Key scripts: li_criterion.py (basic computation), li_prime_anatomy.py (Stieltjes connection), li_extended.py (n=1..100), li_highorder.py (n=1..200, 200dp), li_M_connection.py (M-function link). Used FFT-based Taylor coefficients (Cauchy integral) since mpmath.taylor/diff failed at s=1 zeta pole. Decomposition into smooth_gamma (Gamma/pi part) and log_sz (prime part) is the central tool. Environment: /c/Python313/python.exe."
 }
