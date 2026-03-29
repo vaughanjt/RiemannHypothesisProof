@@ -1,37 +1,31 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T20:00:00Z",
+  "timestamp": "2026-03-29T22:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "session 22 complete",
+  "phase_name": "session 22 — paper reproduced, attack surface mapped",
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "S17-19: Li criterion complete (preprint written)", "status": "done"},
-    {"id": 2, "name": "S19-21: Connes formulas confirmed correct (W02, WR, Wp)", "status": "done"},
-    {"id": 3, "name": "S22: Closed-form for gamma_L correction integral — eliminates ALL quadrature", "status": "done"},
-    {"id": 4, "name": "S22: beta_L(0) from general formula (no special case)", "status": "done"},
-    {"id": 5, "name": "S22: OFFSET proven constant (n^2 variation was eq44 quadrature error)", "status": "done"},
-    {"id": 6, "name": "S22: Eigenvector selection bug found (ev<best vs abs(ev)<abs(best))", "status": "done"},
-    {"id": 7, "name": "S22: Full QW matrix at N=120 tested — doesn't work either", "status": "done"},
-    {"id": 8, "name": "S22: Convergence sweep N=15..60 — plateaus at g1_acc~1.1, non-monotonic", "status": "done"},
-    {"id": 9, "name": "S22: Confirmed N=30 0.003 claim UNREPRODUCIBLE with any combination tested", "status": "done"}
+    {"id": 1, "name": "W_p formula bug found and fixed — q kernel, not cos(2pi(n-m)lk/L)", "status": "done"},
+    {"id": 2, "name": "Paper reproduced: N=120 all-positive spectrum, xi_hat zeros match zeta zeros", "status": "done"},
+    {"id": 3, "name": "gamma_L closed form derived (eliminates all quadrature)", "status": "done"},
+    {"id": 4, "name": "Lambda sweep lam^2=9..50: gap shrinks slowly, overlap constant at 0.185", "status": "done"},
+    {"id": 5, "name": "Joint N+lambda scaling: eps_N~2e-9 everywhere, Rayleigh gap GROWS with N", "status": "done"},
+    {"id": 6, "name": "Test functions (Gaussian, flat, k_lam) all 10^8x worse than eps_N", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 10, "name": "Investigate larger L (lambda^2=100,1000) — may need more spectral resolution", "status": "not_started"},
-    {"id": 11, "name": "Re-read paper sections 5.2-5.3 carefully for missed normalization/cutoff", "status": "not_started"},
-    {"id": 12, "name": "Rayleigh quotient test (does NOT depend on xi_hat zero convergence)", "status": "not_started"},
-    {"id": 13, "name": "Polish Li preprint for arxiv submission", "status": "not_started"}
+    {"id": 7, "name": "Eigenvector structure analysis: WHY does xi's secular equation give zeta zeros?", "status": "not_started"},
+    {"id": 8, "name": "200dp eigenvector via mpmath.eig or inverse iteration (for 10^{-60} accuracy)", "status": "not_started"},
+    {"id": 9, "name": "Actual PSWF via sinc kernel eigenvalue problem (not k_lambda)", "status": "not_started"},
+    {"id": 10, "name": "Convergence rate: |xi_hat(gamma_k)| vs N and lambda at high precision", "status": "not_started"}
   ],
   "blockers": [
-    {"blocker": "xi_hat zeros from Connes operator do NOT converge to zeta zeros at any N tested (15-120) with L=ln(14). The 'N=30 gives 0.003' claim from Session 21 handoff could not be reproduced.", "severity": "high"},
-    {"blocker": "Root cause unknown: could be L too small, missing paper term, or fundamental misunderstanding of the construction", "severity": "high"}
+    {"blocker": "Rayleigh quotient approach doesn't work — gap is O(1) not O(1/log^2). Need different proof strategy.", "severity": "high"}
   ],
   "decisions": [
-    {"decision": "gamma_L correction integral has exact closed form: F(e^{L/2})-F(1) where F(u)=-ln(u+1)+ln(u^2+1)/2+atan(u)", "rationale": "Substitution u=e^{x/2} gives 2u/((u+1)(u^2+1)). Partial fractions -> elementary antiderivative. Verified to 9e-11.", "phase": "22"},
-    {"decision": "beta_L(0) works from general formula with no special case", "rationale": "At n=0: coeff = 2L/(-iL) = 2i, complex arithmetic handles it. Sign error in earlier manual limit was the bug.", "phase": "22"},
-    {"decision": "OFFSET is genuinely constant — n^2 variation was quadrature error in eq(4.4)", "rationale": "Tested at n=0,120 with nq=5000,20000,50000. Variation scales exactly as 1/nq^2. True OFFSET = 1.33690541816.", "phase": "22"},
-    {"decision": "N=30 '0.003 accuracy' claim is unreproducible", "rationale": "Tested TAU (mpmath.eig 200dp + numpy), full QW (exact Prop4.3), connes_exact.py (formula 3.14). All give g1_acc >= 0.76. Sweep N=15..60 shows plateau at ~1.1. Original claim may have been from transient session state.", "phase": "22"},
-    {"decision": "Eigenvector selection was bugged but it's not the root cause", "rationale": "Old code used min(eval) instead of min(|eval|). Fixed, but neither selection gives good xi_hat zeros.", "phase": "22"}
+    {"decision": "W_p uses q kernel q(U_n,U_m)(log k), NOT cos(2pi(n-m)lk/L)", "rationale": "Paper eq (4.3) + Lemma 2.3. q for n!=m: [sin(2pim*y/L)-sin(2pin*y/L)]/[pi(n-m)]. Diagonal: 2(L-y)/L*cos. This was THE bug.", "phase": "22"},
+    {"decision": "Variational/Rayleigh path to proof is blocked", "rationale": "eps_N~2e-9 everywhere. No test function gets within 10^8 of it. Gap grows with N. The eigenvalue is already zero — the action is in the eigenvector structure.", "phase": "22"},
+    {"decision": "The proof gap is in the secular equation (5.25)", "rationale": "xi_hat zeros match zeta zeros to 10^{-60} (paper) but nobody knows WHY the eigenvector of QW produces this. Understanding the eigenvector structure IS the proof.", "phase": "22"}
   ],
-  "next_action": "SESSION 23: Three options. (1) Try larger L — lambda^2=100 or 1000 instead of 14. The paper may need L >> 1 for convergence. (2) Re-read paper sections 5.2-5.3 for delta_N normalization and xi_hat definition — we may be missing a term. (3) Pivot to Rayleigh quotient test which doesn't need xi_hat zeros to converge.",
-  "context_notes": "22 scripts. connes_session22.py has exact gamma_L + full QW builder. Key formula: corr = F(e^{L/2})-F(1), F(u)=-ln(u+1)+ln(u^2+1)/2+atan(u). OFFSET=1.33691 (constant). Python: /c/Python313/python.exe, mp.dps=200."
+  "next_action": "SESSION 23: Study the eigenvector xi itself. (1) Plot its components — is there a pattern? (2) Compare xi at different N and lambda — what's universal? (3) Connect xi to known functions (Mellin transforms, theta functions?). (4) Or: ask Grok what the missing analytic step is, given that variational doesn't work.",
+  "context_notes": "Scripts: connes_attack.py (full QW builder + Rayleigh test), connes_session22.py (closed-form gamma_L). Key formula: Wp uses q(U_n,U_m)(log k) from Lemma 2.3. Python: /c/Python313/python.exe. Paper: arxiv 2511.22755."
 }
