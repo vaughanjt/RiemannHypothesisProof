@@ -1,0 +1,111 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\im}{Im}
+
+\title{The First-Order $M$-Identity}
+\author{Working notes}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\section{The identity}
+
+\begin{theorem}[First-order $M$-identity]\label{thm:identity}
+Define $g'(t) = i\,\dfrac{\xi'}{\xi}(\tfrac{1}{2}+it)
++ t\,\left(\dfrac{\xi'}{\xi}\right)'(\tfrac{1}{2}+it)$.
+Then:
+\begin{equation}\label{eq:identity}
+  g'(t) = \sum_\rho \frac{4t^3}{(t^2 + (\rho-\tfrac{1}{2})^2)^2},
+\end{equation}
+where the sum runs over non-trivial zeros $\rho$ of $\zeta$,
+paired via the functional equation (each pair $\rho, 1-\rho$
+contributes one term with
+$w_\rho^2 = (\rho - \tfrac{1}{2})^2$).
+\end{theorem}
+
+\begin{proof}
+From the Hadamard product
+$\xi(s) = \xi(\tfrac{1}{2})\prod_\rho
+(1 - (s-\tfrac{1}{2})^2/(\rho-\tfrac{1}{2})^2)$:
+\[
+  \frac{\xi'}{\xi}(s)
+  = \sum_\rho \frac{2(s-\tfrac{1}{2})}{(s-\tfrac{1}{2})^2
+    - (\rho-\tfrac{1}{2})^2}.
+\]
+Setting $u = s - \tfrac{1}{2}$ and $w^2 = (\rho-\tfrac{1}{2})^2$:
+\begin{align*}
+  \frac{\xi'}{\xi} &= \sum \frac{2u}{u^2 - w^2}, \\[4pt]
+  \left(\frac{\xi'}{\xi}\right)'
+  &= \sum \frac{-2(u^2 + w^2)}{(u^2 - w^2)^2}.
+\end{align*}
+At $s = \tfrac{1}{2} + it$, $u = it$:
+\[
+  i \cdot \frac{2it}{-t^2 - w^2}
+  + t \cdot \frac{-2(-t^2 + w^2)}{(-t^2-w^2)^2}
+  = \frac{-2t}{t^2+w^2}
+  + \frac{2t(t^2-w^2)}{(t^2+w^2)^2}
+  = \frac{4t^3}{(t^2+w^2)^2}. \qedhere
+\]
+\end{proof}
+
+\section{Consequences}
+
+\begin{corollary}[On-line positivity]
+If all non-trivial zeros satisfy $\re(\rho) = 1/2$ (RH), then
+$(\rho-1/2)^2 = -\gamma_\rho^2$ and
+\begin{equation}
+  g'(t) = \sum_{\gamma > 0}
+    \frac{4t^3}{(t^2-\gamma^2)^2}
+  = \sum_{\gamma > 0}
+    \frac{\gamma}{(t-\gamma)^2} \cdot \frac{4t^3}{(t+\gamma)^2}
+  > 0.
+\end{equation}
+Each term is positive. The positivity is manifest.
+\end{corollary}
+
+\begin{corollary}[Connection to $M$]
+$M(\tfrac{1}{2}+\epsilon+it) = \epsilon\,g'(t) + O(\epsilon^2)$.
+Therefore $g'(t) > 0$ is a \emph{necessary condition} for
+$M(s) > 0$ near the critical line, hence necessary for RH.
+\end{corollary}
+
+\begin{proposition}[Off-line contribution]
+For a zero $\rho = \beta + i\gamma$ with
+$\alpha = \beta - 1/2 \neq 0$, the contribution to the real
+part of $g'(t)$ from the pair $(\rho, 1-\rho)$ is
+\begin{equation}
+  \re\!\left[\frac{4t^3}{(t^2+w^2)^2}\right]
+  = \frac{4t^3(A^2-B^2)}{(A^2+B^2)^2},
+\end{equation}
+where $A = t^2+\alpha^2-\gamma^2$ and $B = 2\alpha\gamma$.
+This is negative when $B^2 > A^2$, i.e., when
+$4\alpha^2\gamma^2 > (t^2+\alpha^2-\gamma^2)^2$.
+\end{proposition}
+
+\section{The open question}
+
+$g'(t) > 0$ is equivalent to: the on-line zero contributions
+(always positive) outweigh any off-line contributions
+(possibly negative).
+
+Conrey (1989) proved $\geq 40\%$ of zeros are on the
+critical line. The question: does this $40\%$ guarantee
+dominate? The on-line terms scale as $(t-\gamma)^{-2}$
+(strong near each zero), while off-line terms have the
+same scaling but with a negative sign for certain
+$(t,\gamma,\alpha)$ configurations.
+
+A proof that $g'(t) > 0$ unconditionally would establish a
+necessary condition for RH using only zero density estimates
+and the Hadamard product identity.
+
+\end{document}
