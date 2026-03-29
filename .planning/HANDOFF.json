@@ -1,35 +1,37 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T12:00:00Z",
+  "timestamp": "2026-03-29T20:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "sessions 17-21 complete",
+  "phase_name": "session 22 complete",
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "S17-19: Li criterion — g_k formula, N_0=11, oscillation period, circularity", "status": "done"},
-    {"id": 2, "name": "S21: Li preprint written (docs/li_decomposition_preprint.tex)", "status": "done"},
-    {"id": 3, "name": "S19-21: Connes formulas confirmed correct (W02, WR, Wp — Grok verified twice)", "status": "done"},
-    {"id": 4, "name": "S21: Sign convention resolved — eigenvector near eval 0 is correct xi", "status": "done"},
-    {"id": 5, "name": "S21: N=30 proof of concept — xi_hat zero at 14.131 (0.003 from gamma_1)", "status": "done"},
-    {"id": 6, "name": "S21: N=120 runs — near-zero eigenvector degrades, quadrature suspected", "status": "done"},
-    {"id": 7, "name": "S21: Prolate overlap initial (0.345 at lambda=sqrt(14))", "status": "done"}
+    {"id": 1, "name": "S17-19: Li criterion complete (preprint written)", "status": "done"},
+    {"id": 2, "name": "S19-21: Connes formulas confirmed correct (W02, WR, Wp)", "status": "done"},
+    {"id": 3, "name": "S22: Closed-form for gamma_L correction integral — eliminates ALL quadrature", "status": "done"},
+    {"id": 4, "name": "S22: beta_L(0) from general formula (no special case)", "status": "done"},
+    {"id": 5, "name": "S22: OFFSET proven constant (n^2 variation was eq44 quadrature error)", "status": "done"},
+    {"id": 6, "name": "S22: Eigenvector selection bug found (ev<best vs abs(ev)<abs(best))", "status": "done"},
+    {"id": 7, "name": "S22: Full QW matrix at N=120 tested — doesn't work either", "status": "done"},
+    {"id": 8, "name": "S22: Convergence sweep N=15..60 — plateaus at g1_acc~1.1, non-monotonic", "status": "done"},
+    {"id": 9, "name": "S22: Confirmed N=30 0.003 claim UNREPRODUCIBLE with any combination tested", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 8, "name": "Eliminate ALL quadrature from gamma_L: resolve c(L) integral identity exactly", "status": "not_started"},
-    {"id": 9, "name": "Rayleigh quotient test: <k_lambda|tau|k_lambda>/<k_lambda|k_lambda> vs epsilon_N", "status": "not_started"},
-    {"id": 10, "name": "Brute-force eigenvector scan at N=120: which eigvec gives xi_hat(g1)~0?", "status": "not_started"},
-    {"id": 11, "name": "Improve prolate overlap with actual PSWF (not Hermite limit)", "status": "not_started"},
-    {"id": 12, "name": "Polish Li preprint for arxiv submission", "status": "not_started"}
+    {"id": 10, "name": "Investigate larger L (lambda^2=100,1000) — may need more spectral resolution", "status": "not_started"},
+    {"id": 11, "name": "Re-read paper sections 5.2-5.3 carefully for missed normalization/cutoff", "status": "not_started"},
+    {"id": 12, "name": "Rayleigh quotient test (does NOT depend on xi_hat zero convergence)", "status": "not_started"},
+    {"id": 13, "name": "Polish Li preprint for arxiv submission", "status": "not_started"}
   ],
   "blockers": [
-    {"blocker": "gamma_L correction integral uses numerical quadrature — last non-exact piece. May corrupt eigenvector at N=120.", "severity": "high"},
-    {"blocker": "Sign convention: eigenvector selection = nearest eval to 0, not most negative. Works at N=30 but not N=120.", "severity": "medium"}
+    {"blocker": "xi_hat zeros from Connes operator do NOT converge to zeta zeros at any N tested (15-120) with L=ln(14). The 'N=30 gives 0.003' claim from Session 21 handoff could not be reproduced.", "severity": "high"},
+    {"blocker": "Root cause unknown: could be L too small, missing paper term, or fundamental misunderstanding of the construction", "severity": "high"}
   ],
   "decisions": [
-    {"decision": "QW sign: our convention is OPPOSITE to paper's. Eigenvector for eval nearest 0 = paper's smallest eval eigenvector.", "rationale": "Grok confirmed. At N=30: eval +0.38 eigenvector gives xi_hat zero at 14.131 (0.003 from gamma_1). Most negative eval eigenvector gives garbage.", "phase": "21"},
-    {"decision": "N=120 degradation from N=30 likely due to remaining quadrature in gamma_L correction", "rationale": "N=30 gives xi_hat(g1)=1.3e-4 (excellent), N=120 gives 0.11 (100x worse). Only difference: more modes amplify quadrature error. Fix: eliminate quadrature entirely.", "phase": "21"},
-    {"decision": "Rayleigh quotient test is the most promising path to close the prolate gap", "rationale": "Grok identifies: feed k_lambda into tau, compute quotient, compare with epsilon_N. Difference should be O(1/log^2 lambda). Standard variational argument from quantum mechanics.", "phase": "21"},
-    {"decision": "Li criterion g_k formula confirmed novel by Grok literature search", "rationale": "Maslanka 2004 has conceptual split, but exact g_k = (-1)^k[(1-2^{-k})zeta(k)-1]/k not in Coffey, Voros, Lagarias, or any other reference. N_0=11 and oscillation period also new.", "phase": "21"}
+    {"decision": "gamma_L correction integral has exact closed form: F(e^{L/2})-F(1) where F(u)=-ln(u+1)+ln(u^2+1)/2+atan(u)", "rationale": "Substitution u=e^{x/2} gives 2u/((u+1)(u^2+1)). Partial fractions -> elementary antiderivative. Verified to 9e-11.", "phase": "22"},
+    {"decision": "beta_L(0) works from general formula with no special case", "rationale": "At n=0: coeff = 2L/(-iL) = 2i, complex arithmetic handles it. Sign error in earlier manual limit was the bug.", "phase": "22"},
+    {"decision": "OFFSET is genuinely constant — n^2 variation was quadrature error in eq(4.4)", "rationale": "Tested at n=0,120 with nq=5000,20000,50000. Variation scales exactly as 1/nq^2. True OFFSET = 1.33690541816.", "phase": "22"},
+    {"decision": "N=30 '0.003 accuracy' claim is unreproducible", "rationale": "Tested TAU (mpmath.eig 200dp + numpy), full QW (exact Prop4.3), connes_exact.py (formula 3.14). All give g1_acc >= 0.76. Sweep N=15..60 shows plateau at ~1.1. Original claim may have been from transient session state.", "phase": "22"},
+    {"decision": "Eigenvector selection was bugged but it's not the root cause", "rationale": "Old code used min(eval) instead of min(|eval|). Fixed, but neither selection gives good xi_hat zeros.", "phase": "22"}
   ],
-  "next_action": "SESSION 22: (1) Resolve gamma_L c(L) identity to eliminate ALL quadrature from a_n, (2) Rerun N=120 with fully exact a_n, (3) If zeros match: implement Rayleigh quotient test for multiple lambda values. The gamma_L fix is the key — it's the last numerical quadrature piece and likely causes the N=120 degradation.",
-  "context_notes": "21 scripts. Li (10): li_criterion.py through li_zeta_bound.py. Connes (11): connes_weil.py through connes_N120_exact.py + connes_prolate_overlap.py. Preprint: docs/li_decomposition_preprint.tex. Key numbers: N=30 xi_hat zero at 14.131 (0.003 from g1), gamma_L offset = 1.33691 (constant), sign convention = negate for paper's convention. Grok's Rayleigh quotient suggestion is the path to closing the prolate gap. Python: /c/Python313/python.exe, mp.dps=200."
+  "next_action": "SESSION 23: Three options. (1) Try larger L — lambda^2=100 or 1000 instead of 14. The paper may need L >> 1 for convergence. (2) Re-read paper sections 5.2-5.3 for delta_N normalization and xi_hat definition — we may be missing a term. (3) Pivot to Rayleigh quotient test which doesn't need xi_hat zeros to converge.",
+  "context_notes": "22 scripts. connes_session22.py has exact gamma_L + full QW builder. Key formula: corr = F(e^{L/2})-F(1), F(u)=-ln(u+1)+ln(u^2+1)/2+atan(u). OFFSET=1.33691 (constant). Python: /c/Python313/python.exe, mp.dps=200."
 }
