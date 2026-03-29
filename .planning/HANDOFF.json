@@ -1,31 +1,9 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T22:00:00Z",
+  "timestamp": "2026-03-29T23:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "session 22 — paper reproduced, attack surface mapped",
+  "phase_name": "session 22 — ready to test prolate convergence",
   "status": "paused",
-  "completed_tasks": [
-    {"id": 1, "name": "W_p formula bug found and fixed — q kernel, not cos(2pi(n-m)lk/L)", "status": "done"},
-    {"id": 2, "name": "Paper reproduced: N=120 all-positive spectrum, xi_hat zeros match zeta zeros", "status": "done"},
-    {"id": 3, "name": "gamma_L closed form derived (eliminates all quadrature)", "status": "done"},
-    {"id": 4, "name": "Lambda sweep lam^2=9..50: gap shrinks slowly, overlap constant at 0.185", "status": "done"},
-    {"id": 5, "name": "Joint N+lambda scaling: eps_N~2e-9 everywhere, Rayleigh gap GROWS with N", "status": "done"},
-    {"id": 6, "name": "Test functions (Gaussian, flat, k_lam) all 10^8x worse than eps_N", "status": "done"}
-  ],
-  "remaining_tasks": [
-    {"id": 7, "name": "Eigenvector structure analysis: WHY does xi's secular equation give zeta zeros?", "status": "not_started"},
-    {"id": 8, "name": "200dp eigenvector via mpmath.eig or inverse iteration (for 10^{-60} accuracy)", "status": "not_started"},
-    {"id": 9, "name": "Actual PSWF via sinc kernel eigenvalue problem (not k_lambda)", "status": "not_started"},
-    {"id": 10, "name": "Convergence rate: |xi_hat(gamma_k)| vs N and lambda at high precision", "status": "not_started"}
-  ],
-  "blockers": [
-    {"blocker": "Rayleigh quotient approach doesn't work — gap is O(1) not O(1/log^2). Need different proof strategy.", "severity": "high"}
-  ],
-  "decisions": [
-    {"decision": "W_p uses q kernel q(U_n,U_m)(log k), NOT cos(2pi(n-m)lk/L)", "rationale": "Paper eq (4.3) + Lemma 2.3. q for n!=m: [sin(2pim*y/L)-sin(2pin*y/L)]/[pi(n-m)]. Diagonal: 2(L-y)/L*cos. This was THE bug.", "phase": "22"},
-    {"decision": "Variational/Rayleigh path to proof is blocked", "rationale": "eps_N~2e-9 everywhere. No test function gets within 10^8 of it. Gap grows with N. The eigenvalue is already zero — the action is in the eigenvector structure.", "phase": "22"},
-    {"decision": "The proof gap is in the secular equation (5.25)", "rationale": "xi_hat zeros match zeta zeros to 10^{-60} (paper) but nobody knows WHY the eigenvector of QW produces this. Understanding the eigenvector structure IS the proof.", "phase": "22"}
-  ],
-  "next_action": "SESSION 23: Study the eigenvector xi itself. (1) Plot its components — is there a pattern? (2) Compare xi at different N and lambda — what's universal? (3) Connect xi to known functions (Mellin transforms, theta functions?). (4) Or: ask Grok what the missing analytic step is, given that variational doesn't work.",
-  "context_notes": "Scripts: connes_attack.py (full QW builder + Rayleigh test), connes_session22.py (closed-form gamma_L). Key formula: Wp uses q(U_n,U_m)(log k) from Lemma 2.3. Python: /c/Python313/python.exe. Paper: arxiv 2511.22755."
+  "next_action": "Implement Grok's suggested test: compute xi at (N1,lam1), embed into larger-N2 Weil form, measure Rayleigh quotient vs prolate ground-state energy as lambda grows. This is direct numerical evidence for the paper's 'main remaining obstacle'.",
+  "context_notes": "W_p uses q kernel (Lemma 2.3). connes_attack.py has working QW builder. Prolate guess is asymptotic only — finite-N works via explicit formula truncation. Paper: arxiv 2511.22755. Python: /c/Python313/python.exe."
 }
