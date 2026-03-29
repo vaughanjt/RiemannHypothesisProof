@@ -1,29 +1,24 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T06:00:00Z",
+  "timestamp": "2026-03-29T07:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "sessions 17-20 — Li criterion complete, Connes normalization gap",
+  "phase_name": "sessions 17-20 complete",
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "S17-19: Li criterion fully explored — Gamma proved, zeta bound = RH", "status": "done"},
-    {"id": 2, "name": "S19-20: Connes paper formulas extracted (W_02 eq4.2, W_p eq4.3, W_R eq4.4, xi_hat eq5.25)", "status": "done"},
-    {"id": 3, "name": "S20: 6 Connes scripts built (v1-v4 + weil + spectral), QW structure verified", "status": "done"},
-    {"id": 4, "name": "S20: Identified normalization mismatch: Mellin vs Fourier, q-function factor", "status": "done"}
+    {"id": 1, "name": "S17-19: Li criterion — Gamma proved, zeta bound = RH, tau_n monotone", "status": "done"},
+    {"id": 2, "name": "S19-20: Connes operator — 6 scripts, W_02/W_p exact, W_R offset = 1.956", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 5, "name": "Resolve Connes normalization: trace V_n -> q(U_n,U_m) -> Psi#(F) conventions exactly", "status": "not_started"},
-    {"id": 6, "name": "High-precision run: 200dp, N=120, exact W_R -> reproduce 10^{-60}", "status": "not_started"},
-    {"id": 7, "name": "Write Li criterion preprint documenting S17-19 decomposition results", "status": "not_started"}
+    {"id": 3, "name": "Resolve Connes W_R offset: trace Psi# through kappa/log pullback in Sections 2-3", "status": "not_started"},
+    {"id": 4, "name": "Write Li criterion preprint (fully completed work, publication-ready)", "status": "not_started"}
   ],
   "blockers": [
-    {"blocker": "Connes W_R normalization: backed-out W_R(1,1) = -5.34 vs computed +0.99 — ~6 unit offset from q-function factor and Weil distribution conventions", "severity": "high"}
-  ],
-  "human_actions_pending": [
-    {"action": "Print/read arxiv:2511.22755 Section 2 (Lemma 2.3, q-function) and Section 3 (Psi#, kappa) to resolve normalization", "blocking": true}
+    {"blocker": "Connes W_R: computed=2.924, correct=0.968, offset=1.956. Formula (4.4) implemented correctly but Psi# convention has a constant shift. Likely in the log pullback D=log*(Psi#) or the kappa isometry.", "severity": "high"}
   ],
   "decisions": [
-    {"decision": "Connes implementation needs careful convention tracing, not just formula extraction", "rationale": "Six scripts built, each improving on the last. W_R has correct n-dependence but wrong normalization. Root cause is the chain V_n -> U_n -> q(U_n,U_m) -> F -> Psi#(F) where each step has specific conventions (kappa map, log vs mult, 1/sqrt(L) factors). Getting this right requires reading Sections 2-3 in full.", "phase": "20"}
+    {"decision": "Connes W_R offset precisely measured: 1.956 at 100-digit precision", "rationale": "W02 and Wp are exact (verified). QW_zeros = W02 - WR - Wp gives WR_correct = 0.968. Our formula (4.4) gives 2.924. The 1.956 offset is in the constant term w_const, not the integral.", "phase": "20"},
+    {"decision": "QW null space is 64-dimensional — paper's W_R breaks degeneracy to select unique xi", "rationale": "Tested: no QW_zeros eigenvector produces xi_hat zeros near zeta zeros. The W_R contribution is essential for lifting degeneracy. Without correct W_R, no eigenvalue matching is possible.", "phase": "20"}
   ],
-  "next_action": "Either (1) carefully read Sections 2-3 of the paper to resolve conventions (most productive), or (2) write the Li criterion preprint (fully completed work), or (3) try a completely different Connes experiment (prolate wave operator UV spectrum).",
-  "context_notes": "16 scripts total. Li (10): li_criterion.py through li_zeta_bound.py. Connes (6): connes_weil.py, connes_spectral.py, connes_exact.py, connes_v2.py, connes_v3.py, connes_v4.py. Paper PDF saved locally at ~/.claude/.../webfetch-*.pdf. Key diagnostic: backed-out W_R vs computed W_R shows ~6 unit diagonal offset for n >= 1. Python: /c/Python313/python.exe."
+  "next_action": "SESSION 21 options: (1) Trace Psi# convention through paper Sections 2-3 to resolve the 1.956 offset — this is the key to unlocking the Connes operator. (2) Write Li criterion preprint — clean, completed work. (3) Try the partial-zero approach (K zeros -> predict K+1th) as a publishable Connes result even without full W_R.",
+  "context_notes": "16 scripts. Precise diagnostic: WR offset = 1.956 = w_const(our) - w_const(correct) - integral_correction. The w_const = gamma + log(4pi*(e^L-1)/(e^L+1)) = 2.965. Correct total WR = 0.968. The offset is NOT in the integral (which is -0.041), it's in the constant. Paper PDF saved locally. Python: /c/Python313/python.exe."
 }
