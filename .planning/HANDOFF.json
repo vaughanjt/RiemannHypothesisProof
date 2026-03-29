@@ -1,24 +1,21 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T07:00:00Z",
+  "timestamp": "2026-03-29T09:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "sessions 17-20 complete",
-  "status": "paused",
+  "phase_name": "sessions 17-21 — Li preprint + Connes N=120 running",
+  "status": "running",
   "completed_tasks": [
-    {"id": 1, "name": "S17-19: Li criterion — Gamma proved, zeta bound = RH, tau_n monotone", "status": "done"},
-    {"id": 2, "name": "S19-20: Connes operator — 6 scripts, W_02/W_p exact, W_R offset = 1.956", "status": "done"}
+    {"id": 1, "name": "S17-19: Li criterion fully explored", "status": "done"},
+    {"id": 2, "name": "S19-20: Connes formulas confirmed correct (Grok verification)", "status": "done"},
+    {"id": 3, "name": "S20: 200dp shows dramatic improvement (12.6 vs 2.5 for first zero)", "status": "done"},
+    {"id": 4, "name": "S21: Li preprint written (novel g_k formula, N_0=11, oscillation period)", "status": "done"},
+    {"id": 5, "name": "S21: Prolate overlap initial computation (0.345 at lambda=sqrt(14))", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 3, "name": "Resolve Connes W_R offset: trace Psi# through kappa/log pullback in Sections 2-3", "status": "not_started"},
-    {"id": 4, "name": "Write Li criterion preprint (fully completed work, publication-ready)", "status": "not_started"}
+    {"id": 6, "name": "RUNNING: N=120 200dp computation (connes_N120.py in background)", "status": "in_progress"},
+    {"id": 7, "name": "Improve prolate overlap: actual prolate functions (not Hermite), larger lambda", "status": "not_started"},
+    {"id": 8, "name": "Fix diagonal gamma_L formula to eliminate 1.337 offset", "status": "not_started"}
   ],
-  "blockers": [
-    {"blocker": "Connes W_R: computed=2.924, correct=0.968, offset=1.956. Formula (4.4) implemented correctly but Psi# convention has a constant shift. Likely in the log pullback D=log*(Psi#) or the kappa isometry.", "severity": "high"}
-  ],
-  "decisions": [
-    {"decision": "Connes W_R offset precisely measured: 1.956 at 100-digit precision", "rationale": "W02 and Wp are exact (verified). QW_zeros = W02 - WR - Wp gives WR_correct = 0.968. Our formula (4.4) gives 2.924. The 1.956 offset is in the constant term w_const, not the integral.", "phase": "20"},
-    {"decision": "QW null space is 64-dimensional — paper's W_R breaks degeneracy to select unique xi", "rationale": "Tested: no QW_zeros eigenvector produces xi_hat zeros near zeta zeros. The W_R contribution is essential for lifting degeneracy. Without correct W_R, no eigenvalue matching is possible.", "phase": "20"}
-  ],
-  "next_action": "SESSION 21 options: (1) Trace Psi# convention through paper Sections 2-3 to resolve the 1.956 offset — this is the key to unlocking the Connes operator. (2) Write Li criterion preprint — clean, completed work. (3) Try the partial-zero approach (K zeros -> predict K+1th) as a publishable Connes result even without full W_R.",
-  "context_notes": "16 scripts. Precise diagnostic: WR offset = 1.956 = w_const(our) - w_const(correct) - integral_correction. The w_const = gamma + log(4pi*(e^L-1)/(e^L+1)) = 2.965. Correct total WR = 0.968. The offset is NOT in the integral (which is -0.041), it's in the constant. Paper PDF saved locally. Python: /c/Python313/python.exe."
+  "next_action": "Wait for connes_N120.py to complete. If xi_hat zeros match zeta zeros, this reproduces the paper's Table 1. Then scale prolate overlap to larger lambda.",
+  "context_notes": "20 scripts total. Li (10), Connes (10 including connes_N120.py). Preprint at docs/li_decomposition_preprint.tex. Background computation: byqa7l1fl. Python: /c/Python313/python.exe."
 }
