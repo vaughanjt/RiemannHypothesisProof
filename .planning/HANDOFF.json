@@ -1,33 +1,32 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T01:00:00Z",
+  "timestamp": "2026-03-29T02:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "session 18 complete — Li asymptotics and decomposition validated",
+  "phase_name": "sessions 17-19 complete — Li criterion fully explored",
   "status": "paused",
   "completed_tasks": [
-    {"id": 1, "name": "SESSION 17: Li coefficients lambda_n via FFT-Taylor for n=1..200", "status": "done"},
-    {"id": 2, "name": "SESSION 17: Gamma/zeta decomposition — zeta oscillates, goes negative n=156-186", "status": "done"},
-    {"id": 3, "name": "SESSION 17: M-function connection (averaging smooths local negativity)", "status": "done"},
-    {"id": 4, "name": "SESSION 18: Asymptotic bound — |lambda_n^zeta| << sqrt(n*log n), GUE suppression", "status": "done"},
-    {"id": 5, "name": "SESSION 18: N_0 = 11 — Gamma dominates for ALL n >= 11 (verified to n=200)", "status": "done"},
-    {"id": 6, "name": "SESSION 18: Avenue 4 DEAD END — truncated Euler product fails in critical strip", "status": "done"},
-    {"id": 7, "name": "SESSION 18: Bombieri-Lagarias — our decomposition superior, tau_n monotone increasing", "status": "done"}
+    {"id": 1, "name": "S17: Li coefficients via FFT-Taylor for n=1..200 (200dp)", "status": "done"},
+    {"id": 2, "name": "S17: Gamma/zeta decomposition — oscillation, M-function connection", "status": "done"},
+    {"id": 3, "name": "S18: N_0=11 Gamma dominance threshold, GUE suppression of zeta oscillation", "status": "done"},
+    {"id": 4, "name": "S18: Avenue 4 DEAD END — truncated Euler product fails in critical strip", "status": "done"},
+    {"id": 5, "name": "S18: B-L decomposition comparison — our split superior", "status": "done"},
+    {"id": 6, "name": "S19: PROVED lambda_n^Gamma > 0 for n >= 8 (exact g_k formula, monotone)", "status": "done"},
+    {"id": 7, "name": "S19: NEGATIVE RESULT — bounding |lambda_n^zeta| unconditionally IS equivalent to RH", "status": "done"},
+    {"id": 8, "name": "S19: Identified circularity: off-line zero -> singularity inside unit disk -> lambda_n < 0", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 8, "name": "SESSION 19: Prove lambda_n^Gamma > 0 for n >= 8 via Stirling analysis", "status": "not_started"},
-    {"id": 9, "name": "SESSION 19: Rigorous bound on lambda_n^zeta (Stieltjes constant route?)", "status": "not_started"},
-    {"id": 10, "name": "Avenue 5: Connes prolate operator (2024-2025 papers)", "status": "not_started"},
-    {"id": 11, "name": "Write Li criterion preprint (LaTeX)", "status": "not_started"},
-    {"id": 12, "name": "Extend to n=500 with 500dp precision (confirm oscillation pattern)", "status": "not_started"}
+    {"id": 9, "name": "Avenue 5: Connes prolate operator (2024-2025) — requires research", "status": "not_started"},
+    {"id": 10, "name": "Write Li criterion preprint (LaTeX) — document the decomposition", "status": "not_started"},
+    {"id": 11, "name": "Return to M-function: can the Gamma dominance proof for sigma>1 be sharpened?", "status": "not_started"},
+    {"id": 12, "name": "Cross-pollinate: Li decomposition insights -> Jensen polynomial connection", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [],
   "decisions": [
-    {"decision": "N_0 = 11 is the Gamma dominance threshold", "rationale": "For all n >= 11, lambda_n^Gamma > |lambda_n^zeta| (verified to n=200). At n=11: Gamma=1.50, |zeta|=1.25. Gap widens rapidly.", "phase": "18"},
-    {"decision": "Truncated Euler product (Avenue 4) is a dead end", "rationale": "Euler product doesn't converge for Re(s) < 1. FFT circle includes Re(s)=0.6 points. Li coefficients from truncated product DIVERGE. d_1 goes to -inf instead of gamma.", "phase": "18"},
-    {"decision": "Our smooth_gamma + log_sz decomposition is superior to Bombieri-Lagarias", "rationale": "B-L trivial zero sum S_0(n) diverges to -10^17 at n=100. Our split keeps Gamma ~ n*log(n) and zeta ~ O(1). More numerically stable and conceptually cleaner.", "phase": "18"},
-    {"decision": "tau_n = lambda_n/n is monotonically increasing (n=1..100)", "rationale": "Consistent with Keiper-Li conjecture (stronger than RH). Every tau_{n+1} > tau_n for n=1..99.", "phase": "18"}
+    {"decision": "Li criterion investigation complete — fundamental circularity identified", "rationale": "Proved Gamma > 0 for n >= 8 (analytical, exact formula). But bounding |zeta part| IS equivalent to RH: singularity structure of generating function F(x) = log_sz(1/(1-x)) directly encodes zero locations. Off-critical-line zero -> singularity inside unit disk -> exponential growth -> lambda_n < 0. No unconditional shortcut.", "phase": "19"},
+    {"decision": "Key analytical results worth documenting as preprint", "rationale": "The smooth_gamma + log_sz decomposition, exact g_k formula, N_0=11 threshold, and oscillation period = 2pi/arg(1-1/rho_1) are publishable observations even without proving RH.", "phase": "19"},
+    {"decision": "Connes prolate operator (Avenue 5) deferred to dedicated session", "rationale": "Requires web research into 2024-2025 papers. Entirely different framework — not a continuation of Li criterion work.", "phase": "19"}
   ],
-  "next_action": "Session 19: (1) Prove lambda_n^Gamma > 0 for n >= 8 analytically (Stirling expansion of the smooth_gamma piece), (2) Attempt to bound lambda_n^zeta using Stieltjes constant estimates, (3) Avenue 5: Connes prolate operator — fresh approach entirely. If (1) and (2) succeed, RH reduces to finite verification of n=1..10.",
-  "context_notes": "Sessions 17-18 built a complete computational framework for Li's criterion. Key scripts: li_criterion.py, li_prime_anatomy.py, li_extended.py, li_highorder.py (200dp), li_M_connection.py, li_asymptotics.py, li_euler_product.py, li_bombieri_lagarias.py. The decomposition lambda_n = lambda_n^Gamma + lambda_n^zeta with Gamma = smooth_gamma(s) and zeta = log((s-1)*zeta(s)) is the central tool. FFT-based Cauchy integral for Taylor coefficients (mpmath.taylor fails). Environment: /c/Python313/python.exe, data: _zeros_500.npy."
+  "next_action": "Choose direction: (1) Write Li criterion preprint documenting S17-19 findings, (2) Avenue 5: Connes prolate operator research session, (3) Return to M-function with sharpened tools, (4) Jensen polynomial connection (from S16 dbn_jensen.py). The Li investigation reached its natural conclusion — the decomposition is clean but the core difficulty (bounding the zeta part) is equivalent to RH itself.",
+  "context_notes": "Sessions 17-19 (2026-03-28/29) explored Li's criterion thoroughly. 8 scripts: li_criterion.py, li_prime_anatomy.py, li_extended.py, li_highorder.py, li_M_connection.py, li_asymptotics.py, li_euler_product.py, li_bombieri_lagarias.py, li_gamma_proof.py, li_zeta_bound.py. The decomposition lambda_n = lambda_n^Gamma + lambda_n^zeta is the central framework. Gamma part has exact formula g_k = (-1)^k*[(1-2^{-k})zeta(k)-1]/k. Python: /c/Python313/python.exe."
 }
