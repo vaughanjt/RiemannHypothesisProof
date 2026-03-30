@@ -1,9 +1,39 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-30T08:00:00Z",
+  "timestamp": "2026-03-30T08:30:00Z",
   "phase": "post-milestone",
-  "phase_name": "session 24 — E map implemented, prolate overlap increasing",
+  "phase_name": "Connes spectral operator — prolate overlap investigation",
+  "plan": "sessions 22-24",
   "status": "paused",
-  "next_action": "SESSION 25: (1) Increase SL grid resolution (n_grid scaling with gamma) for lam^2=100-1000. (2) Use paper's exact h_lambda coefficients (sqrt(3)/2^{11/4}*h_4 - 3/2^{17/4}*h_0). (3) Measure overlap trend — if it continues rising toward 1, that's the educated guess verified numerically.",
-  "context_notes": "E map: E(h)(u) = u^{1/2} sum_{n>=1} h(nu). SL: F_gamma on [-1,1] with gamma=2*pi*lam^2. Overlap(xi,k_lam): 0.0002 (lam^2=14) -> 0.001 (lam^2=50), increasing. Large lam needs n_grid >> gamma. Scripts: connes_prolate_correct.py. Python: /c/Python313/python.exe."
+  "task": "Prolate overlap with correct E map",
+  "total_tasks": 4,
+  "completed_tasks": [
+    {"id": 1, "name": "W_p formula bug fix (q kernel)", "status": "done"},
+    {"id": 2, "name": "Paper reproduction (all eigenvalues positive, zeros match)", "status": "done"},
+    {"id": 3, "name": "Convergence rates (eps_N~10^{-2.3L}, eigenvector freezing)", "status": "done"},
+    {"id": 4, "name": "H normalization (H(0)=Xi(0), zero-by-zero convergence)", "status": "done"},
+    {"id": 5, "name": "Mellin/Fourier gap identified (41 orders, intrinsic)", "status": "done"},
+    {"id": 6, "name": "Correct SL operator (gamma=2*pi*lam^2) + E map implemented", "status": "done"},
+    {"id": 7, "name": "Prolate overlap increasing: 0.0002 (lam^2=14) -> 0.001 (lam^2=50)", "status": "done"}
+  ],
+  "remaining_tasks": [
+    {"id": 8, "name": "Scale SL grid (n_grid proportional to gamma) for lam^2=100-1000", "status": "not_started"},
+    {"id": 9, "name": "Use paper's exact h_lambda coefficients (sqrt(3)/2^{11/4}*h4 - 3/2^{17/4}*h0)", "status": "not_started"},
+    {"id": 10, "name": "Measure overlap trend to lam^2=10000+ — does it approach 1?", "status": "not_started"},
+    {"id": 11, "name": "Write up computational results as preprint", "status": "not_started"}
+  ],
+  "blockers": [
+    {"blocker": "SL solver needs n_grid >> gamma for large lambda (gamma=2*pi*lam^2 grows fast)", "severity": "medium"},
+    {"blocker": "Mellin/Fourier gap is intrinsic — explicit formula controls xi_tilde not xi_hat", "severity": "high"}
+  ],
+  "decisions": [
+    {"decision": "W_p uses q(U_n,U_m)(log k) from Lemma 2.3", "rationale": "THE critical bug fix of Session 22"},
+    {"decision": "Proof wall at Mellin/Fourier bridge = the educated guess = RH", "rationale": "Confirmed by Grok and our 41-order gap measurement"},
+    {"decision": "E map is E(h)(u) = u^{1/2} sum_{n>=1} h(nu)", "rationale": "Paper eq 7.2, NOT a simple variable substitution"},
+    {"decision": "SL operator: gamma = 2*pi*lambda^2 (NOT L/2)", "rationale": "Grok corrected our bandwidth parameter"}
+  ],
+  "uncommitted_files": [],
+  "context_notes": "Sessions 22-24 arc: W_p fix -> paper reproduced -> proof attempt -> wall (Mellin/Fourier) -> prolate overlap. The overlap is rising (0.0002->0.001) with the correct E map. Key scripts: connes_attack.py (QW builder), connes_proof_checks.py (4 Grok checks), connes_prolate_correct.py (SL + E map). Python: /c/Python313/python.exe, mp.dps=50-100.",
+  "next_action": "Scale SL grid for large lambda, use exact paper coefficients, push overlap measurement to lam^2=10000+. If overlap rises toward 1, write up as strongest numerical evidence for the educated guess.",
+  "human_actions_pending": []
 }
