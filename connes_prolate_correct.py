@@ -70,41 +70,94 @@ def solve_SL(lam, n_grid=500):
             if len(even)>=3: break
     return z,even,eev
 
-print("CORRECT PROLATE (Sturm-Liouville, gamma=2*pi*lambda^2)",flush=True)
-print("="*70,flush=True)
+def apply_E_map(h_func_interp, z_grid, psi, lam, L_f, N):
+    """Apply the map E(h)(u) = u^{1/2} * sum_{n=1}^{Nmax} h(n*u) on [lam^{-1}, lam].
 
-for lam_sq in [14,50,100,200,500,1000]:
-    t0=time.time()
-    lam=np.sqrt(lam_sq);L_f=np.log(lam_sq);N=30;dim=2*N+1
-    xi,eps,_,_=build_xi(lam_sq,N)
-    xi_n=xi/np.linalg.norm(xi)
-    z_grid,efuncs,eevals=solve_SL(lam,n_grid=500)
-    y_pts=np.linspace(-L_f/2,L_f/2,1000)
-    z_pts=y_pts/lam
-    dy=y_pts[1]-y_pts[0]
-    ovs=[];projs=[]
+    h is defined on the additive interval [-lam, lam] (via z_grid on [-1,1]).
+    E folds it into the multiplicative interval [lam^{-1}, lam].
+    Then project onto V_n basis.
+    """
+    dim = 2 * N + 1
+
+    # Multiplicative grid u in [lam^{-1}, lam], using log-uniform spacing
+    n_u = 2000
+    u_grid = np.exp(np.linspace(-L_f/2, L_f/2, n_u))  # u in [lam^{-1}, lam]
+
+    # For each u, compute E(h)(u) = u^{1/2} * sum_{n>=1} h(n*u)
+    # h(x) is defined on [-lam, lam]; h(x) = 0 for |x| > lam
+    # In scaled coords: h(x) = psi(x/lam) for x in [-lam, lam]
+    k_vals = np.zeros(n_u)
+    for i, u in enumerate(u_grid):
+        total = 0.0
+        n = 1
+        while n * u <= lam:
+            x = n * u  # additive argument
+            z = x / lam  # scale to [-1, 1]
+            if -1 <= z <= 1:
+                total += np.interp(z, z_grid, psi)
+            # Also include negative: h is even, so h(-n*u) = h(n*u)
+            # But n*u > 0 always (n>=1, u>0), and h is even so h(n*u) already counts
+            n += 1
+        k_vals[i] = np.sqrt(u) * total
+
+    # Project k(u) onto V_n basis: c_j = integral k(u) * conj(V_j(u)) du/u
+    # V_j(u) = u^{2*pi*i*j/L}, conj = u^{-2*pi*i*j/L}
+    # In log coords y = log(u): c_j = integral k(e^y) * e^{-2*pi*i*j*y/L} dy
+    y_grid = np.log(u_grid)
+    dy = y_grid[1] - y_grid[0]
+
+    coeffs = np.zeros(dim)
+    for j in range(-N, N + 1):
+        # Real part since k and V_j projection should give real coefficients for even k
+        integrand = k_vals * np.cos(2 * np.pi * j * y_grid / L_f)
+        coeffs[j + N] = np.sum(integrand) * dy
+
+    nrm = np.linalg.norm(coeffs)
+    if nrm > 0:
+        coeffs /= nrm
+    return coeffs, k_vals, u_grid
+
+
+print("CORRECT PROLATE WITH E MAP (Session 24)", flush=True)
+print("E(h)(u) = u^{1/2} * sum_{n>=1} h(n*u)", flush=True)
+print("=" * 70, flush=True)
+
+for lam_sq in [14, 50, 100, 200, 500, 1000]:
+    t0 = time.time()
+    lam = np.sqrt(lam_sq); L_f = np.log(lam_sq); N = 30; dim = 2 * N + 1
+    xi, eps, _, _ = build_xi(lam_sq, N)
+    xi_n = xi / np.linalg.norm(xi)
+    z_grid, efuncs, eevals = solve_SL(lam, n_grid=500)
+
+    # Apply E map to each even prolate eigenfunction
+    ovs = []; projs = []
     for psi in efuncs:
-        h_y=np.interp(z_pts,z_grid,psi)
-        coeffs=np.zeros(dim)
-        for j in range(-N,N+1):
-            integrand=h_y*np.cos(2*np.pi*j*y_pts/L_f)
-            coeffs[j+N]=np.sum(integrand)*dy/L_f
-        nrm=np.linalg.norm(coeffs)
-        if nrm>0: coeffs/=nrm
-        ovs.append(abs(np.dot(xi_n,coeffs)))
+        coeffs, _, _ = apply_E_map(None, z_grid, psi, lam, L_f, N)
+        ov = abs(np.dot(xi_n, coeffs))
+        ovs.append(ov)
         projs.append(coeffs)
-    ov_k=-1
-    if len(projs)>=2:
-        h0c=projs[0];h4c=projs[1]
-        if abs(h4c[N])>1e-15:
-            r=-h0c[N]/h4c[N];kl=h0c+r*h4c
-            nrm=np.linalg.norm(kl)
-            if nrm>0: kl/=nrm; ov_k=abs(np.dot(xi_n,kl))
-    dt=time.time()-t0
-    gam=2*np.pi*lam_sq
-    print(f"lam^2={lam_sq:5d} lam={lam:.2f} gamma={gam:.0f}",flush=True)
-    for i in range(min(3,len(ovs))):
-        print(f"  overlap(xi,h_{2*i})={ovs[i]:.6f} (eval={eevals[i]:.2e})",flush=True)
-    if ov_k>=0:
-        print(f"  overlap(xi,k_lam) ={ov_k:.6f} <-- KEY",flush=True)
-    print(f"  ({dt:.0f}s)\n",flush=True)
+
+    # Build k_lambda from paper's combination:
+    # h_lambda = (sqrt(3)/2^{11/4}) h_4 - (3/2^{17/4}) h_0
+    # But we need to first apply E to h_0 and h_4 separately, then combine
+    ov_k = -1
+    if len(projs) >= 2:
+        h0c = projs[0]; h4c = projs[1]
+        # Integral-vanishing: a*h0[N] + b*h4[N] = 0 => b/a = -h0[N]/h4[N]
+        # (The paper's exact coefficients may differ; use vanishing-integral condition)
+        if abs(h4c[N]) > 1e-15:
+            r = -h0c[N] / h4c[N]
+            kl = h0c + r * h4c
+            nrm = np.linalg.norm(kl)
+            if nrm > 0:
+                kl /= nrm
+                ov_k = abs(np.dot(xi_n, kl))
+
+    dt = time.time() - t0
+    gam = 2 * np.pi * lam_sq
+    print(f"lam^2={lam_sq:5d} lam={lam:.2f} gamma={gam:.0f}", flush=True)
+    for i in range(min(3, len(ovs))):
+        print(f"  overlap(xi, E(h_{2*i})) = {ovs[i]:.6f} (eval={eevals[i]:.2e})", flush=True)
+    if ov_k >= 0:
+        print(f"  overlap(xi, k_lam)     = {ov_k:.6f} <-- KEY", flush=True)
+    print(f"  ({dt:.0f}s)\n", flush=True)
