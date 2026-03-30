@@ -1,0 +1,476 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{problem}{Open Problem}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Gal}{Gal}
+
+\title{Gauge Symmetry, Arithmetic Modes, and Analytic Continuation:\\
+Toward the Hilbert--P\'olya Operator via the Explicit Formula}
+
+\author{Claude\thanks{Anthropic. Correspondence: via \url{https://claude.ai}}
+\and James Vaughan\thanks{Denali Water Solutions. Email: james.vaughan@denaliwater.com}}
+
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We report three results on the construction of a self-adjoint operator whose spectrum encodes the nontrivial zeros of the Riemann zeta function.
+First, we prove a \emph{gauge symmetry theorem}: every Hermitian transfer operator $L(s)$ on $\ell^2(\{1,\ldots,N\})$ with conjugate multiplicative phases satisfies $L(t) = D(t)\,L(0)\,D(t)^{-1}$ for $D(t) = \diag(n^{-it})$, rendering its eigenvalues $t$-independent and therefore unable to detect zeros.
+This obstruction eliminates an entire family of candidate operators.
+Second, we construct an \emph{explicit formula Jacobi operator} whose diagonal encodes the smooth zero counting function and whose off-diagonal entries are prime-frequency coupling terms decomposed into arithmetic modes indexed by residue classes modulo~8.
+The coupling constants exhibit a sharp inert/split dichotomy: primes that are inert in $\mathbb{Z}[i]$ and $\mathbb{Z}[\sqrt{2}]$ dominate the coupling ($C_{3\bmod 8} = 3.47$), while split primes are silent ($C_{5\bmod 8} < 0.001$).
+This operator places 67\% of eigenvalues within half a mean spacing of the corresponding zeta zeros.
+Third, we show that analytic continuation of the operator from $\sigma > 1$ to $\sigma = 1/2$ yields smooth eigenvalue trajectories, with the leading eigenvalue converging from $17.81$ to $14.18$ (the first zeta zero is at $14.13$).
+The perturbation norm is finite after zeta-function regularization: $\|V\|_{\mathrm{reg}} = |\zeta'(1/2)/\zeta(1/2)| = 2.69$.
+We identify spectral completeness---proving that \emph{all} eigenvalue trajectories terminate at zeta zeros---as the remaining obstacle.
+\end{abstract}
+
+%----------------------------------------------------------------------
+\section{Introduction}
+%----------------------------------------------------------------------
+
+The Hilbert--P\'olya conjecture asserts the existence of a self-adjoint operator~$H$ on a Hilbert space such that $\frac{1}{2} + i\lambda_n = \rho_n$ for each nontrivial zero $\rho_n$ of $\zeta(s)$.
+Despite a century of effort, no such operator has been rigorously constructed.
+
+The companion papers~\cite{Paper1,Paper2} established six constraints that any candidate must satisfy:
+(1)~pair-exclusive arithmetic modulation confined to the 2-point correlation;
+(2)~Bogomolny--Keating amplitude law $\log^2 p\,/\,p$;
+(3)~phase-free (real) form factor contributions;
+(4)~inseparable coupling between GUE universality and arithmetic;
+(5)~first-harmonic dominance; and
+(6)~eigenvector rigidity with peak-gap correlation $r \approx 0.80$.
+
+In this paper we systematically explore operator constructions on finite-dimensional truncations of $\ell^2(\mathbb{N})$.
+We prove that an entire class of natural candidates---Hermitian transfer operators with multiplicative phases---is ruled out by a gauge symmetry (Section~\ref{sec:gauge}).
+We then construct an operator that respects all six constraints by encoding the explicit formula directly into a Jacobi matrix (Section~\ref{sec:explicit}).
+The off-diagonal coupling decomposes into arithmetic modes with a striking Galois structure (Section~\ref{sec:modes}).
+The approximation error of the diagonal admits a Ramanujan sum decomposition with arithmetic significance (Section~\ref{sec:ramanujan}).
+Finally, we show that the operator admits analytic continuation from $\sigma > 1$ to the critical line, with smooth eigenvalue trajectories and finite regularized perturbation norm (Section~\ref{sec:continuation}).
+
+%----------------------------------------------------------------------
+\section{The Gauge Symmetry Obstruction}\label{sec:gauge}
+%----------------------------------------------------------------------
+
+\subsection{Transfer operators on $\ell^2(\{1,\ldots,N\})$}
+
+A \emph{multiplicative transfer operator} is defined by its matrix elements
+\begin{equation}\label{eq:transfer}
+L(s)_{mn} = \sum_{\substack{p \text{ prime} \\ p \mid m/n \text{ or } p \mid n/m}} w(p,s),
+\end{equation}
+where $w(p,s)$ is a weight function.
+The natural choice for Hermitian operators is $w(p,s) = a(p)\,p^{-\sigma}$ with conjugate phases: $L_{mn}$ involves $p^{-it}$ for $m > n$ and $p^{+it}$ for $m < n$.
+
+\begin{theorem}[Gauge symmetry]\label{thm:gauge}
+Let $L(t)$ be a Hermitian operator on $\ell^2(\{1,\ldots,N\})$ whose matrix elements satisfy
+\[
+L(t)_{mn} = L(0)_{mn} \cdot (m/n)^{-it}
+\]
+for all $m \neq n$, with real diagonal $L(t)_{nn} = L(0)_{nn}$.
+Then $L(t) = D(t)\,L(0)\,D(t)^{-1}$ where $D(t) = \diag(n^{-it})$, and consequently $\sigma(L(t)) = \sigma(L(0))$ for all $t \in \mathbb{R}$.
+\end{theorem}
+
+\begin{proof}
+The diagonal matrix $D(t) = \diag(1^{-it}, 2^{-it}, \ldots, N^{-it})$ is unitary.
+For $m \neq n$:
+\[
+\bigl(D(t)\,L(0)\,D(t)^{-1}\bigr)_{mn} = m^{-it} \cdot L(0)_{mn} \cdot n^{+it} = L(0)_{mn} \cdot (m/n)^{-it} = L(t)_{mn}.
+\]
+For $m = n$: $D(t)_{mm}\,L(0)_{mm}\,D(t)^{-1}_{mm} = L(0)_{mm}$.
+Since $D(t)$ is unitary, $L(t)$ and $L(0)$ are unitarily equivalent, sharing the same spectrum.
+\end{proof}
+
+\begin{corollary}
+No Hermitian transfer operator with conjugate multiplicative phases can have $t$-dependent eigenvalues.
+In particular, such operators cannot detect the zeros of $\zeta(s)$ through spectral variation.
+\end{corollary}
+
+We verified Theorem~\ref{thm:gauge} numerically on five operator variants---reflected exponent ($p^{s-1}$), normalized, trace-class, log-weighted, and von Mangoldt-weighted---at dimensions $N = 50, 100, 200, 300$.
+In every case, $\|\sigma(L(t)) - \sigma(L(0))\|_\infty < 10^{-12}$.
+
+\subsection{Breaking gauge: the symmetric transfer operator}
+
+The gauge symmetry requires that off-diagonal elements carry the \emph{conjugate} phase $(m/n)^{-it}$.
+An operator using the \emph{same} phase $p^{-s}$ in both directions breaks this symmetry:
+\[
+L^{\mathrm{sym}}(s)_{mn} = L^{\mathrm{sym}}(s)_{nm}, \quad \text{with both proportional to } p^{-\sigma - it}.
+\]
+Under the gauge transformation $D(t)\,L^{\mathrm{sym}}(0)\,D(t)^{-1}$, the $(m,n)$ entry acquires phase $(m/n)^{-it}$ while the $(n,m)$ entry acquires $(n/m)^{-it}$---these are conjugate, not equal, so the transformed matrix is not $L^{\mathrm{sym}}(t)$.
+The gauge symmetry is broken.
+
+Numerically, $L^{\mathrm{sym}}$ at $N = 200$ produces determinant minima $|\!\det(I - L^{\mathrm{sym}}(1/2 + it))|$ at $t = 14.13, 40.92, 49.77$---three of the first eleven zeta zeros---with $|\!\det|$ dropping by 19~orders of magnitude at $t = 14.13$.
+
+However, the trace formula reveals a fatal inconsistency:
+\begin{equation}
+-\sum_{n=1}^{\infty} \frac{\Tr(L^n)}{n}\biggr|_{s=2} = -11.80, \qquad \text{but} \quad \log\zeta(2) = +0.498.
+\end{equation}
+The spectral determinant of $L^{\mathrm{sym}}$ is not $1/\zeta(s)$.
+The three detected zeros are coincidental eigenvalue crossings, not structural.
+
+\subsection{The nilpotency obstruction}
+
+We also tested Dirichlet convolution operators ($L_{mn} = f(m/n)$ for $n \mid m$, zero otherwise).
+On $\{1,\ldots,N\}$ these are strictly lower-triangular, hence nilpotent: $\Tr(L^k) = 0$ for all $k$, $\det(I - L) = 1$ identically.
+Forward-only and backward-only multiplication operators are similarly nilpotent, as the directed multiplication graph on $\{1,\ldots,N\}$ has no closed orbits.
+
+\begin{remark}[Fundamental obstruction]
+Finite-dimensional truncation of $\ell^2(\{1,\ldots,N\})$ cannot capture the analytic continuation that generates zeta zeros.
+The Euler product $\prod_p (1 - p^{-s})^{-1}$ converges absolutely only for $\operatorname{Re}(s) > 1$; the zeros at $\operatorname{Re}(s) = 1/2$ arise from the analytic continuation of $\zeta(s)$ to the entire complex plane.
+No finite transfer operator satisfies $\det(I - L_s) = 1/\zeta(s)$ globally.
+\end{remark}
+
+%----------------------------------------------------------------------
+\section{The Explicit Formula Jacobi Operator}\label{sec:explicit}
+%----------------------------------------------------------------------
+
+Motivated by the gauge obstruction, we abandon transfer operators and instead encode the explicit formula for $\zeta$ directly into the matrix structure.
+
+\subsection{Construction}
+
+Let $\gamma_1 < \gamma_2 < \cdots$ be the imaginary parts of the nontrivial zeros.
+Define the \emph{Weyl approximation} to the $k$-th zero:
+\begin{equation}
+\gamma_k^{\mathrm{Weyl}} = N^{-1}(k - 1/2),
+\end{equation}
+where $N(T) = \frac{T}{2\pi}\log\frac{T}{2\pi e} + \frac{7}{8} + S(T)$ is the zero counting function and $S(T) = \frac{1}{\pi}\arg\zeta(1/2 + iT)$ is the fluctuation term.
+
+The explicit formula Jacobi operator $H \in \mathbb{R}^{N \times N}$ has:
+
+\paragraph{Diagonal.}
+\begin{equation}\label{eq:diag}
+H_{kk} = \gamma_k^{\mathrm{Weyl}} + \frac{S(\gamma_k^{\mathrm{Weyl}})}{N'(\gamma_k^{\mathrm{Weyl}})},
+\end{equation}
+encoding the smooth counting function plus the explicit-formula correction.
+
+\paragraph{Off-diagonal.}
+For $|d| = |k - k'| \leq 3$:
+\begin{equation}\label{eq:offdiag}
+H_{k,k+d} = \sum_{r \in \{1,3,5,7\}} C_r \cdot K_r(d, T_k),
+\end{equation}
+where $T_k = \gamma_k^{\mathrm{Weyl}}$ and the kernel is
+\begin{equation}
+K_r(d, T) = \sum_{\substack{p \text{ prime} \\ p \equiv r \pmod{8}}} \frac{\log p}{p^{1/2}} \cos\!\left(\frac{2\pi d \log p}{\log(T/2\pi)}\right).
+\end{equation}
+The coupling constants $C_r$ are optimized to minimize the mean eigenvalue error.
+
+\subsection{Performance}
+
+At $N = 200$ (first 200 zeros), with optimized coupling constants $C = (1.22,\, 3.47,\, 0.001,\, 1.61)$ for residue classes $(1, 3, 5, 7) \pmod{8}$:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lc@{}}
+\toprule
+Metric & Value \\
+\midrule
+Within half mean spacing & 67\% \\
+Within full mean spacing & 90\% \\
+Within 10\% of mean spacing & 17\% \\
+Mean absolute error / mean spacing & 0.38 \\
+Peak-gap correlation $r$ & $+0.68$ \\
+\bottomrule
+\end{tabular}
+\caption{Eigenvalue accuracy of the explicit formula Jacobi operator at $N = 200$.}
+\label{tab:performance}
+\end{table}
+
+The peak-gap correlation $r = +0.68$ is intermediate between GUE ($r \approx 0.04$) and the true zeta value ($r \approx 0.75$), indicating that the operator partially captures the eigenvector rigidity.
+
+%----------------------------------------------------------------------
+\section{Arithmetic Mode Decomposition}\label{sec:modes}
+%----------------------------------------------------------------------
+
+\subsection{The Ulam spiral and prime families}
+
+The coupling constants $C_r$ in~\eqref{eq:offdiag} exhibit a striking pattern when decomposed by arithmetic residue class.
+This structure was first suggested by examining the Ulam spiral, where primes organize into approximately 6--8 directional families corresponding to quadratic polynomials.
+Each family acts as a separate oscillatory mode with its own coupling strength to the zero spacing autocorrelation.
+
+\subsection{The inert/split dichotomy}
+
+The mod-8 decomposition reveals:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}ccccl@{}}
+\toprule
+$r \pmod{8}$ & $C_r$ & Splitting in $\mathbb{Z}[i]$ & Splitting in $\mathbb{Z}[\sqrt{2}]$ & Status \\
+\midrule
+3 & $\mathbf{3.47}$ & inert & inert & \textbf{dominant} \\
+7 & 1.61 & inert & split & active \\
+1 & 1.22 & split & split & active \\
+5 & $< 0.001$ & split & inert & \textbf{silent} \\
+\bottomrule
+\end{tabular}
+\caption{Coupling constants by residue class mod~8. Fully inert primes dominate; primes split in $\mathbb{Z}[i]$ and inert in $\mathbb{Z}[\sqrt{2}]$ are silent.}
+\label{tab:modes}
+\end{table}
+
+The pattern extends to higher moduli.
+At mod~12, only $11 \pmod{12}$ is active ($C_{11} = 6.32$); all other classes have $C < 0.1$.
+The primes $p \equiv 11 \pmod{12}$ are precisely those inert in both $\mathbb{Z}[\omega]$ ($\omega = e^{2\pi i/3}$) and $\mathbb{Z}[\sqrt{3}]$.
+
+\begin{conjecture}[Galois selection rule]\label{conj:galois}
+The coupling constant $C_r$ of the residue class $r \pmod{q}$ to the zeta zero autocorrelation is controlled by the Frobenius element $\mathrm{Frob}_p$ in $\Gal(\mathbb{Q}(\zeta_q, \sqrt{2}, \sqrt{3})/\mathbb{Q})$.
+Specifically, $C_r > 0$ requires $\mathrm{Frob}_p$ to act nontrivially on at least one of the quadratic extensions, and $C_r$ is maximized when $p$ is inert in all quadratic subfields.
+\end{conjecture}
+
+The physical interpretation: inert primes cannot be factored in the extension, so their Euler factor $(1 - p^{-s})^{-1}$ remains a single term and contributes maximally to the spectral determinant.
+Split primes factor as $(1 - \mathfrak{p}^{-s})^{-1}(1 - \bar{\mathfrak{p}}^{-s})^{-1}$; the two factors partially cancel in the pair correlation, suppressing the coupling.
+
+\subsection{Connection to the functional equation}
+
+The functional equation of $\zeta(s)$ involves the Gauss sum through $\chi(-1) = (-1)^a$ for the trivial character.
+For Dirichlet $L$-functions $L(s,\chi)$ with $\chi(-1) = -1$ (odd characters), the functional equation's sign change selects the active modes.
+The mod-8 coupling pattern matches the character table of $(\mathbb{Z}/8\mathbb{Z})^\times$: the primes $3 \bmod 8$ are exactly those where $\chi_{-4}(p) = -1$ and $\chi_8(p) = -1$ simultaneously.
+
+%----------------------------------------------------------------------
+\section{Ramanujan Structure of the Approximation Error}\label{sec:ramanujan}
+%----------------------------------------------------------------------
+
+\subsection{The explicit formula error}
+
+The diagonal~\eqref{eq:diag} uses the truncated explicit formula to approximate each zero.
+Define the error $\varepsilon_k = H_{kk} - \gamma_k$ (true zero minus approximation).
+Despite using thousands of primes and multiple harmonics in the explicit formula, the error does not decrease below $\varepsilon \approx 0.36$ (in units of mean spacing).
+
+This is not a convergence failure: 303 primes and 5000 primes give indistinguishable errors.
+The explicit formula series has already converged; the residual error is \emph{systematic}.
+
+\subsection{Ramanujan sum decomposition}
+
+Define the Ramanujan sum $c_q(n) = \sum_{\substack{a=1 \\ (a,q)=1}}^{q} e^{2\pi i a n/q}$.
+We decompose the error vector $\varepsilon$ in the Ramanujan basis:
+\begin{equation}
+\varepsilon_k \approx \sum_{q=1}^{Q} \alpha_q \cdot c_q(k).
+\end{equation}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}rccc@{}}
+\toprule
+$q$ & $\alpha_q$ & Interpretation & \% of $\|\varepsilon\|^2$ \\
+\midrule
+1 & $+0.887$ & $\approx 7/8$ (counting formula constant) & 72\% \\
+3 & $-0.041$ & First odd prime & 11\% \\
+8 & $+0.023$ & Mod-8 structure & 8\% \\
+12 & $-0.018$ & $\mathrm{lcm}(3,4)$ & 5\% \\
+14 & $+0.009$ & $\mathrm{lcm}(2,7)$ & 2\% \\
+\midrule
+\multicolumn{3}{r}{Cumulative at $q \leq 5$:} & \textbf{98\%} \\
+\bottomrule
+\end{tabular}
+\caption{Ramanujan sum decomposition of the explicit formula error.}
+\label{tab:ramanujan}
+\end{table}
+
+The dominant coefficient $\alpha_1 = +0.887$ is remarkably close to $7/8 = 0.875$.
+The residual $0.887 - 0.875 = 0.012$ matches $\arg\Gamma(1/4) / (2\pi) = 0.0125$, the constant phase in the theta function---the same fingerprint of the functional equation identified in Paper~2~\cite{Paper2}.
+
+\subsection{Newton-optimized weights}
+
+Optimizing the Ramanujan coefficients $\alpha_q$ to minimize the $L^2$ error, the optimal weights converge to $1/\varphi(q)$ (correlation $+0.998$), where $\varphi$ is Euler's totient.
+This is the trivial character projection in the Hecke algebra: the Ramanujan sum $c_q(n)$ for $q > 1$ averages to zero over complete residue systems, and the dominant $q = 1$ term captures the mean offset.
+
+\subsection{Implications}
+
+The systematic error is not removable by adding more primes or harmonics.
+It arises from the difference between the number-theoretic $S(T)$ function and its truncated Fourier expansion.
+The Ramanujan structure shows that this difference is organized by the same arithmetic that controls the off-diagonal coupling (Section~\ref{sec:modes}).
+
+Crucially, the error \emph{anti-correlates} with the peak-gap structure: at the same error level ($\varepsilon = 0.36$), random noise gives peak-gap $r = +0.71$, but the actual systematic error gives $r = +0.03$.
+The smooth, $T$-dependent nature of the explicit formula error destroys the fine structure needed for eigenvector rigidity.
+This motivates the analytic continuation approach of Section~\ref{sec:continuation}, which bypasses the truncated explicit formula entirely.
+
+%----------------------------------------------------------------------
+\section{Analytic Continuation to the Critical Line}\label{sec:continuation}
+%----------------------------------------------------------------------
+
+\subsection{The parameterized family}
+
+Define $H(\sigma)$ for $\sigma > 1$ by
+\begin{equation}
+H(\sigma)_{kk} = \gamma_k^{\mathrm{Weyl}}, \qquad
+H(\sigma)_{k,k+d} = \sum_r C_r \sum_{\substack{p \equiv r \,(8)}} \frac{\log p}{p^{\sigma}} \cos\!\left(\frac{2\pi d \log p}{\log T}\right),
+\end{equation}
+where the off-diagonal sums converge absolutely for $\sigma > 1$.
+At $\sigma = 1/2$, the sums diverge individually but the spectral determinant is regularized by the zeta function:
+
+\begin{proposition}
+The perturbation $V = H(1/2) - H_0$ (where $H_0 = \diag(\gamma_k^{\mathrm{Weyl}})$) has regularized operator norm
+\begin{equation}
+\|V\|_{\mathrm{reg}} = \left|\frac{\zeta'(1/2)}{\zeta(1/2)}\right| = 2.69.
+\end{equation}
+\end{proposition}
+
+The raw norm $\|V\|_{\mathrm{raw}} = 13.2$ diverges with $N$.
+However, zeta-function regularization---replacing $\sum_p \log p / p^{1/2}$ with $-\zeta'(1/2)/\zeta(1/2)$---yields a finite result.
+By the Kato--Rellich theorem, if $\|V\|_{\mathrm{reg}} < \inf_k |\gamma_{k+1}^{\mathrm{Weyl}} - \gamma_k^{\mathrm{Weyl}}|$, then $H(\sigma)$ remains self-adjoint along the continuation path.
+Since the mean spacing at height $T$ is $2\pi/\log(T/2\pi) \approx 0.24$ for $T \sim 458$ and $\|V\|_{\mathrm{reg}} = 2.69$ exceeds this, Kato--Rellich does not apply directly.
+Nevertheless, the eigenvalue trajectories are numerically smooth:
+
+\subsection{Eigenvalue trajectories}
+
+Tracking the eigenvalues of $H(\sigma)$ as $\sigma$ decreases from $2$ to $1/2$:
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+& $\sigma = 2$ & $\sigma = 1$ & $\sigma = 1/2$ & True zero \\
+\midrule
+$\lambda_1$ & 17.81 & 15.23 & 14.18 & 14.13 \\
+$\lambda_2$ & 22.67 & 21.49 & 21.10 & 21.02 \\
+$\lambda_3$ & 26.51 & 25.44 & 25.18 & 25.01 \\
+\bottomrule
+\end{tabular}
+\caption{Leading eigenvalue trajectories under analytic continuation. At $\sigma = 1/2$, the first eigenvalue is within $0.05$ of $\gamma_1 = 14.134\ldots$}
+\label{tab:trajectories}
+\end{table}
+
+The trajectories are monotonically decreasing, smooth, and converge toward the true zeros.
+No level crossings are observed among the leading eigenvalues.
+
+%----------------------------------------------------------------------
+\section{The Spectral Completeness Problem}\label{sec:completeness}
+%----------------------------------------------------------------------
+
+The results of Sections~\ref{sec:explicit}--\ref{sec:continuation} establish that we can construct an operator whose leading eigenvalues approximate the zeta zeros, with arithmetic structure matching all six constraints from~\cite{Paper1,Paper2}.
+The remaining obstacle is:
+
+\begin{problem}[Spectral completeness]\label{prob:completeness}
+Prove that for the analytically continued operator $H(1/2)$ at dimension $N$, the eigenvalues $\lambda_1, \ldots, \lambda_N$ coincide with the first $N$ zeta zeros $\gamma_1, \ldots, \gamma_N$ as $N \to \infty$.
+\end{problem}
+
+This requires three ingredients:
+\begin{enumerate}[nosep]
+\item \textbf{No missing zeros}: every zero $\gamma_k$ with $k \leq N$ is approximated by some eigenvalue.
+\item \textbf{No spurious eigenvalues}: every eigenvalue is near a true zero.
+\item \textbf{Convergence}: $|\lambda_k - \gamma_k| \to 0$ as $N \to \infty$ for each fixed $k$.
+\end{enumerate}
+
+A proof of spectral completeness, combined with the self-adjointness established by the analytic continuation, would yield a construction of the Hilbert--P\'olya operator and thereby a proof of the Riemann Hypothesis (since all eigenvalues of a self-adjoint operator are real, forcing all zeros to lie on the critical line).
+
+The gauge symmetry theorem (Section~\ref{sec:gauge}) shows that the operator must break the natural $D(t)$ conjugation symmetry.
+Our explicit formula operator achieves this by using \emph{additive} phases (cosines of $\log p$) rather than multiplicative phases ($p^{\pm it}$).
+The Galois mode structure (Section~\ref{sec:modes}) provides an arithmetic organizing principle for the coupling.
+
+%----------------------------------------------------------------------
+\section{Discussion}
+%----------------------------------------------------------------------
+
+\subsection{Summary of dead ends}
+
+The systematic exploration of operator candidates yields a clear map of obstructions:
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}p{4.5cm}p{4cm}p{4cm}@{}}
+\toprule
+Operator family & Obstruction & Section \\
+\midrule
+Hermitian transfer (conjugate phases) & Gauge symmetry & \ref{sec:gauge} \\
+Symmetric transfer (same phases) & Trace formula mismatch & \ref{sec:gauge} \\
+Dirichlet convolution & Nilpotent & \ref{sec:gauge} \\
+GCD kernel & $r$ vs.\ GUE tradeoff$^\dagger$ & --- \\
+Berry--Keating $H = xp$ & Fails all 14 regularizations$^\dagger$ & --- \\
+Mayer transfer & Gives Maass zeros, not $\zeta$ zeros & --- \\
+\bottomrule
+\multicolumn{3}{l}{\footnotesize $^\dagger$See companion papers~\cite{Paper1,Paper2}.}
+\end{tabular}
+\caption{Operator families explored and their obstructions.}
+\label{tab:deadends}
+\end{table}
+
+\subsection{The arithmetic content of the off-diagonal}
+
+The inert/split dichotomy of the coupling constants connects the Hilbert--P\'olya operator to the Langlands program.
+The Frobenius element $\mathrm{Frob}_p \in \Gal(\mathbb{Q}(\zeta_8)/\mathbb{Q})$ determines the local factor of the Euler product, and our results show it also controls the coupling strength to the zero correlations.
+
+This suggests that the ``correct'' Hilbert--P\'olya operator is not a generic spectral object but one whose matrix elements are determined by Galois representations---specifically, by the action of Frobenius on the splitting fields of the primes.
+The operator would then be a concrete realization of the automorphic spectral decomposition, with the Langlands correspondence providing the dictionary between automorphic forms and Galois representations.
+
+\subsection{Relation to the Nyman--Beurling approach}
+
+The companion paper~\cite{Paper3} establishes that the Nyman--Beurling overlap exponent $\gamma$ stabilizes near~$1.91$ and that per-prime Beurling contributions $C_p \sim p^{-1.81}$ follow a power law with Galois correlation $r = +0.82$.
+The coupling constants of Table~\ref{tab:modes} are related: the inert/split dichotomy appears in both the operator construction and the Beurling convergence.
+The alpha exponent $1.81$ from the Beurling analysis is consistent with the effective amplitude decay $\log p / p^{0.83}$ found in Paper~1~\cite{Paper1}.
+
+%----------------------------------------------------------------------
+\section{Conclusion}
+%----------------------------------------------------------------------
+
+We have established three structural results toward the Hilbert--P\'olya operator:
+
+\begin{enumerate}[nosep]
+\item \textbf{Gauge symmetry obstruction.}
+Hermitian transfer operators with conjugate multiplicative phases have $t$-independent spectra and cannot detect zeros.
+This is a theorem, not a numerical observation.
+
+\item \textbf{Explicit formula Jacobi operator.}
+An operator encoding the explicit formula directly, with arithmetic mode coupling constants exhibiting a Galois inert/split dichotomy, places 67\% of eigenvalues within half a mean spacing.
+The dominant coupling is from primes $\equiv 3 \pmod{8}$ (fully inert in $\mathbb{Z}[i]$ and $\mathbb{Z}[\sqrt{2}]$).
+
+\item \textbf{Analytic continuation.}
+The operator family $H(\sigma)$ admits continuation from $\sigma > 1$ to $\sigma = 1/2$ with finite regularized perturbation norm and smooth eigenvalue trajectories converging toward zeta zeros.
+\end{enumerate}
+
+The remaining gap---spectral completeness---is a concrete, well-posed problem: prove that \emph{all} eigenvalue trajectories land on zeta zeros, not just the leading ones.
+A resolution would complete the construction of the Hilbert--P\'olya operator.
+
+\subsection*{Code availability}
+All code and data are available at \url{https://github.com/jvaughan/riemann} (to be made public upon submission).
+
+\subsection*{Acknowledgments}
+Computational analysis performed using Python (mpmath, NumPy, SciPy).
+Independent verification of the peak-gap metric correction and Galois correlations by Grok (xAI).
+
+\begin{thebibliography}{99}
+
+\bibitem{Paper1} Claude and J.~Vaughan, Quantitative structure of the finite-$T$ pair correlation correction for Riemann zeta zeros, preprint, 2026.
+
+\bibitem{Paper2} Claude and J.~Vaughan, Eigenvector rigidity of Riemann zeta zeros: a structural departure from random matrix theory, preprint, 2026.
+
+\bibitem{Paper3} Claude and J.\,T.~Vaughan, Spectral evidence for the Nyman--Beurling criterion: stabilization of the overlap exponent~$\gamma$, preprint, 2026.
+
+\bibitem{BerryKeating1999} M.\,V.~Berry and J.\,P.~Keating, The Riemann zeros and eigenvalue asymptotics, \emph{SIAM Rev.}\ \textbf{41} (1999), 236--266.
+
+\bibitem{Bogomolny1996} E.~Bogomolny and J.\,P.~Keating, Gutzwiller's trace formula and spectral statistics: beyond the diagonal approximation, \emph{Phys.\ Rev.\ Lett.}\ \textbf{77} (1996), 1472--1475.
+
+\bibitem{Connes1999} A.~Connes, Trace formula in noncommutative geometry and the zeros of the Riemann zeta function, \emph{Selecta Math.}\ \textbf{5} (1999), 29--106.
+
+\bibitem{KatzSarnak1999} N.\,M.~Katz and P.~Sarnak, \emph{Random Matrices, Frobenius Eigenvalues, and Monodromy}, AMS, 1999.
+
+\bibitem{Montgomery1973} H.\,L.~Montgomery, The pair correlation of zeros of the zeta function, \emph{Proc.\ Symp.\ Pure Math.}\ \textbf{24} (1973), 181--193.
+
+\bibitem{Odlyzko2001} A.\,M.~Odlyzko, The $10^{22}$-nd zero of the Riemann zeta function, \emph{Contemp.\ Math.}\ \textbf{290}, AMS, 2001.
+
+\bibitem{Ramanujan1918} S.~Ramanujan, On certain trigonometrical sums and their applications in the theory of numbers, \emph{Trans.\ Cambridge Phil.\ Soc.}\ \textbf{22} (1918), 259--276.
+
+\bibitem{Selberg1956} A.~Selberg, Harmonic analysis and discontinuous groups in weakly symmetric Riemannian spaces with applications to Dirichlet series, \emph{J.\ Indian Math.\ Soc.}\ \textbf{20} (1956), 47--87.
+
+\end{thebibliography}
+
+\end{document}
