@@ -1,38 +1,35 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T18:00:00Z",
+  "timestamp": "2026-03-30T23:30:00Z",
   "phase": "post-milestone",
-  "phase_name": "Connes proof skeleton — complete and Grok-verified",
-  "plan": "session 25",
-  "status": "milestone",
-  "task": "Proof skeleton v3 complete. Grok confirmed: tight, auditable, citation-ready.",
-  "total_tasks": 11,
+  "phase_name": "Connes proof — Weil positivity to lam^2=1000, one gap remains",
+  "plan": "session 29 complete",
+  "status": "active",
+  "task": "T-metric analysis or lam^2=10000 push to resolve |xi_hat| convergence",
+  "total_tasks": 5,
   "completed_tasks": [
-    {"id": 1, "name": "Prolate overlap sweep (abandoned — oscillates)", "status": "done"},
-    {"id": 2, "name": "Fourier bump test (F_T/eps gap intrinsic)", "status": "done"},
-    {"id": 3, "name": "Precision convergence (eps genuine at lam=14,30,50)", "status": "done"},
-    {"id": 4, "name": "Rayleigh quotient (a_0 = O(1), disproved Grok claim 1)", "status": "done"},
-    {"id": 5, "name": "Displacement rank = 2 (verified dps=80, exact)", "status": "done"},
-    {"id": 6, "name": "Eigenvector structure (even, alternating, peaked)", "status": "done"},
-    {"id": 7, "name": "Bernstein ellipse verification (pole at L/(4pi), corrected Grok claim 2)", "status": "done"},
-    {"id": 8, "name": "Generic bound sufficiency (m=0.16 > 0, sufficient for Hurwitz)", "status": "done"},
-    {"id": 9, "name": "Proof skeleton v3 written and Grok-verified", "status": "done"}
+    {"id": 1, "name": "NB Mobius gap (dead end), sigma_min irrelevance, Euler product", "status": "done"},
+    {"id": 2, "name": "Correct Q_W matrix rebuilt, eps_0~5e-10 verified", "status": "done"},
+    {"id": 3, "name": "H2 parity splitting mechanism (gap ratio 3.0->7.7)", "status": "done"},
+    {"id": 4, "name": "H1 fixed-lambda (finite-section), bandwidth N~8*L", "status": "done"},
+    {"id": 5, "name": "Weil positivity verified lam^2=14..1000 at dps=80", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 10, "name": "Analytic proof of H1 (eigenvector freezing) from Prop 4.2", "status": "not_started"},
-    {"id": 11, "name": "Analytic proof of H2 (spectral gap) from Cauchy-like estimates", "status": "not_started"},
-    {"id": 12, "name": "Control constant C in Beckermann-Townsend (bounded for all L)", "status": "not_started"},
-    {"id": 13, "name": "Full Section 3 proof: H -> Xi convergence details", "status": "not_started"},
-    {"id": 14, "name": "Assemble complete paper with all proofs", "status": "not_started"}
+    {"id": 6, "name": "T-metric analysis: compute <xi,f>_T and bound constant C", "status": "not_started"},
+    {"id": 7, "name": "Push to lam^2=10000+ at dps=120 for |xi_hat| trend", "status": "not_started"},
+    {"id": 8, "name": "Formalize H2 parity proof (even/odd Rayleigh quotients)", "status": "not_started"},
+    {"id": 9, "name": "Update proof_skeleton.tex with double-limit N~8*L", "status": "not_started"},
+    {"id": 10, "name": "Write up results for potential publication", "status": "not_started"}
   ],
   "blockers": [],
   "decisions": [
-    {"decision": "Generic Bernstein bound suffices — no need to close 5.5x gap", "rationale": "Hurwitz only needs m > 0; generic bound gives m = 0.16"},
-    {"decision": "Proof uses: 1 pole (L/(4pi)) + 1 theorem (Beckermann-Townsend) + 3 verified hypotheses", "rationale": "Cleanest possible argument, no handwaving"},
-    {"decision": "Three Grok errors caught and corrected", "rationale": "a_0=O(1), ||generators||=O(1), pole at L/(4pi) not L/4"}
+    {"decision": "N must grow as 8*L with lambda (not fixed)", "rationale": "Bandwidth pi*N/L must cover zeta zeros"},
+    {"decision": "H2 from parity splitting of rank-2 W02", "rationale": "Even/odd Rayleigh quotients differ by factor 3-8"},
+    {"decision": "eps_0 ~ 1e-9/L (algebraic, not exponential)", "rationale": "Observed at dps=80 across lam^2=14..1000"},
+    {"decision": "Gap ratio monotonically improving 4.0->7.7", "rationale": "Parity structure becomes cleaner at large lambda"}
   ],
-  "uncommitted_files": ["connes_true_prolate.py", "connes_prolate_scaled.py", "connes_fourier_bump.py", "connes_fourier_bump_hp.py", "connes_precision_convergence.py", "connes_reliable_bump.py", "connes_rayleigh.py", "connes_displacement.py", "connes_eigvec_structure.py", "connes_verify_bernstein.py", "connes_audit_skeleton.py", "connes_generic_bound.py", "proof_skeleton.tex"],
-  "context_notes": "Session 25 arc: prolate overlap (abandoned) -> Fourier bump (gap intrinsic) -> precision convergence (eps genuine) -> Rayleigh quotient (a_0 constant, disproved Grok) -> displacement rank 2 (confirmed) -> Bernstein ellipse (pole corrected) -> generic bound suffices (m=0.16>0) -> proof skeleton v3 (Grok verified). Python: /c/Python313/python.exe, dps=120.",
-  "next_action": "Prove H1 (freezing) and H2 (spectral gap) analytically, or control constant C in Beckermann-Townsend. These are the remaining gaps to close for a complete proof.",
+  "uncommitted_files": [],
+  "context_notes": "Session 29: 14 scripts, 12 commits. From NB Mobius to Weil positivity at lam^2=1000. Python: /c/Python313/python.exe. Key: connes_final_push.py (dps=80 results), connes_prove_h2.py (parity mechanism), proof_skeleton.tex (needs double-limit update).",
+  "next_action": "Two parallel tracks: (A) Analytical — compute the T-metric from Connes paper section 5, bound <xi,f>_T, close the |xi_hat| -> 0 argument. (B) Computational — lam^2=10000 at dps=120 to see if |xi_hat| trend emerges with more data points.",
   "human_actions_pending": []
 }
