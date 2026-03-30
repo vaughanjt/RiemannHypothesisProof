@@ -90,7 +90,9 @@ def F_func(z, xi, L, N):
 
 
 def Xi_func(z):
-    s = mpc(mpf(1) / 2, z)
+    """Riemann Xi: Xi(z) = xi(1/2+iz) where xi(s) = (1/2)s(s-1)pi^{-s/2}Gamma(s/2)zeta(s).
+    Handles both real and complex z."""
+    s = mpf(1) / 2 + mpc(0, 1) * z  # s = 1/2 + iz, works for complex z
     return mpf(1) / 2 * s * (s - 1) * mpmath.power(pi, -s / 2) * gamma(s / 2) * zeta(s)
 
 

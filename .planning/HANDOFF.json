@@ -1,9 +1,36 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-29T23:00:00Z",
+  "timestamp": "2026-03-30T01:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "session 22 — ready to test prolate convergence",
+  "phase_name": "session 22 complete — paper reproduced, proof path outlined",
   "status": "paused",
-  "next_action": "Implement Grok's suggested test: compute xi at (N1,lam1), embed into larger-N2 Weil form, measure Rayleigh quotient vs prolate ground-state energy as lambda grows. This is direct numerical evidence for the paper's 'main remaining obstacle'.",
-  "context_notes": "W_p uses q kernel (Lemma 2.3). connes_attack.py has working QW builder. Prolate guess is asymptotic only — finite-N works via explicit formula truncation. Paper: arxiv 2511.22755. Python: /c/Python313/python.exe."
+  "completed_tasks": [
+    {"id": 1, "name": "W_p formula bug: q kernel from Lemma 2.3, not cos(2pi(n-m)lk/L)", "status": "done"},
+    {"id": 2, "name": "Paper reproduced: all-positive QW, xi_hat zeros match zeta zeros", "status": "done"},
+    {"id": 3, "name": "gamma_L closed form: F(u)=-ln(u+1)+ln(u^2+1)/2+atan(u)", "status": "done"},
+    {"id": 4, "name": "Eigenvector frozen after N~40 (overlap 1.000000)", "status": "done"},
+    {"id": 5, "name": "eps_N exponential decay: ~10^{-2.3*L} confirmed at 100dp", "status": "done"},
+    {"id": 6, "name": "Zero accuracy plateau: 18 digits at N=30 regardless of lambda", "status": "done"},
+    {"id": 7, "name": "mpmath.quad for WR diagonal (60+ digit accuracy in 0.1s)", "status": "done"},
+    {"id": 8, "name": "Grok proof checks 1-3 run, check 4 Xi crash fixed", "status": "done"}
+  ],
+  "remaining_tasks": [
+    {"id": 9, "name": "Fix normalization: F(0)=0 but Xi(0)=0.497 — structural sin(0)=0 issue", "status": "not_started"},
+    {"id": 10, "name": "Rerun check 4 (Jensen integral) with fixed Xi_func", "status": "not_started"},
+    {"id": 11, "name": "Investigate winding number: got -10 vs expected 20", "status": "not_started"},
+    {"id": 12, "name": "Run N=60 at 100dp to confirm alpha~0.5 digits/mode", "status": "not_started"},
+    {"id": 13, "name": "Share check results with Grok for normalization guidance", "status": "not_started"},
+    {"id": 14, "name": "Write up proof sketch as LaTeX if checks pass", "status": "not_started"}
+  ],
+  "blockers": [
+    {"blocker": "F_{lambda,N}(0) = 0 by construction (sin(0)=0 in secular eq) but Xi(0) = 0.497. Functions don't converge pointwise — lambda^{-iz} phase rotates everything. Grok's contour argument needs normalization adjustment.", "severity": "medium"}
+  ],
+  "decisions": [
+    {"decision": "W_p uses q(U_n,U_m)(log k) from Lemma 2.3", "rationale": "Paper eq (4.3). For n!=m: [sin(2pim*y/L)-sin(2pin*y/L)]/[pi(n-m)]. Diagonal: 2(L-y)/L*cos.", "phase": "22"},
+    {"decision": "mpmath.quad (tanh-sinh) for WR diagonal instead of midpoint rule", "rationale": "0.1s for 60 digits vs 6.6s for 13 digits. Eliminates OFFSET entirely.", "phase": "22"},
+    {"decision": "Two-scale convergence law: lambda controls eps_N, N controls zero accuracy", "rationale": "eps_N ~ 10^{-2.3L}, zero accuracy ~ 0.5 digits/mode. Separable.", "phase": "22"},
+    {"decision": "Grok's proof path: almost-kernel + determinant convergence + Hurwitz, no prolate needed", "rationale": "Eigenvector freezing makes N->inf trivial. eps_N exponential decay handles lambda->inf. Contour integral bridges to uniform bound.", "phase": "22"}
+  ],
+  "next_action": "SESSION 23: (1) Fix the normalization issue — F and Xi differ structurally, need to understand how Grok's contour argument handles this (probably compare zeros, not functions). (2) Rerun all 4 checks with fixed Xi_func. (3) Share results with Grok for guidance on the normalization. (4) Run N=60 at 100dp to measure alpha precisely.",
+  "context_notes": "Scripts: connes_attack.py (QW builder + Rayleigh), connes_proof_checks.py (4 Grok checks, Xi_func fixed), connes_session22.py (gamma_L). Key: W_p uses q kernel, mpmath.quad for diagonal. Sliwinski paper: arXiv:2601.12133 (lower bound 1/(4 ln lambda)). Python: /c/Python313/python.exe."
 }
