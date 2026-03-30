@@ -1,9 +1,9 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-30T06:00:00Z",
+  "timestamp": "2026-03-30T08:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "session 23 final — proof wall identified, prolate overlap next",
+  "phase_name": "session 24 — E map implemented, prolate overlap increasing",
   "status": "paused",
-  "next_action": "SESSION 24: Compute prolate overlap <xi_lambda, k_lambda> using actual prolate eigenfunctions h_{0,lambda}, h_{4,lambda} at higher lambda values. If overlap -> 1, the educated guess becomes a verifiable conjecture with explicit constants. This is the furthest anyone can go computationally without new analytic ideas.",
-  "context_notes": "The Mellin/Fourier gap is intrinsic: explicit formula controls xi_tilde(rho) ~ eps_N ~ 10^{-2.3L}, but xi_hat(gamma) ~ 10^{-18} (41 orders larger). Bridging them = proving prolate concentration = proving RH. Scripts: connes_attack.py, connes_proof_checks.py, connes_G_test.py. Python: /c/Python313/python.exe, mp.dps=100."
+  "next_action": "SESSION 25: (1) Increase SL grid resolution (n_grid scaling with gamma) for lam^2=100-1000. (2) Use paper's exact h_lambda coefficients (sqrt(3)/2^{11/4}*h_4 - 3/2^{17/4}*h_0). (3) Measure overlap trend — if it continues rising toward 1, that's the educated guess verified numerically.",
+  "context_notes": "E map: E(h)(u) = u^{1/2} sum_{n>=1} h(nu). SL: F_gamma on [-1,1] with gamma=2*pi*lam^2. Overlap(xi,k_lam): 0.0002 (lam^2=14) -> 0.001 (lam^2=50), increasing. Large lam needs n_grid >> gamma. Scripts: connes_prolate_correct.py. Python: /c/Python313/python.exe."
 }
