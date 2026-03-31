@@ -1,22 +1,23 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-31T07:30:00Z",
+  "timestamp": "2026-03-31T08:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "Rank bound is THE open problem — not proved even by Connes",
-  "plan": "session 30 iteration 12",
+  "phase_name": "Rank bound proof sketch: M = W02 + 2*WR - Z, Slepian cancellation",
+  "plan": "session 30 iteration 13",
   "status": "active",
-  "task": "Prove rank(M) <= bandwidth — the key contribution target",
+  "task": "Formalize the Slepian cancellation argument for the rank bound",
   "completed_tasks": [
-    {"id": 49, "name": "8-level structural picture complete", "status": "done"},
-    {"id": 52, "name": "Paper draft written", "status": "done"},
-    {"id": 61, "name": "Gap 2 CLOSED (Connes 2026 theorem)", "status": "done"},
-    {"id": 63, "name": "Deep read of Connes 2020+2026: rank bound NOT proved anywhere", "status": "done"}
+    {"id": 49, "name": "8-level structural picture", "status": "done"},
+    {"id": 52, "name": "Paper draft", "status": "done"},
+    {"id": 61, "name": "Gap 2 CLOSED (Connes 2026)", "status": "done"},
+    {"id": 65, "name": "Rank bound proof SKETCH: M = W02 + 2WR - Z, cancellation", "status": "done"},
+    {"id": 66, "name": "Identity: Z = Q_W + 2*WR (from explicit formula)", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 64, "name": "PROVE rank(M) <= bandwidth from Slepian + explicit formula", "status": "not_started"},
+    {"id": 64, "name": "Formalize rank bound: show 2*WR and Z cancel beyond bandwidth (Slepian)", "status": "not_started"},
     {"id": 62, "name": "Prove eps_0 -> 0 rate", "status": "not_started"},
     {"id": 53, "name": "Finalize paper", "status": "not_started"}
   ],
-  "context_notes": "The rank bound rank(M) <= pi*N/L is the KEY open problem. Not proved by Connes in any paper. Our numerical verification (rank=26 at bandwidth 25, verified to lam^2=5000) is the strongest evidence. PROVING this bound would be a significant original contribution. The Slepian-Landau-Pollak theory provides the framework (eigenvalue concentration at time-bandwidth product). Need to show WR+Wp inherits this concentration.",
-  "next_action": "Attack the rank bound proof directly. WR is Cauchy-like (from alpha_L generators). Wp is a finite sum. Their SUM M has low effective rank because the Weil explicit formula constrains them. Try: express M as a prolate-type operator and apply Slepian theory."
+  "context_notes": "Proof sketch found: M = W02 + 2*WR - Z. The rank bound follows if WR and Z cancel beyond the bandwidth (Slepian phenomenon). WR is a prolate operator (Connes 2020). Z is a zero-sampling operator. They cancel because band-limited functions have exponentially small values outside the bandwidth, so both WR and Z project to the same bandwidth-limited subspace. The formal proof needs the Slepian concentration theorem applied to the specific WR kernel. This is likely in Connes 2020 but not explicitly stated as a rank bound. 13 iterations, 23 scripts, 40 commits.",
+  "next_action": "Verify the identity Z = Q_W + 2*WR computationally. If confirmed, the rank bound proof reduces to showing the cancellation 2*WR ≈ Z beyond the bandwidth, which is a Slepian-type statement."
 }
