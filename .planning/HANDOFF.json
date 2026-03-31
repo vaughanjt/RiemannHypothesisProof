@@ -1,23 +1,22 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-31T08:00:00Z",
+  "timestamp": "2026-03-31T08:30:00Z",
   "phase": "post-milestone",
-  "phase_name": "Rank bound proof sketch: M = W02 + 2*WR - Z, Slepian cancellation",
-  "plan": "session 30 iteration 13",
+  "phase_name": "Identity WRONG — rank bound needs exact Weil formula from paper",
+  "plan": "session 30 iteration 14",
   "status": "active",
-  "task": "Formalize the Slepian cancellation argument for the rank bound",
+  "task": "Read Connes papers for exact Weil formula, or finalize paper with current results",
   "completed_tasks": [
     {"id": 49, "name": "8-level structural picture", "status": "done"},
     {"id": 52, "name": "Paper draft", "status": "done"},
     {"id": 61, "name": "Gap 2 CLOSED (Connes 2026)", "status": "done"},
-    {"id": 65, "name": "Rank bound proof SKETCH: M = W02 + 2WR - Z, cancellation", "status": "done"},
-    {"id": 66, "name": "Identity: Z = Q_W + 2*WR (from explicit formula)", "status": "done"}
+    {"id": 67, "name": "NEGATIVE: Z = Q_W + 2*WR identity is WRONG", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 64, "name": "Formalize rank bound: show 2*WR and Z cancel beyond bandwidth (Slepian)", "status": "not_started"},
+    {"id": 64, "name": "Prove rank(M) <= bandwidth (needs exact Weil formula)", "status": "blocked"},
     {"id": 62, "name": "Prove eps_0 -> 0 rate", "status": "not_started"},
-    {"id": 53, "name": "Finalize paper", "status": "not_started"}
+    {"id": 53, "name": "Finalize paper with all positive + negative results", "status": "not_started"}
   ],
-  "context_notes": "Proof sketch found: M = W02 + 2*WR - Z. The rank bound follows if WR and Z cancel beyond the bandwidth (Slepian phenomenon). WR is a prolate operator (Connes 2020). Z is a zero-sampling operator. They cancel because band-limited functions have exponentially small values outside the bandwidth, so both WR and Z project to the same bandwidth-limited subspace. The formal proof needs the Slepian concentration theorem applied to the specific WR kernel. This is likely in Connes 2020 but not explicitly stated as a rank bound. 13 iterations, 23 scripts, 40 commits.",
-  "next_action": "Verify the identity Z = Q_W + 2*WR computationally. If confirmed, the rank bound proof reduces to showing the cancellation 2*WR ≈ Z beyond the bandwidth, which is a Slepian-type statement."
+  "context_notes": "14 iterations. 24 scripts. 42 commits. The identity-based proof sketch FAILS — the simple Mellin zero sum doesn't match any combination of Q_W components. The rank bound proof needs the EXACT Weil explicit formula with proper Connes normalizations. This requires reading the actual paper (arXiv:2511.22755) in detail. The numerical findings (rank=26=bandwidth, 8-level structure, Connes 2026 Gap 2 closure) all stand. Only the ANALYTICAL proof of the rank bound is blocked.",
+  "next_action": "DECISION POINT: (A) Continue trying to derive the correct identity computationally (many possible normalizations to try), (B) Pivot to finalizing the paper as a 'numerical evidence' paper with conjectures, (C) Obtain and carefully read arXiv:2511.22755 for the exact formulas. Option B is most productive for publication; C is most productive for the proof."
 }
