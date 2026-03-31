@@ -1,26 +1,21 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-31T05:00:00Z",
+  "timestamp": "2026-03-31T05:30:00Z",
   "phase": "post-milestone",
-  "phase_name": "Connes proof — 8-level structural picture complete, ready for paper",
-  "plan": "session 30 iteration 7",
+  "phase_name": "Paper draft written — structural analysis of Weil positivity",
+  "plan": "session 30 iteration 8",
   "status": "active",
-  "task": "Write paper formalizing the 8-level structural picture of Weil positivity",
-  "total_tasks": 14,
+  "task": "Refine paper, add missing details, pursue analytical gaps",
   "completed_tasks": [
-    {"id": 35, "name": "eps_0 = Signal(+) + Null(+) + Cross(-), S=N exactly", "status": "done"},
-    {"id": 41, "name": "eps_0 ~ 1/L from lambda mixing, not null growth", "status": "done"},
-    {"id": 42, "name": "Cancellation factor 738 -> 17973 growing", "status": "done"},
-    {"id": 46, "name": "s_even ~ mu_max + 0.03, relative gap ~ 1/L^2", "status": "done"},
-    {"id": 47, "name": "min(QW|signal) oscillates/grows — not the driver", "status": "done"},
-    {"id": 48, "name": "Signal spectrum: 2 tiny roots (~10^{-6}), then 10^{-3}..O(1)", "status": "done"},
-    {"id": 49, "name": "Complete 8-level picture mapped", "status": "done"}
+    {"id": 49, "name": "8-level structural picture complete", "status": "done"},
+    {"id": 52, "name": "Paper draft written (docs/structural_analysis_draft.tex)", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 45, "name": "Write paper formalizing structural results", "status": "not_started"},
     {"id": 50, "name": "Read Connes 2020 arXiv:2006.13771 for prolate rank proof", "status": "not_started"},
-    {"id": 51, "name": "Prove s_even - mu_max = O(1) analytically", "status": "not_started"}
+    {"id": 51, "name": "Prove s_even - mu_max = O(1) analytically", "status": "not_started"},
+    {"id": 53, "name": "Add full data tables to paper", "status": "not_started"},
+    {"id": 54, "name": "Add figures (eigenvalue decay plots, cancellation growth)", "status": "not_started"}
   ],
-  "context_notes": "Session 30 complete: 7 iterations, 8-level structural picture. Every numerical layer explored. The mechanism is fully understood. The proof needs: (1) rank(M)<=BW from Slepian/Connes 2020, (2) s_even - mu_max = O(1) from explicit formula asymptotics, (3) mixing cancellation rate from the cross-term structure. These are ANALYTICAL questions requiring paper reading and mathematical argument, not more computation.",
-  "next_action": "Write a comprehensive paper/preprint documenting the 8-level structural picture, numerical evidence (lam^2 up to 5000), and the three analytical gaps. This could be submitted as 'Numerical evidence for Weil positivity in the Connes-Consani-Moscovici framework' or similar."
+  "context_notes": "Paper draft at docs/structural_analysis_draft.tex. Covers all 8 levels, numerical evidence, 3 open problems. Needs: data tables, figures, expanded proofs of verified claims, reference to Connes 2020 prolate results.",
+  "next_action": "Refine paper: add complete data tables for all lambda values, expand the prolate connection section with Connes 2020 results, add computational details (precision, quadrature)."
 }
