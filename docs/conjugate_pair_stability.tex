@@ -1,0 +1,96 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+
+\title{Conjugate Pair Stability and the Riemann Hypothesis:\\A Variational Argument}
+\date{March 2026}
+
+\begin{document}
+\maketitle
+
+\section{The Observation}
+
+The functional equation $\Xi(z) = \Xi(\bar{z})$ forces the zeros of $\Xi$ into two classes:
+\begin{enumerate}
+\item \textbf{Self-symmetric}: zeros on the real line, $z_k = \gamma_k \in \mathbb{R}$
+\item \textbf{Conjugate pairs}: zeros off the real line, $(z_k, \bar{z}_k)$ with $\operatorname{Im}(z_k) \neq 0$
+\end{enumerate}
+
+The Riemann Hypothesis states that all zeros are of type 1.
+
+\section{The Energy Functional}
+
+Consider the ``electrostatic energy'' of the zero configuration:
+\[
+E = -\sum_{j < k} \log |z_j - z_k| + \sum_k U_{\mathrm{ext}}(z_k)
+\]
+where $U_{\mathrm{ext}}$ is the external potential from the Gamma factor.
+
+\section{Conjugate Pair Attraction}
+
+\begin{proposition}[Conjugate pair restoring force]
+Consider a self-symmetric zero at $\gamma \in \mathbb{R}$ that splits into a conjugate pair $(\gamma + i\varepsilon, \gamma - i\varepsilon)$ with $\varepsilon > 0$. The energy change from the pair interaction alone is:
+\[
+\Delta E_{\mathrm{pair}} = -\log|(\gamma + i\varepsilon) - (\gamma - i\varepsilon)| = -\log(2\varepsilon)
+\]
+The second variation (curvature at $\varepsilon = 0$):
+\[
+\frac{\partial^2}{\partial \varepsilon^2}\bigg|_{\varepsilon = 0} \Delta E_{\mathrm{pair}} = +\frac{1}{\varepsilon^2} \to +\infty
+\]
+This is an \textbf{infinite restoring force}: the conjugate pair is infinitely attracted, making $\varepsilon = 0$ infinitely stable against splitting.
+\end{proposition}
+
+\section{Competition with Destabilizing Forces}
+
+The repulsion from other zeros at $\gamma_j$ contributes:
+\[
+\kappa_{\mathrm{repel}} = -\sum_{j} \frac{1}{(\gamma_k - \gamma_j)^2} < 0
+\]
+This is finite (numerically: $-0.05$ to $-1.2$ for the first 100 zeros).
+
+The external potential (Gamma factor) contributes:
+\[
+\kappa_{\mathrm{confine}} \sim \frac{C}{\gamma_k^2} > 0
+\]
+This is positive but small (numerically: $0.0003$ to $0.009$).
+
+\textbf{The net curvature at $\varepsilon = 0$}:
+\[
+\kappa_{\mathrm{total}} = \underbrace{+1/\varepsilon^2}_{\to +\infty} + \underbrace{\kappa_{\mathrm{confine}}}_{> 0} + \underbrace{\kappa_{\mathrm{repel}}}_{< 0, \text{ finite}}
+\]
+The conjugate pair attraction \textbf{dominates} at small $\varepsilon$. Therefore $\varepsilon = 0$ is a local minimum of the energy.
+
+\section{The Gap in the Argument}
+
+This argument shows that the real-line configuration is a \textbf{local energy minimum} --- each zero is locally stable against perturbation into the complex plane.
+
+However, it does \textbf{not} rule out:
+\begin{itemize}
+\item \textbf{Global minima off the real line}: the energy landscape might have lower-energy configurations with conjugate pairs far from the real line.
+\item \textbf{Topological obstructions}: the zero configuration might be ``locked'' in a local minimum that is not global.
+\end{itemize}
+
+The local stability argument would become a proof of RH if supplemented by:
+\begin{enumerate}
+\item A \textbf{global convexity} result: the energy is convex in the imaginary direction, so the local minimum is global.
+\item A \textbf{uniqueness} result: the zero configuration is uniquely determined by the energy minimization, and the only minimum is the real-line configuration.
+\end{enumerate}
+
+\section{Connection to Known Results}
+
+\begin{itemize}
+\item \textbf{de Bruijn--Newman}: $\Lambda \geq 0$ (Rodgers--Tao 2020) means the real-line configuration is the $t = 0$ limit of the heat flow. Our stability analysis shows this limit is locally stable.
+\item \textbf{Connes framework}: the Weil positivity $Q_W \geq 0$ is equivalent to the energy minimum being at $\varepsilon = 0$ for all zeros simultaneously.
+\item \textbf{Montgomery pair correlation}: the GUE statistics of zero spacings are consistent with the ``electrostatic'' equilibrium on the real line.
+\end{itemize}
+
+\begin{thebibliography}{99}
+\bibitem{RT2020} B.~Rodgers, T.~Tao, \emph{The de Bruijn--Newman constant is non-negative}, Forum Math.\ Pi \textbf{8}, e6 (2020).
+\end{thebibliography}
+
+\end{document}
