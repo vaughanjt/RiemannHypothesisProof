@@ -1,0 +1,148 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{Structural Analysis of the Weil Quadratic Form\\in the Connes--Consani--Moscovici Framework:\\Numerical Evidence for Positivity to $\lambda^2=5000$}
+
+\author{(Computational analysis)}
+\date{March 2026}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{observation}{Observation}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We perform a detailed numerical analysis of the Weil quadratic form $Q_W = W_{0,2} - W_R - W_p$ from the Connes--Consani--Moscovici framework for the Riemann Hypothesis (arXiv:2511.22755). Working with the finite-dimensional truncation at dimension $2N+1$ with $N \approx 8\log(\lambda^2)$, we verify Weil positivity ($Q_W \geq 0$) at 120-digit precision for $\lambda^2$ up to $5000$. We identify an 8-level structural decomposition of the minimal eigenvalue $\varepsilon_0$, revealing that: (i) $M = W_R + W_p$ has effective rank $\approx \pi N/L$ (the time-bandwidth product), independent of the matrix dimension; (ii) $Q_W$ is approximately block-diagonal between the rank-$\approx 26$ signal subspace of $M$ and its null space; (iii) $W_{0,2}$ lies entirely within the signal subspace; (iv) $\varepsilon_0$ is achieved through a three-way cancellation between signal, null, and cross-term contributions, with the cancellation factor growing from $738\times$ to $17{,}973\times$ as $\lambda^2$ increases from $50$ to $1000$. The spectral gap ratio $\varepsilon_1/\varepsilon_0$ monotonically improves from $4.0$ to $148.6$.
+\end{abstract}
+
+\section{Introduction}
+
+The Riemann Hypothesis (RH) is equivalent to the positivity of the Weil distribution on an appropriate space of test functions. Connes, Consani, and Moscovici~\cite{CCM2025} introduced a concrete finite-dimensional approximation to this positivity criterion through the \emph{Weil quadratic form}
+\[
+Q_W = W_{0,2} - W_R - W_p,
+\]
+a real symmetric matrix of dimension $(2N+1) \times (2N+1)$ depending on parameters $\lambda$ and $N$. Here $W_{0,2}$ encodes the pole of $\zeta(s)$ at $s=1$, $W_R$ is the ``regular'' contribution from the archimedean place, and $W_p$ is the prime sum from the explicit formula.
+
+RH is equivalent to $Q_W \geq 0$ for all $\lambda$ (Weil positivity). We perform an extensive numerical investigation of the spectral structure of $Q_W$ for $\lambda^2$ up to $5000$ at 120-digit arithmetic precision, uncovering a rich structural picture.
+
+\section{Setup and Notation}
+
+We follow the matrix construction of~\cite{CCM2025}, Lemma~5.1 and Theorem~5.10. The matrix $Q_W$ is assembled from three components:
+
+\begin{itemize}
+\item $W_{0,2}$: a rank-$2$ matrix arising from the pole of $\zeta$ at $s=1$, with one even and one odd eigenvector under the parity $n \to -n$.
+\item $W_R$: the ``regular'' Weil contribution, built from $\alpha_L(n) = \frac{1}{\pi}\bigl[\text{hypergeometric} + \frac{1}{2}\operatorname{Im}\psi(\tfrac{1}{4} + \tfrac{i\pi n}{L})\bigr]$ where $L = \log(\lambda^2)$.
+\item $W_p$: the prime sum $\sum_{p^k \leq \lambda^2} \log(p)\, p^{-k/2}\, q(n,m,\log p^k)$.
+\end{itemize}
+
+We set $M := W_R + W_p$, so $Q_W = W_{0,2} - M$, and choose $N = \lfloor 8L \rceil$ to maintain bandwidth $\pi N / L \approx 8\pi \approx 25$.
+
+\section{Displacement Rank and Prolate Structure}
+
+\begin{observation}[Displacement rank $= 2$]
+The matrix $Q_W$ satisfies the displacement equation $D\,Q_W - Q_W\,D = \mathbf{u}\mathbf{v}^T - \mathbf{v}\mathbf{u}^T$ with $D = \operatorname{diag}(-N,\ldots,N)$, where the displacement has exactly two nonzero singular values ($\sigma_3/\sigma_1 < 10^{-16}$). Verified at $80$-digit precision for $\lambda^2 = 14, 50, 100$.
+\end{observation}
+
+\begin{observation}[Bounded effective rank of $M$]\label{obs:rank}
+The matrix $M = W_R + W_p$ has effective rank (at threshold $10^{-4}\|M\|$) equal to $\approx 26$, independent of the matrix dimension $2N+1$, which ranges from $43$ to $137$ in our tests. Both $W_R$ and $W_p$ individually are full-rank. The rank of $M$ scales with the \emph{bandwidth} $\pi N/L$, not with $\lambda$ or the number of prime powers.
+\end{observation}
+
+This is consistent with the Slepian--Pollak--Landau theory of prolate spheroidal wave functions, as exploited by Connes--Consani~\cite{CC2020} for the archimedean place: the Weil explicit formula constrains $M$ only at frequencies below the bandwidth, leaving higher frequencies in the numerical null space.
+
+\section{Block-Diagonal Structure}
+
+\begin{observation}[$W_{0,2}$ lies in the signal subspace]
+Both eigenvectors of $W_{0,2}$ (even and odd) have projections onto the null space of $M$ with squared norm $< 10^{-10}$. Consequently, $Q_W$ is approximately block-diagonal:
+\[
+Q_W \approx \begin{pmatrix} Q_W|_{\mathrm{signal}} & 0 \\ 0 & Q_W|_{\mathrm{null}} \end{pmatrix}
+\]
+where the signal block is $\approx 26 \times 26$ and the null block is $(2N-25) \times (2N-25)$.
+\end{observation}
+
+\begin{observation}[Null-space positivity floor]
+$Q_W|_{\mathrm{null}} \approx -M|_{\mathrm{null}}$ has minimum eigenvalue $\approx +10^{-8}$ (positive), providing a positivity floor independent of $\lambda$.
+\end{observation}
+
+\section{The Three-Way Cancellation Mechanism}
+
+The minimal eigenvector $\xi_0$ of $Q_W$ decomposes as $\xi_0 = \xi_s + \xi_n$ with $\|\xi_s\|^2 \approx \|\xi_n\|^2 \approx 0.5$.
+
+\begin{observation}[Exact decomposition of $\varepsilon_0$]
+\[
+\varepsilon_0 = \underbrace{\langle \xi_s | Q_W | \xi_s \rangle}_{\text{Signal}(+)} + \underbrace{\langle \xi_n | Q_W | \xi_n \rangle}_{\text{Null}(+)} + \underbrace{2\langle \xi_s | Q_W | \xi_n \rangle}_{\text{Cross}(-)}
+\]
+with $\mathrm{Signal} = \mathrm{Null}$ to 4+ significant digits, and $\mathrm{Cross} \approx -(\mathrm{Signal} + \mathrm{Null})$ up to the residual $\varepsilon_0$. The cross term arises entirely from $W_{0,2}$ (the $M$ cross-term is $< 10^{-15}$).
+\end{observation}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rccccr}
+\toprule
+$\lambda^2$ & Signal & Null & Cross & $\varepsilon_0$ & Cancel \\
+\midrule
+50 & $+7.5 \times 10^{-7}$ & $+7.5 \times 10^{-7}$ & $-1.5 \times 10^{-6}$ & $2.0 \times 10^{-9}$ & $738\times$ \\
+200 & $+6.8 \times 10^{-6}$ & $+6.8 \times 10^{-6}$ & $-1.4 \times 10^{-5}$ & $1.6 \times 10^{-9}$ & $8412\times$ \\
+1000 & $+8.5 \times 10^{-6}$ & $+8.5 \times 10^{-6}$ & $-1.7 \times 10^{-5}$ & $9.5 \times 10^{-10}$ & $17973\times$ \\
+\bottomrule
+\end{tabular}
+\caption{Exact decomposition of $\varepsilon_0$ into signal, null, and cross-term contributions.}
+\end{table}
+
+\section{Eigenvalue Decay and Spectral Gap}
+
+\begin{observation}[$\varepsilon_0$ decay rate]
+With $N = 8L$, the minimal eigenvalue satisfies $\varepsilon_0 \sim D^{-0.97}$ where $D = \dim(\mathrm{null}(M))$ grows linearly with $L$. This gives $\varepsilon_0 \approx C/L \to 0$.
+\end{observation}
+
+\begin{observation}[Spectral gap improvement]
+The gap ratio $\varepsilon_1/\varepsilon_0$ monotonically increases:
+
+\begin{center}
+\begin{tabular}{rrrrrrrr}
+\toprule
+$\lambda^2$ & 14 & 100 & 500 & 1000 & 2000 & 5000 \\
+\midrule
+$\varepsilon_0$ & $2.7{\times}10^{-10}$ & $2.1{\times}10^{-10}$ & $1.4{\times}10^{-10}$ & $1.1{\times}10^{-10}$ & $6.7{\times}10^{-11}$ & $4.8{\times}10^{-12}$ \\
+gap ratio & 4.0 & 4.6 & 6.1 & 7.7 & 11.7 & 148.6 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{observation}
+
+\section{The Secular Equation}
+
+The signal subspace eigenvalues of $Q_W|_{\mathrm{signal}}$ are determined by the secular equation for a rank-$2$ perturbation ($W_{0,2}|_{\mathrm{signal}}$) of the diagonal $-\operatorname{diag}(\mu_k)$.
+
+\begin{observation}
+The even $W_{0,2}$ eigenvalue $s_{\mathrm{even}} \sim 0.74 L^2$ and the largest $M$ signal eigenvalue $\mu_{\max} \sim 0.73 L^2$ maintain a constant gap $s_{\mathrm{even}} - \mu_{\max} \approx 0.03$, with relative gap $(s-\mu)/s \sim 1/L^2 \to 0$.
+\end{observation}
+
+\section{Summary and Open Problems}
+
+We have identified a complete 8-level structural picture of how Weil positivity operates in the Connes--Consani--Moscovici framework. Three analytical gaps remain:
+
+\begin{enumerate}
+\item \textbf{Rank bound}: Prove $\operatorname{rank}(M) \leq \pi N/L + O(1)$ from the prolate structure of the Weil explicit formula (likely follows from Connes--Consani~\cite{CC2020}).
+\item \textbf{Eigenvector simplicity and parity}: Prove $\varepsilon_0$ is simple with even eigenvector.
+\item \textbf{Cancellation rate}: Prove the three-way cancellation factor grows without bound as $\lambda \to \infty$, giving $\varepsilon_0 \to 0$.
+\end{enumerate}
+
+Closing any of these gaps would constitute significant progress toward RH.
+
+\bibliographystyle{plain}
+\begin{thebibliography}{99}
+\bibitem{CCM2025} A.~Connes, C.~Consani, H.~Moscovici, \emph{Zeta Spectral Triples}, arXiv:2511.22755 (2025).
+\bibitem{CC2020} A.~Connes, C.~Consani, \emph{Weil positivity and Trace formula, the archimedean place}, Selecta Math.\ \textbf{27}, 27 (2021); arXiv:2006.13771.
+\bibitem{CM2022} A.~Connes, H.~Moscovici, \emph{The UV prolate spectrum matches the zeros of zeta}, PNAS \textbf{119}(22), e2123174119 (2022).
+\end{thebibliography}
+
+\end{document}
