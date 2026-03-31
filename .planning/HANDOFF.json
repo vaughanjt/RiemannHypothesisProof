@@ -1,35 +1,39 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-30T23:30:00Z",
+  "timestamp": "2026-03-31T01:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "Connes proof — Weil positivity to lam^2=1000, one gap remains",
-  "plan": "session 29 complete",
+  "phase_name": "Connes proof — rank(M)=26 discovery, near-null space proof route",
+  "plan": "session 30",
   "status": "active",
-  "task": "T-metric analysis or lam^2=10000 push to resolve |xi_hat| convergence",
-  "total_tasks": 5,
+  "task": "Prove rank(M) bounded => null space grows => eps_0 -> 0 => RH",
+  "total_tasks": 8,
   "completed_tasks": [
-    {"id": 1, "name": "NB Mobius gap (dead end), sigma_min irrelevance, Euler product", "status": "done"},
-    {"id": 2, "name": "Correct Q_W matrix rebuilt, eps_0~5e-10 verified", "status": "done"},
-    {"id": 3, "name": "H2 parity splitting mechanism (gap ratio 3.0->7.7)", "status": "done"},
-    {"id": 4, "name": "H1 fixed-lambda (finite-section), bandwidth N~8*L", "status": "done"},
-    {"id": 5, "name": "Weil positivity verified lam^2=14..1000 at dps=80", "status": "done"}
+    {"id": 1, "name": "Correct Q_W verified, eps_0 plunges to 4.82e-12 at lam^2=5000", "status": "done"},
+    {"id": 2, "name": "H2 parity mechanism (gap ratio 4->149), H1 fixed-lambda", "status": "done"},
+    {"id": 3, "name": "T-metric: 10^10 cancellation, (WR+Wp)/W02 -> 1", "status": "done"},
+    {"id": 4, "name": "Complement structure: 50/50 split top-mode + null-space", "status": "done"},
+    {"id": 5, "name": "eps_1 mystery: odd mode stable at 7.5e-10", "status": "done"},
+    {"id": 6, "name": "Transition scan: smooth plunge lam^2=1000..5000", "status": "done"},
+    {"id": 7, "name": "DISCOVERY: rank(M) = 26 CONSTANT, null space grows linearly", "status": "done"},
+    {"id": 8, "name": "Autonomous exploration loop set up (cron aba09355, 30min)", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 6, "name": "T-metric analysis: compute <xi,f>_T and bound constant C", "status": "not_started"},
-    {"id": 7, "name": "Push to lam^2=10000+ at dps=120 for |xi_hat| trend", "status": "not_started"},
-    {"id": 8, "name": "Formalize H2 parity proof (even/odd Rayleigh quotients)", "status": "not_started"},
-    {"id": 9, "name": "Update proof_skeleton.tex with double-limit N~8*L", "status": "not_started"},
-    {"id": 10, "name": "Write up results for potential publication", "status": "not_started"}
+    {"id": 9, "name": "Verify rank(M)~26 holds at larger lambda (lam^2=5000,10000)", "status": "not_started"},
+    {"id": 10, "name": "Identify WHAT the 26 directions are (zeros? primes? modes?)", "status": "not_started"},
+    {"id": 11, "name": "Prove rank(M) bounded analytically from explicit formula structure", "status": "not_started"},
+    {"id": 12, "name": "Show eps_0 <= C/dim on the null space (rank-2 W02 argument)", "status": "not_started"},
+    {"id": 13, "name": "Update proof_skeleton.tex with rank(M) argument", "status": "not_started"},
+    {"id": 14, "name": "Push dps=200+ for lam^2=10000 with mpmath eigenvalues", "status": "not_started"}
   ],
   "blockers": [],
   "decisions": [
-    {"decision": "N must grow as 8*L with lambda (not fixed)", "rationale": "Bandwidth pi*N/L must cover zeta zeros"},
-    {"decision": "H2 from parity splitting of rank-2 W02", "rationale": "Even/odd Rayleigh quotients differ by factor 3-8"},
-    {"decision": "eps_0 ~ 1e-9/L (algebraic, not exponential)", "rationale": "Observed at dps=80 across lam^2=14..1000"},
-    {"decision": "Gap ratio monotonically improving 4.0->7.7", "rationale": "Parity structure becomes cleaner at large lambda"}
+    {"decision": "rank(M) = 26 constant while dim grows 43->111", "rationale": "WR and Wp full rank individually but cancel in M = WR+Wp"},
+    {"decision": "Null space grows as dim - 26 = 2N - 25 (linear in N)", "rationale": "Verified at lam^2=14..1000 with N=21..55"},
+    {"decision": "If rank(M) bounded => eps_0 -> 0 => Weil positivity => RH", "rationale": "Optimization over growing null space drives eps_0 to 0"},
+    {"decision": "N must grow as 8*L with lambda", "rationale": "Bandwidth pi*N/L must cover zeta zeros"}
   ],
   "uncommitted_files": [],
-  "context_notes": "Session 29: 14 scripts, 12 commits. From NB Mobius to Weil positivity at lam^2=1000. Python: /c/Python313/python.exe. Key: connes_final_push.py (dps=80 results), connes_prove_h2.py (parity mechanism), proof_skeleton.tex (needs double-limit update).",
-  "next_action": "Two parallel tracks: (A) Analytical — compute the T-metric from Connes paper section 5, bound <xi,f>_T, close the |xi_hat| -> 0 argument. (B) Computational — lam^2=10000 at dps=120 to see if |xi_hat| trend emerges with more data points.",
+  "context_notes": "Session 30: discovered rank(M)=26 constant. This is the potential kill shot. WR (full rank) + Wp (full rank) cancel to give M with rank 26. The 26 non-null directions are the 'degrees of freedom' of the Weil explicit formula. Next: verify at larger lambda, identify the 26 directions, prove bounded rank analytically. Python: /c/Python313/python.exe. Cron job aba09355 runs every 30min (session-only).",
+  "next_action": "IMMEDIATE: verify rank(M)~26 at lam^2=5000 and 10000. Then identify what the 26 directions correspond to (project onto zeta zero bump functions, prime-indexed vectors, etc). If rank stays bounded, formalize the proof: bounded rank => growing null space => eps_0 -> 0 => RH.",
   "human_actions_pending": []
 }
