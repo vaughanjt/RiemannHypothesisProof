@@ -1,36 +1,24 @@
 {
   "version": "1.0",
-  "timestamp": "2026-03-31T03:30:00Z",
+  "timestamp": "2026-03-31T04:00:00Z",
   "phase": "post-milestone",
-  "phase_name": "Connes proof — COMPLETE MECHANISM: eps_0 = S + N - |C| with growing cancellation",
-  "plan": "session 30 iteration 5",
+  "phase_name": "Connes proof — eps_0 ~ 1/L, driven by signal cancellation not null space",
+  "plan": "session 30 iteration 6",
   "status": "active",
-  "task": "Prove the cancellation factor grows without bound (= prove RH)",
-  "total_tasks": 12,
+  "task": "Prove eps_0 ~ 1/L analytically from signal subspace cancellation improving with L",
+  "total_tasks": 13,
   "completed_tasks": [
-    {"id": 7, "name": "rank(M) = 26 = bandwidth (Slepian prolate theory)", "status": "done"},
-    {"id": 24, "name": "W02 entirely in signal subspace", "status": "done"},
-    {"id": 25, "name": "Q_W approximately block-diagonal (signal + null)", "status": "done"},
-    {"id": 32, "name": "Zero sum Z is full rank — weights essential", "status": "done"},
-    {"id": 33, "name": "min(QW|signal) ~ 10^{-6} >> eps_0 ~ 10^{-10}", "status": "done"},
-    {"id": 34, "name": "eps_0 from signal-null MIXING via W02 cross terms", "status": "done"},
     {"id": 35, "name": "MECHANISM: eps_0 = Signal(+) + Null(+) + Cross(-)", "status": "done"},
-    {"id": 36, "name": "Signal = Null exactly (optimization balance)", "status": "done"},
-    {"id": 37, "name": "Cancellation factor: 738 -> 17973 (GROWING)", "status": "done"}
+    {"id": 36, "name": "Signal = Null exactly, cancellation 738 -> 17973", "status": "done"},
+    {"id": 41, "name": "eps_0 ~ D^{-0.97} varying lambda, eps_0 ~ D^{-0.13} fixed lambda", "status": "done"},
+    {"id": 42, "name": "NULL SPACE NOT THE DRIVER — signal cancellation with L is", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": 38, "name": "Prove cancellation factor grows without bound", "status": "not_started"},
-    {"id": 39, "name": "Formalize: more null space vectors -> tighter balance", "status": "not_started"},
-    {"id": 40, "name": "Write complete proof combining all structural insights", "status": "not_started"}
+    {"id": 43, "name": "Prove signal cancellation improves as 1/L (M eigenvalues grow with L)", "status": "not_started"},
+    {"id": 44, "name": "Track signal eigenvalues of M as function of L explicitly", "status": "not_started"},
+    {"id": 45, "name": "Formalize all results as paper/preprint", "status": "not_started"}
   ],
-  "blockers": [],
-  "decisions": [
-    {"decision": "eps_0 = Signal + Null + Cross where Signal = Null exactly", "rationale": "Computed at lam^2=50,200,1000 — Signal/Null ratio is 1.000 to 4 digits"},
-    {"decision": "Cross term entirely from W02 (M cross is ~10^{-16})", "rationale": "M is block-diagonal in its eigenbasis"},
-    {"decision": "Cancellation factor grows: 738 -> 8412 -> 17973", "rationale": "More null-space vectors = tighter three-way balance"},
-    {"decision": "Proving cancellation grows IS proving RH", "rationale": "The structural decomposition is complete but doesn't shortcut the fundamental equivalence"}
-  ],
-  "context_notes": "Session 30 complete arc: rank(M)=BW -> block-diagonal -> signal min >> eps_0 -> mixing mechanism -> exact decomposition. The mechanism is FULLY understood. Every piece quantified. The proof, when it comes, uses this exact structure. Grok validated approach as 'most promising in decades'. Prolate theory (Slepian-Landau) provides the rank bound. Next: either prove the growing cancellation analytically, or focus on formalizing what CAN be proved (Slepian rank bound, block positivity, three-way structure).",
-  "next_action": "Two options: (A) Try to prove cancellation factor grows as O(D) where D = null dimension. This would give eps_0 ~ 1/D -> 0 -> RH. (B) Formalize the structural results as a paper: rank(M)=BW theorem, block decomposition, three-way mechanism, numerical evidence to lam^2=5000. Both are valuable.",
+  "context_notes": "CORRECTED AGAIN: the null space provides positivity but NOT the eps_0 decrease. eps_0 ~ 1/L from the signal cancellation tightening as L grows (M eigenvalues grow with L, W02-M cancellation in the 26x26 signal subspace improves). Next: track the 26 signal eigenvalues as functions of L and understand why the secular equation min -> 0.",
+  "next_action": "Track mu_k (signal M eigenvalues) and s1, s2 (W02 eigenvalues) as functions of L. The secular equation for the 26x26 signal subspace determines eps_0. Understanding how the roots move with L is the path to proving eps_0 -> 0.",
   "human_actions_pending": []
 }
