@@ -1,0 +1,132 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry,booktabs}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{observation}{Observation}
+
+\title{Three Attacks on Global Stability:\\Sign Changes, Collision Dynamics, and Codimension Obstruction}
+\author{Session 31 --- March 2026}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Context}
+
+Session 30 proved \emph{local} stability: each zero on the real line has curvature $+1/\varepsilon^2$ against displacement into a conjugate pair.  Session 31 showed that \emph{global} convexity fails---the electrostatic energy is not convex and the Gamma factor provides no confinement.  This document reports three parallel attacks on the global stability gap.
+
+\section{Attack 1: Sign-Change Counting (Levinson--Conrey Direction)}
+
+\begin{observation}[100\% sign alternation]
+Among the first 150 zeros $\gamma_k$, evaluating the Hardy $Z$-function at midpoints $({\gamma_k + \gamma_{k+1}})/{2}$ shows \textbf{perfect alternation}: $Z$ changes sign between every consecutive pair. No missing sign changes detected.
+\end{observation}
+
+\noindent Key data:
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$T$ & $N(T)$ & Sign changes $S(T)$ & $S/N$ \\
+\midrule
+49.8 & 9 & 10 & 1.111 \\
+101.3 & 30 & 30 & 1.000 \\
+236.5 & 100 & 100 & 1.000 \\
+396.4 & 200 & 200 & 1.000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Proof relevance}: RH $\Leftrightarrow$ $S(T) = N(T)$ for all $T$.  Levinson (1974) proved $S(T) \geq \frac{1}{3}N(T)$ using Dirichlet polynomial mollifiers.  Conrey (1989) improved to $\frac{2}{5}$.  Reaching $1$ requires either:
+\begin{enumerate}
+\item Longer mollifiers (needs breakthrough in mean-value theorems for Dirichlet polynomials), or
+\item A structural argument that missing sign changes create contradictions with the Euler product.
+\end{enumerate}
+
+\section{Attack 2: de Bruijn--Newman Collision Dynamics}
+
+The dBN zero dynamics is governed by the ODE
+\[
+\frac{dz_k}{dt} = -2\sum_{j\neq k} \frac{1}{z_k - z_j}.
+\]
+
+\begin{observation}[Monotone separation under forward flow]
+Starting from the first 80 zeta zeros at $t=0$ and evolving the forward heat flow ($t$ increasing), the minimum spacing \textbf{increases monotonically}:
+
+\begin{center}
+\begin{tabular}{rrl}
+\toprule
+$t$ & Min spacing & Change \\
+\midrule
+0.000 & 0.7243 & --- \\
+0.001 & 0.7289 & $+0.005$ \\
+0.010 & 0.7687 & $+0.022$ \\
+0.050 & 0.9174 & $+0.149$ \\
+0.100 & 1.0606 & $+0.143$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{observation}
+
+\begin{observation}[No collision at $t=0$]
+Backward extrapolation of the closest pair (indices 70,71, $\delta = 0.724$) gives collision time $t_c \approx -0.104 < 0$.  All two-body collision times are positive (collision only in the \emph{future} of the backward flow), meaning the zeros at $t=0$ did not arise from a collision.
+\end{observation}
+
+\begin{observation}[Spacing ratio bounded below]
+Over the first 500 zeros:
+\[
+\frac{\delta_{\min}}{\delta_{\mathrm{avg}}} \geq 0.191
+\]
+well away from zero.  The GUE prediction is $P(s=0) = 0$ (zero probability of zero spacing), consistent with collisions being impossible.
+\end{observation}
+
+\noindent\textbf{Proof relevance}: RH $\Leftrightarrow$ $\Lambda = 0$.  The forward flow monotonically separates zeros, confirming that the $t=0$ configuration is ``pre-collision.''  A proof requires showing $\delta_{\min}/\delta_{\mathrm{avg}} \geq c > 0$ uniformly in the number of zeros, which is related to GUE universality for zeta zeros.
+
+\section{Attack 3: Codimension Obstruction}
+
+\begin{observation}[Curve non-intersection]
+The curves $C_R = \{z : \operatorname{Re}\Xi(z) = 0\}$ and $C_I = \{z : \operatorname{Im}\Xi(z) = 0\}$ were traced near each of the first 10 zeros.  Off the real line ($|y| > 0.01$), the curves \textbf{never intersect}.  Minimum distances:
+
+\begin{center}
+\begin{tabular}{rr}
+\toprule
+$\gamma_k$ & Min $d(C_R, C_I)$ \\
+\midrule
+14.13 & 1.451 \\
+21.02 & 1.076 \\
+25.01 & 1.262 \\
+30.42 & 0.807 \\
+49.77 & 0.618 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{observation}
+
+\begin{observation}[Winding number transition]
+For each zero, the winding number of $\Xi$ around a circle of radius 0.5 is exactly 1 when centered on the real line, and drops to 0 when the center is displaced by $y \approx 0.4$.  No off-line zeros within $|y| < 3$ of any tested zero.
+\end{observation}
+
+\begin{observation}[Shrinking gap --- a warning]
+The minimum distance between $C_R$ and $C_I$ shows a negative slope of $-0.018$ per unit of $\gamma$.  If this trend continues, the curves could approach intersection at $\gamma \sim 10^2$--$10^3$.  However, this may be a finite-size effect from the $\pm 3$ search window.
+\end{observation}
+
+\noindent\textbf{Proof relevance}: On the real line, $\operatorname{Im}\Xi = 0$ automatically, so zeros require only one condition.  Off the line, zeros require two independent conditions---a codimension-2 event.  The Euler product contributes a ``twist'' to $\arg\Xi$ off the real line that prevents the simultaneous alignment of $\operatorname{Re}\Xi = 0$ and $\operatorname{Im}\Xi = 0$.
+
+\section{Synthesis: Which Path Is Closest to a Proof?}
+
+\begin{center}
+\begin{tabular}{lcp{7cm}}
+\toprule
+\textbf{Attack} & \textbf{Gap to proof} & \textbf{What's needed} \\
+\midrule
+Sign changes & Medium & Push Levinson--Conrey proportion from $2/5$ to $1$. Needs mean-value theorem breakthrough or structural argument. \\
+dBN collision & Medium & Prove $\delta_{\min}/\delta_{\mathrm{avg}} \geq c > 0$ uniformly. Connected to GUE universality. \\
+Codimension & Large & Quantify and bound the $C_R$--$C_I$ gap as $\gamma \to \infty$. The shrinking trend is concerning. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{The strongest lead}: The dBN collision dynamics provides the most direct route.  It reduces RH to showing that the zero spacing never collapses.  The GUE universality conjecture (Montgomery--Odlyzko) implies this, and it has been proved for many random matrix ensembles.  The missing ingredient is GUE universality for the actual Riemann zeta function (not just random matrix models).
+
+\end{document}

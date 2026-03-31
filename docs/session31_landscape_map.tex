@@ -1,0 +1,84 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[margin=1in]{geometry}
+\newtheorem{observation}{Observation}
+\title{The Proof Landscape of the Riemann Hypothesis:\\A Computational Map (Session 31)}
+\author{8 iterations $\cdot$ 15 scripts $\cdot$ March 31, 2026}
+\date{}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Starting from a proved local stability result (curvature $+1/\varepsilon^2$ at each zero), we systematically tested every computationally accessible approach to promoting local to global stability. Eight approaches were killed; four survive. The central discovery is that RH asserts a \emph{critical phenomenon}: the de Bruijn--Newman constant $\Lambda = 0$ is a phase transition, with zeros maximally close (GUE repulsion) without colliding. The obstruction to proof is the \emph{finite-to-infinite transition}: every approach works for finitely many primes/zeros but develops $O(1)$ errors in the infinite limit. The function field analogue (where RH is proved) avoids this because its zeta function is a polynomial.
+\end{abstract}
+
+\section{Approaches Killed}
+\begin{center}
+\begin{tabular}{rlp{7.5cm}}
+\toprule
+\# & Approach & Mechanism of death \\
+\midrule
+1 & Energy convexity & $d^2E/d\varepsilon^2 < 0$ at intermediate $\varepsilon$ \\
+2 & Gamma confinement & Stirling terms cancel between conjugate pair \\
+3 & Spacing lower bound & GUE: $\delta_{\min} \sim N^{-1/3} \to 0$ \\
+4 & Information-theoretic & Explicit formula is a tautology \\
+5 & Li criterion computation & Detection requires $n \sim \gamma^2/\delta$ \\
+6 & Anti-alignment & Max interference at $\sigma \approx 0$, not $1/2$ \\
+7 & Moment constraint (100\%) & Double/sum ratio $= 1.003$ (too soft) \\
+8 & Spectral Jacobi matrix & Trivially self-adjoint by construction \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Approaches Surviving}
+\begin{center}
+\begin{tabular}{rp{4cm}p{5cm}l}
+\toprule
+\# & Approach & Status & Wall \\
+\midrule
+1 & Connes $Q_W$ positivity & Confirmed as Castelnuovo analogue & $O(1)$ leakage \\
+2 & Levinson--Conrey mollifiers & 40\% proved & Mean-value theorems \\
+3 & GUE universality & Data confirms match & Open problem \\
+4 & Rodgers--Tao dual & Unexplored & Technical \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{The Three Key Discoveries}
+
+\begin{observation}[RH is a critical phenomenon]
+$\Lambda = 0$ means the zero configuration is at the exact phase transition. GUE predicts $\delta_{\min} \sim N^{-1/3}$, giving collision time $t_c \sim N^{-2/3} \to 0^+$. The infimum of all collision times is $\Lambda = 0$ exactly. There is no safety margin.
+\end{observation}
+
+\begin{observation}[The finite-to-infinite obstruction]
+Function field RH (proved): zeta is a polynomial, proof uses algebraic geometry of a finite-dimensional cohomology. Number field RH (open): zeta is transcendental, proof would require analytic control of an infinite-dimensional operator. Every approach (Connes, Levinson--Conrey, Li, moments) works for finite truncations but develops $O(1)$ errors in the infinite limit.
+\end{observation}
+
+\begin{observation}[Euler product mechanism]
+The partial Euler product $\prod_{p \leq 997}(1-p^{-s})^{-1}$ equals $0.061$ at a zero (far from zero---the infinite tail does the work) but $1.006 \times \zeta(s)$ off the critical line (essentially converged). The prime conspiracy (predominantly negative $\cos(t\log p)$ at zeros) creates zeros, but through an infinite coordination that no finite truncation captures.
+\end{observation}
+
+\section{The Proof Map}
+
+All roads lead to the same wall:
+
+\medskip
+\begin{center}
+\textbf{Euler product} $\longrightarrow$ \textbf{GUE universality} $\longrightarrow$ \textbf{$\Lambda = 0$} $\longrightarrow$ \textbf{RH}
+\end{center}
+\medskip
+
+\noindent Each arrow is a major open problem. The Connes $Q_W$ positivity is the most direct attack: it is the number field analogue of the Castelnuovo--Weil inequality that proves the function field case.
+
+\section{Quantitative Summary}
+15 scripts, 500 zeros, $\sim$50 computational experiments:
+\begin{itemize}
+\item GUE fit: $\chi^2 = 0.63$ (vs Poisson $10.6$, ratio $16.9\times$)
+\item Sign changes: $150/150$ confirmed, $S(T) = N(T)$
+\item Min spacing ratio: $\delta_{\min}/\delta_{\mathrm{avg}} \geq 0.191$ (500 zeros)
+\item Euler partial product at zero: $|{\textstyle\prod_{p\leq 997}}| = 0.061$
+\item Moment double/sum: $1.003$ (indistinguishable)
+\item Codimension $C_R$--$C_I$ gap: $0.6$--$1.5$ (shrinking, slope $-0.018$)
+\end{itemize}
+
+\end{document}

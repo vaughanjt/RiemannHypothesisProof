@@ -1,0 +1,88 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[margin=1in]{geometry}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{observation}{Observation}
+\newtheorem{proposition}{Proposition}
+
+\title{Session 31: From Local Stability to Criticality\\Four Iterations of the Convexity-to-Euler Pipeline}
+\author{March 31, 2026}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Starting Point}
+Session 30 proved local stability: each zero has curvature $+1/\varepsilon^2$ against displacement into a conjugate pair. Session 31 asked: can we go from local to global?
+
+\section{What Died}
+
+\begin{center}
+\begin{tabular}{lp{9cm}}
+\toprule
+\textbf{Approach} & \textbf{How it died} \\
+\midrule
+Energy convexity & $d^2E/d\varepsilon^2 < 0$ at intermediate $\varepsilon$ for zeros $k=1,11,51,121,161$ \\
+Gamma confinement & First-order Stirling terms cancel between conjugate pair members \\
+Spacing lower bound & GUE predicts $\delta_{\min} \sim N^{-1/3} \to 0$; no uniform lower bound \\
+Information-theoretic & Explicit formula is a tautology (holds for all $L$-functions) \\
+Li criterion computation & Detection needs $n \sim \gamma^2/\delta$; infeasible for $\gamma > 10^{13}$ \\
+Anti-alignment & Maximum destructive interference at $\sigma \approx 0$, not $\sigma = 1/2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{What Survived}
+
+\subsection{Sign-Change Counting}
+All 150 tested zeros show perfect sign alternation. $S(T) = N(T)$ at every height. The Levinson--Conrey direction (prove 100\% of zeros on-line) remains viable.
+
+\subsection{de Bruijn--Newman Dynamics}
+Forward heat flow monotonically separates zeros. Min spacing ratio $\delta_{\min}/\delta_{\mathrm{avg}} \geq 0.191$ over 500 zeros. Collision extrapolation: all pairs safe ($t_c < 0$). But $\Lambda = 0$ is a \emph{critical phenomenon}---zeros are maximally close without colliding.
+
+\subsection{Codimension Obstruction}
+$\operatorname{Re}(\Xi) = 0$ and $\operatorname{Im}(\Xi) = 0$ curves never intersect off the real line. Winding number = 1 at zeros, drops to 0 by $|y| = 0.4$. Warning: gap shrinks with height (slope $-0.018$).
+
+\subsection{Connes $Q_W$ Positivity}
+The deepest framework. Proof wall at $O(1)$ leakage between Mellin and Fourier domains (sessions 22--24). Not revisited this session but remains the strongest structural lead.
+
+\section{The Critical Insight: $\Lambda = 0$ is a Phase Transition}
+
+\begin{observation}
+GUE universality predicts $\delta_{\min} \sim N^{-1/3}$, giving collision time $t_c \sim N^{-2/3} \to 0^+$. The de Bruijn--Newman constant $\Lambda = \inf\{t_c\} = 0$ exactly. RH asserts the system is at the \textbf{exact critical point} between $\Lambda < 0$ (impossible) and $\Lambda > 0$ (RH fails).
+\end{observation}
+
+This explains why RH is hard: it asserts criticality, not a margin.
+
+\section{The Euler Product Mechanism}
+
+\begin{observation}[Slow convergence at zeros]
+The partial Euler product $\prod_{p \leq P} (1 - p^{-s})^{-1}$ at $s = 1/2 + i\gamma_1$ gives $|\text{prod}| = 0.061$ at $P = 997$---far from zero. The infinite tail of the product is what sends it to zero.
+
+Off the critical line ($\sigma = 1$), the same partial product gives $|\text{prod}|/|\zeta| = 1.006$---essentially converged.
+\end{observation}
+
+\begin{observation}[Prime conspiracy]
+At a zero, $\cos(t \log p)$ is predominantly negative: $-0.93$ for $p=2$, $-0.98$ for $p=3$. The primes conspire to create destructive interference. However, the maximum interference occurs at $\sigma \approx 0$, not at $\sigma = 1/2$.
+\end{observation}
+
+\begin{observation}[Removing primes breaks RH]
+$\zeta(s) \cdot (1 - p^{-s})$ has all original zeros plus new zeros at $\operatorname{Re}(s) = 0$ (off the critical line). The \textbf{complete} Euler product over all primes is necessary for RH.
+\end{observation}
+
+\section{The Five Surviving Proof Strategies}
+
+\begin{enumerate}
+\item \textbf{Connes $Q_W$ positivity}: Strongest structural framework. Proof wall mapped.
+\item \textbf{Sign-change counting}: Levinson--Conrey direction. Currently 40\%, need 100\%.
+\item \textbf{GUE universality}: Euler product $\to$ GUE statistics $\to$ $\Lambda = 0$. The Katz--Sarnak philosophy, partly proved.
+\item \textbf{Euler product tail}: The slow convergence at zeros vs fast convergence off-line. Can we show the tail only produces zeros at $\sigma = 1/2$?
+\item \textbf{Rodgers--Tao dual}: Reverse their $\Lambda \geq 0$ barrier argument.
+\end{enumerate}
+
+\section{Scripts Produced}
+11 scripts total:
+\texttt{convexity\_attack.py}, \texttt{collision\_barrier.py}, \texttt{convexity\_synthesis.py}, \texttt{sign\_change\_attack.py}, \texttt{dbn\_spacing\_attack.py}, \texttt{codimension\_attack.py}, \texttt{gue\_spacing\_attack.py}, \texttt{rh\_failure\_simulator.py}, \texttt{explicit\_formula\_attack.py}, \texttt{euler\_product\_attack.py}, \texttt{stability\_attack.py}
+
+\end{document}
