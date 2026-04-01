@@ -1,0 +1,47 @@
+[
+  {
+    "lam_sq": 50,
+    "eps_0": 2.033399168583954e-09,
+    "schur_horn_proves": false,
+    "full_trace_norm_proves": false,
+    "gershgorin_proves": false,
+    "decomposed_proves": false,
+    "any_proves": false
+  },
+  {
+    "lam_sq": 100,
+    "eps_0": 1.8537766612165992e-09,
+    "schur_horn_proves": false,
+    "full_trace_norm_proves": false,
+    "gershgorin_proves": false,
+    "decomposed_proves": false,
+    "any_proves": false
+  },
+  {
+    "lam_sq": 200,
+    "eps_0": 1.6199457395091118e-09,
+    "schur_horn_proves": false,
+    "full_trace_norm_proves": false,
+    "gershgorin_proves": false,
+    "decomposed_proves": false,
+    "any_proves": false
+  },
+  {
+    "lam_sq": 500,
+    "eps_0": 1.2667462325829115e-09,
+    "schur_horn_proves": false,
+    "full_trace_norm_proves": false,
+    "gershgorin_proves": false,
+    "decomposed_proves": false,
+    "any_proves": false
+  },
+  {
+    "lam_sq": 1000,
+    "eps_0": 9.491448437312787e-10,
+    "schur_horn_proves": false,
+    "full_trace_norm_proves": false,
+    "gershgorin_proves": false,
+    "decomposed_proves": false,
+    "any_proves": false
+  }
+]
