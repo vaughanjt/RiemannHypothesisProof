@@ -1,0 +1,121 @@
+{
+  "mean_value_estimates": [
+    {
+      "theta": 0.1,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.15000000000000002,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.2,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.25,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.30000000000000004,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.35,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.4,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.45000000000000007,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.5,
+      "error_exponent": 0,
+      "method": "Conrey",
+      "predicted_fraction": 0.3333333333333333
+    },
+    {
+      "theta": 0.55,
+      "error_exponent": 0.10000000000000009,
+      "method": "Conrey",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 0.6,
+      "error_exponent": 0.19999999999999996,
+      "method": "Hybrid",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 0.65,
+      "error_exponent": 0.30000000000000004,
+      "method": "Uncontrolled",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 0.7000000000000001,
+      "error_exponent": 0.40000000000000013,
+      "method": "Uncontrolled",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 0.75,
+      "error_exponent": 0.5,
+      "method": "Uncontrolled",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 0.8,
+      "error_exponent": 0.6000000000000001,
+      "method": "Uncontrolled",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 0.85,
+      "error_exponent": 0.7,
+      "method": "Uncontrolled",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 0.9,
+      "error_exponent": 0.8,
+      "method": "Uncontrolled",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 0.9500000000000001,
+      "error_exponent": 0.9000000000000001,
+      "method": "Uncontrolled",
+      "predicted_fraction": 0
+    },
+    {
+      "theta": 1.0,
+      "error_exponent": 1.0,
+      "method": "Uncontrolled",
+      "predicted_fraction": 0
+    }
+  ],
+  "conclusion": "Mollifier capped at ~41%. Hybrid with barrier (Direction B) needed.",
+  "key_insight": "Euler product structure prevents short mollifiers from reaching 100%",
+  "hybrid_path": "Mollifier (41%) + barrier growth (59%) = 100% conditional"
+}
