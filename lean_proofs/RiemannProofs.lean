@@ -9,3 +9,4 @@ import RiemannProofs.TaoNetwork
 import RiemannProofs.GUEUniversality
 import RiemannProofs.ProofAtlas
 import RiemannProofs.Session33Synthesis
+import RiemannProofs.ConnesPSD
