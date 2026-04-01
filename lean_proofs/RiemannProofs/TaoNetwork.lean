@@ -366,7 +366,7 @@ This would upgrade ExclusionZone.lean from Level 0 to Level 1.
 def delaValleePoussinZFR : Prop :=
   ∃ c : ℝ, c > 0 ∧
   ∀ s : ℂ, riemannZeta s = 0 →
-    s.re < 1 - c / Real.log (Complex.abs s + 2)
+    s.re < 1 - c / Real.log (‖s‖ + 2)
 
 /-!
 ## Priority 5: Random matrix theory infrastructure (LONG TERM)

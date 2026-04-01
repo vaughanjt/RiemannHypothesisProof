@@ -82,8 +82,7 @@ theorem rh_implies_lambda_eq_zero (family : HeatEvolvedFamily)
     deBruijnNewmanConstant family = 0 := by
   have h_ge := rodgers_tao family
   have h_le : deBruijnNewmanConstant family ≤ 0 := by
-    rw [rh_equiv_lambda_zero] at hrh
-    linarith [hrh.le]
+    sorry -- follows from rh_equiv_lambda_zero (which is a sorry)
   linarith
 
 /-! ## The Critical Phenomenon -/

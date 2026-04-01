@@ -71,7 +71,7 @@ axiom zetaZeroOrdinates_pos (n : ℕ) : 0 < zetaZeroOrdinates n
 /-- The pair interaction energy between two points z₁, z₂ in the complex plane.
     E_pair = -log|z₁ - z₂|. The fundamental building block. -/
 noncomputable def pairEnergy (z₁ z₂ : ℂ) : ℝ :=
-  -Real.log (Complex.abs (z₁ - z₂))
+  -Real.log ‖z₁ - z₂‖
 
 /-- The conjugate pair self-energy when a real zero γ splits into (γ+iε, γ-iε).
     E_self(ε) = -log|2ε| = -log(2) - log(ε). -/
@@ -85,7 +85,7 @@ theorem pair_energy_curvature (ε : ℝ) (hε : ε ≠ 0) :
     -- d²/dε² [-log(2ε)] = 1/ε²
     -- We state this as: the function ε ↦ -log(2|ε|) has second derivative 1/ε²
     ∃ f'' : ℝ, f'' = 1 / ε ^ 2 ∧ f'' > 0 := by
-  exact ⟨1 / ε ^ 2, rfl, div_pos one_pos (sq_pos_of_ne_zero ε hε)⟩
+  exact ⟨1 / ε ^ 2, rfl, div_pos one_pos (sq_pos_of_ne_zero hε)⟩
 
 /-! ## The Destabilizing Forces -/
 

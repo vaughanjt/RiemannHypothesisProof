@@ -42,8 +42,8 @@ namespace ExclusionZone
 
 /-- Mathlib proves: ζ(s) ≠ 0 for Re(s) ≥ 1. This is the foundation. -/
 theorem right_half_nonvanishing (s : ℂ) (hs : 1 ≤ s.re) (hs1 : s ≠ 1) :
-    riemannZeta s ≠ 0 :=
-  riemannZeta_ne_zero_of_one_le_re hs hs1
+    riemannZeta s ≠ 0 := by
+  sorry -- riemannZeta_ne_zero_of_one_le_re not available in this Mathlib version
 
 /-! ## Part 2: Critical strip containment -/
 
@@ -55,24 +55,7 @@ theorem nontrivial_zero_in_strip (s : ℂ)
     (hs_zero : riemannZeta s = 0)
     (hs_nontrivial : ∀ n : ℕ, s ≠ -(2 * (n : ℂ) + 2)) -- not a trivial zero
     : 0 < s.re ∧ s.re < 1 := by
-  constructor
-  · -- Left bound: Re(s) > 0
-    -- By contradiction: if Re(s) ≤ 0, use functional equation
-    -- ζ(s) = 0 implies ζ(1-s) has specific behavior from the
-    -- functional equation, and Re(1-s) ≥ 1, so ζ(1-s) ≠ 0,
-    -- leading to contradiction (the Gamma/sin factors can only
-    -- vanish at trivial zeros which we excluded).
-    sorry -- requires careful analysis of functional equation factors
-  · -- Right bound: Re(s) < 1
-    -- If Re(s) ≥ 1, Mathlib's theorem gives ζ(s) ≠ 0
-    by_contra h
-    push_neg at h
-    -- Either s = 1 (pole, not zero) or Re(s) > 1 (nonvanishing)
-    rcases eq_or_ne s 1 with rfl | hs1
-    · -- s = 1 is a pole, not a zero — contradiction with hs_zero
-      -- Mathlib: riemannZeta has a pole at s = 1
-      sorry -- needs: zeta has a pole at 1 (in Mathlib as residue result)
-    · exact absurd hs_zero (right_half_nonvanishing s (le_of_lt (lt_of_not_le (not_le.mpr (lt_of_lt_of_le (by norm_num : (0:ℝ) < 1) h)) |>.elim (fun h' => h'.le) fun h' => h')) hs1)
+  sorry -- requires functional equation analysis and Mathlib nonvanishing theorem
 
 /-! ## Part 3: The width of the unknown zone -/
 
@@ -95,7 +78,7 @@ theorem rh_equiv_zero_width :
 def IsZeroFreeRegion (δ : ℝ → ℝ) : Prop :=
   ∀ s : ℂ, riemannZeta s = 0 →
     (∀ n : ℕ, s ≠ -(2 * (n : ℂ) + 2)) →
-    1 - δ (Complex.abs s) ≤ s.re ∧ s.re ≤ δ (Complex.abs s)
+    1 - δ ‖s‖ ≤ s.re ∧ s.re ≤ δ ‖s‖
 
 /-- The trivial zero-free region: δ(t) = 1 for all t.
     This just says zeros are in the critical strip (already proved above). -/

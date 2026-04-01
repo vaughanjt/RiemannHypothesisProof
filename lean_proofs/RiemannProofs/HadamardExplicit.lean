@@ -1,6 +1,7 @@
 import Mathlib.NumberTheory.LSeries.RiemannZeta
-import Mathlib.NumberTheory.VonMangoldt
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.NumberTheory.ArithmeticFunction.Misc
+import Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
@@ -191,8 +192,8 @@ value of B).
     This is the key analytic fact enabling the Hadamard product. -/
 theorem xi_order_one :
     ∀ ε : ℝ, ε > 0 → ∃ C : ℝ, C > 0 ∧
-    ∀ s : ℂ, Complex.abs s > 1 →
-    Real.log (Complex.abs (xiCompleted s)) ≤ C * Complex.abs s ^ (1 + ε) := by
+    ∀ s : ℂ, ‖s‖ > 1 →
+    Real.log ‖xiCompleted s‖ ≤ C * ‖s‖ ^ (1 + ε) := by
   sorry
   -- Proof sketch: Xi(s) is bounded by a polynomial in |s| times exp(c*|s|*log|s|)
   -- in the strip, and by Gamma decay outside the strip. The order is determined
@@ -281,7 +282,7 @@ theorem paired_factor_on_critical_line (γ t : ℝ) :
     let ρ : ℂ := ⟨1/2, γ⟩  -- zero on critical line
     let s : ℂ := ⟨1/2, t⟩  -- evaluation point on critical line
     Complex.normSq ((1 - s / ρ) * (1 - s / (1 - ρ))) ≥ 0 := by
-  simp [Complex.normSq_nonneg]
+  exact Complex.normSq_nonneg _
 
 /-! ## Part 2: The Explicit Formula
 
@@ -436,7 +437,7 @@ theorem zero_free_region_from_explicit :
     ∃ c : ℝ, c > 0 ∧
     ∀ s : ℂ, riemannZeta s = 0 →
       0 < s.re → s.re < 1 →
-      s.re ≤ 1 - c / Real.log (max (Complex.abs s) 2) := by
+      s.re ≤ 1 - c / Real.log (max ‖s‖ 2) := by
   sorry
   -- This is the classical zero-free region. Proof sketch:
   -- 1. Use the explicit formula / log derivative of zeta
@@ -526,7 +527,6 @@ noncomputable def meanSpacing (T : ℝ) : ℝ :=
     zeros become arbitrarily dense. -/
 theorem mean_spacing_tendsto_zero :
     Tendsto meanSpacing atTop (nhds 0) := by
-  simp only [meanSpacing]
   sorry -- follows from log(T) -> infinity
 
 /-! ## Part 3a: Density Hypothesis and Zero Distribution -/

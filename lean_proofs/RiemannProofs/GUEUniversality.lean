@@ -157,12 +157,12 @@ theorem sine_kernel_symmetric (x y : ℝ) : sineKernel x y = sineKernel y x := b
   simp only [sineKernel]
   split_ifs with h1 h2 h2
   · rfl
-  · exact absurd h2.symm h1
-  · exact absurd h1.symm h2
+  · exact absurd (h1 ▸ rfl) h2
+  · exact absurd (h2 ▸ rfl) h1
   · -- sin(pi(x-y))/(pi(x-y)) = sin(pi(y-x))/(pi(y-x))
     -- because sin(-t)/(-t) = sin(t)/t
-    have : x - y ≠ 0 := sub_ne_zero.mpr h1
-    have : y - x ≠ 0 := sub_ne_zero.mpr (Ne.symm h2)
+    have hxy : x - y ≠ 0 := sub_ne_zero.mpr h1
+    have hyx : y - x ≠ 0 := sub_ne_zero.mpr (fun h => h1 h.symm)
     rw [show y - x = -(x - y) from by ring]
     rw [show Real.pi * -(x - y) = -(Real.pi * (x - y)) from by ring]
     rw [Real.sin_neg, neg_div_neg_eq]

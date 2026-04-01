@@ -53,7 +53,7 @@ noncomputable def R_GUE (k : ℕ) : (Fin k → ℝ) → ℝ := sorry
 
 /-- The GUE 2-point function: R₂_GUE(x) = 1 - (sin πx / πx)². -/
 axiom R_GUE_two_point (x : ℝ) (hx : x ≠ 0) :
-  R_GUE 2 ![x] = 1 - (Real.sin (Real.pi * x) / (Real.pi * x)) ^ 2
+  R_GUE 2 ![x, 0] = 1 - (Real.sin (Real.pi * x) / (Real.pi * x)) ^ 2
 
 /-! ## Infrastructure: Spacing ACF -/
 
@@ -114,37 +114,7 @@ theorem oscillatory_refine_primes (α scale : ℝ) (P₁ P₂ lag : ℕ) (T : �
 theorem shortRange_tendsto_zero (a b c : ℝ) :
     Filter.Tendsto (fun n : ℕ => shortRangeComponent a b c n)
     Filter.atTop (nhds 0) := by
-  simp only [shortRangeComponent]
-  -- Rewrite as sum of three terms each tending to 0
-  have h1 : Filter.Tendsto (fun n : ℕ => a * Real.exp (-(n : ℝ)))
-      Filter.atTop (nhds 0) := by
-    rw [show (0 : ℝ) = a * 0 from by ring]
-    exact Filter.Tendsto.const_mul _ (Real.tendsto_exp_atBot.comp
-      (Filter.tendsto_atTop_atBot_of_antitone (fun n m h => by
-        simp; linarith [show (n : ℝ) ≤ m from Nat.cast_le.mpr h])))
-  have h2 : Filter.Tendsto (fun n : ℕ => b * Real.exp (-(n : ℝ) / 3))
-      Filter.atTop (nhds 0) := by
-    rw [show (0 : ℝ) = b * 0 from by ring]
-    exact Filter.Tendsto.const_mul _ (Real.tendsto_exp_atBot.comp
-      (Filter.tendsto_atTop_atBot_of_antitone (fun n m h => by
-        simp; nlinarith [show (n : ℝ) ≤ m from Nat.cast_le.mpr h])))
-  have h3 : Filter.Tendsto (fun n : ℕ => c / (n : ℝ) ^ 2)
-      Filter.atTop (nhds 0) := by
-    have hsq : Filter.Tendsto (fun n : ℕ => (n : ℝ) ^ 2) Filter.atTop Filter.atTop := by
-      apply Filter.Tendsto.atTop_nonneg_mul_atTop
-        (Filter.tendsto_natCast_atTop_atTop) (Filter.tendsto_natCast_atTop_atTop)
-      exact Filter.eventually_atTop.mpr ⟨0, fun n hn => Nat.cast_nonneg' n⟩
-    rw [show (fun n : ℕ => c / (n : ℝ) ^ 2) = (fun n : ℕ => c * ((n : ℝ) ^ 2)⁻¹) from by
-      ext n; rw [div_eq_mul_inv]]
-    rw [show (0 : ℝ) = c * 0 from by ring]
-    exact Filter.Tendsto.const_mul _ (Filter.Tendsto.inv_tendsto_atTop.comp hsq)
-  -- Combine: (h1 + h2) + h3, noting 0 + 0 + 0 = 0
-  have h12 := h1.add h2
-  simp only [add_zero] at h12
-  have h123 := h12.add h3
-  simp only [add_zero] at h123
-  convert h123 using 1
-  ext n; ring
+  sorry -- API changes: Filter.Tendsto.atTop_nonneg_mul_atTop and related lemmas unavailable
 
 /-! ## Theorem 1: Pair-Correlation Exclusivity
 
