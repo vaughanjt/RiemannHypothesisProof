@@ -1,0 +1,29 @@
+[
+  {
+    "lam_sq": 50,
+    "theta_pd": true,
+    "theta_null_min": -9.179688492189256e-16,
+    "prime_null_max": 2.5901939500903075,
+    "diff_null_min": 1.7346103936215073e-08,
+    "schur_horn_bound": -0.6752473614974615,
+    "theta_matches_analytic": 1.5803679775988198
+  },
+  {
+    "lam_sq": 200,
+    "theta_pd": true,
+    "theta_null_min": -9.279601255301729e-16,
+    "prime_null_max": 4.048183238281735,
+    "diff_null_min": 1.552678803897416e-08,
+    "schur_horn_bound": -1.0218262872697772,
+    "theta_matches_analytic": 1.396743059288831
+  },
+  {
+    "lam_sq": 1000,
+    "theta_pd": true,
+    "theta_null_min": -1.6943168486197605e-15,
+    "prime_null_max": 5.976052990668547,
+    "diff_null_min": 1.3085527569530169e-08,
+    "schur_horn_bound": -1.369937472073349,
+    "theta_matches_analytic": 1.2724961939363777
+  }
+]
