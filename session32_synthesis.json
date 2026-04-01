@@ -1,0 +1,9 @@
+{
+  "connes_alpha": 0.597,
+  "rt_alpha": 1.534,
+  "combined_alpha": 1.2355,
+  "gamma1_barrier": 0.03127000118067755,
+  "gamma1_rigidity": 0.04970565657420231,
+  "gamma1_deriv": 0.7931604333565062,
+  "gap_exponent": 0.5319748094007654
+}
