@@ -1,40 +1,28 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-02T08:00:00.000Z",
+  "timestamp": "2026-04-02T10:00:00.000Z",
   "phase": "research",
-  "phase_name": "Session 38: Hodge star identification — the missing operator",
-  "phase_dir": "N/A - research sessions, not GSD phase",
+  "phase_name": "Sessions 35-39: Complete attack surface map of Connes Q_W positivity",
+  "phase_dir": "N/A",
   "plan": 0,
   "task": 0,
   "total_tasks": 0,
   "status": "paused",
-  "completed_tasks": [
-    {"id": 1, "name": "Tautology killed — Q_W>=0 requires zeros on critical line", "status": "done", "commit": "acb32e4"},
-    {"id": 2, "name": "Digamma asymptotic: wr_diag[n] = C - log(n) + O(1/n), coeff exactly -1", "status": "done", "commit": "acb32e4"},
-    {"id": 3, "name": "Prime near-neutrality: per-prime trace O(w(pk)), total << analytic trace", "status": "done", "commit": "acb32e4"},
-    {"id": 4, "name": "Spectral gap: Gershgorin fails by 10^8x, Weyl by 5x, no conversion works", "status": "done", "commit": "acb32e4"},
-    {"id": 5, "name": "SOS Neg>=Ma+Pos holds but is equivalent to RH, not independent", "status": "done", "commit": "acb32e4"},
-    {"id": 6, "name": "Lefschetz wall: [W02,X]|null = 0 for all X, commutators dead on null block", "status": "done", "commit": "acb32e4"},
-    {"id": 7, "name": "Hodge star identified as the missing operator for sign determination", "status": "done", "commit": "acb32e4"}
-  ],
+  "completed_tasks": [],
   "remaining_tasks": [
-    {"id": 8, "name": "Construct the discrete Hodge star on null(W02)", "status": "not_started"},
-    {"id": 9, "name": "Identify H^{1,0} and H^{0,1} decomposition of null(W02)", "status": "not_started"},
-    {"id": 10, "name": "Test if the Hodge star gives sign determination from representation theory", "status": "not_started"},
-    {"id": 11, "name": "Connect to Connes-Consani scaling site Hodge structure", "status": "not_started"}
+    {"id": 1, "name": "Construct arithmetic Hodge star from scaling site geometry", "status": "not_started"},
+    {"id": 2, "name": "Read Connes-Consani-Moscovici 2023-2024 semilocal prolate papers", "status": "not_started"},
+    {"id": 3, "name": "Formalize unconditional results (digamma asymptotic, prime neutrality) in Lean 4", "status": "not_started"}
   ],
   "blockers": [
-    {"description": "The ample class W02 = 0 on null(W02), so all Lefschetz commutators vanish there. The sign must come from a DIFFERENT geometric operator — the Hodge star.", "type": "theoretical", "workaround": "Construct the Hodge star from the explicit formula structure, not from W02."},
-    {"description": "Q_W >= 0 at finite lambda is NOT unconditional — requires zeros on critical line. The strong convergence argument is circular.", "type": "theoretical", "workaround": "Need a non-spectral proof of positivity, e.g., via Hodge star decomposition."}
+    {"description": "Every Fourier-symmetric operator commutes with M and mirrors its sign (wrong direction). The Hodge star must break Fourier symmetry using arithmetic.", "type": "theoretical"},
+    {"description": "The arithmetic Hodge star is the Connes-Consani program. Not yet constructed by anyone.", "type": "theoretical"}
   ],
-  "human_actions_pending": [],
   "decisions": [
-    {"decision": "The 'tautology' claim from Session 36 is WRONG", "rationale": "Fake off-line zero at Re=0.6 flips Q_W to -0.085. Q_W>=0 encodes actual arithmetic (zero locations), not just the explicit formula identity.", "phase": "38"},
-    {"decision": "Digamma diagonal is the main driver of negativity", "rationale": "wr_diag[n] = C - log(n) with coeff exactly -1. Analytic trace -42 to -65 dwarfs prime margin of 3-10. Primes are nearly transparent.", "phase": "38"},
-    {"decision": "The Hodge star is the missing operator", "rationale": "Lefschetz (W02) vanishes on null — can't constrain signs via commutators. The Hodge star decomposes null into H^{1,0}+H^{0,1}, giving signs from representation theory. Not yet constructed for scaling site.", "phase": "38"},
-    {"decision": "Exponential compression: 361-dim matrix certifies 7.5M zeros", "rationale": "dim ~ log(lambda), zeros ~ lambda. Ratio grows as exp(dim/24). The matrix is an exponentially compressed arithmetic certificate. This parallels Deligne's proof structure.", "phase": "38"}
+    {"decision": "Hilbert transform J is wrong Hodge star", "rationale": "[J,M]/anti-comm = 4.3%. J commutes with M, so Hermitian form h~2M reflects sign instead of causing it.", "phase": "39"},
+    {"decision": "Computation phase complete", "rationale": "All computational approaches exhausted. Remaining step is pure mathematics: arithmetic Hodge star on scaling site.", "phase": "39"}
   ],
   "uncommitted_files": [],
-  "next_action": "Construct the discrete Hodge star operator on null(W02). The Hodge star in classical geometry comes from the complex structure (it rotates H^{1,0} to H^{0,1}). In our setting, the complex structure might come from: (1) the functional equation s <-> 1-s, (2) the Hilbert transform, (3) the scaling operator's spectral decomposition, or (4) the explicit formula's analytic structure. Test each candidate.",
-  "context_notes": "Session 38 was the deepest analytical session yet. Killed the tautology claim (Q_W>=0 requires RH, not unconditional). Proved digamma asymptotic (wr_diag = C - log(n), coeff -1). Proved prime near-neutrality (trace O(sqrt(lambda)) << analytic trace O(N*log(N))). Showed all standard spectral bounds fail by 10^8x. Mapped the Lefschetz wall: W02=0 on null makes all commutators vanish. Identified the Hodge star as the missing operator — it decomposes null(W02) into H^{1,0}+H^{0,1} and gives eigenvalue signs from representation theory. The parity decomposition (even/odd) is clean (23+22) but is NOT the Hodge decomposition (it doesn't determine signs). The true Hodge star must come from the arithmetic structure, not just symmetry. Key files: session38_*.py."
+  "next_action": "Pure analysis: read CCM papers, attempt arithmetic Hodge star construction. Or: formalize proved results in Lean 4. Or: new direction entirely.",
+  "context_notes": "Sessions 35-39 mapped the complete attack surface of RH via Connes Q_W positivity. Killed: M_diag domination, tropical lift, zero-free region, Toeplitz, spectral representation, strong convergence (circular), SOS factorization, Lefschetz commutators, Hilbert Hodge star. Proved: digamma asymptotic (coeff -1), prime near-neutrality, exponential compression (361->7.5M). Discovered: Q_W>=0 is NOT a tautology, eigenvalue is exactly zero (silent modes), the spectral gap is 10^8x beyond standard bounds. The wall: the arithmetic Hodge star that breaks Fourier symmetry. 27 commits, ~10K lines of Python across sessions 35-39."
 }
