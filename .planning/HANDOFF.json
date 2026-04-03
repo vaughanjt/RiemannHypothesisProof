@@ -1,30 +1,44 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-02T18:54:55.238Z",
+  "timestamp": "2026-04-02T23:30:00.000Z",
   "phase": "research",
-  "phase_name": "Sessions 35-39: Complete attack surface map of Connes Q_W positivity",
+  "phase_name": "Session 40: Hodge dead end -> barrier constant -> determinant reduction of RH",
   "phase_dir": "N/A",
   "plan": 0,
   "task": 0,
   "total_tasks": 0,
   "status": "paused",
-  "completed_tasks": [],
+  "completed_tasks": [
+    {"id": 1, "name": "BUILD: Hodge star explorer (Dash app)", "status": "complete"},
+    {"id": 2, "name": "BUILD: Riemannian optimizer on O(44)/U(22)", "status": "complete"},
+    {"id": 3, "name": "PROVE: h = [J,M]/2 identity", "status": "complete"},
+    {"id": 4, "name": "PROVE: {J,[J,M]}=0, eigenvalues +-paired, definiteness impossible", "status": "complete"},
+    {"id": 5, "name": "KILL: Hodge-Riemann on null(W02) is trivially satisfied (M neg-def)", "status": "complete"},
+    {"id": 6, "name": "DISCOVER: barrier ~0.04 on range(W02), constant across 3 orders of magnitude", "status": "complete"},
+    {"id": 7, "name": "DISCOVER: W02=pf*(L^2*u*u^T - (4pi)^2*w*w^T), rank-2 decomposition exact", "status": "complete"},
+    {"id": 8, "name": "DISCOVER: 2x2 block is diagonal (parity), no range-range mixing", "status": "complete"},
+    {"id": 9, "name": "DISCOVER: barrier = (W02-M_prime) - M_diag - M_alpha, 3 log-slopes cancel to 3.5%", "status": "complete"},
+    {"id": 10, "name": "DISCOVER: 4x4 effective matrix, determinant reduction of RH", "status": "complete"},
+    {"id": 11, "name": "BUILD: Lefschetz search (12 candidates, optimization)", "status": "complete"}
+  ],
   "remaining_tasks": [
-    {"id": 1, "name": "BUILD: Interactive Hodge star visualization (Plotly)", "status": "not_started", "priority": "NEXT SESSION"},
-    {"id": 2, "name": "Construct arithmetic Hodge star from scaling site geometry", "status": "not_started"},
-    {"id": 3, "name": "Read Connes-Consani-Moscovici 2023-2024 semilocal prolate papers", "status": "not_started"},
-    {"id": 4, "name": "Formalize unconditional results (digamma asymptotic, prime neutrality) in Lean 4", "status": "not_started"}
+    {"id": 12, "name": "Prove QW_barrier -> c > 0 from Weil explicit formula", "status": "not_started", "priority": "NEXT SESSION"},
+    {"id": 13, "name": "Track the 4 determinant quantities (barrier, QW_null, M_cross, det) vs lambda^2", "status": "not_started"},
+    {"id": 14, "name": "Derive closed-form asymptotics for each barrier component", "status": "not_started"},
+    {"id": 15, "name": "Understand why 3 log-slopes cancel: 0.257 - 0.193 - 0.073 = -0.009", "status": "not_started"},
+    {"id": 16, "name": "Investigate silent modes (M ~ -9e-9 on null) — do they stay negative?", "status": "not_started"}
   ],
   "blockers": [
-    {"description": "Every Fourier-symmetric operator commutes with M and mirrors its sign (wrong direction). The Hodge star must break Fourier symmetry using arithmetic.", "type": "theoretical"},
-    {"description": "The arithmetic Hodge star is the Connes-Consani program. Not yet constructed by anyone.", "type": "theoretical"}
+    {"description": "Numerical precision limits eps_0 determination at ~10^-10. Need analytical approach for large lambda^2.", "type": "numerical"},
+    {"description": "Cross-coupling M_cross ~ 0.5 but effect ~ 10^-10. Need to prove this cancellation persists.", "type": "theoretical"}
   ],
   "decisions": [
-    {"decision": "Hilbert transform J is wrong Hodge star", "rationale": "[J,M]/anti-comm = 4.3%. J commutes with M, so Hermitian form h~2M reflects sign instead of causing it.", "phase": "39"},
-    {"decision": "Computation phase complete", "rationale": "All computational approaches exhausted. Remaining step is pure mathematics: arithmetic Hodge star on scaling site.", "phase": "39"},
-    {"decision": "Build interactive Hodge star explorer for next session", "rationale": "Visualize deformation from Hilbert (commutes) to arithmetic star (constrains). Slider for prime injection, eigenvalue tracking, screenshot button for sharing results.", "phase": "39"}
+    {"decision": "Hodge-Riemann is trivially satisfied on null(W02)", "rationale": "M is negative definite there, so Q_W = -M > 0 automatically. Wrong mountain.", "phase": "40"},
+    {"decision": "{J,[J,M]}=0 kills definiteness on full space", "rationale": "Eigenvalues forced into +-lambda pairs. Proved algebraically, verified to 1e-15.", "phase": "40"},
+    {"decision": "Real fight is on 2-dim range(W02)", "rationale": "W02 and M both grow as lam^1.5, constant residual ~0.04. Parity decouples to two 1D problems.", "phase": "40"},
+    {"decision": "4x4 determinant reduction of RH", "rationale": "RH <=> det(2x2 block) > 0 <=> QW_barrier * QW_null_coupled > M_cross^2. Four explicit sums.", "phase": "40"}
   ],
-  "uncommitted_files": [],
-  "next_action": "Build interactive Plotly visualization: Hodge star deformation explorer. Slider from Hilbert (0%) to prime-injected star (100%). Real-time eigenvalue display for both half-spaces. Hodge-Riemann definiteness indicator. Prime selector toggles. Screenshot/copy button. Then use it to explore the space of possible arithmetic Hodge stars.",
-  "context_notes": "Sessions 35-39 mapped the complete attack surface of RH via Connes Q_W positivity. Killed: M_diag domination, tropical lift, zero-free region, Toeplitz, spectral representation, strong convergence (circular), SOS factorization, Lefschetz commutators, Hilbert Hodge star. Proved: digamma asymptotic (coeff -1), prime near-neutrality, exponential compression (361->7.5M). Discovered: Q_W>=0 is NOT a tautology, eigenvalue is exactly zero (silent modes), the spectral gap is 10^8x beyond standard bounds. The wall: the arithmetic Hodge star that breaks Fourier symmetry. Grok (xAI) collaborated via vision quest dispatches — provided Sonin/prolate connection, generated visualization of the mathematical structure. 27 commits, ~10K lines of Python across sessions 35-39."
+  "uncommitted_files": ["session40_hodge_explorer.py", "session40_star_optimizer.py", "session40b_lefschetz_search.py"],
+  "next_action": "Prove the barrier constant: derive asymptotic expansion of QW_barrier = <w, W02-M, w> from the Weil explicit formula. Each component (W02, M_prime, M_diag, M_alpha) has a closed-form expression on the odd eigenvector w[n] = n/(L^2 + (4pi)^2 n^2). The 3-slope cancellation (0.257 - 0.193 - 0.073 = -0.009) should follow from the explicit formula structure.",
+  "context_notes": "Session 40 is the most productive session yet. Started building Hodge star tools, proved an algebraic obstruction that killed the approach, pivoted to the barrier on range(W02), discovered a constant ~0.04 residual from a 4-way cancellation, and reduced RH to a determinant inequality on a 4x4 effective matrix. The barrier anatomy: W02 and M_prime both ~lam^1.5 (cancel), M_diag and M_alpha both ~log(lam) (cancel against the W02-M_prime residual), leaving ~0.04. The 4x4 decouples by parity into two 2x2 blocks, each with determinant condition. Four numbers from the Weil explicit formula. Built 3 Python files, installed dash+plotly."
 }
