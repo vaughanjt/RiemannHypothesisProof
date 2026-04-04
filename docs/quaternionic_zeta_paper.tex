@@ -195,6 +195,51 @@ Anti-parallel components \emph{cannot} cancel; they interfere constructively.
 \end{observation}
 
 %% ====================================================================
+\section{The Critical Identity and the Fixed Sphere}
+\label{sec:critical}
+%% ====================================================================
+
+The quaternionic exponential map $\exp(\theta I)$ for $I \in \mathbb{S}^2$ and $\theta \in [0, \pi]$ sends the imaginary unit sphere to a sphere of radius $\sin\theta$ centered at $\cos\theta$ on the real axis. At two extreme values, this map degenerates:
+\begin{align*}
+\theta = 0: &\quad \exp(0) = 1 \quad \text{(collapse to $+1$)}, \\
+\theta = \pi: &\quad \exp(\pi I) = -1 \quad \text{(collapse to $-1$; the Euler identity)}.
+\end{align*}
+Between these extremes, the image is a genuine 2-sphere in $\mathbb{H}$, with a unique critical value:
+
+\begin{proposition}[The critical identity]\label{prop:fixed-sphere}
+The map $F_\sigma: \mathbb{S}^2 \to \mathbb{H}$ defined by $F_\sigma(I) = \exp(\pi\sigma I)$ sends $\mathbb{S}^2$ to a sphere of radius $\sin(\pi\sigma)$ centered at $\cos(\pi\sigma)$. The image is $\mathbb{S}^2$ itself (a fixed sphere) if and only if $\sigma = 1/2$, at which point
+\begin{equation}\label{eq:critical-identity}
+e^{I\pi/2} = I \qquad \text{for all } I \in \mathbb{S}^2.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+$\exp(\pi\sigma I) = \cos(\pi\sigma) + I\sin(\pi\sigma)$. The image is the unit sphere $\mathbb{S}^2$ iff $\sin(\pi\sigma) = 1$ and $\cos(\pi\sigma) = 0$, which holds iff $\pi\sigma = \pi/2$, i.e., $\sigma = 1/2$.
+\end{proof}
+
+This establishes a hierarchy of the quaternionic exponential:
+\begin{center}
+\begin{tabular}{lcll}
+\toprule
+$\theta$ & Image & Identity & Regime \\
+\midrule
+$0$ & point $+1$ & $e^0 = 1$ & trivial \\
+$1$ & sphere, $r = 0.84$ & $e^I = \cos 1 + I\sin 1$ & contraction \\
+$\pi/2$ & $\mathbb{S}^2$ itself & $e^{I\pi/2} = I$ & \textbf{fixed sphere} \\
+$\pi$ & point $-1$ & $e^{I\pi} = -1$ & collapse (Euler) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Connection to the functional equation]
+The functional equation $\xi(s) = \xi(1-s)$ requires $F_\sigma(I) = F_{1-\sigma}(I)$ for consistency. Since $\exp(\pi\sigma I) = \exp(\pi(1-\sigma)I)$ implies $\cos(\pi\sigma) = \cos(\pi - \pi\sigma) = -\cos(\pi\sigma)$, the only solution with $\cos(\pi\sigma) = 0$ is $\sigma = 1/2$. The functional equation and the fixed-sphere condition are equivalent: both select $\sigma = 1/2$ as the unique symmetry point.
+\end{remark}
+
+\begin{remark}[The critical line as phase transition]
+For $\sigma < 1/2$: $\sin(\pi\sigma) < 1$ and $\cos(\pi\sigma) > 0$ (contracting regime; the image sphere is smaller than $\mathbb{S}^2$ and shifted toward $+1$). For $\sigma > 1/2$: $\sin(\pi\sigma) < 1$ and $\cos(\pi\sigma) < 0$ (the image sphere is smaller and shifted toward $-1$). The critical line $\sigma = 1/2$ is the \emph{phase boundary} between these regimes---precisely the finding of Section~\ref{sec:fueter} (session 45c), now given a geometric interpretation as the fixed sphere of the quaternionic exponential map.
+\end{remark}
+
+%% ====================================================================
 \section{The Adelic Barrier}
 \label{sec:adelic}
 %% ====================================================================
@@ -338,6 +383,8 @@ The quaternionic and adelic analysis provides a geometric interpretation of the 
 \item \textbf{The adelic barrier is automatically positive.} Assigning each prime its own orthogonal dimension yields a Pythagorean sum of squares. Positivity is trivial. The physical barrier is the one-dimensional projection of this infinite-dimensional object, preserving only $\sim 0.5\%$ of the adelic norm squared.
 
 \item \textbf{RH is a cross-term bound.} The difference between adelic and physical positivity is the prime--prime cross-term $\sum_{j<k} M_{p_j} M_{p_k}$, which represents the interference between primes when forced into a single dimension. RH asserts this interference is bounded---that primes never conspire to cancel $\pi$'s contribution.
+
+\item \textbf{The critical line is the fixed sphere.} The quaternionic exponential map $F_\sigma(I) = \exp(\pi\sigma I)$ sends $\mathbb{S}^2$ to a sphere of radius $\sin(\pi\sigma)$. The unique value at which $\mathbb{S}^2$ maps to \emph{itself} is $\sigma = 1/2$ (Proposition~\ref{prop:fixed-sphere}). The Euler identity $e^{I\pi} = -1$ is the collapse regime ($\sigma = 1$, sphere $\to$ point); the \emph{critical identity} $e^{I\pi/2} = I$ is the preservation regime ($\sigma = 1/2$, sphere $\to$ sphere). The functional equation $\xi(s) = \xi(1-s)$ demands this preservation, selecting $\sigma = 1/2$ as the unique symmetry point. The critical line is thus the \emph{phase boundary} between the contracting ($\sigma < 1/2$) and sign-reversing ($\sigma > 1/2$) regimes of the quaternionic exponential.
 \end{enumerate}
 
 \subsection{Connection to the adelic program}
