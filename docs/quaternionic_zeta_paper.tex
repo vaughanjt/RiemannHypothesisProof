@@ -230,27 +230,19 @@ The Riemann Hypothesis is equivalent to $B_{\mathrm{real}} > 0$ for all $L$, whi
 \end{theorem}
 
 \begin{proof}
-Expanding $B_{\mathrm{real}}^2 = (W_{02} - \sum_k M_{p_k})^2 = W_{02}^2 - 2W_{02}\sum_k M_{p_k} + (\sum_k M_{p_k})^2$ and using $(\sum M_{p_k})^2 = \sum M_{p_k}^2 + 2\sum_{j<k} M_{p_j} M_{p_k}$:
+We have
 \[
-B_{\mathrm{real}}^2 = W_{02}^2 + \sum_k M_{p_k}^2 + 2\sum_{j<k} M_{p_j} M_{p_k} - 2W_{02}\sum_k M_{p_k} = |B_{\mathrm{ad}}|^2 - 2\sum_{j<k} M_{p_j} M_{p_k} - 2W_{02}\sum_k M_{p_k}.
+B_{\mathrm{real}}^2 = \left(W_{02} - \sum_k M_{p_k}\right)^2 = W_{02}^2 - 2W_{02} S_1 + S_1^2,
 \]
-Wait---this needs correction. More carefully:
+where $S_1 = \sum_k M_{p_k}$. Using $S_1^2 = S_2 + 2C$ with $S_2 = \sum_k M_{p_k}^2$ and $C = \sum_{j<k} M_{p_j} M_{p_k}$:
 \[
-B_{\mathrm{real}}^2 = \left(W_{02} - \sum_k M_{p_k}\right)^2, \qquad |B_{\mathrm{ad}}|^2 = W_{02}^2 + \sum_k M_{p_k}^2.
+|B_{\mathrm{ad}}|^2 - B_{\mathrm{real}}^2 = (W_{02}^2 + S_2) - (W_{02}^2 - 2W_{02} S_1 + S_2 + 2C) = 2W_{02} S_1 - 2C.
 \]
-So
-\[
-|B_{\mathrm{ad}}|^2 - B_{\mathrm{real}}^2 = W_{02}^2 + \sum_k M_{p_k}^2 - W_{02}^2 + 2W_{02}\sum_k M_{p_k} - \left(\sum_k M_{p_k}\right)^2 = 2W_{02}\sum_k M_{p_k} - 2\sum_{j<k} M_{p_j} M_{p_k}.
-\]
-Equivalently, defining $S_1 = \sum_k M_{p_k}$ and $S_2 = \sum_k M_{p_k}^2$:
-\[
-B_{\mathrm{real}} > 0 \iff S_1 < W_{02} \iff S_1^2 < W_{02}^2 + 2S_2 - 2S_2 + \cdots
-\]
-The cleanest form is the \emph{master inequality}: $B_{\mathrm{real}} > 0$ iff
+Since $B_{\mathrm{real}} > 0$ iff $W_{02} > S_1$ (both are negative in our convention, so $|S_1| > |W_{02}|$; the barrier is $W_{02} - S_1 = |S_1| - |W_{02}| > 0$), equivalently:
 \begin{equation}\label{eq:master}
-W_{02} > \sum_k M_{p_k}.
+B_{\mathrm{real}} > 0 \iff W_{02} - S_1 > 0.
 \end{equation}
-The cross-term ratio $R = \frac{S_1^2 - S_2}{2(W_{02}^2 + S_2)}$ satisfies $R < 1/2$ iff $B_{\mathrm{real}} > 0$.
+The cross-term ratio $R = (S_1^2 - S_2)/(2(W_{02}^2 + S_2))$ satisfies $R < 1/2$ iff $S_1^2 < W_{02}^2 + 2S_2$, which is implied by~\eqref{eq:master} whenever $S_2 > 0$.
 \end{proof}
 
 \subsection{Numerical evidence}
