@@ -8,21 +8,42 @@ A hybrid computational research platform and formal proof workbench for proving 
 
 Discover a novel proof pathway for the Riemann Hypothesis by exploring unconventional cross-disciplinary approaches, with computational tools that can operate in higher-dimensional spaces and project insights down to human-interpretable forms.
 
+## Current Milestone: v2.0 The Modular Barrier
+
+**Goal:** Express the Connes barrier as a heat kernel trace on the modular surface where positivity is automatic (each term positive), then bound the corrections to close the proof.
+
+**Target features:**
+- Heat kernel interpretation of the barrier on SL(2,Z)\H
+- Modular form parametrization (q-series expansion)
+- Laplacian eigenvalue computation on the modular surface
+- GL(1)->GL(2) lift (Weil explicit → Selberg trace formula)
+- Rankin-Selberg L-value check (Petersson norm positivity)
+- CM point evaluation at Heegner numbers
+- Correction bounds (heat kernel trace minus actual barrier)
+- Formal proof if pathway succeeds
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Computational engine for zeta function and related functions — v1.0 Phase 1
+- ✓ Higher-dimensional computation framework — v1.0 Phase 2
+- ✓ Interactive visualization tools — v1.0 Phase 1-2
+- ✓ Cross-disciplinary exploration modules (spectral, RMT, info-theory, modular forms) — v1.0 Phase 3
+- ✓ Research workbench for conjectures, experiments, insights — v1.0 Phase 1
+- ✓ Lean 4 formalization pipeline — v1.0 Phase 4
+- ✓ Pattern detection and anomaly surfacing — v1.0 Phase 2
 
 ### Active
 
-- [ ] Computational engine for the Riemann zeta function and related functions (high-precision evaluation, zero-finding)
-- [ ] Higher-dimensional computation framework (operate in N-dimensional spaces, project to 2D/3D for visualization)
-- [ ] Interactive visualization tools for exploring the zeta function landscape, zero distributions, and derived structures
-- [ ] Cross-disciplinary exploration modules (spectral operators, random matrix connections, information-theoretic measures, modular forms)
-- [ ] Research workbench for documenting conjectures, tracking proof attempts, and recording insights
-- [ ] Lean 4 formalization pipeline for rigorous verification of promising results
-- [ ] Pattern detection and anomaly surfacing in zero distributions and related structures
+- [ ] Heat kernel interpretation of the Connes barrier as trace on SL(2,Z)\H plus corrections
+- [ ] Modular form parametrization with q-series expansion
+- [ ] Laplacian eigenvalue computation on the modular surface vs barrier spectrum
+- [ ] GL(1)->GL(2) lift: Weil explicit formula as Selberg trace formula
+- [ ] Rankin-Selberg L-value: check if B(L) = L(1, f×f̄) (Petersson norm, always positive)
+- [ ] CM point evaluation at Heegner numbers for algebraic barrier values
+- [ ] Correction bounds between heat kernel trace and actual barrier
+- [ ] Rigorous proof assembly if pathway succeeds
 
 ### Out of Scope
 
@@ -30,6 +51,7 @@ Discover a novel proof pathway for the Riemann Hypothesis by exploring unconvent
 - Mobile or web deployment — this is a local research tool
 - Publication formatting — focus is on discovery, not typesetting
 - Teaching calculus fundamentals — Claude handles the formalism; the user directs exploration
+- Direct analytic proof of B(L) > 0 without modular interpretation — every direct approach has been shown circular (Sessions 35-42)
 
 ## Context
 
@@ -55,5 +77,22 @@ The user is not a mathematician by training but is technically capable (Python, 
 | Python + Lean 4 stack | Python for fast exploration and visualization; Lean 4 for machine-verified rigor when needed | — Pending |
 | Explorer role for user | User directs investigation and explores visualizations; Claude handles formalism | — Pending |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd:transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd:complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-03-18 after initialization*
+*Last updated: 2026-04-04 after milestone v2.0 start*
