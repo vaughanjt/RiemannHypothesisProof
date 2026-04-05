@@ -59,7 +59,42 @@ class TestDualComputeBasic:
 class TestMaassSpectralSum:
     def test_maass_spectral_sum_convergence(self):
         """Spectral sum over Maass eigenvalues converges with diagnostics."""
-        pytest.skip("Plan 02")
+        import mpmath
+        from riemann.analysis.heat_kernel import maass_spectral_sum
+        from riemann.types import ConvergenceDiagnostic
+
+        result, diag = maass_spectral_sum(t=0.1, dps=30)
+        # Result should be a positive mpmath number
+        assert isinstance(result, mpmath.mpf) or float(result) > 0
+        assert float(result) > 0
+        # Convergence diagnostic should be valid
+        assert isinstance(diag, ConvergenceDiagnostic)
+        assert diag.n_terms_used > 0
+        assert diag.tail_bound > 0
+        assert diag.tail_bound < 1e-10  # should be very small for t=0.1
+        assert diag.n_terms_available >= 100
+
+    def test_scattering_phase_real(self):
+        """scattering_phase(r=10.0) returns a finite real number."""
+        import mpmath
+        from riemann.analysis.heat_kernel import scattering_phase
+
+        result = scattering_phase(r=10.0, dps=30)
+        # Result should be real (imaginary part negligible)
+        if isinstance(result, mpmath.mpc):
+            assert abs(mpmath.im(result)) < 1e-20
+        # Result should be finite
+        assert mpmath.isfinite(result)
+
+    def test_load_maass_params_count(self):
+        """load_maass_spectral_params returns list of correct length and values."""
+        from riemann.analysis.heat_kernel import load_maass_spectral_params
+
+        params = load_maass_spectral_params()
+        assert isinstance(params, list)
+        assert len(params) >= 100
+        # First r value should be approximately 9.5337
+        assert abs(params[0] - 9.5337) < 0.01
 
     def test_heat_kernel_trace_includes_all_terms(self):
         """Heat kernel trace = discrete sum + Eisenstein + constant."""
