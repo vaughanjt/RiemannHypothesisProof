@@ -17,6 +17,7 @@ dependencies = [
     "pandas>=3.0.1",
     "persim>=0.3.7",
     "plotly>=6.6.0",
+    "python-flint>=0.7.0",
     "requests>=2.32.0",
     "ripser>=0.6.10",
     "scikit-learn>=1.8.0",

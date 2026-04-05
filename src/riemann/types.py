@@ -38,3 +38,38 @@ class ComputationResult:
     algorithm: str = ""
     timestamp: datetime = field(default_factory=datetime.now)
     computation_time_ms: float = 0.0
+
+
+@dataclass
+class DualResult:
+    """Result from dual mpmath + python-flint computation (per D-09)."""
+    mpmath_value: object          # mpmath mpf or mpc
+    flint_value: object           # flint arb or acb
+    agreement_digits: float       # -log10(relative difference)
+    label: str = ""
+    flagged: bool = False         # True if agreement below threshold
+
+
+@dataclass
+class BarrierComparison:
+    """Single comparison point between heat kernel trace and barrier."""
+    L: float
+    t: float
+    heat_kernel_value: float
+    barrier_value: float
+    discrete_sum: float
+    eisenstein_contrib: float
+    constant_term: float
+    digits_of_agreement: float
+    n_maass_terms: int
+    dual_validated: bool
+
+
+@dataclass
+class ConvergenceDiagnostic:
+    """Convergence info for a truncated spectral sum."""
+    n_terms_used: int
+    n_terms_available: int
+    last_term_magnitude: float
+    tail_bound: float
+    convergence_rate: float
