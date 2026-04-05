@@ -179,5 +179,42 @@ not dominated by small primes.
   / discrepancy bounds on the whole prime sum, not per-prime accounting.
 - The asymptotic 0.029 is not a lower bound; focus on the L=4.68 "hot spot".
 
-Commits: (pending)
+Commits: 74499fd (Session 51)
 Memory: project_session51_margin_drain.md
+
+## Session 52 (complete)
+
+Hot-spot characterization: investigated why Session 51 found min gap at L=4.68.
+
+Initial hypothesis (refuted): "drain jumps at prime entry, hot spots are at
+log(p) + offset". Wrong. Drain is continuous through most prime entries;
+the correlation in Session 51 data was coincidental.
+
+Step-by-step findings:
+  1. Fine scan around log(107): drain is continuous, peaks at lam^2=107-108
+     at 0.2412, no discontinuity.
+  2. Per-prime decomposition at L=4.68: dominant contributors are p in
+     {17, 19, 23, 29, 31, 37, 41, 43, 47, ...}. Top 15 primes account for
+     85.6% of M_prime. The "newly entered" p=107 contributes 0.00005 --
+     NEGLIGIBLE. The hot spot is a COLLECTIVE effect of ~30 primes, not
+     a last-prime-entered phenomenon.
+  3. Drain profiles at p in {31, 73, 107, 151, 251, 503}: drain rises at
+     entry for small primes but falls for larger ones. No universal pattern.
+  4. Global search over 322 primes p <= 10000 at L = log(p)+0.008:
+     minimum gap is STILL 0.01679 at p=107. Plateau of hot spots 0.017-0.020
+     across the whole scanned range. No tighter point found up to L=9.17.
+
+Important correction to Session 46f:
+  Paper states asymptotic gap = 0.269 - 0.240 = 0.029. This is WRONG as a
+  finite-L lower bound. Actual plateau of hot-spot gaps is 0.017-0.020 over
+  lam^2 in [100, 10000]. Max |drain(L)| at large L hovers around 0.246-0.247,
+  not 0.240. Asymptotic gap is closer to 0.022, and finite-L transient
+  minima reach 0.017.
+
+Infrastructure: session52 used session41g (fast M_prime) + session49c
+build_all_fast (fast W02, wr_diag, alpha via vectorized numpy). Step 4
+scan of 322 primes completed in 99 seconds vs estimated hours with the
+original scalar code.
+
+Commits: (pending)
+Memory: project_session52_hot_spot.md
