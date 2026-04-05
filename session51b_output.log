@@ -1,0 +1,58 @@
+
+############################################################################
+  SESSION 51b -- CONDITIONAL CRAMER DRAIN DECOMPOSITION
+############################################################################
+
+  Fixed lam^2 = 2000, L = 7.6009, N = 46
+
+  303 actual primes up to 2000
+  Actual M_prime (via direct sum): -38.956735
+  PNT smooth M_prime:              -39.168103
+  Actual drain = Mp - PNT:         +0.211368
+
+  Sanity vs session41g compute_barrier_partial mprime: -38.956735  (diff +0.00e+00)
+
+  Sweeping K (fix first primes <= K at actual, randomize p > K)
+  50 trials per K
+
+      K  n_small     mean drain      std drain       mean gap  |actual - mean|
+  --------------------------------------------------------------------------------
+      2        1      -0.274341       1.387560      +0.485709         0.485709
+      3        2      +0.407700       1.633728      -0.196332         0.196332
+      5        3      +0.399623       1.609335      -0.188255         0.188255
+      7        4      +0.191704       1.602480      +0.019663         0.019663
+     11        5      +0.738247       1.334545      -0.526880         0.526880
+     13        6      +0.309510       1.154702      -0.098142         0.098142
+     17        7      +0.196571       1.383561      +0.014797         0.014797
+     19        8      +0.438103       1.407304      -0.226735         0.226735
+     23        9      -0.226561       1.367417      +0.437928         0.437928
+     29       10      +0.395412       1.481288      -0.184044         0.184044
+     50       15      +0.058269       1.201254      +0.153098         0.153098
+    100       25      +0.074166       1.407051      +0.137201         0.137201
+    500       95      +0.225300       0.817568      -0.013932         0.013932
+
+============================================================================
+  INTERPRETATION
+============================================================================
+
+  Actual drain at lam^2 = 2000 is +0.211368.
+
+  As K grows, we fix more small primes at their actual positions. The
+  conditional-Cramer mean drain approaches the actual drain.
+
+  If the mean converges to the actual drain at a small K (say K <= 20),
+  then the actual drain is dominated by the first few primes' deviation
+  from the Cramer model. That would mean:
+
+    |drain(L)| <= |contribution from p <= 20| + O(std dev of Cramer tail)
+
+  which is a FINITE, explicit quantity. Combined with margin(L) monotone
+  to 0.269, this could yield an unconditional bound |drain| < margin.
+
+  If the mean only converges at large K, the drain involves fine
+  correlations across many primes and the approach fails.
+
+  Look at the "|actual - mean|" column above: where does it drop below
+  the std deviation, indicating the remaining randomness accounts for
+  the discrepancy?
+

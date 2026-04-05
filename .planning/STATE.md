@@ -152,3 +152,32 @@ prime oscillations with L-dependent amplitudes. Nothing else.
 
 Commits: 4d3de87 (Session 50 decisive kill)
 Memory:  project_session50_modular_kill.md
+
+## Session 51 (complete)
+
+Parallel probes after Session 50 killed the modular angle.
+
+**Thread 51a (dense margin-drain scan):**
+251 L values in [1.5, 6.5]. Minimum gap = +0.01679 at L = 4.68 (lam^2 ~ 108).
+Gap never negative. Important correction to Session 46f: asymptotic gap
+of 0.029 is NOT a tight lower bound over finite L -- there's an interior
+minimum at L ~ 4.68 where |drain|/margin reaches 0.935 (94% of the way
+to blowing the bound). Max |drain| = 0.245 at L = 6.46.
+
+**Thread 51b (conditional Cramer):**
+Fix primes p <= K at actual positions, randomize rest under count-matched
+Cramer. At every K (from 2 to 500), the actual drain value 0.211 is within
+0.01-0.5 sigma of the Cramer mean, but the residual std dev is 0.8-1.6 --
+much larger than the gap of 0.017. Meaning: the drain is Cramer-TYPICAL,
+not dominated by small primes.
+
+**Combined implications:**
+- Numerical verification holds: margin > |drain| in [1.5, 6.5], gap >= 0.017.
+- "Condition on small primes + bound tail" strategy is DEAD -- the tail
+  variance is ~80x the gap, so per-prime bounds are necessarily loose.
+- Any proof path through margin-drain must use EQUIDISTRIBUTION / large-sieve
+  / discrepancy bounds on the whole prime sum, not per-prime accounting.
+- The asymptotic 0.029 is not a lower bound; focus on the L=4.68 "hot spot".
+
+Commits: (pending)
+Memory: project_session51_margin_drain.md
