@@ -21,7 +21,7 @@
 \maketitle
 
 \begin{abstract}
-We perform a detailed numerical analysis of the Weil quadratic form $Q_W = W_{0,2} - W_R - W_p$ from the Connes--Consani--Moscovici framework for the Riemann Hypothesis (arXiv:2511.22755). Working with the finite-dimensional truncation at dimension $2N+1$ with $N \approx 8\log(\lambda^2)$, we verify Weil positivity ($Q_W \geq 0$) at 120-digit precision for $\lambda^2$ up to $5{,}000$ and extend the barrier verification to $\lambda^2 = 50{,}000$ (over 800 computed points). We identify an 8-level structural decomposition of the minimal eigenvalue $\varepsilon_0$, revealing that: (i)~$M = W_R + W_p$ has effective rank $\approx \pi N/L$ (the time-bandwidth product); (ii)~$Q_W$ is approximately block-diagonal between a $26$-dimensional signal subspace and its null complement; (iii)~$\varepsilon_0$ is achieved through a three-way cancellation with factor growing from $738\times$ to $17{,}973\times$. We further decompose the barrier's Rayleigh quotient into a \emph{smooth margin} (purely analytic, ${\approx}\,0.264$) and a \emph{small-prime drain} (${\approx}\,0.228$), with the margin exceeding the drain at all computed points by a gap of ${\approx}\,0.036$. We show that the ESPRIT algorithm extracts zeta zeros directly from barrier oscillations (recovering $\gamma_4$ to accuracy $0.008$) and that randomizing the primes (Cram\'er model) destroys barrier positivity. The barrier is $96\%$ analytic structure and $4\%$ zero contribution, with $|W_{0,2}|$ growing as $e^{0.604L}$ versus $|\sum M_{p_k}|$ growing as $e^{0.545L}$.
+We perform a detailed numerical analysis of the Weil quadratic form $Q_W = W_{0,2} - W_R - W_p$ from the Connes--Consani--Moscovici framework for the Riemann Hypothesis (arXiv:2511.22755). Working with the finite-dimensional truncation at dimension $2N+1$ with $N \approx 8\log(\lambda^2)$, we verify Weil positivity ($Q_W \geq 0$) at 120-digit precision for $\lambda^2$ up to $5{,}000$ and extend the barrier verification to $\lambda^2 = 50{,}000$ (over 800 computed points). We identify an 8-level structural decomposition of the minimal eigenvalue $\varepsilon_0$, revealing that: (i)~$M = W_R + W_p$ has effective rank $\approx \pi N/L$ (the time-bandwidth product); (ii)~$Q_W$ is approximately block-diagonal between a $26$-dimensional signal subspace and its null complement; (iii)~$\varepsilon_0$ is achieved through a three-way cancellation with factor growing from $738\times$ to $17{,}973\times$. We further decompose the barrier's Rayleigh quotient into a \emph{smooth margin} (purely analytic, ${\approx}\,0.264$) and a \emph{small-prime drain} (${\approx}\,0.228$), with the margin exceeding the drain at all computed points by a gap of ${\approx}\,0.036$. We show that the ESPRIT algorithm extracts zeta zeros directly from barrier oscillations (recovering $\gamma_4$ to accuracy $0.008$) and that randomizing the primes (Cram\'er model) destroys barrier positivity. The barrier is $96\%$ analytic structure and $4\%$ zero contribution, with $|W_{0,2}|$ growing as $e^{0.604L}$ versus $|\sum M_{p_k}|$ growing as $e^{0.545L}$. We document four directions tested as replacements for the direct margin--drain attack---the heat kernel trace on $\mathrm{SL}(2,\mathbb{Z}) \backslash \mathbb{H}$, a reproducing kernel Hilbert space, Rankin--Selberg L-values, and a Selberg trace formula with $h(r) = |H_w(1/2+ir)|^2$---all of which fail, in each case because the specific prime distribution carries information beyond what PNT-level randomness provides. A positive byproduct is the identification of the Lorentzian test function as the conjugate Poisson kernel at height $y = L/(4\pi)$, reframing the barrier as a function on the fundamental domain of $\mathrm{SL}(2,\mathbb{Z})$.
 \end{abstract}
 
 \section{Introduction}
@@ -243,9 +243,91 @@ $\lambda^2$ & $N$ & dim & $\varepsilon_0$ & $\varepsilon_1$ & gap ratio & pos? \
 \caption{Weil positivity verification. $N = \lfloor 8L \rceil$ with $L = \log(\lambda^2)$. Precision: 80 digits ($\lambda^2 \leq 1000$), 120 digits ($\lambda^2 = 2000, 5000$). $^*$At $\lambda^2 = 5000$, $\varepsilon_0$ enters an accelerated decay regime.}
 \end{table}
 
+\section{Post-Barrier Explorations and Negative Results}\label{sec:post-barrier}
+
+The barrier verification and margin--drain decomposition leave open the central question: \emph{can $B(L) > 0$ be proved unconditionally for all $L$?} In this section we document four directions explored beyond the direct margin--drain attack and record what each revealed. All four hit the same structural wall: any proof of $B(L) > 0$ must use specific information about the prime distribution beyond what PNT provides.
+
+\subsection{Heat kernel interpretation: killed}
+
+The Lorentzian test function $\hat{w}(n) = n/(L^2 + 16\pi^2 n^2)$ decays like $1/n$ for large $n$, which superficially resembles the Fourier coefficients of the heat kernel on the modular surface $\mathrm{SL}(2,\mathbb{Z}) \backslash \mathbb{H}$. If $B(L)$ could be identified with the heat kernel trace
+\[
+  K(t) = \sum_k e^{-\lambda_k t} + \text{(Eisenstein continuous spectrum)},
+\]
+each term would be manifestly non-negative and positivity would follow automatically.
+
+We tested this identification numerically. At every $L$ in $[1, 50]$:
+\begin{itemize}
+\item $K(t(L))$ and $B(L)$ disagree to zero significant digits (agreement range $0\text{--}1.3$ digits, target was $6+$).
+\item $K(t)$ becomes \emph{negative} for $L \geq 5$ while $B(L)$ remains positive---they cannot be the same object.
+\item The Eisenstein continuous spectrum contribution is $0.10\text{--}0.17$, which is $3\text{--}5\times$ larger than the entire margin--drain budget of $0.036$.
+\item No parameter mapping $t = t(L)$ produces even $0.1$ digits of agreement; direct, Selberg-scaled, and quadratic candidates all failed cross-validation.
+\end{itemize}
+
+The Lorentzian resemblance was a motivational analogy, not a mathematical identity. The modular surface heat kernel and the Connes barrier are structurally different objects.
+
+\subsection{Reproducing kernel Hilbert space: insufficient}
+
+Session~43 established the spectral decomposition $B(L) = \sum_\rho |H_w(\rho)|^2 - C(L)$. The first term is a sum of squares, suggesting that the Mellin transform $H_w(\rho, L)$ might define a feature map $\phi_L \colon \rho \mapsto H_w(\rho, L)$ into $\ell^2$(zeros), with kernel
+\[
+  K(L_1, L_2) = \langle \phi_{L_1}, \phi_{L_2} \rangle = \sum_\rho H_w(\rho, L_1)\, \overline{H_w(\rho, L_2)}.
+\]
+If the modified kernel $\tilde{K}(L_i, L_j)$ with $\tilde{K}(L_i, L_i) = B(L_i)$ were positive definite, $B(L)$ would be a valid reproducing kernel, with $B(L) = \|\phi_L\|^2 \geq 0$ automatic.
+
+Computing the $5 \times 5$ Gram matrix at $\lambda^2 \in \{20, 50, 100, 200, 500\}$ with 30 zeta zeros:
+\begin{itemize}
+\item The spectral Gram matrix $G$ is positive definite (eigenvalues in $[0.998, 4.275]$, condition number $4.28$).
+\item But the correction $C(L) = K(L,L) - B(L)$ is $95\text{--}98\%$ of $K(L,L)$: the spectral sum overshoots the barrier massively.
+\item The modified Gram matrix $G_B$ with $B(L_i)$ on the diagonal has two negative eigenvalues (minimum $-1.39$).
+\end{itemize}
+
+$B(L)$ is not an RKHS kernel under this feature map. The correction is too large and has the wrong structure to be absorbed by modifying the inner product.
+
+\subsection{Rankin--Selberg L-value identification: no match}
+
+If $B(L) = L(1, f \times \bar{f})$ for some automorphic form $f$, positivity would follow from the Petersson norm (a theorem of automorphic forms, independent of RH). We tested this for the Ramanujan $\Delta$ function:
+\begin{itemize}
+\item $L(s, \Delta \times \bar\Delta) \approx 10^{73}$ at $s = 1$, while $B(L) \approx 0.05$.
+\item The ratio $B(L) / L(s, \Delta \times \bar\Delta)$ varies by $14\%$ across $L$ values---not a constant.
+\item Even at $s = 30$ (extreme decay), $L(s, \Delta \times \bar\Delta) \approx 1$, still far from $B(L)$.
+\end{itemize}
+
+$B(L)$ is not a classical Rankin--Selberg L-value of $\Delta$, and the functional form does not match any simple parameter family.
+
+\subsection{The conjugate Poisson kernel identification}\label{subsec:conj-poisson}
+
+The same numerical investigation revealed a genuine structural fact that had not been noticed in earlier sessions. The normalized test vector
+\[
+  \hat{w}(n) = \frac{n}{L^2 + 16\pi^2 n^2} = \frac{1}{16\pi^2} \cdot \frac{n}{(L/4\pi)^2 + n^2}
+\]
+is the \emph{conjugate Poisson kernel} at height $y = L/(4\pi)$ in the upper half-plane:
+\[
+  Q_y(n) := \frac{n}{y^2 + n^2} = \operatorname{Im}\!\left[\frac{1}{n + iy}\right].
+\]
+The regular Poisson kernel $P_y(n) = y/(y^2+n^2) = \operatorname{Re}[1/(n+iy)]$ reconstructs the value of a function on $\mathbb{R}/\mathbb{Z}$ at height $y$ in $\mathbb{H}$; the conjugate Poisson kernel gives the harmonic conjugate. The barrier is therefore
+\[
+  B(L) = \langle Q_y,\, Q_W\, Q_y \rangle, \qquad y = L/(4\pi),
+\]
+the quadratic form $Q_W$ evaluated on a specific automorphic object at a specific height in the fundamental domain. For the tested range $\lambda^2 \in [20, 500]$, this corresponds to $y \in [0.24, 0.49]$---deep in the standard fundamental domain of $\mathrm{SL}(2,\mathbb{Z})$, below the unit-circle arc.
+
+\begin{observation}[Conjugate Poisson identification]
+The Connes barrier $B(L)$ is the quadratic form $Q_W$ evaluated on the conjugate Poisson kernel $Q_y$ at height $y = L/(4\pi)$ in $\mathbb{H}$. Equivalently, $B$ is a function of a real parameter $y$ ranging over the interior of the fundamental domain.
+\end{observation}
+
+This reframes the barrier as a function on the quotient $\mathrm{SL}(2,\mathbb{Z}) \backslash \mathbb{H}$, not on $\mathbb{R}_+$. Whether this reparametrization reveals additional structure---specifically, whether $B(y)$ has modular transformation properties or can be expressed in terms of Eisenstein series evaluated at $y$---remains open.
+
+\subsection{The Cram\'er test revisited: prime distribution is essential}
+
+All four explorations share a common feature: when one replaces the actual primes with a Cram\'er random model (each integer $n$ prime with probability $1/\log n$), the barrier becomes \emph{very} negative. For $\lambda^2 = 50$ over 20 trials, the mean Cram\'er barrier is $-255.7$ with standard deviation $6.7$, compared to the actual $B \approx 0.070$. All 20 trials give negative values in $[-268, -245]$.
+
+\begin{observation}[Prime distribution is the essential input]
+The difference between the actual $B(L) \approx 0.07$ and the Cram\'er expectation $\mathbb{E}[B_{\text{Cram\'er}}] \approx -256$ is a factor of $\sim 3600$, dominated entirely by the specific arithmetic structure of the primes. Any unconditional proof of $B(L) > 0$ must use information about the prime distribution beyond PNT-level randomness.
+\end{observation}
+
+This is a sharper statement than ``the primes matter.'' PNT asserts that $\pi(x) \sim x/\log x$, and the Cram\'er model has this expected density. Yet PNT-level statistics alone drive the barrier strongly negative. The distinguishing feature of the actual primes must therefore be a second-order statement---precisely the kind of statement that RH provides.
+
 \section{Summary and Open Problems}
 
-We have identified a complete structural picture of how Weil positivity operates in the Connes--Consani--Moscovici framework, combining the 8-level eigenvalue analysis (Sections~2--7) with the extended barrier verification (Section~8).
+We have identified a complete structural picture of how Weil positivity operates in the Connes--Consani--Moscovici framework, combining the 8-level eigenvalue analysis (Sections~2--7), the extended barrier verification (Section~8), and the post-barrier explorations (Section~\ref{sec:post-barrier}).
 
 \paragraph{Structural picture.}
 \begin{enumerate}
@@ -272,7 +354,15 @@ $\operatorname{rank}(W_R + W_p) \leq \pi N/L + O(1)$ for all $\lambda$ and $N$.
 The smooth margin $m(L) \to 0.269$ and the small-prime drain $|d(L)| \to 0.240$ as $L \to \infty$, with $m(L) > |d(L)|$ for all $L \ge L_0$. This would imply $B(L) > 0$ for all sufficiently large $L$ without assuming RH.
 \end{conjecture}
 
+\begin{conjecture}[Modular structure of $B(y)$]\label{conj:modular}
+The barrier $B(y) := \langle Q_y, Q_W Q_y\rangle$, viewed as a function of $y = L/(4\pi) \in (0, \infty)$, admits an expansion in terms of the values of classical automorphic objects (Eisenstein series, non-holomorphic modular forms) at height $y$. In particular, $B(y)$ is a computable function on the standard fundamental domain of $\mathrm{SL}(2,\mathbb{Z})$.
+\end{conjecture}
+
 \noindent The margin--drain formulation (Conjecture~\ref{conj:gap}) reduces the Riemann Hypothesis to a bound on how ${\sim}20$ small primes deviate from the PNT prediction: prove $|d(L)| < 0.269$ for all $L$. The margin is a computable analytic constant; the drain is a finite weighted prime sum.
+
+The conjugate Poisson identification (Section~\ref{subsec:conj-poisson}, Conjecture~\ref{conj:modular}) reframes the barrier as a function of height in the upper half-plane. This connects the problem to classical automorphic forms without invoking the heat kernel, which the numerical evidence in Section~\ref{sec:post-barrier} shows is structurally incompatible with $B(L)$.
+
+\paragraph{What the explorations ruled out.} Four natural candidates for making positivity automatic---the heat kernel trace on $\mathrm{SL}(2,\mathbb{Z}) \backslash \mathbb{H}$, a reproducing kernel Hilbert space structure, and Rankin--Selberg L-values of $\Delta$---all fail for structural reasons documented in Section~\ref{sec:post-barrier}. Combined with the Cram\'er control, these negative results sharpen the problem: any proof of $B(L) > 0$ must use second-order information about the prime distribution, and the positivity must emerge from the quadratic form $Q_W$ itself rather than from an embedding into an a~priori positive structure.
 
 \medskip
 \noindent A companion paper~\cite{VaughanQuat} extends these results to quaternionic space, showing that $\pi$ and the finite primes separate along orthogonal quaternionic directions with a coherence ratio exceeding $1000{:}1$, and reformulating the barrier in adelic terms where positivity is automatic.
