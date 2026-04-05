@@ -109,7 +109,12 @@ Plans:
   2. User can run the barrier-to-heat-kernel comparison at 50+ values of L and see agreement to 6+ significant figures, with the parameter mapping t = t(L) identified and validated
   3. User can see the magnitude of the Eisenstein continuous spectrum contribution at each L value, compared against the 0.036 error budget threshold, with a clear verdict on whether the "manifestly positive heat kernel" argument survives
   4. User can toggle between mpmath exploratory precision and python-flint ball arithmetic for any computation, with dual-precision validation confirming that exploratory results are trustworthy
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md -- python-flint setup, dual-precision backend, shared types, test scaffolds
+- [ ] 05-02-PLAN.md -- Heat kernel trace module (Maass spectral sum, Eisenstein integral, full trace)
+- [ ] 05-03-PLAN.md -- Parameter mapping discovery, 100+ point barrier comparison, feasibility verdict
 
 ### Phase 6: Selberg Trace Formula and Geometric Decomposition
 **Goal**: User can compute both sides of the Selberg trace formula for the Lorentzian test function, verify spectral-geometric duality to 10+ digits, and see the correction epsilon(L) decomposed into its four geometric contributions (identity, hyperbolic, elliptic, parabolic) with magnitudes established
@@ -152,7 +157,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Higher-Dimensional Analysis | v1.0 | 4/5 | In Progress | - |
 | 3. Deep Domain Modules | v1.0 | 0/5 | Complete | 2026-03-19 |
 | 4. Lean 4 Formalization | v1.0 | 3/3 | Complete | 2026-03-19 |
-| 5. Heat Kernel Feasibility Gate | v2.0 | 0/0 | Not started | - |
+| 5. Heat Kernel Feasibility Gate | v2.0 | 0/3 | Planned | - |
 | 6. Selberg Trace Formula | v2.0 | 0/0 | Not started | - |
 | 7. Correction Bounds | v2.0 | 0/0 | Not started | - |
 | 8. Proof Assembly | v2.0 | 0/0 | Not started | - |
