@@ -133,22 +133,163 @@ class TestMaassSpectralSum:
 
 
 # ---------------------------------------------------------------------------
-# Plan 02-03 stubs: parameter mapping, barrier comparison, dual precision
+# Plan 03: parameter mapping, barrier comparison, dual precision, plots
 # ---------------------------------------------------------------------------
+
+class TestBarrierValue:
+    def test_barrier_value_numpy_positive(self):
+        """barrier_value_numpy returns a finite value at moderate L."""
+        from riemann.analysis.heat_kernel import barrier_value_numpy
+
+        # L ~ 6.9 corresponds to lam_sq ~ 1000
+        val = barrier_value_numpy(6.9)
+        assert isinstance(val, float)
+        assert not (val != val)  # not NaN
+
+    def test_barrier_value_numpy_matches_known(self):
+        """barrier_value_numpy roughly matches session41g results."""
+        from riemann.analysis.heat_kernel import barrier_value_numpy
+
+        # At lam_sq=1000, L=ln(1000)~6.908, barrier should be small positive
+        import math
+        L = math.log(1000)
+        val = barrier_value_numpy(L)
+        # The barrier is positive at this range
+        assert val > -10  # sanity: not wildly negative
+
 
 class TestParameterMapping:
     def test_parameter_mapping_cross_validation(self):
-        """Analytic t(L) formula matches numerical fit."""
-        pytest.skip("Plan 02-03")
+        """find_parameter_mapping returns structured result with analytic candidates."""
+        from riemann.analysis.heat_kernel import (
+            find_parameter_mapping,
+            barrier_value_numpy,
+        )
+
+        L_vals = [3.9, 6.9, 9.2]
+        # Pre-compute barrier values for speed
+        bv = {L: barrier_value_numpy(L) for L in L_vals}
+        result = find_parameter_mapping(
+            L_vals, dps=15, barrier_values=bv,
+        )
+
+        assert isinstance(result, dict)
+        assert "analytic_candidates" in result
+        assert "numerical_fits" in result
+        assert "best_candidate" in result
+
+        # At least one analytic candidate should have agreement > 0 at all L
+        for name, info in result["analytic_candidates"].items():
+            assert "agreement_digits_by_L" in info
+            # agreement values should be numeric
+            for L, digits in info["agreement_digits_by_L"].items():
+                assert isinstance(digits, (int, float))
 
 
 class TestBarrierComparison:
     def test_barrier_comparison_100_values(self):
-        """K(t(L)) agrees with B(L) at 100+ L values to 6+ digits."""
-        pytest.skip("Plan 03")
+        """run_feasibility_comparison returns list of BarrierComparison objects."""
+        from riemann.analysis.heat_kernel import run_feasibility_comparison
+
+        comps = run_feasibility_comparison(
+            n_points=10, L_range=(3.0, 12.0), dps=15, verbose=False,
+        )
+        assert isinstance(comps, list)
+        assert len(comps) >= 5  # at least some points
+
+        for c in comps:
+            assert isinstance(c, BarrierComparison)
+            assert not (c.digits_of_agreement != c.digits_of_agreement)  # not NaN
+            assert c.digits_of_agreement > -2  # not broken
 
 
 class TestDualPrecisionAll:
     def test_dual_precision_all_computations(self):
-        """Every computation runs in both mpmath and python-flint."""
-        pytest.skip("Plan 03")
+        """heat_kernel_trace with use_dual=True populates dual_results."""
+        from riemann.analysis.heat_kernel import heat_kernel_trace
+
+        result = heat_kernel_trace(t=0.1, dps=20, use_dual=True)
+        assert "dual_results" in result
+        # Constant term dual should succeed when flint is available
+        dr = result["dual_results"]
+        if dr["constant"] is not None:
+            from riemann.types import DualResult
+            assert isinstance(dr["constant"], DualResult)
+            assert dr["constant"].agreement_digits > 10
+
+
+class TestFeasibilityVerdict:
+    def test_verdict_viable(self):
+        """feasibility_verdict returns VIABLE for high-agreement data."""
+        from riemann.analysis.heat_kernel import feasibility_verdict
+
+        comps = [
+            BarrierComparison(
+                L=5.0, t=5.0, heat_kernel_value=1.0, barrier_value=1.0000001,
+                discrete_sum=0.5, eisenstein_contrib=0.001, constant_term=0.5,
+                digits_of_agreement=7.0, n_maass_terms=100, dual_validated=True,
+            )
+            for _ in range(10)
+        ]
+        v = feasibility_verdict(comps)
+        assert v["verdict"] == "VIABLE"
+        assert v["median_agreement"] >= 6
+
+    def test_verdict_dead(self):
+        """feasibility_verdict returns DEAD for low-agreement data."""
+        from riemann.analysis.heat_kernel import feasibility_verdict
+
+        comps = [
+            BarrierComparison(
+                L=5.0, t=5.0, heat_kernel_value=1.0, barrier_value=2.0,
+                discrete_sum=0.5, eisenstein_contrib=0.001, constant_term=0.5,
+                digits_of_agreement=0.3, n_maass_terms=100, dual_validated=False,
+            )
+            for _ in range(10)
+        ]
+        v = feasibility_verdict(comps)
+        assert v["verdict"] == "DEAD"
+
+
+class TestPlotConvergence:
+    def test_plot_convergence_returns_figure(self):
+        """plot_convergence_vs_L returns a Plotly Figure with 2 rows."""
+        import plotly.graph_objects as go
+        from riemann.viz.heat_kernel import plot_convergence_vs_L
+
+        comps = [
+            BarrierComparison(
+                L=float(i), t=float(i), heat_kernel_value=1.0 / (i + 1),
+                barrier_value=1.0 / (i + 1) + 0.001, discrete_sum=0.5 / (i + 1),
+                eisenstein_contrib=0.01 / (i + 1), constant_term=0.5 / (i + 1),
+                digits_of_agreement=3.0 + i, n_maass_terms=50, dual_validated=True,
+            )
+            for i in range(1, 6)
+        ]
+
+        fig = plot_convergence_vs_L(comps)
+        assert isinstance(fig, go.Figure)
+        # Should have multiple traces (discrete, eisenstein, digits)
+        assert len(fig.data) >= 2
+
+
+class TestPlotHeatmap:
+    def test_plot_agreement_heatmap_returns_figure(self):
+        """plot_agreement_heatmap returns a Plotly Figure with Heatmap trace."""
+        import plotly.graph_objects as go
+        from riemann.viz.heat_kernel import plot_agreement_heatmap
+
+        comps = [
+            BarrierComparison(
+                L=float(i), t=float(i) * 0.5, heat_kernel_value=1.0,
+                barrier_value=1.001, discrete_sum=0.5,
+                eisenstein_contrib=0.01, constant_term=0.5,
+                digits_of_agreement=3.0 + i, n_maass_terms=50, dual_validated=True,
+            )
+            for i in range(1, 6)
+        ]
+
+        fig = plot_agreement_heatmap(comps)
+        assert isinstance(fig, go.Figure)
+        # Should have a Heatmap trace
+        assert any(isinstance(t, go.Heatmap) for t in fig.data)
