@@ -1,23 +1,19 @@
 # Roadmap: Riemann
 
-## Overview
+## Milestones
 
-This roadmap delivers a hybrid computational research platform for exploring the Riemann Hypothesis through unconventional cross-disciplinary lenses. The build order follows strict dependency flow: first establish reliable computation and visualization so the user can see and trust results, then layer on higher-dimensional analysis and cross-disciplinary modules that are the platform's unique differentiator, then add deep domain-specific modules and synthesis tools, and finally build the Lean 4 formalization pipeline only after genuine conjectures worth formalizing have emerged. Every phase delivers a coherent, usable research capability -- the platform is useful for mathematical exploration from Phase 1 onward.
+- :white_check_mark: **v1.0 Research Platform** - Phases 1-4 (shipped 2026-03-19)
+- :construction: **v2.0 The Modular Barrier** - Phases 5-8 (in progress)
 
 ## Phases
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+<details>
+<summary>v1.0 Research Platform (Phases 1-4) - SHIPPED 2026-03-19</summary>
 
-Decimal phases appear between their surrounding integers in numeric order.
-
-- [ ] **Phase 1: Computational Foundation and Research Workbench** - Arbitrary-precision zeta computation, zero-finding, interactive visualization of the critical line and complex plane, and structured research tracking
-- [ ] **Phase 2: Higher-Dimensional Analysis** - N-dimensional embedding of mathematical objects, projection theater, zero distribution statistics, random matrix comparison, and information-theoretic analysis
+- [x] **Phase 1: Computational Foundation and Research Workbench** - Arbitrary-precision zeta computation, zero-finding, interactive visualization of the critical line and complex plane, and structured research tracking
+- [x] **Phase 2: Higher-Dimensional Analysis** - N-dimensional embedding of mathematical objects, projection theater, zero distribution statistics, random matrix comparison, and information-theoretic analysis
 - [x] **Phase 3: Deep Domain Modules and Cross-Disciplinary Synthesis** - Spectral operators, trace formulas, modular forms, p-adic computation, analogy engine, topological data analysis, dynamical systems tools, and AI-guided conjecture generation (completed 2026-03-19)
 - [x] **Phase 4: Lean 4 Formalization Pipeline** - Translate conjectures to Lean 4 theorem statements, track formalization progress, integrate with Mathlib (completed 2026-03-19)
-
-## Phase Details
 
 ### Phase 1: Computational Foundation and Research Workbench
 **Goal**: User can compute zeta function values and zeros to arbitrary precision, visualize results interactively, and track research progress in a structured workbench -- establishing a trusted computational foundation for all downstream exploration
@@ -91,14 +87,72 @@ Plans:
 - [x] 04-02-PLAN.md -- Formalization tracker (state machine, sorry tracking, auto-promotion) and conjecture-to-Lean translator
 - [x] 04-03-PLAN.md -- Triage module, package exports, and full formalization assault with human verification
 
+</details>
+
+### v2.0 The Modular Barrier (In Progress)
+
+**Milestone Goal:** Express the Connes barrier as a heat kernel trace on the modular surface SL(2,Z)\H where positivity is structural (each spectral term non-negative), then bound the corrections to close the proof of B(L) > 0 for all L.
+
+- [ ] **Phase 5: Heat Kernel Feasibility Gate** - Compute heat kernel trace on SL(2,Z)\H, establish parameter mapping t(L), and validate that K(t) matches B(L) to 6+ digits -- kill the approach early if it fails
+- [ ] **Phase 6: Selberg Trace Formula and Geometric Decomposition** - Implement the full Selberg trace formula with all four orbital contributions, verify spectral-geometric duality, and decompose the correction into identifiable geometric terms
+- [ ] **Phase 7: Correction Bounds and Parallel Proof Paths** - Bound |K(t) - B(L)| with explicit constants, certify non-circularity, run Rankin-Selberg as parallel proof path, and evaluate CM points if modular structure is found
+- [ ] **Phase 8: Proof Assembly and Lean 4 Formalization** - Assemble the rigorous informal proof with all explicit constants, then translate to Lean 4 theorem statements gated behind informal proof completion
+
+## Phase Details
+
+### Phase 5: Heat Kernel Feasibility Gate
+**Goal**: User can compute the heat kernel trace on SL(2,Z)\H and confirm (or refute) that it matches the Connes barrier B(L) to 6+ significant figures -- providing a go/no-go decision for the entire v2.0 approach before investing in downstream phases
+**Depends on**: Phase 4 (v1.0 platform complete)
+**Requirements**: HEAT-01, HEAT-02, HEAT-03, HEAT-04
+**Success Criteria** (what must be TRUE):
+  1. User can compute the heat kernel trace Tr(e^{-t*Delta}) on SL(2,Z)\H with both the discrete Maass eigenvalue sum and the continuous Eisenstein spectrum contribution, and see convergence diagnostics for the truncated spectral sum
+  2. User can run the barrier-to-heat-kernel comparison at 50+ values of L and see agreement to 6+ significant figures, with the parameter mapping t = t(L) identified and validated
+  3. User can see the magnitude of the Eisenstein continuous spectrum contribution at each L value, compared against the 0.036 error budget threshold, with a clear verdict on whether the "manifestly positive heat kernel" argument survives
+  4. User can toggle between mpmath exploratory precision and python-flint ball arithmetic for any computation, with dual-precision validation confirming that exploratory results are trustworthy
+**Plans**: TBD
+
+### Phase 6: Selberg Trace Formula and Geometric Decomposition
+**Goal**: User can compute both sides of the Selberg trace formula for the Lorentzian test function, verify spectral-geometric duality to 10+ digits, and see the correction epsilon(L) decomposed into its four geometric contributions (identity, hyperbolic, elliptic, parabolic) with magnitudes established
+**Depends on**: Phase 5 (parameter mapping t(L) needed for test function)
+**Requirements**: SELB-01, SELB-02, SELB-03
+**Success Criteria** (what must be TRUE):
+  1. User can compute the Selberg trace formula on SL(2,Z)\H with all four orbital integral types and verify that spectral and geometric sides agree to 10+ significant digits at 20+ parameter values
+  2. User can see confirmation (or a smoothed-variant workaround) that the Lorentzian test function h(r) = 1/(L^2+r^2) satisfies Selberg trace formula admissibility conditions, with decay bounds explicitly checked
+  3. User can compute the primitive geodesic length spectrum, evaluate hyperbolic orbital integrals, and see the magnitude of each geometric contribution (identity, hyperbolic, elliptic, parabolic) to the correction epsilon(L)
+**Plans**: TBD
+
+### Phase 7: Correction Bounds and Parallel Proof Paths
+**Goal**: User can either (a) see a rigorous bound |epsilon(L)| < K(t(L)) proving B(L) > 0 with explicit constants and certified non-circularity, or (b) see the Rankin-Selberg identification B(L) = L(1, f x f-bar) with positivity from Petersson norm, or (c) see a documented obstruction explaining exactly which step requires RH
+**Depends on**: Phase 5, Phase 6 (geometric decomposition needed to identify which terms to bound)
+**Requirements**: BOUND-01, BOUND-02, BOUND-03, BOUND-04
+**Success Criteria** (what must be TRUE):
+  1. User can see the correction |B(L) - K(t)| computed with explicit constants (no big-O) at every L value, with each error term allocated from the 0.036 budget and verified using python-flint ball arithmetic
+  2. User can view a formal circularity dependency graph that traces every step from "heat kernel trace > 0" to "B(L) > 0" and certifies that no step assumes RH, zero-free regions, or GRH-conditional results
+  3. User can compute Rankin-Selberg L-values L(1, f x f-bar) for low-lying Maass forms and see whether B(L) matches a Petersson norm, providing an independent parallel proof path
+  4. User can evaluate the barrier at the nine Heegner CM points and see algebraic recognition results via PSLQ, conditional on Phase 7's Rankin-Selberg analysis finding modular structure
+**Plans**: TBD
+
+### Phase 8: Proof Assembly and Lean 4 Formalization
+**Goal**: User has a complete rigorous proof document (informal) with all steps, explicit constants, and circularity certification -- and if the proof succeeds, Lean 4 theorem statements with Mathlib integration generated from the informal proof
+**Depends on**: Phase 7 (proof path must be established)
+**Requirements**: PROOF-01, PROOF-02
+**Success Criteria** (what must be TRUE):
+  1. User can generate a self-contained informal proof document that traces the complete chain from heat kernel positivity through correction bounds to B(L) > 0, with every constant explicit and every dependency certified non-circular
+  2. User can translate the proof to Lean 4 theorem statements using the existing formalization pipeline with a new "heat_kernel" domain, with Mathlib integration for available lemmas and sorry placeholders for gaps -- gated behind successful completion of the informal proof
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Computational Foundation and Research Workbench | 1/5 | In progress | - |
-| 2. Higher-Dimensional Analysis | 4/5 | In Progress|  |
-| 3. Deep Domain Modules and Cross-Disciplinary Synthesis | 0/5 | Complete    | 2026-03-19 |
-| 4. Lean 4 Formalization Pipeline | 3/3 | Complete    | 2026-03-19 |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Computational Foundation | v1.0 | 1/5 | In progress | - |
+| 2. Higher-Dimensional Analysis | v1.0 | 4/5 | In Progress | - |
+| 3. Deep Domain Modules | v1.0 | 0/5 | Complete | 2026-03-19 |
+| 4. Lean 4 Formalization | v1.0 | 3/3 | Complete | 2026-03-19 |
+| 5. Heat Kernel Feasibility Gate | v2.0 | 0/0 | Not started | - |
+| 6. Selberg Trace Formula | v2.0 | 0/0 | Not started | - |
+| 7. Correction Bounds | v2.0 | 0/0 | Not started | - |
+| 8. Proof Assembly | v2.0 | 0/0 | Not started | - |

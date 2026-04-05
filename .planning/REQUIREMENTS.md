@@ -178,27 +178,26 @@ Which phases cover which requirements. Updated during roadmap creation.
 | XDISC-04 | Phase 3 | Complete |
 | FORM-01 | Phase 4 | Complete |
 | FORM-02 | Phase 4 | Complete |
-
-| HEAT-01 | — | Pending |
-| HEAT-02 | — | Pending |
-| HEAT-03 | — | Pending |
-| HEAT-04 | — | Pending |
-| SELB-01 | — | Pending |
-| SELB-02 | — | Pending |
-| SELB-03 | — | Pending |
-| BOUND-01 | — | Pending |
-| BOUND-02 | — | Pending |
-| BOUND-03 | — | Pending |
-| BOUND-04 | — | Pending |
-| PROOF-01 | — | Pending |
-| PROOF-02 | — | Pending |
+| HEAT-01 | Phase 5 | Pending |
+| HEAT-02 | Phase 5 | Pending |
+| HEAT-03 | Phase 5 | Pending |
+| HEAT-04 | Phase 5 | Pending |
+| SELB-01 | Phase 6 | Pending |
+| SELB-02 | Phase 6 | Pending |
+| SELB-03 | Phase 6 | Pending |
+| BOUND-01 | Phase 7 | Pending |
+| BOUND-02 | Phase 7 | Pending |
+| BOUND-03 | Phase 7 | Pending |
+| BOUND-04 | Phase 7 | Pending |
+| PROOF-01 | Phase 8 | Pending |
+| PROOF-02 | Phase 8 | Pending |
 
 **Coverage:**
 - v1 requirements: 30 total (28 complete, 2 pending)
-- v2.0 requirements: 13 total
-- Mapped to phases: 30 (v1) + 0 (v2.0)
-- Unmapped: 13 ⚠️
+- v2.0 requirements: 13 total (13 mapped)
+- Mapped to phases: 30 (v1) + 13 (v2.0) = 43 total
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-18*
-*Last updated: 2026-04-04 after v2.0 milestone requirements*
+*Last updated: 2026-04-04 after v2.0 roadmap creation*
