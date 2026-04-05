@@ -97,9 +97,31 @@ from riemann.analysis.conjecture_gen import (
     generate_conjecture,
     suggest_experiments,
 )
+from riemann.analysis.heat_kernel import (
+    barrier_value_mpmath,
+    barrier_value_numpy,
+    eisenstein_continuous_integral,
+    feasibility_verdict,
+    find_parameter_mapping,
+    heat_kernel_trace,
+    load_maass_spectral_params,
+    maass_spectral_sum,
+    run_feasibility_comparison,
+    scattering_phase,
+)
 
 __all__ = [
     "Anomaly",
+    "barrier_value_mpmath",
+    "barrier_value_numpy",
+    "eisenstein_continuous_integral",
+    "feasibility_verdict",
+    "find_parameter_mapping",
+    "heat_kernel_trace",
+    "load_maass_spectral_params",
+    "maass_spectral_sum",
+    "run_feasibility_comparison",
+    "scattering_phase",
     "AnalogyMapping",
     "BostConnesResult",
     "DynamicsResult",
