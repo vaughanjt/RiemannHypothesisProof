@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: The Modular Barrier
-status: modular_angle_dead_awaiting_pivot
-stopped_at: "Session 49 complete: naive modular reading of conjugate-Poisson reframing probed and mostly killed. B_partial smooth/monotonic, B_full ~94% explained by explicit formula with simple cosine basis. build_all_fast infrastructure produced (100x speedup)."
-last_updated: "2026-04-05T23:59:00.000Z"
+status: modular_angle_decisively_dead_awaiting_pivot
+stopped_at: "Session 50 complete: modular angle killed with full confidence. R^2 = 1.0 to machine precision with L-modulated cosine basis at 60 zeros + 30 log primes. B_full is ENTIRELY Weil explicit formula content. Conjecture 3 in paper should be retracted."
+last_updated: "2026-04-06T00:30:00.000Z"
 last_activity: 2026-04-05
 progress:
   total_phases: 4
@@ -112,35 +112,43 @@ Memory entries (see ~/.claude .../memory/):
   - project_session49_weil_residual.md
   - (correction appended to project_session48_summary.md)
 
-Next session (recommended): Session 50 -- see "Next Session" section below.
+Session 50 ran same day. Resolution below.
 
-## Next Session
+## Session 50 Resolution
 
-**Session 50 candidate: Decisive Weil-amplitude residual test**
+**DECISIVE KILL. R^2 = 1.0000000000 to machine precision.**
 
-Goal: finish the open thread from Session 49c. Derive the L-dependent
-amplitudes f(L, gamma_n) that the Lorentzian explicit formula prescribes
-for each zero's contribution to B_full(L), refit the 276-point scan,
-and see whether the residual drops to numerical noise or stays at 6%.
+Superset basis test using L-polynomial-modulated cosines at known zero
+frequencies + log prime frequencies. Sweep over (K_zeros, d_zero):
 
-Why this task:
-  - Concrete, bounded (~1 session). Math derivation + one refit + verdict.
-  - Uses build_all_fast (already built, 100x speedup) so the scan data
-    is cheap to regenerate or densify if needed.
-  - Decisive: clean R^2 -> 1 closes the modular direction with full
-    confidence; R^2 stuck at 0.94 surfaces a genuine lead.
-  - Completes an open loose end rather than starting yet another pivot
-    onto unknown ground, which sessions 48-49 memory already flagged as
-    the less productive move right now.
+  K_z  d_z   R^2
+  20   0     0.928  (Session 49c baseline constant amplitudes)
+  30   2     0.993
+  50   2     0.99993
+  60   2     0.9999997
+  60   3     1.0000000000  (residual 5.17e-11, 13 orders below signal)
 
-Why NOT this task (if user wants a fresh angle instead):
-  - Completes a kill, not a new attack. Three alternatives worth
-    considering if the user wants genuine novelty:
-      (a) Session 43 pointed to info-theoretic / prime-equidistribution
-          attacks that were never tried.
-      (b) Study Connes 2026 (arXiv:2602.04022) and Morishita 2025 more
-          deeply for fresh theoretical angles.
-      (c) Update structural_analysis_draft.tex with Session 49 findings
-          (Session 48 interpretation correction, fast evaluator,
-          residual-test provisional verdict) -- consolidation, not
-          discovery, but overdue.
+Crisp monotone convergence. ESPRIT on the 5e-11 residual still finds
+only further zero-frequencies -- zero content all the way down to the
+float64 noise floor.
+
+**B_full(L) is ENTIRELY the Weil explicit formula content.** Smooth
+archimedean trend + zero oscillations with L-dependent amplitudes +
+prime oscillations with L-dependent amplitudes. Nothing else.
+
+**What this kills (with full confidence):**
+  - Conjecture 3 in structural_analysis_draft.tex (modular structure
+    of B(y) via conjugate Poisson reframing)
+  - Heegner-point algebraic recognition of B values (Session 49)
+  - Any reading of the conjugate-Poisson reframing as unlocking a
+    proof path
+
+**What remains alive (for next session):**
+  - Margin-drain formulation of RH from the paper (pre-v2.0 direction)
+  - Info-theoretic / prime-equidistribution approaches (Session 43 memo)
+  - Consolidation: update structural_analysis_draft.tex with Session 49-50
+    findings (retract Conjecture 3, document fast evaluator, add clean
+    kill result for the modular reading)
+
+Commits: 4d3de87 (Session 50 decisive kill)
+Memory:  project_session50_modular_kill.md
