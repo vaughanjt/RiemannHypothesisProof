@@ -216,5 +216,49 @@ build_all_fast (fast W02, wr_diag, alpha via vectorized numpy). Step 4
 scan of 322 primes completed in 99 seconds vs estimated hours with the
 original scalar code.
 
-Commits: (pending)
+Commits: d09b7b8 (Session 52)
 Memory: project_session52_hot_spot.md
+
+## Arc 49-52 summary (all committed, all killed cleanly)
+
+Four sessions produced four clean kills plus one infrastructure asset:
+  - Session 49: naive modular reading of conjugate-Poisson reframing
+                (B_partial smooth, Heegner unremarkable, y=0.8 dip
+                 relocated to W_R)
+  - Session 49c + 50: modular angle DECISIVELY killed, R^2 = 1.0 to
+                machine precision with L-modulated basis. B_full is
+                entirely Weil explicit formula.
+  - Session 51: margin-drain strategy "condition on small primes +
+                bound tail" killed via conditional Cramer (drain is
+                Cramer-typical; tail variance 80x the gap).
+  - Session 52: margin-drain strategy "discrete bound at prime entries"
+                killed (p=107 hot spot is collective phase-alignment of
+                ~30 primes; p=107 contributes 0.00005, negligible).
+
+  Infrastructure win: build_all_fast (~100x speedup, validated to 1.8e-16),
+  reusable for any future B_full or margin-drain computation.
+
+  Paper corrections accumulated (retracted/revised in future session):
+    - Conjecture 3 (modular structure of B(y)): retract
+    - Asymptotic gap 0.269 - 0.240 = 0.029: revise (real plateau 0.017-0.020)
+    - Max |drain| -> 0.240: revise (actual plateau ~0.247)
+
+## Next Session options (await user selection)
+
+Option A: Paper consolidation (overdue, non-discovery but decision-clearing)
+  Update structural_analysis_draft.tex with Sessions 49-52 findings.
+  Specifically: retract Conjecture 3, fix the asymptotic-gap numbers,
+  document build_all_fast, add the hot-spot plateau observation.
+
+Option B: Extend hot-spot scan beyond lam^2 = 10000 (cheap follow-up)
+  Verify the 0.017-0.020 plateau extends to lam^2 >= 10^6 or so.
+  Uses build_all_fast + session41g. ~5 min per large lam^2 point.
+
+Option C: Genuinely fresh direction (not margin-drain, not modular)
+  Session 43 memo suggested prime-equidistribution / info-theoretic
+  approaches that were never tried. Blank slate, higher risk.
+
+Recommendation (from end of Session 52 report): Option A. Four sessions
+of accumulated corrections deserve to be written up before starting the
+next attack. Paper consolidation also clarifies WHAT the next attack
+should target (the corrected gap of ~0.017, not the 0.029 from 46f).
