@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: The Modular Barrier
-status: paper_consolidation_session53_in_progress
-stopped_at: "Session 53: paper consolidation in progress. Conjecture 3 retracted in structural_analysis_draft.tex; margin/drain/gap numbers corrected (asymptote ~0.022, finite-L plateau 0.017-0.020, max|drain| ~0.247); hot-spot plateau + conditional-Cramer observations added; build_all_fast documented as footnote. Stale Session-45 HANDOFF.json and .continue-here.md not yet deleted."
-last_updated: "2026-04-05T12:00:00.000Z"
+status: session54_complete_landscape_audit
+stopped_at: "Session 54: Cramer concentration KILLED. std~L^1.39 vs constant margin~0.264. 93% of Cramer trials violate |drain|<margin at L=12. Margin-drain proof via generic concentration is dead. Deeper circularity: real primes satisfy the bound BECAUSE zeros enforce cancellations, not due to generic randomness. Margin-drain framework likely circular for proof purposes. Landscape audit pending."
+last_updated: "2026-04-05T14:00:00.000Z"
 last_activity: 2026-04-05
 progress:
   total_phases: 4
@@ -243,27 +243,15 @@ Four sessions produced four clean kills plus one infrastructure asset:
     - Asymptotic gap 0.269 - 0.240 = 0.029: revise (real plateau 0.017-0.020)
     - Max |drain| -> 0.240: revise (actual plateau ~0.247)
 
-## Next Session options (await user selection)
+## Next Session options (historical -- from end of Session 52)
 
-Option A: Paper consolidation (overdue, non-discovery but decision-clearing)
-  Update structural_analysis_draft.tex with Sessions 49-52 findings.
-  Specifically: retract Conjecture 3, fix the asymptotic-gap numbers,
-  document build_all_fast, add the hot-spot plateau observation.
+Option A: Paper consolidation -- DONE in Session 53, committed 2b74314.
+Option B: Extend hot-spot scan beyond lam^2 = 10000 -- still open.
+Option C: Fresh equidistribution direction -- recommended, awaiting scope.
 
-Option B: Extend hot-spot scan beyond lam^2 = 10000 (cheap follow-up)
-  Verify the 0.017-0.020 plateau extends to lam^2 >= 10^6 or so.
-  Uses build_all_fast + session41g. ~5 min per large lam^2 point.
+See "Next-attack decision point" above for current state.
 
-Option C: Genuinely fresh direction (not margin-drain, not modular)
-  Session 43 memo suggested prime-equidistribution / info-theoretic
-  approaches that were never tried. Blank slate, higher risk.
-
-Recommendation (from end of Session 52 report): Option A. Four sessions
-of accumulated corrections deserve to be written up before starting the
-next attack. Paper consolidation also clarifies WHAT the next attack
-should target (the corrected gap of ~0.017, not the 0.029 from 46f).
-
-## Session 53 (in progress) -- paper consolidation
+## Session 53 (complete, committed 2b74314) -- paper consolidation
 
 User selected Option A at session start. Edits applied to
 docs/structural_analysis_draft.tex:
@@ -301,8 +289,72 @@ docs/structural_analysis_draft.tex:
       reference to conj:modular replaced with pointer to retraction
       observation.
 
-Still open in Session 53:
-  - Delete stale Session-45 HANDOFF.json and .continue-here.md (awaiting
-    user confirmation).
-  - Commit the paper edits.
-  - Memory entry: project_session53_paper_consolidation.md
+Resolved in Session 53 (all items closed by end of session):
+  - Paper edits committed (2b74314).
+  - Memory entry project_session53_paper_consolidation.md written.
+  - Stale Session-45 HANDOFF.json / .continue-here.md verified absent
+    from .planning/ (not present at resume; already cleaned).
+
+## Next-attack decision point (2026-04-05, post Session 53)
+
+Arc 49-53 closed. No active phase. Options on the table:
+
+Option B -- Extend hot-spot scan beyond lam^2 = 10000 (cheap follow-up)
+  Verify the 0.017-0.020 plateau extends to lam^2 >= 10^6. Uses
+  build_all_fast + session41g. Low risk, low information yield.
+
+Option C -- Fresh equidistribution / large-sieve direction (RECOMMENDED)
+  Session 51 conditional-Cramer explicitly signposts this route:
+  drain is Cramer-typical at every K with residual std 0.8-1.6 vs
+  gap 0.017, meaning per-prime bounds are doomed and any proof must
+  use large-sieve / discrepancy bounds on the full prime Fourier sum.
+  Session 43 memo sketched four sub-routes (probabilistic, sieve,
+  ergodic, info-theoretic); Session 51 narrows this to
+  "variance/concentration of the Cramer model + deviation bound".
+
+  Concrete first step under discussion: characterize the Cramer-model
+  distribution of drain(L) -- if we can prove |drain_Cramer(L)| < m(L)
+  holds with probability 1 - o(1), that establishes the direction is
+  right and tells us what deviation bound real primes need to satisfy.
+
+  Awaiting user confirmation of scope before execution.
+
+## Session 54 (complete) -- Cramer concentration KILLED
+
+User selected Option C. Concrete probe: characterize drain_Cramer(L)
+distribution and test whether |drain_Cramer(L)| < margin(L) holds with
+probability -> 1 as L grows.
+
+Infrastructure built:
+  - precompute_response(): reduces M_prime Rayleigh quotient from O(dim^2)
+    to O(dim) per prime power via precomputed response coefficients.
+  - mp_rayleigh_fast(): vectorized over all k=1 terms, validated to 5e-15.
+  - session54_cramer_concentration.py: full MC framework.
+
+RESULT: CLEAN KILL.
+
+  Monte Carlo, 2000 trials per L, full Cramer (K=0, count-matched):
+  L=3:  std=0.41, margin=0.24, margin/std=0.58sig, P(violate)=60%
+  L=4.7: std=0.79, margin=0.26, margin/std=0.33sig, P(violate)=76%
+  L=6.5: std=1.29, margin=0.26, margin/std=0.20sig, P(violate)=84%
+  L=8:  std=1.73, margin=0.26, margin/std=0.15sig, P(violate)=89%
+  L=10: std=2.19, margin=0.26, margin/std=0.12sig, P(violate)=91%
+  L=12: std=2.69, margin=0.26, margin/std=0.10sig, P(violate)=93%
+
+  Variance scaling: std ~ 0.091 * L^1.39 (grows much faster than sqrt(L))
+  margin/std ~ -0.052*L + 0.63 (linearly decreasing toward 0)
+
+  At L=12, margin is 0.10 standard deviations from center.
+  93% of Cramer trials violate |drain| < margin.
+
+Key insight: actual primes satisfy |drain| < margin NOT because random
+primes generically do (they don't -- 93% violate), but because the
+zeros of zeta enforce the cancellations that keep the drain tame.
+
+Circularity implication: the margin-drain inequality holds for real
+primes BECAUSE RH is true. Proving it without RH is circular.
+This is deeper than Sessions 35-42 (individual decomposition loops):
+Session 54 shows the ENTIRE margin-drain framework is circular.
+
+Commits: (pending)
+Memory: project_session54_cramer_kill.md
