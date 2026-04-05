@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: The Modular Barrier
-status: modular_angle_decisively_dead_awaiting_pivot
-stopped_at: "Session 50 complete: modular angle killed with full confidence. R^2 = 1.0 to machine precision with L-modulated cosine basis at 60 zeros + 30 log primes. B_full is ENTIRELY Weil explicit formula content. Conjecture 3 in paper should be retracted."
-last_updated: "2026-04-06T00:30:00.000Z"
+status: paper_consolidation_session53_in_progress
+stopped_at: "Session 53: paper consolidation in progress. Conjecture 3 retracted in structural_analysis_draft.tex; margin/drain/gap numbers corrected (asymptote ~0.022, finite-L plateau 0.017-0.020, max|drain| ~0.247); hot-spot plateau + conditional-Cramer observations added; build_all_fast documented as footnote. Stale Session-45 HANDOFF.json and .continue-here.md not yet deleted."
+last_updated: "2026-04-05T12:00:00.000Z"
 last_activity: 2026-04-05
 progress:
   total_phases: 4
@@ -262,3 +262,47 @@ Recommendation (from end of Session 52 report): Option A. Four sessions
 of accumulated corrections deserve to be written up before starting the
 next attack. Paper consolidation also clarifies WHAT the next attack
 should target (the corrected gap of ~0.017, not the 0.029 from 46f).
+
+## Session 53 (in progress) -- paper consolidation
+
+User selected Option A at session start. Edits applied to
+docs/structural_analysis_draft.tex:
+
+  1. Abstract: gap "approx 0.036" replaced with dense-scan plateau
+     0.017-0.020 + transient min 0.01679 at lam^2 ~ 108.
+  2. Observation "Margin exceeds drain" (obs:margin-drain): coarse table
+     preserved but concluding text now flags it as coarse sampling and
+     forwards to the new dense-scan observation. Asymptotic gap revised
+     to 0.022, max|drain| revised to ~0.247.
+  3. New Observation: Hot-spot plateau (obs:hot-spot-plateau).
+     Documents 251-point dense scan, 322-prime global search, per-prime
+     decomposition at L=4.68 showing p=107 contributes only 5e-5.
+     build_all_fast (~100x speedup, 1.8e-16 agreement) documented in
+     footnote.
+  4. New Observation: Conditional Cramer (obs:conditional-cramer).
+     Drain at hot spot is Cramer-typical, tail std 0.8-1.6 vs gap 0.017,
+     per-prime bounds ~80x looser than needed.
+  5. Heat kernel section: "margin-drain budget of 0.036" -> "0.017-0.020",
+     Eisenstein ratio updated from "3-5x" to "5-10x".
+  6. Structural-picture bullet 5: margin/drain asymptotes replaced with
+     dense-scan plateau, forwards to obs:hot-spot-plateau.
+  7. Conjecture [Margin-drain gap] (conj:gap): specific numerical targets
+     0.269/0.240 removed, replaced with "asymptotic gap ~0.022 and
+     finite-L plateau gap at least 0.017"; appended note on
+     equidistribution/large-sieve requirement per conditional Cramer.
+  8. Conjecture [Modular structure] (conj:modular): marked RETRACTED
+     in title, introductory clause added pointing to retraction remark.
+  9. New Observation: Retraction of Conjecture 3 (rem:conj-modular-
+     retraction). Documents R^2 = 1.0 at K_z=60, K_p=30, d_zero=3,
+     residual 5.17e-11, ESPRIT-on-residual finds only further zero
+     frequencies. Conjecture withdrawn.
+  10. Final closing paragraphs: "prove |d(L)| < 0.269" -> "prove
+      |d(L)| < m(L)" with finite-L lower bound 0.017 annotated;
+      reference to conj:modular replaced with pointer to retraction
+      observation.
+
+Still open in Session 53:
+  - Delete stale Session-45 HANDOFF.json and .continue-here.md (awaiting
+    user confirmation).
+  - Commit the paper edits.
+  - Memory entry: project_session53_paper_consolidation.md
