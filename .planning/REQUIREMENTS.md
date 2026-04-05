@@ -3,6 +3,35 @@
 **Defined:** 2026-03-18
 **Core Value:** Discover a novel proof pathway for the Riemann Hypothesis by exploring unconventional cross-disciplinary approaches, with computational tools that can operate in higher-dimensional spaces and project insights down to human-interpretable forms.
 
+## v2.0 Requirements — The Modular Barrier
+
+Requirements for proving RH via heat kernel positivity on the modular surface. Each maps to roadmap phases.
+
+### Heat Kernel Foundation
+
+- [ ] **HEAT-01**: User can compute the heat kernel trace Tr(e^{-tΔ}) on SL(2,Z)\H including both discrete Maass eigenvalue sum and continuous Eisenstein spectrum
+- [ ] **HEAT-02**: User can identify the precise parameter mapping t = t(L) between barrier parameter L and heat kernel time t, validated by numerical agreement to 6+ digits
+- [ ] **HEAT-03**: User can compute the discrete spectral sum over Maass form eigenvalues using LMFDB data, with configurable truncation and convergence diagnostics
+- [ ] **HEAT-04**: User can run dual-precision computation: mpmath for exploratory evaluation and python-flint certified ball arithmetic for rigorous bounds
+
+### Selberg Trace Formula
+
+- [ ] **SELB-01**: User can compute the Selberg trace formula on SL(2,Z)\H with all four orbital integral types (identity, hyperbolic, elliptic, parabolic)
+- [ ] **SELB-02**: User can verify that the Lorentzian test function satisfies Selberg trace formula admissibility conditions (Paley-Wiener, decay bounds)
+- [ ] **SELB-03**: User can compute the primitive geodesic length spectrum for SL(2,Z)\H and evaluate hyperbolic orbital integrals
+
+### Verification & Bounds
+
+- [ ] **BOUND-01**: User can compute the correction |B(L) - K(t)| with explicit constants (no big-O), verified against known barrier values
+- [ ] **BOUND-02**: User can generate a formal circularity dependency graph proving no step in the proof chain assumes RH
+- [ ] **BOUND-03**: User can compute Rankin-Selberg L-values L(1, f×f̄) and test whether B(L) matches a Petersson norm (parallel proof path)
+- [ ] **BOUND-04**: User can evaluate the barrier at CM points (Heegner discriminants) and recognize algebraic values via PSLQ
+
+### Proof Assembly
+
+- [ ] **PROOF-01**: User can generate a rigorous informal proof document with all steps, explicit constants, bounds, and circularity certification
+- [ ] **PROOF-02**: User can translate the proof to Lean 4 theorem statements with Mathlib integration, gated behind informal proof completion
+
 ## v1 Requirements
 
 Requirements for initial release. Each maps to roadmap phases.
@@ -107,6 +136,11 @@ Explicitly excluded. Documented to prevent scope creep.
 | Teaching/tutorial system | Claude is the teacher on demand; no curriculum infrastructure |
 | GPU-accelerated mass zero verification | Use published databases (LMFDB, Odlyzko) for large datasets; compute targeted zeros only |
 | Mobile app | Desktop research tool |
+| Direct analytic proof of B(L) > 0 | Sessions 35-42 proved every direct approach circular |
+| Reimplementing Hejhal's algorithm | Use LMFDB tabulated Maass eigenvalues instead |
+| SageMath dependency | 2+ GB footprint, venv incompatible; python-flint covers needed functions |
+| Full Lean 4 proof without informal proof | Formalizing false identity wastes months; gate behind PROOF-01 |
+| Compact quotient Gamma(N)\H approach | Interesting but orthogonal; save for v3.0 if needed |
 
 ## Traceability
 
@@ -145,11 +179,26 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FORM-01 | Phase 4 | Complete |
 | FORM-02 | Phase 4 | Complete |
 
+| HEAT-01 | — | Pending |
+| HEAT-02 | — | Pending |
+| HEAT-03 | — | Pending |
+| HEAT-04 | — | Pending |
+| SELB-01 | — | Pending |
+| SELB-02 | — | Pending |
+| SELB-03 | — | Pending |
+| BOUND-01 | — | Pending |
+| BOUND-02 | — | Pending |
+| BOUND-03 | — | Pending |
+| BOUND-04 | — | Pending |
+| PROOF-01 | — | Pending |
+| PROOF-02 | — | Pending |
+
 **Coverage:**
-- v1 requirements: 30 total
-- Mapped to phases: 30
-- Unmapped: 0
+- v1 requirements: 30 total (28 complete, 2 pending)
+- v2.0 requirements: 13 total
+- Mapped to phases: 30 (v1) + 0 (v2.0)
+- Unmapped: 13 ⚠️
 
 ---
 *Requirements defined: 2026-03-18*
-*Last updated: 2026-03-18 after roadmap creation*
+*Last updated: 2026-04-04 after v2.0 milestone requirements*
