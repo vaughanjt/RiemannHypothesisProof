@@ -112,7 +112,7 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- python-flint setup, dual-precision backend, shared types, test scaffolds
+- [x] 05-01-PLAN.md -- python-flint setup, dual-precision backend, shared types, test scaffolds
 - [ ] 05-02-PLAN.md -- Heat kernel trace module (Maass spectral sum, Eisenstein integral, full trace)
 - [ ] 05-03-PLAN.md -- Parameter mapping discovery, 100+ point barrier comparison, feasibility verdict
 
@@ -157,7 +157,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Higher-Dimensional Analysis | v1.0 | 4/5 | In Progress | - |
 | 3. Deep Domain Modules | v1.0 | 0/5 | Complete | 2026-03-19 |
 | 4. Lean 4 Formalization | v1.0 | 3/3 | Complete | 2026-03-19 |
-| 5. Heat Kernel Feasibility Gate | v2.0 | 0/3 | Planned | - |
+| 5. Heat Kernel Feasibility Gate | v2.0 | 1/3 | In Progress | - |
 | 6. Selberg Trace Formula | v2.0 | 0/0 | Not started | - |
 | 7. Correction Bounds | v2.0 | 0/0 | Not started | - |
 | 8. Proof Assembly | v2.0 | 0/0 | Not started | - |
