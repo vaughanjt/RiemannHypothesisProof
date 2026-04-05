@@ -113,7 +113,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md -- python-flint setup, dual-precision backend, shared types, test scaffolds
-- [ ] 05-02-PLAN.md -- Heat kernel trace module (Maass spectral sum, Eisenstein integral, full trace)
+- [x] 05-02-PLAN.md -- Heat kernel trace module (Maass spectral sum, Eisenstein integral, full trace)
 - [ ] 05-03-PLAN.md -- Parameter mapping discovery, 100+ point barrier comparison, feasibility verdict
 
 ### Phase 6: Selberg Trace Formula and Geometric Decomposition

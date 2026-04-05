@@ -9,9 +9,9 @@ Requirements for proving RH via heat kernel positivity on the modular surface. E
 
 ### Heat Kernel Foundation
 
-- [ ] **HEAT-01**: User can compute the heat kernel trace Tr(e^{-tΔ}) on SL(2,Z)\H including both discrete Maass eigenvalue sum and continuous Eisenstein spectrum
+- [x] **HEAT-01**: User can compute the heat kernel trace Tr(e^{-tΔ}) on SL(2,Z)\H including both discrete Maass eigenvalue sum and continuous Eisenstein spectrum
 - [ ] **HEAT-02**: User can identify the precise parameter mapping t = t(L) between barrier parameter L and heat kernel time t, validated by numerical agreement to 6+ digits
-- [ ] **HEAT-03**: User can compute the discrete spectral sum over Maass form eigenvalues using LMFDB data, with configurable truncation and convergence diagnostics
+- [x] **HEAT-03**: User can compute the discrete spectral sum over Maass form eigenvalues using LMFDB data, with configurable truncation and convergence diagnostics
 - [x] **HEAT-04**: User can run dual-precision computation: mpmath for exploratory evaluation and python-flint certified ball arithmetic for rigorous bounds
 
 ### Selberg Trace Formula
@@ -178,9 +178,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | XDISC-04 | Phase 3 | Complete |
 | FORM-01 | Phase 4 | Complete |
 | FORM-02 | Phase 4 | Complete |
-| HEAT-01 | Phase 5 | Pending |
+| HEAT-01 | Phase 5 | Complete |
 | HEAT-02 | Phase 5 | Pending |
-| HEAT-03 | Phase 5 | Pending |
+| HEAT-03 | Phase 5 | Complete |
 | HEAT-04 | Phase 5 | Complete |
 | SELB-01 | Phase 6 | Pending |
 | SELB-02 | Phase 6 | Pending |
