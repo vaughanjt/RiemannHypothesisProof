@@ -358,6 +358,10 @@ The smooth margin $m(L) \to 0.269$ and the small-prime drain $|d(L)| \to 0.240$ 
 The barrier $B(y) := \langle Q_y, Q_W Q_y\rangle$, viewed as a function of $y = L/(4\pi) \in (0, \infty)$, admits an expansion in terms of the values of classical automorphic objects (Eisenstein series, non-holomorphic modular forms) at height $y$. In particular, $B(y)$ is a computable function on the standard fundamental domain of $\mathrm{SL}(2,\mathbb{Z})$.
 \end{conjecture}
 
+\begin{observation}[Extended $Q_W$ positivity verification]
+As a byproduct of the $y$-scan above, we verified (after correcting a previously undetected prime-sum truncation at $10{,}000$ in the matrix construction code) that $Q_W$ remains positive-semidefinite at $\lambda^2 \in \{23{,}228,\,81{,}612\}$, with minimum eigenvalue below the float64 precision floor. This extends the explicit $Q_W \geq 0$ verification from the previous ceiling of $\lambda^2 = 5{,}000$ to $\lambda^2 \approx 80{,}000$ in single directions, consistent with the partial-barrier verification of Section~8.
+\end{observation}
+
 \noindent The margin--drain formulation (Conjecture~\ref{conj:gap}) reduces the Riemann Hypothesis to a bound on how ${\sim}20$ small primes deviate from the PNT prediction: prove $|d(L)| < 0.269$ for all $L$. The margin is a computable analytic constant; the drain is a finite weighted prime sum.
 
 The conjugate Poisson identification (Section~\ref{subsec:conj-poisson}, Conjecture~\ref{conj:modular}) reframes the barrier as a function of height in the upper half-plane. This connects the problem to classical automorphic forms without invoking the heat kernel, which the numerical evidence in Section~\ref{sec:post-barrier} shows is structurally incompatible with $B(L)$.

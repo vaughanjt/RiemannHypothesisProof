@@ -28,7 +28,11 @@ def build_all(lam_sq, N_val, n_quad=10000):
     dim = 2*N_val + 1
 
     vM = []
-    limit = min(lam_sq, 10000)
+    # NOTE: Previously capped at 10000 primes, which silently broke
+    # build_all() for lam_sq > 10000 (primes in [10000, lam_sq] were missing
+    # from M, making Q_W appear non-PSD). Fixed 2026-04-05.
+    # The partial barrier in session41g_uncapped_barrier.py was already uncapped.
+    limit = int(lam_sq)
     sieve = [True] * (limit + 1)
     sieve[0] = sieve[1] = False
     for i in range(2, int(limit**0.5)+2):
