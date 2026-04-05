@@ -97,9 +97,21 @@ from riemann.analysis.conjecture_gen import (
     generate_conjecture,
     suggest_experiments,
 )
+from riemann.analysis.heat_kernel import (
+    heat_kernel_trace,
+    maass_spectral_sum,
+    eisenstein_continuous_integral,
+    scattering_phase,
+    load_maass_spectral_params,
+)
 
 __all__ = [
     "Anomaly",
+    "eisenstein_continuous_integral",
+    "heat_kernel_trace",
+    "load_maass_spectral_params",
+    "maass_spectral_sum",
+    "scattering_phase",
     "AnalogyMapping",
     "BostConnesResult",
     "DynamicsResult",

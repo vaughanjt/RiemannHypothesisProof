@@ -96,13 +96,40 @@ class TestMaassSpectralSum:
         # First r value should be approximately 9.5337
         assert abs(params[0] - 9.5337) < 0.01
 
-    def test_heat_kernel_trace_includes_all_terms(self):
-        """Heat kernel trace = discrete sum + Eisenstein + constant."""
-        pytest.skip("Plan 02")
-
     def test_eisenstein_continuous_spectrum(self):
         """Eisenstein integral computes continuous spectrum contribution."""
-        pytest.skip("Plan 02")
+        import mpmath
+        from riemann.analysis.heat_kernel import eisenstein_continuous_integral
+
+        result = eisenstein_continuous_integral(t=0.5, dps=20)
+        # Result should be a finite real number
+        assert mpmath.isfinite(result)
+        # Magnitude should be reasonable (sanity bound)
+        assert abs(float(result)) < 10
+
+    def test_heat_kernel_trace_includes_all_terms(self):
+        """Heat kernel trace = discrete sum + Eisenstein + constant."""
+        from riemann.analysis.heat_kernel import heat_kernel_trace
+
+        result = heat_kernel_trace(t=0.1, dps=20, use_dual=False)
+        # Must have all expected keys
+        assert "total" in result
+        assert "constant_term" in result
+        assert "discrete_sum" in result
+        assert "continuous_integral" in result
+        assert "convergence" in result
+        # Constant term: 1/(12*0.1) ~ 0.8333
+        assert abs(result["constant_term"] - 1 / (12 * 0.1)) < 0.01
+        # Total should be positive (heat kernel positivity)
+        assert result["total"] > 0
+
+    def test_heat_kernel_trace_constant_term_dominates_small_t(self):
+        """At very small t, constant term dominates the discrete sum."""
+        from riemann.analysis.heat_kernel import heat_kernel_trace
+
+        result = heat_kernel_trace(t=0.001, dps=20, use_dual=False)
+        # Constant = 1/(12*0.001) ~ 83.33, discrete sum should be smaller
+        assert result["constant_term"] > result["discrete_sum"]
 
 
 # ---------------------------------------------------------------------------
