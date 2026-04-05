@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: The Modular Barrier
-status: session54_complete_landscape_audit
-stopped_at: "Session 54: Cramer concentration KILLED. std~L^1.39 vs constant margin~0.264. 93% of Cramer trials violate |drain|<margin at L=12. Margin-drain proof via generic concentration is dead. Deeper circularity: real primes satisfy the bound BECAUSE zeros enforce cancellations, not due to generic randomness. Margin-drain framework likely circular for proof purposes. Landscape audit pending."
-last_updated: "2026-04-05T14:00:00.000Z"
+status: session55_literature_complete
+stopped_at: "Sessions 54-55 complete. S54: Cramer concentration killed. S55: literature deep-dive mapped Connes-Consani program (2015-2026). Hard Lefschetz NOT proved by anyone. Connes pursuing spectral triples (arXiv:2511.22755) not algebraic geometry. Lead: spectral triples may BE the Hodge star construction. Next: test whether Connes 2025 rank-1 perturbation maps onto our Q_W structure."
+last_updated: "2026-04-05T15:00:00.000Z"
 last_activity: 2026-04-05
 progress:
   total_phases: 4
@@ -454,12 +454,62 @@ Adiprasito-Huh-Katz, Morishita 2025), not a computational one.
 This project's computational tools are mature and reusable but have
 exhausted their proof potential on the analytic side.
 
-Options for the next session:
-  A. Literature deep-dive into scaling site geometry (Connes-Consani
-     2021, Adiprasito-Huh-Katz 2018, Morishita 2025)
-  B. Try to construct the Hodge star computationally (test candidates
-     on the finite-dim matrix, check if any produces correct sign pattern)
-  C. Pivot entirely away from Connes framework (Levinson-Conrey, GUE,
-     Rodgers-Tao — unexplored)
-  D. Write up the full landscape as a paper/report (54 sessions of
-     results deserve documentation beyond STATE.md + memory files)
+Options (post Session 54):
+  A. Literature deep-dive (DONE — Session 55)
+  B. Hodge star computational test
+  C. Pivot away from Connes
+  D. Write up full landscape as paper
+
+## Session 55 (complete) — Literature deep-dive
+
+User selected Option A. Surveyed 18 Connes-Consani papers (2015-2026),
+Morishita 2025, AHK 2018, Braden-Huh 2020, Alvarez Lopez-Kim-Morishita
+2024, and related works.
+
+**Key findings:**
+
+1. The Scaling Site = Grothendieck topos R+ x| N* with tropical
+   structure. Points = adele classes. Defined in arXiv:1603.03191.
+
+2. Connes-Consani proved: Riemann-Roch for Spec(Z)-bar (2022-2023),
+   Weil positivity at archimedean place (2020), spectral realization
+   of zeros numerically (2023-2025).
+
+3. Hard Lefschetz for the scaling site: NOT PROVED by anyone.
+   Connes' current strategy (2023-2025) goes through SPECTRAL TRIPLES
+   (arXiv:2511.22755), NOT through algebraic geometry directly.
+
+4. Morishita (arXiv:2508.15971) bridges Deninger <-> Connes-Consani
+   with explicit orbit-preserving map. Proved for abelian fields.
+   Alvarez Lopez-Kim-Morishita (arXiv:2410.20758, Oct 2024) proved
+   Deninger's regularized determinant formula for 3-dim foliated systems.
+
+5. AHK proved Kahler package for finite matroids. The scaling site's
+   N* is infinite. Gap: nobody has formulated AHK for infinite or
+   arithmetic structures.
+
+6. LEAD: Connes' 2025 "zeta spectral triples" are self-adjoint
+   operators from rank-1 perturbations of the scaling operator.
+   Our Q_W = W02 - M has W02 as rank-2 and M as perturbation.
+   These may be the same construction viewed differently. If so,
+   the spectral triple IS the Hodge star we've been looking for.
+
+Commits: (pending)
+Memory: project_session55_literature.md
+
+## Next-session options (post Session 55)
+
+  B. Test spectral-triple-as-Hodge-star hypothesis computationally.
+     Connes' arXiv:2511.22755 constructs operators H_N from
+     rank-1 perturbations of scaling on [lambda^{-1}, lambda].
+     Our Q_W at finite lambda has the same structure. Test:
+     does H_N's spectrum match our Q_W eigenvalues? Does the
+     Caratheodory-Fejer structure they use explain our positivity?
+
+  C. Pivot to Levinson-Conrey / GUE / Rodgers-Tao.
+
+  D. Write up comprehensive paper (55 sessions of results).
+
+  Recommendation: B. This is the most concrete lead from the
+  literature dive, and it's computationally testable with our
+  existing infrastructure.
