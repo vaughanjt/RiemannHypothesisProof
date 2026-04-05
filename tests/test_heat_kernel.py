@@ -39,12 +39,13 @@ class TestDualComputeBasic:
         import mpmath
         from riemann.engine.dual_precision import dual_compute
 
+        # Use low dps=15 so catastrophic threshold (dps-20=-5) never triggers,
+        # but flag threshold (dps-10=5) does trigger for a completely wrong value.
         result = dual_compute(
             func_mpmath=lambda: mpmath.exp(-1),
             func_flint=lambda prec: __import__('flint').arb(0),  # wrong!
-            dps=50,
+            dps=15,
             label="bad_flint",
-            threshold=1,  # low threshold so we get flagged, not catastrophic
         )
         assert isinstance(result, DualResult)
         assert result.flagged is True
