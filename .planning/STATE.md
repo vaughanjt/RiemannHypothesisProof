@@ -356,5 +356,110 @@ primes BECAUSE RH is true. Proving it without RH is circular.
 This is deeper than Sessions 35-42 (individual decomposition loops):
 Session 54 shows the ENTIRE margin-drain framework is circular.
 
-Commits: (pending)
+Commits: ac22387
 Memory: project_session54_cramer_kill.md
+
+## Landscape Audit — What's Alive After 54 Sessions (2026-04-05)
+
+### KILLED APPROACHES (comprehensive, by session)
+
+**Pre-v2.0 kills (Sessions 1-31):** 8 approaches
+  energy convexity, Gamma confinement, spacing lower bound (GUE delta_min
+  -> 0), information-theoretic (explicit formula tautology), Li criterion
+  (needs n ~ gamma^2), anti-alignment (max at sigma~0), moment constraint
+  (double/sum = 1.003 too soft), spectral Jacobi (trivially SA).
+
+**Connes framework kills (Sessions 32-42):**
+  S32: Tracy-Widom dead end
+  S33: Sieve bypass (M < 0 on null, 2.6x overcomp), mollifier 41% ceiling
+  S34: All analytic approaches circular for null block
+       (sieve, trace-norm, Gershgorin, concentration, Pick/Lowner, deformation)
+  S35-36: 5 approaches killed, silent eigenvalue exactly zero
+  S38: Lefschetz wall (W02=0 on null -> no commutator identity helps),
+       spectral gap unbridgeable by generic tools (10^5 to 10^8 x)
+  S40: {J,[J,M]}=0 -> Hodge star definiteness impossible on full space
+
+**Margin-drain kills (Sessions 42-54):**
+  S42: Smooth barrier negative (primes save it), spectral sum diverges,
+       every decomposition -> RH
+  S48: Heat kernel K(t) on SL(2,Z)\H != B(L) (RKHS, Selberg, R-S all fail)
+  S49-50: Modular angle DECISIVELY DEAD (R^2=1.0 at machine precision)
+  S51: Per-prime bound strategy dead (drain is Cramer-typical, tail std
+       80x the gap)
+  S52: Discrete bound at prime entries dead (p=107 hot spot is collective
+       30-prime effect)
+  S54: CRAMER CONCENTRATION DEAD (std ~ L^1.39, margin constant, 93%
+       violate at L=12). DEEPER CIRCULARITY: margin-drain holds for real
+       primes BECAUSE zeros enforce cancellations, not generic randomness.
+
+**Meta-result: Every computational/analytic approach to proving Q_W >= 0
+is circular.** The barrier encodes RH (fake zeros flip sign, Session 38).
+The drain is tame because the zeros force it (Session 54). Bounding
+the drain requires the zeros (Sessions 42-54). There is no analytic
+shortcut.
+
+### ALIVE — Structural/geometric (the only non-circular path)
+
+  1. **Hard Lefschetz for Connes' scaling site in characteristic one**
+     (Sessions 34, 38, 40)
+     Q_W > 0 on null(W02) IS Hodge-Riemann bilinear relations.
+     Function field RH was proved this way (Weil/Deligne).
+     Adiprasito-Huh-Katz proved Kahler package for matroids (Fields
+     Medal 2022) — the scaling site has combinatorial structure.
+     This is algebraic geometry, not analytic number theory.
+
+  2. **The missing Hodge star operator** (Sessions 38, 40)
+     Classical geometry decomposes H^1 into H^{1,0} + H^{0,1}.
+     For the scaling site, this hasn't been constructed. Candidate
+     sources: functional equation s <-> 1-s, Hilbert transform,
+     scaling operator spectral decomposition.
+
+  3. **Determinant reduction** (Session 40)
+     RH reduces to: QW_barrier * QW_null_coupled > M_cross^2
+     Four explicit sums from the Weil formula. Proving the barrier
+     constant ~0.04 > 0 analytically is the hardest piece.
+
+  All three are aspects of the SAME problem. The structural approach
+  has never been pursued computationally in this project.
+
+### ALIVE — Computational tools (not proof paths)
+
+  - Q_W PSD verification at finite lambda (uncapped, to lambda^2=287k)
+  - build_all_fast (~100x speedup, validated 1.8e-16)
+  - ESPRIT zero extraction from barrier (10x10 operator, gamma_4 error 0.008)
+  - mp_rayleigh_fast (O(dim) per prime, Session 54)
+  - Lean 4 formalization (4212 lines, 10 files)
+
+### NOT EXPLORED (external to Connes framework)
+
+  - Levinson-Conrey mollifiers (41% ceiling, needs 100%)
+  - GUE universality / Katz-Sarnak
+  - Rodgers-Tao dual barrier approach
+
+### THE HONEST BOTTOM LINE
+
+After 54 sessions, we've mapped the entire analytic landscape of the
+Connes barrier and found it's all one valley leading back to RH.
+Every quantitative approach — decomposition, concentration, modular
+interpretation, heat kernel, sieve, per-prime bounds — is circular.
+
+The only exit is UP, into geometry: hard Lefschetz for the scaling site.
+This is the number field analogue of what Weil proved for function fields
+in 1948 and Deligne extended in 1974. It requires constructing the
+missing geometric structure (Hodge star, ample class) on Connes'
+noncommutative space.
+
+That is primarily a MATHEMATICAL task (reading Connes-Consani,
+Adiprasito-Huh-Katz, Morishita 2025), not a computational one.
+This project's computational tools are mature and reusable but have
+exhausted their proof potential on the analytic side.
+
+Options for the next session:
+  A. Literature deep-dive into scaling site geometry (Connes-Consani
+     2021, Adiprasito-Huh-Katz 2018, Morishita 2025)
+  B. Try to construct the Hodge star computationally (test candidates
+     on the finite-dim matrix, check if any produces correct sign pattern)
+  C. Pivot entirely away from Connes framework (Levinson-Conrey, GUE,
+     Rodgers-Tao — unexplored)
+  D. Write up the full landscape as a paper/report (54 sessions of
+     results deserve documentation beyond STATE.md + memory files)
