@@ -1,262 +1,243 @@
-# Feature Landscape
+# Feature Research: v2.0 The Modular Barrier
 
-**Domain:** Mathematical research platform for Riemann Hypothesis proof exploration
-**Researched:** 2026-03-18
-**Confidence:** MEDIUM (training data only -- web verification was unavailable)
-
----
-
-## Table Stakes
-
-Features users expect. Missing = platform is useless for serious RH research.
-
-| # | Feature | Why Expected | Complexity | Notes |
-|---|---------|--------------|------------|-------|
-| T1 | **Arbitrary-precision zeta function evaluation** | Cannot study RH without computing zeta(s) to hundreds/thousands of digits. Floating-point is insufficient -- zeros cluster and cancel near the critical line. | Medium | Wrap mpmath (pure Python, arbitrary precision) for exploration. Use Arb/flint via python-flint for performance-critical paths. Do NOT implement zeta from scratch. |
-| T2 | **Non-trivial zero computation** | The hypothesis IS about zeros. Must locate, verify, and catalog them. Odlyzko's method (Riemann-Siegel formula + Newton refinement) is standard. | Medium | mpmath.zetazero(n) gives the nth zero. For large-scale computation, need direct Riemann-Siegel formula implementation or binding to Andrew Odlyzko's C code / David Platt's verified computations. |
-| T3 | **Critical line visualization** | The user is an explorer, not a trained mathematician. Visualizing |zeta(1/2 + it)| along the critical line, phase portraits, and zero locations is how they will build intuition. | Low-Medium | 2D plots (matplotlib/plotly) of |zeta(s)| on critical line, Argand diagrams, domain coloring of zeta in the critical strip. |
-| T4 | **Complex plane domain coloring** | Standard technique for visualizing complex functions. Maps phase to hue, magnitude to brightness. Reveals structure invisible in magnitude-only plots. | Low | Well-understood technique. Libraries exist (cplot, custom matplotlib). Must support zoom into critical strip regions. |
-| T5 | **Session-based research workbench** | Without persistent state (conjectures, observations, experiment results), exploration is aimless repetition. Must record what was tried, what was found, what was surprising. | Medium | Jupyter-like notebook paradigm or custom session management. Store structured data (experiment parameters, results, annotations) not just text notes. |
-| T6 | **Experiment reproducibility** | Mathematical exploration demands exact reproducibility. Every computation must be re-runnable with identical parameters and verifiable results. | Low-Medium | Seed management, parameter serialization, result caching with checksums. Each "experiment" is a reproducible unit. |
-| T7 | **Related function evaluation** | RH connects to Dirichlet L-functions, Dedekind zeta functions, Selberg zeta function, xi function, Z function (Hardy's function). Cannot explore cross-disciplinary connections without computing these. | Medium | mpmath provides many. Dirichlet L-functions via characters. Selberg zeta requires spectral data (harder). Hardy's Z-function is essential for zero studies. |
-| T8 | **Zero distribution statistics** | GUE statistics, nearest-neighbor spacing, pair correlation, n-level density. These connect zeros to random matrix theory -- one of the deepest RH connections. | Medium | Compute spacing distributions from zero data. Compare against GUE predictions (Montgomery-Odlyzko). Statistical testing framework needed. |
-| T9 | **Numerical verification framework** | Every "interesting finding" must be numerically stress-tested before getting excited. False patterns emerge constantly in finite computations. Need systematic tools to test whether a pattern holds to higher precision / more zeros / different parameters. | Medium | Hypothesis testing: given a conjectured pattern, automatically test it against expanded data. Distinguish genuine structure from numerical artifacts. |
+**Domain:** Heat kernel proof of Riemann Hypothesis via modular surface positivity
+**Researched:** 2026-04-04
+**Confidence:** MEDIUM (mathematical theory is well-established; computational feasibility verified against literature; novel integration path is uncharted)
 
 ---
 
-## Differentiators
+## Feature Landscape
 
-Features that set the platform apart. These are the unconventional, cross-disciplinary tools that justify building a custom platform rather than using SageMath or Mathematica.
+### Table Stakes (Proof Cannot Proceed Without These)
 
-| # | Feature | Value Proposition | Complexity | Notes |
-|---|---------|-------------------|------------|-------|
-| D1 | **Higher-dimensional computation framework** | The project's core thesis: proof structures may live in dimensions beyond human intuition. Must compute in N-dimensional spaces and project results to 2D/3D. No existing tool does this with RH focus. | High | Represent objects in arbitrary-dimensional spaces (adelic spaces, high-dim hyperbolic manifolds). Implement projection operators (PCA, UMAP, t-SNE, custom mathematical projections). This is the most novel and hardest component. |
-| D2 | **Spectral operator analysis** | The Hilbert-Polya conjecture (RH equivalent: zeros = eigenvalues of a self-adjoint operator) is a leading proof strategy. Need tools to construct, analyze, and visualize candidate operators. | High | Discretize candidate operators, compute eigenvalues, compare against zeta zeros. Berry-Keating Hamiltonian (xp + corrections). Requires careful numerics -- operator spectra are sensitive to discretization. |
-| D3 | **Random matrix theory (RMT) laboratory** | Montgomery-Odlyzko law: zeros behave like GUE eigenvalues. But WHY? Platform should let user explore this connection interactively -- sample random matrices, compare statistics, visualize both side-by-side. | Medium | Generate GUE/GOE/GSE ensembles, compute eigenvalue statistics, overlay with zero statistics. Interactive: change matrix size, ensemble type, see how fit changes. NumPy/SciPy sufficient for matrix operations. |
-| D4 | **Modular forms and automorphic representations toolkit** | RH is deeply connected to modular forms via the Langlands program. The modularity theorem (Wiles) and connections between L-functions and automorphic forms are potential proof pathways. | High | Compute modular forms, Hecke eigenvalues, Fourier coefficients. LMFDB integration for known data. Visualize in the upper half-plane. Connecting modular form data to zeta zero structure. |
-| D5 | **Information-theoretic analysis of zero distributions** | Unconventional: treat zero distributions as signals. Compute entropy, mutual information, compression complexity. Look for hidden structure that traditional analytic number theory misses. | Medium | Apply entropy measures, Kolmogorov complexity estimates, compression-based distance metrics to zero sequences. Novel and exploratory -- no established methodology, which is the point. |
-| D6 | **Cross-disciplinary analogy engine** | Map structures from one domain (e.g., quantum chaos) to RH structures. If zeros behave like quantum energy levels, what does the "Hamiltonian" look like? Systematic framework for importing and testing analogies. | High | Define "analogy mappings" between domains. E.g., {eigenvalues : zeros, Hamiltonian : ???, trace formula : explicit formula}. Let user fill in unknowns and test computationally. Highly novel. |
-| D7 | **AI-guided conjecture generation** | Use Claude to analyze computational results, spot patterns humans miss, generate formal conjectures, and suggest what to explore next. The user explores; Claude does formalism AND pattern recognition. | Medium | Structured prompting: feed Claude experimental data, ask for pattern identification, conjecture formulation, and suggested next experiments. Store conjectures with evidence chains. |
-| D8 | **Lean 4 formalization pipeline** | When exploration finds something promising, formalize it in Lean 4 for machine-verified proof. This is the bridge from "interesting computation" to "rigorous mathematics." | High | Translate conjectures to Lean 4 statements. Use Mathlib for existing formalized mathematics. Track formalization progress (statement formalized, proof attempted, proof complete). Lean 4 interop from Python is non-trivial. |
-| D9 | **Dimensional projection theater** | Interactive visualization that lets user "rotate" through higher-dimensional spaces, watching how structures project into different 2D/3D views. Like a planetarium for mathematical objects. | High | Real-time rendering of high-dimensional mathematical objects with interactive projection controls. WebGL or Plotly 3D with custom projection math. Must handle mathematical objects, not just point clouds. |
-| D10 | **Trace formula workbench** | The explicit formulas of prime number theory (Riemann-von Mangoldt, Weil explicit formula, Selberg trace formula) connect zeros to primes. Interactive tools to explore these dualities. | Medium-High | Compute partial sums of explicit formulas, visualize how zeros contribute to prime-counting functions and vice versa. Truncation effects are subtle and must be handled carefully. |
-| D11 | **Anomaly detection in zero structure** | Automated detection of deviations from expected behavior (GUE statistics, Riemann-von Mangoldt formula). Anomalies could point toward proof structure or reveal computational errors. | Medium | Statistical process control applied to zero data. Flag unexpected spacing, unusual local statistics, deviations from smooth N(T) approximation. |
-| D12 | **Adelic/p-adic computation** | The adelic viewpoint unifies archimedean and p-adic completions. Tate's thesis reproves the functional equation adelically. Platform should compute in p-adic fields and visualize p-adic structure. | High | p-adic number arithmetic, p-adic zeta functions, visualization of p-adic spaces (fractal structure). Connect p-adic and archimedean pictures. SageMath has p-adic types; may need to adapt. |
+Features the proof pipeline requires. Missing any one of these blocks the entire v2.0 milestone.
 
----
+| # | Feature | Why Required | Complexity | Category | Dependencies |
+|---|---------|--------------|------------|----------|--------------|
+| T1 | **Heat kernel trace on SL(2,Z)\H** | The central claim: barrier B(L) equals heat kernel trace plus corrections. Must compute K(t) = sum exp(-lambda_n * t) over Laplacian eigenvalues of the modular surface. Without this, the entire modular barrier thesis is untestable. | HIGH | Computation | Maass form eigenvalues (T2), Eisenstein continuous spectrum integral (T3) |
+| T2 | **Maass form eigenvalue database + computation** | The discrete spectrum of the Laplacian on SL(2,Z)\H consists of Maass cusp forms with eigenvalues lambda_n = 1/4 + r_n^2. The first ~100 eigenvalues (r_1 ~ 9.534, r_2 ~ 12.173, ...) are needed for the heat kernel trace. These are NOT holomorphic modular forms -- they are real-analytic eigenfunctions. | MEDIUM | Computation | Existing LMFDB client (lmfdb_client.py), or Hejhal's algorithm implementation |
+| T3 | **Eisenstein series continuous spectrum contribution** | SL(2,Z)\H is non-compact (has a cusp). The spectral decomposition of the Laplacian includes a continuous spectrum [1/4, infinity) parametrized by Eisenstein series E(z, 1/2+ir). The heat kernel trace includes an integral over this continuous spectrum: integral_0^inf exp(-(1/4+r^2)*t) * phi(r) dr where phi involves the scattering matrix. This is NOT optional -- omitting it gives wrong values. | HIGH | Computation | Scattering matrix / scattering determinant for SL(2,Z) |
+| T4 | **Barrier-to-heat-kernel comparison engine** | Must numerically compare B(L) (from existing session41g barrier code) against heat kernel trace K(t) for matching parameter identification (what is t in terms of L?). Session 47 suggests the Lorentzian test function w_hat(n) ~ 1/(L^2 + n^2) maps to heat kernel at imaginary time. Need to verify this mapping precisely and quantify the correction term. | MEDIUM | Verification | Existing barrier computation (session41g), T1 |
+| T5 | **Correction bound computation** | Even if B(L) ~ K(t), equality is approximate. The correction C(L) = K(t) - B(L) must be rigorously bounded. If |C(L)| < K(t) for all L, then B(L) > 0 follows. This is the make-or-break computation: the gap between the heat kernel trace and the actual barrier must be provably small enough. | HIGH | Proof | T1, T4, analytic error estimation framework |
+| T6 | **Selberg trace formula implementation** | The Selberg trace formula for SL(2,Z)\H equates the spectral sum (eigenvalues) to a geometric sum (geodesic lengths / prime geodesics). This is the GL(2) analog of the Weil explicit formula. Need both sides: spectral for computation, geometric for bounding corrections. The geometric side involves: identity contribution (area term), hyperbolic terms (closed geodesics, parametrized by traces of hyperbolic elements), elliptic terms (from elements of orders 4 and 6 in SL(2,Z)), and parabolic/cuspidal terms. | HIGH | Computation + Proof | T2, T3, prime geodesic data |
 
-## Anti-Features
+### Differentiators (Novel Components That Make the Proof Work)
 
-Features to explicitly NOT build. Building these would be a waste of effort or actively harmful to the project.
+Features that distinguish this approach from standard methods. These are where the actual mathematical innovation happens.
 
-| # | Anti-Feature | Why Avoid | What to Do Instead |
-|---|--------------|-----------|-------------------|
-| A1 | **General-purpose computer algebra system** | SageMath, Mathematica, and SymPy already exist. Reimplementing symbolic algebra is a multi-decade project that would consume all resources. | Integrate with mpmath, SymPy, and SageMath as computational backends. Focus platform effort on the research workflow and cross-disciplinary tools. |
-| A2 | **General-purpose proof assistant** | Lean 4 exists and is actively maintained by a large community. Building a custom proof system would be absurd. | Build a pipeline TO Lean 4: translate conjectures, manage formalization tasks, track proof state. Do not replicate Lean's type theory. |
-| A3 | **Reimplemented zeta function from scratch** | Correct arbitrary-precision zeta evaluation is extremely subtle (Riemann-Siegel requires careful error bounds, Euler-Maclaurin has convergence issues). mpmath and Arb have decades of work in this. | Use mpmath.zeta() and arb's acb_dirichlet_zeta(). Only implement custom evaluation for novel function variants not in existing libraries. |
-| A4 | **Classical proof strategy tooling** | PROJECT.md explicitly scopes this out. De la Vallee-Poussin methods, moment methods for percentage of zeros on critical line -- these are well-studied and haven't worked. | Focus all tooling on unconventional approaches: higher-dimensional, cross-disciplinary, information-theoretic. If a user wants classical tools, they can use SageMath. |
-| A5 | **Web deployment / multi-user collaboration** | This is a local research tool for one user + Claude. Web infrastructure adds complexity with zero benefit for the research mission. | Single-user desktop application. Python scripts, Jupyter notebooks, local file storage. |
-| A6 | **Publication/typesetting system** | LaTeX exists. Overleaf exists. Writing a paper formatter is irrelevant to proving RH. | Export results in formats compatible with LaTeX. Store conjectures in structured data that could feed into a paper later. |
-| A7 | **Teaching or tutorial system** | The user directs exploration while Claude explains. Building pedagogical infrastructure is scope creep. | Claude itself is the "teacher" -- it explains concepts on demand in the conversation. No curriculum, no lesson plans, no graded exercises. |
-| A8 | **GPU-accelerated zero computation at scale** | Large-scale zero verification (billions of zeros) has been done by Platt, Gourdon, etc. Reproducing this infrastructure requires specialized HPC knowledge and months of engineering. The goal is insight, not exhaustive verification. | Use published zero databases (LMFDB, Odlyzko's tables) for large datasets. Compute fresh zeros only in targeted regions where the platform's analysis suggests something interesting. |
-| A9 | **Real-time collaboration features** | Multiplayer editing, shared sessions, conflict resolution -- massive engineering for a single-researcher tool. | The collaboration partner is Claude, which operates in the same session. File-based persistence is sufficient. |
+| # | Feature | Value Proposition | Complexity | Category | Dependencies |
+|---|---------|-------------------|------------|----------|--------------|
+| D1 | **GL(1) to GL(2) lift** | The Weil explicit formula (GL(1) trace formula) gives the barrier B(L). The Selberg trace formula (GL(2) trace formula) gives the heat kernel trace on the modular surface. The "lift" translates between these two worlds: it reinterprets the Lorentzian test function w_hat as a GL(2) test function h(r) = 1/(L^2 + r^2), then the Selberg trace formula applied to h gives a heat-kernel-like object. This is the conceptual bridge that connects the barrier's positivity to the modular surface's geometry. | VERY HIGH | Proof theory | T6, existing trace_formula.py |
+| D2 | **Rankin-Selberg L-value verification** | If the barrier equals a Rankin-Selberg L-value L(1, f x f-bar) for some Maass form f, then positivity is automatic (it is a Petersson norm = integral of |f|^2, always positive). Session 47 identified this as the most promising structural explanation. Need: compute L(1, f x f-bar) for Maass forms f, and check if B(L) matches any such value or a linear combination thereof. PARI/GP has Petersson inner product computation (mfpetersson) for holomorphic forms; extending to Maass forms requires custom code. | HIGH | Computation + Proof | T2, modular_forms.py, PARI/GP or custom Rankin-Selberg engine |
+| D3 | **Modular form parametrization (q-series fitting)** | Session 47 tested whether B(L) has q-series structure: B(L) = a0 + a1*q + a2*q^2 + ... for some nome q = exp(-c/L). Results were mixed (partial fit, not clean). Deeper analysis needed: fit against Eisenstein series at special tau, eta quotients, Jacobi theta functions, and Maass form Fourier expansions. If a clean parametrization exists, it directly gives modular form positivity tools. | MEDIUM | Computation | Existing modular_forms.py (Eisenstein, Delta, Hecke), T4 |
+| D4 | **CM point evaluation at Heegner numbers** | At CM points tau = (-d + sqrt(-d))/(2) for Heegner discriminants d = -3, -4, -7, -8, -11, -19, -43, -67, -163, modular forms take algebraic values. If the barrier connects to a modular form, evaluating at CM points gives algebraic numbers that can be checked exactly. The j-invariant at these points gives class field theory values (e.g., j((-1+sqrt(-163))/2) = -640320^3). Session 47 tested this but found no obvious special behavior -- deeper analysis needed with more refined parameter identification. | MEDIUM | Computation + Verification | D3, T4, existing modular_forms.py |
+| D5 | **Laplacian eigenvalue computation on modular surface** | Independent computation of eigenvalues of the hyperbolic Laplacian Delta = -y^2(d^2/dx^2 + d^2/dy^2) on the fundamental domain of SL(2,Z). Needed to verify LMFDB values and to compare the barrier's spectral structure (from ESPRIT extraction in Session 42) against actual Laplacian eigenvalues. Hejhal's algorithm is the standard method: expand Maass forms in K-Bessel functions, impose boundary conditions on the fundamental domain, solve for eigenvalues that make the expansion consistent. | HIGH | Computation | Bessel function evaluation (mpmath), fundamental domain geometry |
+| D6 | **Spectral-geometric duality verification** | The Selberg trace formula is an identity. Both sides must agree numerically to high precision for any test function h. Verifying this agreement for the specific test function h(r) = 1/(L^2+r^2) (the one that gives the barrier) provides: (a) a check on the correctness of all eigenvalue and geodesic computations, and (b) an explicit decomposition of the barrier into geometric terms (identity, hyperbolic, elliptic, parabolic) that reveals which terms are positive and which need bounding. | MEDIUM | Verification | T6, T2, T3 |
+
+### Anti-Features (Approaches to Explicitly Avoid)
+
+| # | Anti-Feature | Why Tempting | Why Problematic | What to Do Instead |
+|---|--------------|-------------|-----------------|-------------------|
+| A1 | **Direct analytic proof of B(L) > 0** | Sessions 35-42 explored this extensively. The barrier IS positive numerically. "Just prove it directly." | Every direct approach has been shown circular (Session 42 audit). The spectral sum diverges, the prime terms require RH to bound, and every decomposition loops back to assuming what you want to prove. This was the central lesson of 40+ sessions. | The modular surface approach works precisely because it replaces the direct bound with a structural identity: B = (manifestly positive heat kernel trace) - (small correction). |
+| A2 | **Full Hejhal algorithm from scratch** | Computing Maass form eigenvalues from first principles feels rigorous and self-contained. | Hejhal's algorithm is highly non-trivial to implement correctly. Convergence is delicate, the K-Bessel functions need careful evaluation at large arguments, and the fundamental domain has corners (elliptic fixed points) that create numerical difficulties. Booker-Strombergsson-Venkatesh verified the first 10 eigenvalues to 100 digits -- reimplementing this to lower precision is wasted effort. | Use LMFDB values for the first ~100 eigenvalues. Implement a simplified version only for verification and extension to higher eigenvalues or non-standard levels. |
+| A3 | **General Langlands functoriality engine** | The GL(1)->GL(2) lift is a special case of Langlands functoriality. Building a general framework feels like "doing it right." | Langlands functoriality in full generality is one of the hardest open problems in mathematics. The specific lift needed here (Hecke character to GL(2) automorphic form) is a well-understood classical construction. Generalizing wastes months on architecture astronautics. | Implement the specific lift: given the Lorentzian test function on GL(1), produce the corresponding GL(2) test function for the Selberg trace formula. Hardcode the SL(2,Z) case. |
+| A4 | **Symbolic heat kernel manipulation** | Express the heat kernel symbolically and manipulate formally to derive the correction bound. | The heat kernel on a non-compact surface involves infinite sums, improper integrals over the continuous spectrum, special functions (Bessel, Gamma, digamma), and delicate cancellations. Symbolic manipulation will produce expressions that are formally correct but computationally useless -- you cannot bound them without returning to numerics anyway. | Numerical-first approach: compute everything to high precision, identify the correction's asymptotic behavior empirically, then prove the bound for that specific asymptotic form. |
+| A5 | **Lean formalization before numerical validation** | "Formalize the heat kernel identity immediately to ensure correctness." | The heat kernel interpretation is a HYPOTHESIS, not an established identity. Formalizing a false statement wastes formalization effort. Session 47 showed mixed numerical evidence -- the q-series fit is imperfect, the Heegner point connection is unconfirmed. | Validate numerically first. Formalize only after: (1) the parameter mapping t(L) is precisely identified, (2) the correction bound is numerically verified at 800+ points, (3) the asymptotic form is understood. |
+| A6 | **Higher-level modular forms (weight > 2, higher conductor)** | The modular surface SL(2,Z)\H is the simplest case. Maybe the barrier connects to forms of higher weight or level. | Weight 0 Maass forms are what the Laplacian eigenvalues correspond to. Holomorphic modular forms of weight k live in a different function space and do not directly appear in the heat kernel trace on the modular surface. Higher level Gamma_0(N)\H has a different spectrum. Mixing these up wastes computation on irrelevant objects. | Focus exclusively on weight 0 Maass forms for SL(2,Z) and the Eisenstein series E(z,s) for the continuous spectrum. The Rankin-Selberg check (D2) does involve holomorphic forms, but as L-function inputs, not as heat kernel eigenfunctions. |
 
 ---
 
 ## Feature Dependencies
 
 ```
-FOUNDATION LAYER (must exist first):
-  T1 (zeta evaluation) ──────────────────────────────────────┐
-  T7 (related functions) ─────────────────────────────────────┤
-                                                               │
-VISUALIZATION LAYER (needs computation):                       │
-  T3 (critical line viz) ← T1                                 │
-  T4 (domain coloring) ← T1                                   │
-  D9 (projection theater) ← D1 (higher-dim framework)         │
-                                                               │
-ANALYSIS LAYER (needs computation + data):                     │
-  T2 (zero computation) ← T1                                  │
-  T8 (zero statistics) ← T2                                   │
-  D3 (RMT laboratory) ← T8                                    │
-  D11 (anomaly detection) ← T8                                │
-  D5 (information theory) ← T2, T8                            │
-  D2 (spectral operators) ← T1                                │
-  D10 (trace formulas) ← T1, T2                               │
-  D4 (modular forms) ← T7                                     │
-  D12 (adelic computation) ← T7                               │
-                                                               │
-CROSS-DISCIPLINARY LAYER (needs analysis):                     │
-  D1 (higher-dim framework) ← T1 (independent core)           │
-  D6 (analogy engine) ← D2, D3, D4, D5 (needs multiple       │
-                         domains to draw analogies between)    │
-                                                               │
-RESEARCH INFRASTRUCTURE (parallel development):                │
-  T5 (research workbench) ← (independent, but more useful     │
-                              with computation features)       │
-  T6 (reproducibility) ← T5                                   │
-  T9 (verification framework) ← T1, T2                        │
-  D7 (AI conjecture generation) ← T5, T9                      │
-                                                               │
-FORMALIZATION LAYER (last -- needs discoveries to formalize):  │
-  D8 (Lean 4 pipeline) ← D7, T9 (needs conjectures worth     │
-                          formalizing)                          │
+EXISTING INFRASTRUCTURE (from v1.0, already built):
+  barrier computation (session41g)
+  modular_forms.py (Eisenstein, Delta, Hecke eigenvalues)
+  trace_formula.py (Weil explicit formula, Chebyshev psi)
+  lmfdb_client.py (REST API with caching)
+  spectral.py (Berry-Keating, eigenvalue comparison)
+  formalization pipeline (Lean 4 translator, builder, tracker)
+
+NEW v2.0 FEATURES:
+
+  T2 (Maass eigenvalues) ─────────────────────────────┐
+       │                                                │
+       v                                                v
+  T3 (Eisenstein continuous spectrum) ────────> T1 (Heat kernel trace)
+       │                                          │
+       v                                          v
+  T6 (Selberg trace formula) ──────────> T4 (Barrier-heat kernel comparison)
+       │                                          │
+       v                                          v
+  D1 (GL(1)->GL(2) lift) ──────────────> T5 (Correction bounds)
+       │                                          │
+       v                                          v
+  D6 (Spectral-geometric verification)   D2 (Rankin-Selberg L-value)
+                                                  │
+  D3 (q-series fitting) ──────────────────────────┤
+       │                                          │
+       v                                          v
+  D4 (CM point evaluation) ────────> PROOF ASSEMBLY (formal proof)
+                                          │
+  D5 (Laplacian eigenvalue comp) ─────────┘
 ```
+
+### Dependency Notes
+
+- **T1 requires T2 + T3:** The heat kernel trace has BOTH a discrete sum (over Maass eigenvalues) and a continuous integral (over Eisenstein parameters). Neither alone gives the correct value.
+- **T4 requires T1 + existing barrier:** The comparison needs both sides to be computed to matching precision.
+- **T5 requires T4:** Cannot bound the correction without first computing what it is.
+- **T6 enables D1:** The Selberg trace formula is the GL(2) framework into which the GL(1) barrier is "lifted."
+- **D1 enables T5:** The lift provides the theoretical justification for why the correction should be small -- it identifies which geometric terms contribute to the correction.
+- **D2 is semi-independent:** The Rankin-Selberg check is an alternative structural explanation. If B(L) = L(1, f x f-bar), positivity follows without bounding corrections. Can be pursued in parallel.
+- **D3/D4 are exploratory:** q-series fitting and CM evaluation are diagnostic -- they help identify the modular object (if any) but are not strictly required for the heat kernel approach.
+- **D5 conflicts with A2:** We should NOT reimplement Hejhal from scratch. D5 means a simplified verification, not a full eigenvalue solver.
+- **Proof assembly requires T5 or D2:** Either the correction bound closes the proof, or the Rankin-Selberg identification does. At least one must succeed.
 
 ### Critical Path
 
-The longest dependency chain that gates meaningful research:
-
 ```
-T1 (zeta eval) --> T2 (zeros) --> T8 (statistics) --> D3 (RMT) --> D6 (analogies)
-     |                                                    ^
-     └--> D2 (spectral) ─────────────────────────────────┘
+T2 (eigenvalues) + T3 (continuous spectrum) --> T1 (heat kernel)
+    --> T4 (comparison) --> T5 (correction bound) --> PROOF
 ```
 
-This means: Phase 1 MUST deliver zeta evaluation and zero computation. Without these, nothing downstream works.
-
-### Parallel Tracks
-
-These can be developed independently and composed later:
-
-- **Track A (computation):** T1 --> T2 --> T8 --> D3, D5, D11
-- **Track B (visualization):** T3, T4 --> D9 (when D1 is ready)
-- **Track C (higher-dim):** D1 (can start with toy examples before T1 is production-ready)
-- **Track D (research infra):** T5, T6, T9, D7
-- **Track E (formalization):** D8 (can scaffold pipeline before discoveries exist)
+The bottleneck is T3 (continuous spectrum contribution). The discrete sum T2 uses tabulated eigenvalues. But the continuous spectrum integral requires evaluating the scattering determinant phi(s) for SL(2,Z), which involves the Gamma function and zeta function at complex arguments. Getting this integral to match the discrete sum's precision is the hardest numerical challenge.
 
 ---
 
-## MVP Recommendation
+## Phase Ordering Recommendation
 
-The MVP must answer one question: **"Can this platform show me something about the Riemann zeta function that I cannot trivially see in Mathematica or SageMath?"**
+### Phase 1: Foundation (Spectral Data + Heat Kernel Trace)
 
-### MVP Feature Set (Phase 1 target)
+Build the ability to compute the heat kernel trace on SL(2,Z)\H.
 
-**Prioritize (build first):**
+- [ ] **T2** -- Maass eigenvalue database: fetch from LMFDB, store locally, verify against published tables (r_1 = 9.5336..., first 100 values)
+- [ ] **T3** -- Eisenstein continuous spectrum: implement the integral of exp(-(1/4+r^2)*t) weighted by the scattering phase
+- [ ] **T1** -- Assemble heat kernel trace: K(t) = discrete_sum + continuous_integral
+- [ ] **T4** -- Compare K(t) against B(L) for parameter identification: find t = t(L) such that K(t(L)) ~ B(L)
 
-1. **T1 -- Arbitrary-precision zeta evaluation** via mpmath wrapping. This is the foundation for everything. Without it, the platform computes nothing.
+**Exit criterion:** K(t) and B(L) agree to at least 6 significant figures for 50+ values of L.
 
-2. **T2 -- Non-trivial zero computation.** Immediate payoff: the user can compute and examine zeros. Use mpmath.zetazero() initially; optimize later if needed.
+### Phase 2: The Lift (Selberg Trace Formula + GL(1)->GL(2))
 
-3. **T3 + T4 -- Critical line visualization + domain coloring.** The user is an explorer who builds intuition visually. These are how they "see" the mathematics. Interactive plots with zoom, pan, parameter controls.
+Establish the theoretical and computational bridge.
 
-4. **T5 -- Session-based research workbench (minimal).** At minimum: save/load experiment state, annotate results, track what was explored. Can start as structured JSON files + Jupyter notebooks.
+- [ ] **T6** -- Selberg trace formula: implement both sides (spectral and geometric) for SL(2,Z) with test function h(r) = 1/(L^2+r^2)
+- [ ] **D1** -- GL(1)->GL(2) lift: translate the Weil explicit formula's Lorentzian test function into the Selberg trace formula framework
+- [ ] **D6** -- Verify both sides agree: spectral side = geometric side to high precision
+- [ ] **D5** -- Cross-check: independently compute a few Maass eigenvalues to verify LMFDB data
 
-5. **T8 -- Zero distribution statistics (basic).** Nearest-neighbor spacing, comparison against GUE. This is the first cross-disciplinary connection (RMT) and gives the user something genuinely interesting to explore.
+**Exit criterion:** Selberg trace formula verified to 10+ digits for the barrier's test function at 20+ parameter values.
 
-### MVP Differentiator
+### Phase 3: The Bound (Correction Estimation + Alternative Paths)
 
-6. **D1 -- Higher-dimensional framework (prototype).** Even a basic version -- represent zeros in higher-dimensional spaces, apply projections, see what structures emerge -- would demonstrate the platform's unique value. Start with the zeros as points in R^n (using spacing, derivative values, nearby zero structure as coordinates) and project via PCA/t-SNE.
+Close the proof gap.
 
-### Defer (build later)
+- [ ] **T5** -- Correction bound: identify C(L) = K(t(L)) - B(L), determine its asymptotic behavior, prove |C(L)| < K(t(L)) for all L
+- [ ] **D2** -- Rankin-Selberg check: compute L(1, f x f-bar) for low-lying Maass forms, check if B(L) is a sum of such values
+- [ ] **D3** -- q-series fitting: deeper analysis of modular parametrization
+- [ ] **D4** -- CM point evaluation: check algebraic values at Heegner points if D3 reveals structure
 
-- **D2 (spectral operators):** Requires careful numerical linear algebra; high complexity for Phase 1.
-- **D4 (modular forms):** Rich but self-contained; can be added as a module later.
-- **D6 (analogy engine):** Needs multiple analysis domains to exist first.
-- **D8 (Lean 4 pipeline):** No discoveries to formalize yet.
-- **D9 (projection theater):** Real-time rendering is polish; static projections from D1 suffice initially.
-- **D12 (adelic computation):** Specialized; defer until exploration suggests it is needed.
+**Exit criterion:** Either T5 succeeds (correction bounded) or D2 succeeds (Rankin-Selberg identification). If neither succeeds, documented obstruction analysis.
+
+### Phase 4: Proof Assembly (Formalization)
+
+Formalize whichever path succeeded.
+
+- [ ] Lean 4 formalization of the heat kernel identity (if T5 succeeded)
+- [ ] Lean 4 formalization of the Rankin-Selberg positivity (if D2 succeeded)
+- [ ] Connect to existing Lean 4 infrastructure (proof atlas, formalization tracker)
+
+**Exit criterion:** Machine-verified proof of B(L) > 0 for the specific test function, or documented obstruction that blocks formalization.
 
 ---
 
 ## Feature Prioritization Matrix
 
-Prioritized by: (Impact on RH research) x (Enables other features) / (Complexity)
+| Priority | Feature | Proof Value | Computational Cost | Risk | Phase |
+|----------|---------|------------|-------------------|------|-------|
+| **P0** | T2: Maass eigenvalue database | Critical (no heat kernel without eigenvalues) | LOW (use LMFDB) | LOW | 1 |
+| **P0** | T3: Eisenstein continuous spectrum | Critical (half the heat kernel trace) | HIGH (integral evaluation) | MEDIUM (convergence) | 1 |
+| **P0** | T1: Heat kernel trace assembly | Critical (the central object) | MEDIUM (sum + integral) | LOW (once T2, T3 work) | 1 |
+| **P1** | T4: Barrier comparison | Critical (validates the approach) | MEDIUM | MEDIUM (parameter ID) | 1 |
+| **P1** | T6: Selberg trace formula | High (provides geometric side) | HIGH | MEDIUM | 2 |
+| **P1** | T5: Correction bound | Critical (closes the proof) | VERY HIGH | HIGH (this is the hard part) | 3 |
+| **P2** | D1: GL(1)->GL(2) lift | High (conceptual bridge) | HIGH (mathematical) | HIGH (novel territory) | 2 |
+| **P2** | D2: Rankin-Selberg L-value | High (alternative proof path) | HIGH | MEDIUM | 3 |
+| **P2** | D6: Spectral-geometric verification | Medium (consistency check) | MEDIUM | LOW | 2 |
+| **P3** | D3: q-series fitting | Medium (diagnostic) | MEDIUM | LOW | 3 |
+| **P3** | D4: CM point evaluation | Medium (algebraic verification) | MEDIUM | LOW | 3 |
+| **P3** | D5: Laplacian eigenvalue computation | Low (verification only) | HIGH | MEDIUM | 2 |
 
-| Priority | Feature | Impact | Enables | Complexity | Score | Phase |
-|----------|---------|--------|---------|------------|-------|-------|
-| 1 | T1: Zeta evaluation | Critical | Everything | Medium | Highest | 1 |
-| 2 | T2: Zero computation | Critical | T8, D3, D5, D10, D11 | Medium | Highest | 1 |
-| 3 | T3: Critical line viz | High | User intuition | Low-Med | Very High | 1 |
-| 4 | T4: Domain coloring | High | User intuition | Low | Very High | 1 |
-| 5 | T5: Research workbench | High | D7, T6, T9 | Medium | High | 1 |
-| 6 | T8: Zero statistics | High | D3, D5, D11 | Medium | High | 1 |
-| 7 | D1: Higher-dim framework | High | D9, D6 | High | High (strategic) | 1-2 |
-| 8 | T7: Related functions | Medium-High | D4, D10, D12 | Medium | Medium-High | 2 |
-| 9 | D3: RMT laboratory | High | D6 | Medium | Medium-High | 2 |
-| 10 | D2: Spectral operators | High | D6 | High | Medium | 2 |
-| 11 | T9: Verification framework | Medium-High | D7, D8 | Medium | Medium | 2 |
-| 12 | D5: Information theory | Medium | D6 | Medium | Medium | 2 |
-| 13 | T6: Reproducibility | Medium | All experiments | Low-Med | Medium | 2 |
-| 14 | D10: Trace formulas | Medium-High | D6 | Med-High | Medium | 3 |
-| 15 | D11: Anomaly detection | Medium | Research velocity | Medium | Medium | 2-3 |
-| 16 | D7: AI conjecture gen | High | D8 | Medium | Medium (needs data) | 3 |
-| 17 | D4: Modular forms | Medium-High | D6 | High | Medium-Low | 3 |
-| 18 | D9: Projection theater | Medium | User experience | High | Medium-Low | 3 |
-| 19 | D6: Analogy engine | Very High | Proof discovery | High | Low (needs prereqs) | 4 |
-| 20 | D8: Lean 4 pipeline | Critical (later) | Proof rigor | High | Low (needs results) | 4 |
-| 21 | D12: Adelic computation | Medium | D6 | High | Low | 4+ |
+**Priority key:**
+- P0: Cannot proceed without this. Build first.
+- P1: Required for proof, but depends on P0 features.
+- P2: Parallel proof path or critical verification.
+- P3: Diagnostic/exploratory, valuable but not blocking.
 
 ---
 
-## Key Feature Design Decisions
+## Mathematical Correctness Considerations
 
-### Zeta Evaluation: Wrapping, Not Reimplementing
+### The Non-Compact Surface Problem
 
-mpmath's `zeta()` supports arbitrary precision and is pure Python (portable, debuggable). For performance-critical paths (computing thousands of zeros), python-flint provides bindings to Arb/FLINT, which is orders of magnitude faster. The platform should abstract over both backends with a unified API:
+SL(2,Z)\H is not compact -- it has a cusp at infinity. This is not a minor technical detail; it fundamentally changes the spectral theory:
 
-```python
-# User-facing API
-zeta(s, precision=50)          # 50 decimal digits, uses mpmath
-zeta(s, precision=50, fast=True)  # uses Arb if available, falls back to mpmath
-```
+1. **Discrete spectrum:** Maass cusp forms give eigenvalues lambda_n = 1/4 + r_n^2 with r_n > 0. The first eigenvalue r_1 ~ 9.534 corresponds to lambda_1 ~ 91.14, far above the continuous spectrum threshold 1/4.
 
-### Visualization: Interactive, Not Static
+2. **Continuous spectrum:** Starts at lambda = 1/4 and extends to infinity. Parametrized by Eisenstein series E(z, 1/2+ir) for r >= 0. The heat kernel trace contribution is: (1/(4*pi)) * integral_0^inf exp(-(1/4+r^2)*t) * (-phi'/phi)(1/2+ir) dr, where phi(s) = Gamma(s-1/2)*zeta(2s-1) / (Gamma(s)*zeta(2s)) is the scattering matrix entry.
 
-The user explores visually. Static matplotlib plots are table stakes but insufficient. Need:
-- **Zoom:** Into critical strip regions, around specific zeros
-- **Parameter sliders:** Vary precision, number of terms, function parameters
-- **Linked views:** Selecting a zero in one view highlights it in others
-- **Animation:** Watch how structures change as parameters vary
+3. **Residual spectrum:** For SL(2,Z), there is no residual spectrum (the constant function with eigenvalue 0 contributes a separate term).
 
-Plotly for interactive 2D/3D. Matplotlib for publication-quality statics. Custom WebGL only if Plotly proves insufficient for projection theater (Phase 3+).
+All three contributions must be included. The continuous spectrum dominates at small t (where exp(-t/4) ~ 1) and the discrete spectrum dominates at large t.
 
-### Higher-Dimensional Framework: Start Concrete, Abstract Later
+### The Parameter Identification Problem
 
-Don't build a general N-dimensional computing framework first. Start with specific higher-dimensional representations of zeta zeros:
+Session 47 identified that the barrier's test function (Lorentzian) is "morally" a heat kernel. But the precise mapping t = t(L) is not established. Candidates:
+- t = L (direct identification)
+- t = L/(2*pi) (normalization by Selberg convention)
+- t = L^2/(4*pi^2) (quadratic mapping from Lorentzian to Gaussian)
+- t determined implicitly by matching the first moment
 
-1. **Zeros as points in R^k:** Each zero gets k coordinates (imaginary part, spacing to neighbors, derivative values, local statistics). Project to 2D via PCA, t-SNE, UMAP.
-2. **Zeta as function on higher-dim spaces:** Evaluate on adelic completions, Hilbert spaces.
-3. **Abstract framework:** Generalize once we know what representations are useful.
+Getting this wrong invalidates all subsequent computations. Phase 1 must resolve this.
 
-### Research Workbench: Structured Data, Not Just Notebooks
+### Convergence of the Discrete Sum
 
-Jupyter notebooks are good for exploration but poor for structured research tracking. The workbench should store:
+The heat kernel trace sum_n exp(-lambda_n * t) converges absolutely for t > 0. But:
+- For small t: many eigenvalues contribute, Weyl's law gives N(lambda) ~ lambda/12 for SL(2,Z), so convergence is like sum exp(-n*t/12) which converges but slowly.
+- For large t: only the first few eigenvalues matter, convergence is rapid.
+- The barrier operates at L = log(lambda^2) where lambda^2 ranges from 50 to 50,000, so L ranges from ~3.9 to ~10.8. The corresponding t values determine how many Maass eigenvalues are needed: for t ~ 4, roughly 20-30 eigenvalues suffice for 10-digit accuracy; for t ~ 0.1, hundreds may be needed.
 
-- **Conjectures:** Formal statement, evidence for/against, status, confidence
-- **Experiments:** Parameters, results, interpretation, links to related experiments
-- **Observations:** Freeform notes tagged to specific computations
-- **Evidence chains:** Which experiments support/contradict which conjectures
+### The Scattering Determinant
 
-This is essentially a research knowledge graph with computation nodes.
+For SL(2,Z), the scattering matrix is 1x1 (one cusp) and equals:
+phi(s) = sqrt(pi) * Gamma(s - 1/2) * zeta(2s - 1) / (Gamma(s) * zeta(2s))
 
----
+Its logarithmic derivative -(phi'/phi)(1/2+ir) involves:
+- digamma function values
+- zeta'/zeta (logarithmic derivative of zeta) at 1+2ir and 2ir
+- This means the continuous spectrum contribution to the heat kernel implicitly involves the zeros of zeta(s) via zeta'/zeta. This creates a potential circularity: we are trying to prove something about zeta zeros using a heat kernel whose continuous spectrum depends on zeta zeros.
 
-## Competitive Landscape (What Already Exists)
-
-Existing tools the platform must exceed in the RH research niche:
-
-| Tool | Strengths | Gaps (our opportunity) |
-|------|-----------|----------------------|
-| **SageMath** | Comprehensive CAS, number theory, modular forms, L-functions | No cross-disciplinary workflow, no higher-dim projection, no research tracking, clunky visualization |
-| **Mathematica** | Beautiful visualization, symbolic + numeric, Manipulate for interactivity | Proprietary, no formalization pipeline, no AI guidance, not designed for research tracking |
-| **LMFDB** | Massive database of L-functions, modular forms, number fields, elliptic curves | Read-only database, no computation, no exploration workflow |
-| **mpmath** | Best arbitrary-precision Python library, excellent zeta support | Library not platform, no visualization, no workflow |
-| **PARI/GP** | Fast number theory computation, designed for research | Archaic UI, limited visualization, no cross-disciplinary tools |
-| **Lean 4 + Mathlib** | Machine-verified proofs, growing number theory library | No computational exploration, formalization only, steep learning curve |
-
-**The gap we fill:** No existing tool combines arbitrary-precision zeta computation, interactive visualization, cross-disciplinary analysis (spectral, RMT, information theory, higher-dim geometry), structured research tracking, AI-guided conjecture generation, and formal verification pipeline -- all focused on RH.
+**This is the most critical mathematical subtlety.** It must be resolved in Phase 1 -- either by showing the continuous spectrum contribution is small enough to bound independently, or by finding a regularization that avoids zeta'/zeta.
 
 ---
 
-## Sources and Confidence Notes
+## Sources
 
-All findings in this document are based on training data (cutoff May 2025). Web verification tools were unavailable during research.
+- [Selberg trace formula](https://en.wikipedia.org/wiki/Selberg_trace_formula) -- overview of spectral/geometric decomposition
+- [Marklof: Selberg's Trace Formula, An Introduction](https://people.maths.bris.ac.uk/~majm/bib/selberg.pdf) -- detailed formulas for SL(2,Z)
+- [Booker-Strombergsson: Numerical computations with the trace formula](https://www2.math.uu.se/~ast10761/papers/stfz14march06.pdf) -- rigorous eigenvalue verification
+- [Lowry-Duda: Computing and Verifying Maass Forms](https://davidlowryduda.com/wp-content/uploads/2021/02/Rutgers2021_maass_forms.pdf) -- Maass eigenvalue tables, computational methods
+- [Lowry-Duda: Numerically computing Petersson inner products](https://davidlowryduda.com/numerical-petersson/) -- smoothed Riesz means for L-function residues
+- [PARI/GP Modular forms catalog](https://pari.math.u-bordeaux.fr/dochtml/html/Modular_forms.html) -- mfpetersson, lfunmf, mfhecke functions
+- [Cohen: Modular Forms in Pari/GP](https://arxiv.org/abs/1810.00547) -- Petersson inner products, Eisenstein expansions
+- [Pollack: The Rankin-Selberg Method, A User's Guide](https://mathweb.ucsd.edu/~apollack/rankin-selberg.pdf) -- L(s, f x g) integral representations
+- [LMFDB Maass forms](https://www.lmfdb.org/ModularForm/GL2/Q/Maass/) -- database of computed eigenvalues
+- [Hida: Values of modular forms at CM points](https://www.math.ucla.edu/~hida/Kyoto2.pdf) -- algebraic values at CM points
+- [Springer: Algorithm for eigenvalues on hyperbolic surfaces](https://link.springer.com/article/10.1007/s00220-012-1557-1) -- spectral zeta functions, heat kernel coefficients
+- [Grigor'yan: Heat kernel on hyperbolic space](https://www.math.uni-bielefeld.de/~grigor/nog.pdf) -- explicit formulas, positivity via maximum principle
+- [Mueller: Spectral theory of automorphic forms](https://www.math.uni-bonn.de/people/mueller/skripte/specauto.pdf) -- spectral decomposition with continuous spectrum
 
-- **mpmath capabilities:** HIGH confidence -- well-established library, stable API, personally familiar from training data
-- **Lean 4 / Mathlib status:** MEDIUM confidence -- rapidly evolving ecosystem, specific capabilities may have changed
-- **LMFDB data availability:** HIGH confidence -- stable public database with well-documented API
-- **Feature priorities:** MEDIUM confidence -- based on domain knowledge of RH research approaches, but actual user workflow may differ
-- **Higher-dimensional approach novelty:** HIGH confidence that this is genuinely uncommon in existing tools; LOW confidence on specific implementation approach (this is inherently exploratory)
-- **Competitive landscape:** MEDIUM confidence -- tools are well-known but exact current feature sets may have evolved
+---
+*Feature research for: v2.0 The Modular Barrier*
+*Researched: 2026-04-04*

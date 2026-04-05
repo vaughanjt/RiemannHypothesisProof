@@ -1,730 +1,509 @@
-# Architecture Patterns
+# Architecture: v2.0 Heat Kernel / Modular Barrier Proof Modules
 
-**Domain:** Hybrid computational research + formal verification platform for the Riemann Hypothesis
-**Researched:** 2026-03-18
-**Confidence:** MEDIUM (based on training data; web search unavailable for verification of latest library versions)
+**Domain:** Heat kernel interpretation of Connes barrier on SL(2,Z)\H, correction bounds, proof assembly
+**Researched:** 2026-04-04
+**Confidence:** MEDIUM (mathematical structure is well-understood; implementation patterns inferred from codebase analysis and domain knowledge)
 
-## System Overview
+## Existing Architecture Summary
+
+The v1.0 platform has a clean, function-based architecture:
 
 ```
-+------------------------------------------------------------------+
-|                     RIEMANN PLATFORM                              |
-|                                                                   |
-|  +---------------------+     +-----------------------------+     |
-|  |  RESEARCH WORKBENCH |     |    VISUALIZATION LAYER      |     |
-|  |  (Orchestration)    |<--->|    (Projection Pipeline)     |     |
-|  |                     |     |                              |     |
-|  | - Session mgmt      |     | - 2D/3D rendering           |     |
-|  | - Conjecture tracker |     | - N-dim projection          |     |
-|  | - Experiment log     |     | - Interactive exploration    |     |
-|  | - Proof state mgmt   |     | - Animation / parameter     |     |
-|  +----------+----------+     |   sweeps                    |     |
-|             |                +-------------+---------------+     |
-|             |                              |                      |
-|             v                              v                      |
-|  +---------------------+     +-----------------------------+     |
-|  | COMPUTATION ENGINE  |<--->|  DATA / OBJECT STORE        |     |
-|  | (Core Math)         |     |  (Mathematical Objects)      |     |
-|  |                     |     |                              |     |
-|  | - Zeta evaluation   |     | - Computed zeros            |     |
-|  | - Zero-finding      |     | - Spectral data             |     |
-|  | - Spectral operators|     | - Matrices / operators      |     |
-|  | - Random matrices   |     | - Conjecture records        |     |
-|  | - Modular forms     |     | - Session state             |     |
-|  | - Info-theoretic    |     | - Cached computations       |     |
-|  +----------+----------+     +-----------------------------+     |
-|             |                                                     |
-|             v                                                     |
-|  +---------------------+     +-----------------------------+     |
-|  | ANALYSIS MODULES    |     |  FORMALIZATION PIPELINE     |     |
-|  | (Cross-Disciplinary)|     |  (Lean 4)                    |     |
-|  |                     |     |                              |     |
-|  | - Pattern detection  |---->| - Statement translator      |     |
-|  | - Anomaly surfacing  |     | - Proof skeleton generator  |     |
-|  | - Correlation finder |     | - Mathlib integration       |     |
-|  | - Statistical tests  |     | - Proof state tracker       |     |
-|  +---------------------+     +-----------------------------+     |
-|                                                                   |
-+------------------------------------------------------------------+
+src/riemann/
+  engine/         # Core computation: zeta, zeros, L-functions, precision
+  analysis/       # Domain modules: spectral, trace_formula, modular_forms, ncg, rmt, ...
+  embedding/      # N-dimensional embedding, HDF5 storage
+  viz/            # Plotly visualization, projection theater
+  workbench/      # SQLite-backed conjecture/experiment/evidence tracking
+  formalization/  # Lean 4 translator, WSL2 builder, triage
+  types.py        # ComputationResult, ZetaZero, EvidenceLevel
+  config.py       # DEFAULT_DPS=50, project paths
 ```
 
-### Layered Architecture
+**Key patterns to preserve:**
+- Function-based APIs (no classes), returning dataclasses
+- `validated_computation` for precision-critical math (P-vs-2P)
+- `stress_test` for pattern verification across precision levels
+- mpmath for arbitrary precision, numpy/scipy for matrix operations
+- Workbench for conjecture/experiment/evidence chain tracking
+- Lean 4 formalization pipeline via WSL2 with domain-aware Mathlib import selection
 
-The platform follows a **layered architecture with plugin modules**, organized bottom-up:
+## Recommended Architecture for v2.0
 
-1. **Layer 0 -- Data/Object Store**: Persistence and caching of mathematical objects
-2. **Layer 1 -- Computation Engine**: Core mathematical evaluation (zeta, L-functions, operators)
-3. **Layer 2 -- Analysis Modules**: Cross-disciplinary analysis (pluggable)
-4. **Layer 3 -- Visualization Layer**: Projection pipeline and interactive rendering
-5. **Layer 4 -- Research Workbench**: Session orchestration, conjecture tracking, experiment management
-6. **Layer 5 -- Formalization Pipeline**: Lean 4 integration (separate process, loosely coupled)
+### New Module Placement
 
-Dependencies flow downward. The Formalization Pipeline sits beside the stack rather than on top -- it consumes outputs from any layer but runs in a separate Lean 4 process.
+All new v2.0 code lives in `src/riemann/analysis/` as new files, following the existing flat-module convention. No new top-level packages.
 
-## Component Responsibilities
+```
+src/riemann/analysis/
+  (existing)
+  trace_formula.py       # Weil explicit formula, Chebyshev psi
+  modular_forms.py       # Eisenstein series, Delta, q-expansion, Hecke eigenvalues
+  spectral.py            # Berry-Keating Hamiltonian, spectrum comparison
+  ncg.py                 # Bost-Connes system
+  bost_connes_operator.py # Arithmetic operators (Hecke adjacency, BC Hamiltonian)
 
-### 1. Computation Engine (Core)
+  (NEW for v2.0)
+  heat_kernel.py         # Heat kernel on SL(2,Z)\H
+  selberg_trace.py       # Selberg trace formula (GL(2) trace formula)
+  rankin_selberg.py      # Rankin-Selberg L-functions, Petersson norm
+  cm_evaluation.py       # CM point evaluation at Heegner discriminants
+  barrier_bridge.py      # Correction bounds: heat trace minus actual barrier
+  proof_assembly.py      # Orchestrate proof chain, drive formalization
+```
 
-**Responsibility:** All numerical evaluation of mathematical functions and objects. This is the foundation everything else depends on.
+### Component Boundaries
 
-| Subcomponent | What It Does | Key Library |
-|---|---|---|
-| Zeta evaluator | Riemann zeta function at arbitrary precision | `mpmath` (zeta, zetazero) |
-| Zero finder | Locate non-trivial zeros on the critical strip | `mpmath` + custom Newton/bisection |
-| L-function evaluator | Dirichlet L-functions, Dedekind zeta | `mpmath` + custom |
-| Spectral operator engine | Construct and diagonalize operators (GUE, quantum graphs) | `numpy`/`scipy` for moderate dim; custom for symbolic |
-| Random matrix generator | GUE/GOE ensembles, eigenvalue statistics | `numpy` + custom |
-| Modular form evaluator | q-expansions, Hecke operators, modular symbols | Custom (possibly wrapping `sage` components) |
-| Information-theoretic measures | Entropy of zero spacings, mutual information, KL divergence | `scipy.stats` + custom |
+| Component | Responsibility | Reads From | Writes To |
+|-----------|---------------|------------|-----------|
+| `heat_kernel.py` | Compute K_t(z,z) on SL(2,Z)\H via spectral expansion; each term manifestly positive | `modular_forms.py` (Eisenstein), `data/maass_forms.json` (spectral params) | Returns `HeatKernelResult` dataclass |
+| `selberg_trace.py` | Selberg trace formula: spectral side <-> geometric side; GL(1)->GL(2) lift of Weil explicit formula | `trace_formula.py` (Weil formula for comparison), `engine/zeros.py` (zeta zeros) | Returns `SelbergTraceResult` dataclass |
+| `rankin_selberg.py` | Compute L(s, f x f-bar) for cusp forms; verify Petersson norm positivity; check barrier = L-value identity | `modular_forms.py` (q-expansion, Hecke eigenvalues), `engine/lfunctions.py` (Dirichlet L) | Returns `RankinSelbergResult` dataclass |
+| `cm_evaluation.py` | Evaluate barrier and heat kernel at CM points tau_D for Heegner discriminants; extract algebraic values | `heat_kernel.py`, `modular_forms.py`, `engine/zeta.py` | Returns `CMEvaluationResult` dataclass |
+| `barrier_bridge.py` | Bound |K_t(trace) - B(L)|; the correction between heat kernel trace and actual Connes barrier | `heat_kernel.py`, `selberg_trace.py`, `engine/precision.py` (validated_computation) | Returns `CorrectionBoundResult` dataclass |
+| `proof_assembly.py` | Chain: heat positivity + correction bound -> barrier positivity; register conjectures/experiments in workbench; drive Lean formalization | `barrier_bridge.py`, `workbench/` (conjecture, experiment, evidence), `formalization/` (translator, tracker) | Workbench DB entries, Lean files |
 
-**Boundary rule:** The computation engine NEVER does visualization. It returns mathematical objects (numbers, arrays, matrices, symbolic expressions). It knows nothing about how results will be displayed.
+## Data Flow
 
-**Precision contract:** All functions accept a `precision` parameter (number of decimal digits). Default: 50 digits. The engine uses `mpmath.mp.dps` to set working precision. Functions that mix mpmath (arbitrary precision) and numpy (machine precision) must clearly document which regime they operate in.
+### Primary Proof Pipeline
 
-### 2. Data / Object Store
+```
+                    MATHEMATICAL DEPENDENCY CHAIN
+                    =============================
 
-**Responsibility:** Persist, cache, and retrieve mathematical objects. Avoid recomputation of expensive results.
+1. SPECTRAL DATA (Foundation)
+   +-----------------------+     +-------------------------+
+   | engine/zeros.py       |     | data/maass_forms.json   |
+   | (zeta zeros rho_n)    |     | (Maass eigenvalues r_j) |
+   +-----------+-----------+     +------------+------------+
+               |                              |
+               v                              v
+2. MODULAR SURFACE COMPUTATIONS
+   +---------------------------+     +------------------------+
+   | heat_kernel.py            |     | selberg_trace.py       |
+   | K_t(z,z) = spectral sum  |     | GL(2) trace formula    |
+   | = 1/(4pi*t)              |     | spectral <-> geometric |
+   |   + Sigma_j h(r_j,t)     |     | lifts Weil explicit    |
+   |   + Eisenstein integral   |     +----------+-------------+
+   +-----------+---------------+                |
+               |                                |
+               v                                v
+3. POSITIVITY VERIFICATION
+   +---------------------------+     +------------------------+
+   | rankin_selberg.py         |     | cm_evaluation.py       |
+   | L(1, f x f-bar) > 0      |     | Algebraic values at    |
+   | Petersson norm check      |     | tau_D, D = -3,-4,...   |
+   +---------------------------+     +-----------+------------+
+                                                 |
+               +------ all feed into ------+     |
+               v                           v     v
+4. CORRECTION BOUNDS
+   +--------------------------------------------------+
+   | barrier_bridge.py                                 |
+   | |heat_trace - barrier| < epsilon                  |
+   | Uses validated_computation for rigorous bounds    |
+   +---------------------------+-----------------------+
+                               |
+                               v
+5. PROOF ASSEMBLY
+   +--------------------------------------------------+
+   | proof_assembly.py                                 |
+   | Chain: (heat positivity) + (correction < margin)  |
+   |   -> barrier > 0 for all L                        |
+   | Registers in workbench, drives Lean formalization  |
+   +--------------------------------------------------+
+```
 
-| Concern | Approach |
-|---|---|
-| Zero database | SQLite table of known zeros (index, real part, imaginary part, precision verified) |
-| Computation cache | Content-addressed store keyed by (function, parameters, precision) |
-| Session state | JSON/YAML files per research session |
-| Conjecture records | Structured YAML with status, evidence, counterexample attempts |
-| Large arrays | NumPy `.npy` / `.npz` files for matrices and spectral data |
+### Integration Points with Existing Code
 
-**Boundary rule:** The store is a dumb persistence layer. It does not compute, analyze, or interpret. Components request objects by key; the store returns them or signals "not cached."
+**1. heat_kernel.py -> modular_forms.py**
 
-**Why SQLite (not Postgres, not flat files for zeros):** The project is a local research tool (explicitly out of scope: web deployment). SQLite is zero-config, single-file, supports SQL queries over the zero database (e.g., "all zeros with imaginary part between 1000 and 2000"), and handles millions of rows. No server process needed.
+The heat kernel on SL(2,Z)\H decomposes as:
 
-### 3. Analysis Modules (Pluggable)
+```
+K_t(z,z) = (constant term) + (Maass cusp form contribution) + (Eisenstein contribution)
+```
 
-**Responsibility:** Cross-disciplinary analysis that looks for patterns, anomalies, and correlations in computed data. This is where the unconventional approach lives.
+The Eisenstein contribution needs the existing `eisenstein_series()` function from `modular_forms.py` for the holomorphic part. The Maass form contribution uses spectral parameters already cached in `data/maass_forms.json` (fetched from LMFDB by the existing `lmfdb_client.py`).
 
-Each module is a **plugin** with a standard interface:
-
+**Integration pattern:**
 ```python
-class AnalysisModule(Protocol):
-    """Standard interface for cross-disciplinary analysis modules."""
-
-    @property
-    def name(self) -> str: ...
-
-    @property
-    def domain(self) -> str:
-        """e.g., 'spectral_theory', 'random_matrices', 'information_theory'"""
-        ...
-
-    def analyze(self, data: MathObject, params: dict) -> AnalysisResult: ...
-
-    def visualizable_outputs(self) -> list[str]:
-        """Names of outputs that can be sent to the visualization layer."""
-        ...
+# heat_kernel.py uses existing modular_forms infrastructure
+from riemann.analysis.modular_forms import eisenstein_series, compute_q_expansion
+from riemann.analysis.lmfdb_client import query_lmfdb  # for Maass form data
+from riemann.engine.precision import validated_computation
 ```
 
-**Planned modules (build order):**
+**2. selberg_trace.py -> trace_formula.py**
 
-| Module | Domain | What It Does | Depends On |
-|---|---|---|---|
-| `ZeroSpacingAnalyzer` | Statistics | Nearest-neighbor spacing, pair correlation of zeros | Computation Engine (zeros) |
-| `GUEComparator` | Random Matrices | Compare zero statistics to GUE predictions (Montgomery-Odlyzko) | ZeroSpacingAnalyzer + Random Matrix Generator |
-| `SpectralOperatorModule` | Spectral Theory | Construct candidate operators whose eigenvalues model zeros | Computation Engine (spectral) |
-| `EntropyAnalyzer` | Information Theory | Entropy measures on zero distributions, detect structure | ZeroSpacingAnalyzer |
-| `ModularFormBridge` | Number Theory | Connections between modular forms and L-function zeros | Computation Engine (modular forms) |
-| `HighDimGeometryModule` | Geometry | Embed zeros / spectral data in higher-dimensional spaces, look for structure | Multiple engines |
-| `AdelicAnalyzer` | Algebraic Number Theory | Adelic completions, local-global connections | Advanced -- likely Phase 3+ |
+The existing `trace_formula.py` implements the Weil explicit formula (GL(1) trace formula). The Selberg trace formula is the GL(2) analog. The new module extends — not replaces — the existing one.
 
-**Boundary rule:** Modules receive data, return results. They do not persist data (the workbench handles that). They do not render visualizations (they declare what outputs are visualizable, and the visualization layer handles rendering).
+Key relationship: The Weil explicit formula connects zeta zeros to primes. The Selberg trace formula connects Laplacian eigenvalues on SL(2,Z)\H to closed geodesics. The GL(1)->GL(2) lift shows how the barrier, originally a GL(1) object (sum over zeta zeros), becomes a GL(2) object (heat kernel trace on the modular surface).
 
-### 4. Visualization Layer (Projection Pipeline)
-
-**Responsibility:** Render mathematical objects and analysis results as interactive 2D/3D visualizations. Handle projection from N-dimensional spaces.
-
-**Sub-pipeline:**
-
-```
-N-dim math object
-       |
-       v
-  [Projection Engine]  -- PCA, t-SNE, UMAP, stereographic, custom
-       |
-       v
-  3D scene graph
-       |
-       v
-  [Renderer]  -- Plotly (interactive 3D), Matplotlib (publication 2D),
-       |          or custom WebGL via Panel/Bokeh
-       v
-  Interactive widget (Pan, zoom, rotate, parameter sliders)
-```
-
-| Subcomponent | What It Does | Key Library |
-|---|---|---|
-| Projection engine | Dimensionality reduction / geometric projection | Custom + `scikit-learn` (PCA, t-SNE, UMAP) |
-| 3D renderer | Interactive 3D plots with rotation, zoom | `plotly` (primary), `pyvista` (meshes) |
-| 2D renderer | High-quality 2D plots and complex plane views | `matplotlib` |
-| Dashboard / widgets | Parameter sliders, animation controls, side-by-side views | `panel` (HoloViz ecosystem) |
-| Complex plane viewer | Specialized: domain coloring, phase portraits, zero locations | Custom on `matplotlib` |
-
-**Why Plotly for 3D (not Mayavi, not raw Matplotlib 3d):** Plotly provides interactive 3D in the browser with zoom/rotate/hover out of the box. It works in Jupyter notebooks (the primary interface) without a separate GUI framework. Matplotlib 3D is not truly interactive. Mayavi requires VTK and is heavyweight for a research tool.
-
-**Why Panel for dashboards (not Streamlit, not Dash):** Panel integrates natively with Jupyter, supports Matplotlib and Plotly objects directly, and allows building dashboards that can also run standalone. Streamlit forces a separate server model. Dash is Plotly-specific.
-
-**Boundary rule:** The visualization layer NEVER computes mathematical results. It receives arrays/objects and renders them. If a visualization requires a derived quantity (e.g., nearest-neighbor spacings from a list of zeros), that computation happens in the analysis module, not in the visualization code.
-
-### 5. Research Workbench (Orchestration)
-
-**Responsibility:** The user-facing layer that ties everything together. Manages research sessions, tracks conjectures, logs experiments, and provides the interactive exploration experience.
-
-| Subcomponent | What It Does |
-|---|---|
-| Session manager | Create/resume research sessions with full state |
-| Experiment runner | Execute a defined computation + analysis + visualization pipeline |
-| Conjecture tracker | Record conjectures with status (speculative / computational evidence / formalized / proved / disproved) |
-| Insight journal | Timestamped log of observations, linked to experiments |
-| Notebook integration | Jupyter kernel extensions / magic commands for common operations |
-| Claude interface layer | Structured prompts for Claude to perform formalism on demand |
-
-**Primary interface: Jupyter Notebooks.** The user interacts through notebooks. The workbench provides:
-- Magic commands: `%riemann.zeros 1000` (compute first 1000 zeros)
-- Rich display: Custom `_repr_html_` for mathematical objects
-- Session context: Automatic logging of what was computed/observed
-
-**Why Jupyter (not a custom GUI, not a CLI):** The user is technically capable with Python. Jupyter provides the right balance: code when needed, rich output always, reproducible sessions, inline visualization. A custom GUI would be enormous to build and less flexible. A pure CLI cannot show visualizations.
-
-**Boundary rule:** The workbench orchestrates but does not implement math or rendering. It calls the computation engine, passes results to analysis modules, and sends outputs to visualization. It is the "glue" layer.
-
-### 6. Formalization Pipeline (Lean 4)
-
-**Responsibility:** Translate computational findings into formal Lean 4 statements and assist with proof construction. This is a separate, loosely coupled system.
-
-| Subcomponent | What It Does |
-|---|---|
-| Statement translator | Convert conjectures from workbench format to Lean 4 syntax |
-| Proof skeleton generator | Generate Lean 4 proof scaffolding with `sorry` placeholders |
-| Mathlib bridge | Interface with Mathlib's existing number theory, analysis, topology |
-| Proof state tracker | Track which lemmas are proved, which have `sorry`, overall progress |
-| Verification runner | Invoke `lean` CLI to typecheck proofs, report errors back to workbench |
-
-**Integration model:** The Lean 4 pipeline is a **separate process** communicating with the Python platform via:
-1. **File-based exchange:** Python writes `.lean` files, invokes `lean` CLI, reads results
-2. **Structured output:** Lean errors/warnings parsed back into Python objects
-3. **Lake project:** The Lean code lives in its own `lean/` directory with a proper `lakefile.lean`
-
-**Why file-based (not a server, not FFI):** Lean 4 compilation is a batch process. There is no stable Python-Lean FFI. The `lean` CLI and Lake build system are the supported interfaces. File-based exchange is simple, debuggable, and reliable. A Language Server Protocol (LSP) connection is possible for richer interaction (hover info, goal states) but is a later optimization, not essential for MVP.
-
-**Why Lean 4 (confirmed from PROJECT.md):** Already decided. Lean 4 has the most active proof formalization community (Mathlib), strong tooling, and the best ecosystem for new mathematical formalization projects.
-
-## Project Structure
-
-```
-riemann/
-|-- pyproject.toml                 # Project config, dependencies
-|-- src/
-|   |-- riemann/
-|   |   |-- __init__.py
-|   |   |-- engine/                # Layer 1: Computation Engine
-|   |   |   |-- __init__.py
-|   |   |   |-- zeta.py            # Zeta function evaluation
-|   |   |   |-- zeros.py           # Zero-finding algorithms
-|   |   |   |-- lfunctions.py      # L-function evaluation
-|   |   |   |-- spectral.py        # Spectral operator construction
-|   |   |   |-- random_matrix.py   # GUE/GOE generation
-|   |   |   |-- modular.py         # Modular form evaluation
-|   |   |   |-- precision.py       # Precision management context
-|   |   |
-|   |   |-- store/                 # Layer 0: Data/Object Store
-|   |   |   |-- __init__.py
-|   |   |   |-- cache.py           # Computation cache (content-addressed)
-|   |   |   |-- zeros_db.py        # SQLite zero database
-|   |   |   |-- objects.py         # Math object serialization
-|   |   |   |-- sessions.py        # Session state persistence
-|   |   |
-|   |   |-- analysis/              # Layer 2: Analysis Modules (pluggable)
-|   |   |   |-- __init__.py
-|   |   |   |-- base.py            # AnalysisModule protocol + AnalysisResult
-|   |   |   |-- spacing.py         # Zero spacing statistics
-|   |   |   |-- gue_comparison.py  # GUE comparison
-|   |   |   |-- spectral_module.py # Spectral theory analysis
-|   |   |   |-- entropy.py         # Information-theoretic analysis
-|   |   |   |-- modular_bridge.py  # Modular form connections
-|   |   |   |-- highdim.py         # Higher-dimensional embedding/analysis
-|   |   |
-|   |   |-- viz/                   # Layer 3: Visualization Layer
-|   |   |   |-- __init__.py
-|   |   |   |-- projection.py      # N-dim -> 2D/3D projection engine
-|   |   |   |-- complex_plane.py   # Domain coloring, phase portraits
-|   |   |   |-- plots_3d.py        # Interactive 3D visualization
-|   |   |   |-- plots_2d.py        # 2D plots (zero distribution, spacing histograms)
-|   |   |   |-- dashboard.py       # Panel dashboard builder
-|   |   |   |-- styles.py          # Consistent visual theming
-|   |   |
-|   |   |-- workbench/             # Layer 4: Research Workbench
-|   |   |   |-- __init__.py
-|   |   |   |-- session.py         # Session management
-|   |   |   |-- experiment.py      # Experiment runner
-|   |   |   |-- conjecture.py      # Conjecture tracker
-|   |   |   |-- journal.py         # Insight journal
-|   |   |   |-- magics.py          # Jupyter magic commands
-|   |   |   |-- display.py         # Rich display formatters
-|   |   |
-|   |   |-- lean/                  # Layer 5: Lean bridge (Python side)
-|   |   |   |-- __init__.py
-|   |   |   |-- translator.py      # Python conjecture -> Lean statement
-|   |   |   |-- skeleton.py        # Proof skeleton generator
-|   |   |   |-- runner.py          # Lean CLI invocation + result parsing
-|   |   |   |-- state.py           # Proof state tracking
-|   |   |
-|   |   |-- types.py               # Shared type definitions (MathObject, etc.)
-|   |   |-- config.py              # Platform configuration
-|   |
-|-- lean/                          # Layer 5: Lean 4 project (separate)
-|   |-- lakefile.lean              # Lake build config
-|   |-- lean-toolchain             # Lean version pin
-|   |-- Riemann/
-|   |   |-- Basic.lean             # Basic definitions (zeta, zeros, RH statement)
-|   |   |-- Spectral.lean          # Spectral theory formalizations
-|   |   |-- Analytic.lean          # Analytic number theory
-|   |   |-- Main.lean              # Top-level imports
-|
-|-- notebooks/                     # Jupyter notebooks (primary interface)
-|   |-- 00_getting_started.ipynb
-|   |-- 01_exploring_zeros.ipynb
-|   |-- 02_gue_comparison.ipynb
-|   |-- explorations/              # User's experiment notebooks
-|
-|-- data/                          # Persistent data
-|   |-- zeros.db                   # SQLite zero database
-|   |-- cache/                     # Computation cache
-|   |-- sessions/                  # Session state files
-|
-|-- tests/
-|   |-- test_engine/
-|   |-- test_analysis/
-|   |-- test_viz/
-|   |-- test_store/
-|   |-- test_lean/
-```
-
-## Architectural Patterns
-
-### Pattern 1: Mathematical Object as First-Class Citizen
-
-**What:** All mathematical objects (zeros, functions, operators, matrices, analysis results) are represented as typed Python objects with standard interfaces, not raw arrays or dicts.
-
-**Why:** Enables consistent serialization, caching, visualization dispatch, and Lean translation. A `ZetaZero` object knows its index, value, and precision. An `AnalysisResult` knows what visualization types it supports.
-
-**Example:**
-
+**Integration pattern:**
 ```python
-from dataclasses import dataclass
-from mpmath import mpf, mpc
-from typing import Literal
-
-@dataclass(frozen=True)
-class ZetaZero:
-    """A non-trivial zero of the Riemann zeta function."""
-    index: int                    # Ordinal (1st, 2nd, ... zero)
-    value: mpc                    # The zero itself (should have real part ~0.5)
-    precision_digits: int         # Verified to this many digits
-    on_critical_line: bool | None # None = not yet verified to sufficient precision
-
-@dataclass
-class AnalysisResult:
-    """Output from an analysis module."""
-    module_name: str
-    description: str
-    data: dict                    # Named arrays/values
-    visualizable: list[str]       # Keys in data that can be visualized
-    metadata: dict                # Computation parameters, timing, etc.
+# selberg_trace.py references existing GL(1) trace formula
+from riemann.analysis.trace_formula import weil_explicit_psi, chebyshev_psi_exact
+from riemann.engine.zeros import compute_zero  # zeta zeros for comparison
 ```
 
-### Pattern 2: Precision Context Manager
+The Selberg trace formula has three sides:
+- **Spectral side:** Sum over Laplacian eigenvalues (Maass forms + Eisenstein series)
+- **Identity contribution:** Volume term (analogous to "x" in Weil explicit formula)
+- **Hyperbolic contribution:** Sum over closed geodesics (analogous to sum over primes)
+- **Elliptic/parabolic:** Correction terms from elliptic fixed points and cusps
 
-**What:** A context manager that sets arbitrary-precision arithmetic scope, ensuring precision is explicit and cannot accidentally leak between computations.
+The lift GL(1)->GL(2) maps: zeta zeros -> Maass eigenvalues, primes -> geodesic lengths.
 
-**Why:** mpmath uses a global `mp.dps` for precision. Mixing precisions silently causes wrong results. The context manager makes precision explicit and scoped.
+**3. rankin_selberg.py -> modular_forms.py + engine/lfunctions.py**
 
-**Example:**
+The Rankin-Selberg L-function L(s, f x f-bar) is computed from Hecke eigenvalues:
 
+```
+L(s, f x f-bar) = Product_p (1 - alpha_p^2 * p^{-s})^{-1} (1 - |alpha_p|^2 * p^{-s})^{-1} (1 - beta_p^2 * p^{-s})^{-1}
+```
+
+where alpha_p, beta_p come from Hecke eigenvalues a_p of the cusp form f.
+
+**Integration pattern:**
 ```python
-from contextlib import contextmanager
-import mpmath
-
-@contextmanager
-def precision(digits: int):
-    """Set mpmath precision for a block of computation."""
-    old_dps = mpmath.mp.dps
-    mpmath.mp.dps = digits + 10  # Extra guard digits
-    try:
-        yield
-    finally:
-        mpmath.mp.dps = old_dps
-
-# Usage:
-with precision(100):
-    z = mpmath.zetazero(1000)  # 100-digit precision
+# rankin_selberg.py builds on existing Hecke eigenvalue computation
+from riemann.analysis.modular_forms import hecke_eigenvalues, compute_q_expansion
+from riemann.engine.lfunctions import dirichlet_l  # for comparison/cross-checks
+from riemann.engine.precision import validated_computation
 ```
 
-### Pattern 3: Plugin Registry for Analysis Modules
+At s=1, this gives L(1, f x f-bar) = (4*pi)^k * ||f||^2 / (k-1)! where ||f|| is the Petersson norm. This is manifestly positive (norm squared), which is the key fact.
 
-**What:** Analysis modules register themselves with a central registry. The workbench discovers available modules at startup. New modules can be added without modifying existing code.
+**4. cm_evaluation.py -> heat_kernel.py + modular_forms.py**
 
-**Why:** The cross-disciplinary approach means new analysis angles will be added throughout the project. The plugin pattern avoids modifying a central switch statement every time.
+CM points are tau_D = (-b + sqrt(D)) / (2a) for negative discriminants D. The nine Heegner numbers D = -3, -4, -7, -8, -11, -19, -43, -67, -163 have class number 1, giving unique CM points.
 
-**Example:**
+At these points, modular forms take algebraic values (Kronecker's theorem). This gives exact, algebraic values for the heat kernel and barrier, bypassing numerical approximation entirely.
 
+**Integration pattern:**
 ```python
-# In analysis/__init__.py
-_registry: dict[str, type[AnalysisModule]] = {}
-
-def register(cls: type[AnalysisModule]) -> type[AnalysisModule]:
-    _registry[cls.name] = cls
-    return cls
-
-def get_module(name: str) -> AnalysisModule:
-    return _registry[name]()
-
-def list_modules() -> list[str]:
-    return list(_registry.keys())
-
-# In analysis/spacing.py
-@register
-class ZeroSpacingAnalyzer:
-    name = "zero_spacing"
-    domain = "statistics"
-    ...
+# cm_evaluation.py combines heat kernel with modular form evaluation
+from riemann.analysis.heat_kernel import heat_kernel_diagonal
+from riemann.analysis.modular_forms import compute_q_expansion, eisenstein_series
+from riemann.engine.zeta import zeta  # for barrier computation at CM points
 ```
 
-### Pattern 4: Projection Pipeline (N-dim to Visual)
+**5. barrier_bridge.py -> heat_kernel.py + selberg_trace.py + engine/precision.py**
 
-**What:** A composable pipeline that takes N-dimensional mathematical data, applies a projection method, and produces a renderable scene.
+This is the critical module: it bounds the difference between the heat kernel trace (which is manifestly positive, each term being positive) and the actual Connes barrier B(L).
 
-**Why:** Higher-dimensional exploration is central to the project's thesis. The projection step must be swappable (PCA today, custom geometric projection tomorrow) without rewriting visualization code.
+The correction has the form:
+```
+B(L) = Tr(K_t) - epsilon(t, L)
+```
 
-**Example:**
+If we can show epsilon(t, L) < Tr(K_t) for all L, then B(L) > 0. The bridge module computes epsilon rigorously using `validated_computation`.
 
+**Integration pattern:**
 ```python
-class ProjectionPipeline:
-    def __init__(self):
-        self.steps: list[ProjectionStep] = []
-
-    def add(self, step: ProjectionStep) -> "ProjectionPipeline":
-        self.steps.append(step)
-        return self
-
-    def project(self, data: NDArray, target_dim: int = 3) -> NDArray:
-        result = data
-        for step in self.steps:
-            result = step.transform(result)
-        assert result.shape[-1] == target_dim
-        return result
-
-# Usage:
-pipeline = (ProjectionPipeline()
-    .add(CenterAndScale())
-    .add(PCAProjection(n_components=3))
-)
-scene_data = pipeline.project(high_dim_embedding)
+# barrier_bridge.py is the convergence point
+from riemann.analysis.heat_kernel import heat_kernel_trace
+from riemann.analysis.selberg_trace import selberg_spectral_sum, selberg_geometric_sum
+from riemann.engine.precision import validated_computation
+from riemann.engine.validation import stress_test
 ```
 
-### Pattern 5: Experiment as Reproducible Unit
+**6. proof_assembly.py -> workbench + formalization**
 
-**What:** Every exploration the user runs is captured as an `Experiment` -- a reproducible record of computation + analysis + visualization with all parameters.
+This module orchestrates the proof chain and connects to the existing workbench and Lean 4 pipeline.
 
-**Why:** The user is exploring. They will want to re-run experiments with different parameters, compare results, and build on prior work. Without explicit experiment tracking, research becomes unreproducible.
+**Integration pattern:**
+```python
+# proof_assembly.py uses the full existing infrastructure
+from riemann.analysis.barrier_bridge import compute_correction_bound
+from riemann.workbench.conjecture import create_conjecture, update_conjecture
+from riemann.workbench.experiment import save_experiment
+from riemann.workbench.evidence import link_evidence
+from riemann.formalization.translator import generate_lean_file
+from riemann.formalization.tracker import update_formalization_state
+from riemann.formalization.builder import run_lake_build
+```
 
-**Example:**
+The proof chain produces three conjectures for the workbench:
+1. "Heat kernel trace on SL(2,Z)\H is positive" (evidence_level=2, conditional on spectral expansion convergence)
+2. "Correction |K_t - B(L)| bounded by C(t)" (evidence_level=1 or 2, depending on rigor of bound)
+3. "B(L) > 0 for all L" (evidence_level=2, conditional on 1+2)
+
+Each conjecture links to experiments (numerical verification at specific L values) via the evidence chain.
+
+## Dataclass Definitions
+
+New result types follow the existing pattern (see `TraceFormulaResult`, `SpectralResult`, `ModularFormResult`):
 
 ```python
 @dataclass
-class Experiment:
-    id: str                       # UUID
-    timestamp: datetime
-    description: str              # User's description
-    computation: dict             # What was computed, with all params
-    analysis: dict                # Which modules ran, with all params
-    results: dict                 # References to stored results
-    observations: list[str]       # User's notes
-    conjecture_refs: list[str]    # Linked conjectures
+class HeatKernelResult:
+    """Result of heat kernel computation on SL(2,Z)\H."""
+    z: complex                    # Point on upper half-plane
+    t: float                      # Heat time parameter
+    kernel_value: float           # K_t(z,z)
+    constant_term: float          # 1/(4*pi*t) contribution
+    maass_contribution: float     # Sum over Maass cusp forms
+    eisenstein_contribution: float # Eisenstein integral
+    n_maass_terms: int            # Number of Maass forms used
+    metadata: dict = field(default_factory=dict)
+
+@dataclass
+class SelbergTraceResult:
+    """Result of Selberg trace formula evaluation."""
+    test_function_name: str       # Which h(r) was used
+    spectral_sum: float           # Sum over eigenvalues
+    geometric_sum: float          # Sum over geodesics
+    identity_term: float          # Volume contribution
+    elliptic_term: float          # Elliptic fixed point contribution
+    parabolic_term: float         # Cusp contribution
+    discrepancy: float            # |spectral - geometric|
+    n_eigenvalues: int
+    n_geodesics: int
+    metadata: dict = field(default_factory=dict)
+
+@dataclass
+class RankinSelbergResult:
+    """Result of Rankin-Selberg L-function computation."""
+    weight: int
+    level: int
+    s: complex                    # Evaluation point
+    l_value: complex              # L(s, f x f-bar)
+    petersson_norm_sq: float | None  # ||f||^2 if s=1
+    n_euler_factors: int          # Number of primes in product
+    metadata: dict = field(default_factory=dict)
+
+@dataclass
+class CMEvaluationResult:
+    """Result of evaluation at a CM point."""
+    discriminant: int             # D (negative)
+    tau: complex                  # CM point in upper half-plane
+    heat_kernel_value: float      # K_t(tau, tau)
+    barrier_value: float          # B(L) at corresponding L
+    j_invariant: complex          # j(tau) — should be algebraic
+    is_algebraic: bool            # Whether result recognized as algebraic
+    algebraic_expression: str | None  # String representation if algebraic
+    metadata: dict = field(default_factory=dict)
+
+@dataclass
+class CorrectionBoundResult:
+    """Result of bounding heat trace minus actual barrier."""
+    L: float                      # Barrier parameter
+    t: float                      # Heat time parameter
+    heat_trace: float             # Tr(K_t) = spectral sum
+    barrier_value: float          # B(L) from direct computation
+    correction: float             # heat_trace - barrier_value
+    correction_bound: float       # Rigorous upper bound on |correction|
+    margin: float                 # heat_trace - correction_bound
+    proof_viable: bool            # margin > 0 means B(L) > 0 proved
+    validated: bool               # Whether P-vs-2P validation passed
+    metadata: dict = field(default_factory=dict)
 ```
 
-### Pattern 6: Lean File-Exchange Protocol
+## Patterns to Follow
 
-**What:** A structured protocol for Python-to-Lean communication via files. Python generates `.lean` files in a staging directory, invokes Lake, and parses structured output.
+### Pattern 1: Validated Spectral Sums
 
-**Why:** Clean separation between the Python exploration world and the Lean formalization world. No fragile FFI. Debuggable (you can open the `.lean` files and read them).
+Heat kernel and Selberg trace formulas involve infinite sums that must be truncated. Use `validated_computation` to verify truncation is adequate.
+
+**When:** Any computation involving spectral sums or geodesic sums.
 
 **Example:**
-
 ```python
-class LeanRunner:
-    def __init__(self, lean_project_dir: Path):
-        self.project_dir = lean_project_dir
-        self.staging_dir = lean_project_dir / "Riemann" / "Generated"
+def heat_kernel_diagonal(z, t, *, dps=None, validate=True, n_maass=50):
+    """Compute K_t(z,z) with P-vs-2P validation."""
+    if dps is None:
+        dps = DEFAULT_DPS
 
-    def submit(self, lean_code: str, filename: str) -> LeanResult:
-        filepath = self.staging_dir / filename
-        filepath.write_text(lean_code)
-        result = subprocess.run(
-            ["lake", "build"],
-            cwd=self.project_dir,
-            capture_output=True, text=True
-        )
-        return self._parse_result(result, filepath)
+    def _compute():
+        # Constant term
+        constant = mpmath.mpf(1) / (4 * mpmath.pi * mpmath.mpf(t))
+        # Maass contribution
+        maass_sum = _maass_spectral_sum(z, t, n_maass)
+        # Eisenstein contribution
+        eis = _eisenstein_contribution(z, t)
+        return constant + maass_sum + eis
+
+    return validated_computation(
+        _compute, dps=dps, validate=validate,
+        algorithm="heat_kernel_spectral_expansion",
+    )
+```
+
+### Pattern 2: Convergence Monitoring
+
+Since truncated sums are the core operation, every spectral sum function should return both the sum value and convergence diagnostics.
+
+**When:** All functions computing truncated infinite sums.
+
+**Example:**
+```python
+def _maass_spectral_sum(z, t, n_terms):
+    """Sum over Maass cusp form contributions with convergence tracking."""
+    terms = []
+    for j in range(n_terms):
+        term_j = _single_maass_term(z, t, spectral_params[j])
+        terms.append(term_j)
+
+    partial_sums = list(itertools.accumulate(terms))
+    # Check: last few partial sums should be converging
+    tail_variation = abs(partial_sums[-1] - partial_sums[-2])
+    return partial_sums[-1], {"tail_variation": tail_variation, "n_terms": n_terms}
+```
+
+### Pattern 3: Proof Chain via Workbench
+
+Each link in the proof chain creates a conjecture, runs experiments at multiple parameter values, and links evidence.
+
+**When:** proof_assembly.py orchestrating the full proof attempt.
+
+**Example:**
+```python
+def attempt_heat_positivity_proof(L_values, t_values, dps=100):
+    """Attempt to prove B(L) > 0 via heat kernel positivity."""
+    # Step 1: Create conjecture
+    conj_id = create_conjecture(
+        statement="B(L) = Tr(K_t) - eps(t,L) > 0 for all L > 0",
+        description="Heat kernel trace on SL(2,Z)\\H minus correction...",
+        evidence_level=0,  # Start as observation
+        tags=["heat_kernel", "barrier", "modular_surface"],
+    )
+
+    # Step 2: Run experiments at each (L, t) pair
+    for L in L_values:
+        for t in t_values:
+            result = compute_correction_bound(L, t, dps=dps)
+            exp_id = save_experiment(
+                description=f"Correction bound at L={L}, t={t}",
+                parameters={"L": L, "t": t, "dps": dps},
+                result_summary=f"margin={result.margin}, viable={result.proof_viable}",
+            )
+            link_evidence(conj_id, exp_id,
+                relationship="supports" if result.proof_viable else "neutral",
+                strength=min(result.margin / 0.1, 1.0),
+            )
+
+    # Step 3: If all viable, upgrade evidence level
+    # ...
 ```
 
 ## Anti-Patterns to Avoid
 
-### Anti-Pattern 1: God Notebook
+### Anti-Pattern 1: Circular Computation
 
-**What:** A single massive Jupyter notebook that does computation, analysis, visualization, and conjecture tracking all in one.
+**What:** Using B(L) > 0 (which IS the Riemann Hypothesis) anywhere in the proof chain.
 
-**Why bad:** Unreproducible, impossible to refactor, merge conflicts, and execution order bugs. The notebook becomes the platform instead of using the platform.
+**Why bad:** Sessions 35-42 showed every direct analytic approach is circular. The heat kernel approach works precisely because positivity comes from the structure of the spectral expansion (each term is positive), not from assuming RH.
 
-**Instead:** Notebooks import from the `riemann` package. Computation logic lives in `.py` files. Notebooks are thin orchestration layers that call library functions and display results.
+**Instead:** The proof chain must be: (1) heat kernel trace is positive because each Maass form term is |phi_j(z)|^2 * e^{-lambda_j * t} >= 0, (2) correction is bounded, (3) therefore barrier > 0. At no point should the code assume RH or use it as an intermediate step.
 
-### Anti-Pattern 2: Precision Confusion
+**Detection:** Any import of or reference to barrier positivity or zero location assumptions in heat_kernel.py, selberg_trace.py, or barrier_bridge.py is a red flag.
 
-**What:** Mixing mpmath (arbitrary precision) and numpy (machine float64) without clear boundaries, silently losing precision.
+### Anti-Pattern 2: Unvalidated Truncation
 
-**Why bad:** The entire point of the computation engine is numerical precision. A single accidental `float()` conversion can destroy 100 digits of precision, producing plausible but wrong results.
+**What:** Truncating a spectral sum at N terms without verifying convergence or bounding the tail.
 
-**Instead:** Functions are tagged as `arbitrary_precision` or `machine_precision`. The type system distinguishes `mpf`/`mpc` from `float`/`complex`. Conversion is always explicit with a `to_machine_float()` function that logs a warning.
+**Why bad:** The margin between heat trace and correction is only ~0.036 (from Session 43). If the truncation error exceeds this margin, the proof breaks.
 
-### Anti-Pattern 3: Visualization-Driven Computation
+**Instead:** Always use `validated_computation` and always compute tail bounds. The heat kernel sum converges exponentially in t (each term has factor e^{-lambda_j * t}), so the tail can be bounded using Weyl's law for eigenvalue asymptotics.
 
-**What:** Computing mathematical results inside visualization callbacks or rendering functions.
+### Anti-Pattern 3: Mixing Precision Regimes
 
-**Why bad:** Computations become unreproducible (tied to UI state), uncacheable, and untestable. Changing the visualization framework means rewriting computation code.
+**What:** Computing the heat kernel at 50 digits but the correction bound at 15 digits, or vice versa.
 
-**Instead:** Strict separation. Computation produces data. Visualization renders data. They never mix.
+**Why bad:** The proof requires the margin (heat_trace - correction_bound) to be certifiably positive. If the two quantities are computed at different precisions, the margin might be a precision artifact.
 
-### Anti-Pattern 4: Monolithic Lean Formalization
+**Instead:** Always compute heat_trace and correction_bound at the same precision, both validated. The `CorrectionBoundResult.validated` flag must be True for the result to be used in proof assembly.
 
-**What:** One huge `.lean` file that tries to formalize everything at once.
+### Anti-Pattern 4: Premature Lean Formalization
 
-**Why bad:** Lean compilation is slow. A monolithic file means recompiling everything for every change. It also makes it impossible to track progress on individual lemmas.
+**What:** Generating Lean 4 code before the numerical evidence is solid.
 
-**Instead:** Small, focused `.lean` files organized by topic. Each file formalizes one concept or one lemma. The proof state tracker knows which files exist and their status.
+**Why bad:** The formalization pipeline works well for translating established conjectures. If the mathematics is still uncertain, sorry-heavy Lean files waste time.
 
-## Data Flow
+**Instead:** proof_assembly.py should only trigger Lean generation after: (a) numerical experiments pass at multiple (L, t) values, (b) stress tests confirm stability, (c) evidence_level >= 2 (conditional).
 
-### Flow 1: Exploration Loop (Primary User Flow)
+## Build Order (Dependency-Respecting)
 
-```
-User (notebook)
-  |
-  | "Show me the first 1000 zeros and their spacing distribution"
-  v
-Research Workbench (experiment runner)
-  |
-  | 1. Create Experiment record
-  | 2. Check cache for existing computation
-  v
-Computation Engine
-  |
-  | Compute zeros (mpmath.zetazero), cache results
-  v
-Data Store (cache zeros, return ZetaZero objects)
-  |
-  v
-Analysis Module (ZeroSpacingAnalyzer)
-  |
-  | Compute nearest-neighbor spacings, normalize
-  | Return AnalysisResult with histogram data
-  v
-Visualization Layer
-  |
-  | Render: (1) zeros on critical line, (2) spacing histogram
-  | Compare overlay: GUE prediction curve
-  v
-User sees interactive plots, records observations
-```
-
-### Flow 2: Higher-Dimensional Exploration
+The modules have strict mathematical dependencies that dictate build order:
 
 ```
-User: "Embed the first 500 zeros in a spectral feature space
-       and project to 3D -- do they cluster?"
-  |
-  v
-Computation Engine
-  |
-  | Compute zeros + derived features:
-  |   - spacing to neighbors
-  |   - local density
-  |   - connection to nearby L-function zeros
-  |   Result: 500 x N feature matrix (N could be 10-50 dims)
-  v
-Analysis Module (HighDimGeometryModule)
-  |
-  | Analyze structure in N-dim:
-  |   - Persistent homology
-  |   - Clustering (HDBSCAN)
-  |   - Manifold detection
-  v
-Projection Pipeline
-  |
-  | Project N-dim -> 3D:
-  |   - PCA (preserves variance)
-  |   - UMAP (preserves topology)
-  |   - Custom stereographic (preserves geometry)
-  v
-Visualization Layer (3D interactive)
-  |
-  | Plotly 3D scatter, colored by cluster/feature
-  | User rotates, zooms, selects points for detail
-  v
-User identifies structure, records conjecture
+Phase 1: Foundation          Phase 2: Verification       Phase 3: Assembly
+=================           ====================        ================
+heat_kernel.py       -->    cm_evaluation.py      -->   barrier_bridge.py
+selberg_trace.py     -->    rankin_selberg.py     -->   proof_assembly.py
 ```
 
-### Flow 3: Formalization Pipeline
+**Detailed order:**
 
-```
-User: "Formalize the conjecture that zero spacings converge
-       to GUE in the limit"
-  |
-  v
-Conjecture Tracker (retrieves conjecture record + evidence)
-  |
-  v
-Statement Translator (Python -> Lean 4)
-  |
-  | Generate Lean 4 statement:
-  |   theorem gue_convergence :
-  |     ...  := by sorry
-  |
-  v
-Proof Skeleton Generator
-  |
-  | Add structure: imports, intermediate lemmas with sorry,
-  | references to Mathlib theorems
-  |
-  v
-Lean Runner
-  |
-  | Write .lean files to lean/Riemann/Generated/
-  | Run `lake build`
-  | Parse output: typechecks? errors? sorry count?
-  |
-  v
-Proof State Tracker
-  |
-  | Update: "GUE convergence" -- 1 theorem, 4 sorry placeholders
-  | Report back to workbench
-  |
-  v
-User + Claude iterate on filling sorry holes
+1. **heat_kernel.py** (first) -- No v2.0 dependencies. Depends only on existing modular_forms.py and maass_forms.json. This is the mathematical foundation: if the heat kernel computation does not work, nothing else matters.
+
+2. **selberg_trace.py** (parallel with 1) -- No v2.0 dependencies. Depends only on existing trace_formula.py and engine/zeros.py. Provides the GL(2) trace formula that validates the heat kernel computation via spectral-geometric duality.
+
+3. **rankin_selberg.py** (after 1) -- Depends on modular_forms.py (existing) for Hecke eigenvalues. Independent of heat_kernel.py but logically follows it because the Petersson norm positivity is part of the "why positivity is automatic" story.
+
+4. **cm_evaluation.py** (after 1) -- Depends on heat_kernel.py for evaluating K_t at CM points. Also uses modular_forms.py for algebraic value recognition.
+
+5. **barrier_bridge.py** (after 1, 2) -- Depends on heat_kernel.py for the trace and selberg_trace.py for the spectral/geometric decomposition. This is the critical module that bounds corrections.
+
+6. **proof_assembly.py** (last) -- Depends on barrier_bridge.py and all workbench/formalization infrastructure. Only built after the computational modules are validated.
+
+## Lean 4 Formalization Plan
+
+The existing `formalization/translator.py` has domain-aware Mathlib import selection. For v2.0, add a new domain:
+
+```python
+# In translator.py _DOMAIN_IMPORTS:
+"heat_kernel": [
+    "Mathlib.NumberTheory.LSeries.RiemannZeta",
+    "Mathlib.NumberTheory.ModularForms.JacobiTheta.Basic",
+    "Mathlib.Analysis.SpecialFunctions.Gamma.Deligne",
+    "Mathlib.Topology.MetricSpace.Basic",  # for hyperbolic metric
+],
 ```
 
-### Flow 4: Pattern Detection (Background)
+The Lean proofs would build on the existing `ConnesPSD.lean` (Gram matrix / Schur complement paths) and `SelbergClass.lean` (Selberg class axioms). New Lean files:
 
-```
-Analysis Module (anomaly surfacing, running periodically or on-demand)
-  |
-  | Scan cached zero data for:
-  |   - Deviations from expected distributions
-  |   - Unexpected correlations between features
-  |   - Clusters in higher-dimensional embeddings
-  |
-  v
-Workbench (alert system)
-  |
-  | "Anomaly detected: zeros 4500-4600 show unusual
-  |  spacing pattern -- 2.3 sigma deviation from GUE"
-  |
-  v
-User investigates with exploration loop (Flow 1)
-```
+- `HeatKernelPositivity.lean` -- Each term in the spectral expansion is non-negative
+- `CorrectionBound.lean` -- The correction epsilon(t,L) is bounded
+- `ModularBarrier.lean` -- Combines the above: B(L) = Tr(K_t) - eps > 0
 
-## Build Order and Dependencies
+## Existing Data Assets
 
-The dependency graph determines what must be built first.
+| Asset | Location | How v2.0 Uses It |
+|-------|----------|------------------|
+| Zeta zeros | `data/zeros.db` (SQLite) | Barrier computation, comparison with Selberg trace |
+| Maass form spectral parameters | `data/maass_forms.json` | Heat kernel spectral expansion (r_j values) |
+| LMFDB cache | `data/cache/` | Additional Maass forms, modular form data |
+| Computed arrays | `data/computed/` (npz) | Experiment result storage |
+| Workbench DB | `data/zeros.db` | Conjecture/experiment/evidence tracking |
 
-```
-Phase 1: Foundation
-  [Computation Engine: zeta + zeros] --> [Data Store: cache + zeros_db]
-      |
-      v
-Phase 2: See Results
-  [Visualization: 2D complex plane + basic plots]
-  [Workbench: basic session + notebook integration]
-      |
-      v
-Phase 3: Cross-Disciplinary Analysis
-  [Analysis Modules: spacing, GUE comparison, entropy]
-  [Visualization: 3D interactive]
-  [Workbench: experiment tracking, conjecture tracker]
-      |
-      v
-Phase 4: Higher Dimensions
-  [Computation Engine: spectral operators, modular forms]
-  [Analysis Modules: high-dim geometry, spectral module]
-  [Visualization: projection pipeline (N-dim -> 3D)]
-      |
-      v
-Phase 5: Formalization
-  [Lean 4 project setup + Mathlib integration]
-  [Statement translator + skeleton generator]
-  [Proof state tracker]
-      |
-      v
-Phase 6: Advanced
-  [Adelic analysis, advanced modular form connections]
-  [Pattern detection / anomaly surfacing (automated)]
-  [Dashboard / publication-quality output]
-```
-
-**Why this order:**
-
-1. **Computation Engine first** because nothing else can function without numerical results. You cannot visualize what you have not computed. You cannot analyze what does not exist.
-
-2. **Visualization in Phase 2** because the user's primary interaction mode is visual exploration. Without seeing results, the user cannot direct research. Early visualization also validates that computation results are correct (visual sanity checking).
-
-3. **Analysis Modules in Phase 3** because they require both computed data (Phase 1) and visualization (Phase 2) to be useful. An analysis result you cannot see is not actionable for this user.
-
-4. **Higher-dimensional work in Phase 4** because it is the project's differentiator but requires the foundation (compute, analyze, visualize) to be solid first. Attempting N-dimensional projection before basic 2D/3D works will produce confusing results.
-
-5. **Lean 4 formalization in Phase 5** because formalization only makes sense after the user has found something worth formalizing. Premature formalization is wasted effort. The exploration pipeline (Phases 1-4) must produce insights first.
-
-6. **Advanced features last** because they build on everything else and are the least certain in design. Adelic analysis and automated pattern detection will be shaped by what the user discovers in Phases 1-5.
+**New data needed:**
+- Geodesic length spectrum for SL(2,Z)\H (computable from the group structure; the primitive geodesic lengths are log(N(gamma)) where N(gamma) runs over norms of hyperbolic elements)
+- Higher Maass form spectral parameters (may need to fetch more from LMFDB or compute via Hejhal's algorithm)
 
 ## Scalability Considerations
 
-| Concern | 100 zeros | 100K zeros | 10M zeros |
-|---|---|---|---|
-| Computation time | Seconds | Hours (parallelize) | Days (distribute or precompute) |
-| Storage | Trivial | ~50MB | ~5GB (SQLite handles this) |
-| Visualization | Direct plot | Subsample or density plot | Aggregated statistics only |
-| Memory | Trivial | ~1GB (mpmath objects are large) | Out-of-core required (chunked loading) |
+| Concern | At 10 Maass terms | At 100 Maass terms | At 1000 Maass terms |
+|---------|--------------------|--------------------|---------------------|
+| Heat kernel sum | Instant, ~10ms | Fast, ~100ms | Moderate, ~2s (Bessel function evaluations dominate) |
+| Selberg geometric side | ~50 geodesics sufficient | ~200 geodesics | Geodesic enumeration becomes O(e^L) |
+| Rankin-Selberg Euler product | ~20 primes | ~100 primes | ~500 primes, convergence excellent |
+| CM evaluation | 9 Heegner points, instant | Same 9 points | Same 9 points |
+| Correction bound | Single validated_computation | Same | Same, but precision demands increase |
 
-**Key scaling decision:** For the MVP, optimize for interactivity with up to ~10K zeros. Beyond that, precompute and cache. The LMFDB project has precomputed billions of zeros -- consider importing rather than recomputing for large-scale analysis.
-
-**Parallelization:** Zero computation is embarrassingly parallel (each zero is independent). Use `multiprocessing` (not `threading` -- GIL) or `joblib` for parallel zero-finding. mpmath is not thread-safe; each worker needs its own mpmath context.
-
-## Technology Compatibility Notes
-
-| Library | Role | Confidence | Notes |
-|---|---|---|---|
-| `mpmath` | Arbitrary precision zeta, zeros | HIGH | De facto standard; `mpmath.zetazero()` is well-tested |
-| `numpy` | Machine-precision arrays, linear algebra | HIGH | Foundation library |
-| `scipy` | Statistics, eigenvalue problems, optimization | HIGH | Stable, well-documented |
-| `plotly` | Interactive 3D visualization | HIGH | Mature, Jupyter-native |
-| `matplotlib` | 2D publication-quality plots | HIGH | Standard |
-| `panel` | Dashboard / widget framework | MEDIUM | Good HoloViz ecosystem; verify current Jupyter compatibility |
-| `scikit-learn` | PCA, t-SNE, UMAP projections | HIGH | `umap-learn` is separate package |
-| `SQLite` (via `sqlite3`) | Zero database | HIGH | Standard library |
-| Lean 4 + Mathlib | Formal verification | MEDIUM | Lean 4 stable; Mathlib coverage of analytic number theory is partial |
-| `elan` | Lean toolchain management | MEDIUM | Standard Lean installer; verify Windows support |
+The bottleneck is the heat kernel sum for large t (many Maass terms needed when t is small, since convergence factor is e^{-lambda_j * t}). For the proof, we choose t optimally: large enough for fast convergence but not so large that the heat kernel approximation to the barrier degrades.
 
 ## Sources
 
-- Project requirements from `.planning/PROJECT.md`
-- mpmath documentation (training data -- mpmath has been stable for years; HIGH confidence)
-- Lean 4 / Mathlib ecosystem knowledge (training data -- MEDIUM confidence, Mathlib evolves rapidly)
-- Plotly / Matplotlib / Panel knowledge (training data -- HIGH confidence for core features)
-- Riemann Hypothesis computational approaches (Montgomery-Odlyzko, Keating-Snaith, spectral interpretation) -- domain knowledge
-- LMFDB (L-functions and Modular Forms DataBase) as reference architecture for large-scale number theory computation
-
-**Note:** Web search was unavailable during this research. All technology recommendations are based on training data (cutoff: early 2025). Before implementation, verify: (1) current Lean 4 toolchain version, (2) Mathlib coverage of relevant areas, (3) Panel compatibility with current Jupyter. These are the most likely areas where information may be stale.
+- [Selberg trace formula - Wikipedia](https://en.wikipedia.org/wiki/Selberg_trace_formula) -- Overview of spectral/geometric duality
+- [How Selberg's trace formula and the Riemann-Weil explicit formula are related](https://empslocal.ex.ac.uk/people/staff/mrwatkin/zeta/STF-WEF.htm) -- GL(1)->GL(2) connection
+- [Effective computation of Maass cusp forms](https://www.math.ias.edu/~akshay/research/bsv.pdf) -- Hejhal's algorithm for Maass form computation
+- [Numerical computations with the trace formula](https://www2.math.uu.se/~ast10761/papers/stfz14march06.pdf) -- Numerical Selberg trace formula methods
+- [Rankin-Selberg method user's guide](https://mathweb.ucsd.edu/~apollack/rankin-selberg.pdf) -- Rankin-Selberg L-function computation
+- [Lecture on CM point values](https://www.math.ucla.edu/~hida/Kyoto2.pdf) -- Values of modular forms at CM points
+- [Selberg's trace formula introduction (Marklof)](https://people.maths.bris.ac.uk/~majm/bib/selberg.pdf) -- Pedagogical introduction
+- [Heat kernel on Cayley graph of PSL2Z (2025)](https://arxiv.org/html/2506.02340) -- Recent heat kernel work on the modular group
+- Session 43 spectral dominance result -- barrier = spectral sum - correction, spectral always wins
+- Session 45 Wick rotation -- Lorentzian test function as heat kernel at imaginary time

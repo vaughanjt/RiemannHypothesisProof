@@ -1,250 +1,234 @@
 # Project Research Summary
 
-**Project:** Riemann -- Hybrid Computational Math Research Platform & Formal Proof Workbench
-**Domain:** Exploratory mathematical research platform targeting the Riemann Hypothesis
-**Researched:** 2026-03-18
-**Confidence:** MEDIUM (all research from training data; web verification unavailable; core library recommendations are stable and HIGH confidence; specific versions and Lean 4/Mathlib ecosystem details are MEDIUM)
+**Project:** Riemann v2.0 — The Modular Barrier
+**Domain:** Computational number theory / heat kernel proof strategy for the Riemann Hypothesis
+**Researched:** 2026-04-04
+**Confidence:** MEDIUM
 
 ## Executive Summary
 
-Riemann is a single-user computational research workbench designed to explore the Riemann Hypothesis through unconventional cross-disciplinary lenses: random matrix theory, spectral operator theory, higher-dimensional geometry, information-theoretic analysis, and formal verification. No existing tool unifies arbitrary-precision zeta computation, interactive visualization, cross-disciplinary analysis pipelines, structured research tracking, AI-guided conjecture generation, and Lean 4 formalization in one place. The recommended approach is a layered Python platform built around mpmath (arbitrary-precision arithmetic) and Lean 4 (formal verification), delivered through JupyterLab notebooks as the primary interface. The entire stack is built from mature, stable libraries -- there are no experimental technology bets required.
+The v2.0 milestone attempts to prove B(L) > 0 for all L by connecting the Connes barrier to the heat kernel trace on the modular surface SL(2,Z)\H. The core hypothesis, crystallized in Session 47, is that the barrier is "morally" a heat kernel trace — and since each term in the heat kernel spectral expansion is non-negative (each Maass form contribution is |phi_j(z)|^2 * e^{-lambda_j*t} >= 0), positivity might follow structurally rather than through direct analytic bounds. This would circumvent the circularity trap that destroyed 40+ prior approaches: every direct analytic decomposition of B(L) eventually requires bounding a sum over primes or zeros in a way that is equivalent to the statement being proved. The modular surface approach replaces "prove the balance" with "identify B(L) as a manifestly-positive object minus a bounded correction."
 
-The architecture must be built bottom-up following strict dependency order: computation engine first, then visualization, then cross-disciplinary analysis, then higher-dimensional exploration, then Lean 4 formalization. The project's unique differentiator -- the higher-dimensional projection framework and cross-disciplinary analogy engine -- cannot be attempted until the foundational computation and analysis infrastructure is solid. The Lean 4 formalization layer is the final phase and should not begin until the exploration pipeline has produced genuine conjectures worth formalizing. Premature formalization is a critical failure mode documented extensively by the Lean community.
+The recommended implementation builds six new Python modules in the existing `src/riemann/analysis/` hierarchy, adding only one new dependency (python-flint 0.8.0 for certified modular form arithmetic). The mathematical chain has three links that must be addressed in strict order: (1) establish the precise decomposition B(L) = K(t(L)) - epsilon(t,L) with all terms computed independently, including the non-trivial continuous spectrum (Eisenstein series) contribution; (2) bound the correction epsilon rigorously using explicit constants, not asymptotic estimates — the margin-drain gap is only ~0.036 and any O() term without an explicit constant will destroy the proof; (3) conclude B(L) > 0 from heat kernel positivity plus bounded correction. The Rankin-Selberg alternative — identifying B(L) = L(1, f x f_bar) for some Maass form f, making positivity automatic from Petersson norm — should run in parallel as a fallback path.
 
-The three most dangerous risks are (1) silent precision collapse in zeta function evaluation if float64/scipy is used naively near the critical strip -- this produces phantom patterns with no warning and can contaminate weeks of exploration; (2) the infrastructure trap of building a perfect framework while never doing actual mathematical exploration, which is particularly dangerous for this project because software engineering feels productive while mathematical exploration feels uncertain; and (3) confusing numerical computational evidence with mathematical proof, which the history of analytic number theory shows can be misleading even across astronomically large test ranges. All three must be designed against from day one.
+The fundamental risk is circularity in link (2). The scattering determinant phi(s) = Gamma(s-1/2) * zeta(2s-1) / (Gamma(s) * zeta(2s)) appears directly in the Eisenstein continuous spectrum integral, meaning zeta zeros enter the computation through the back door. If bounding epsilon rigorously requires controlling phi'/phi in a way that encodes zero-location information, the proof reduces to yet another reformulation of RH. This risk must be explicitly assessed at the end of Phase 1 — before any correction-bound work begins — by writing the complete logical dependency graph and testing whether the bound would still hold for "random primes" (a test that killed five approaches in Sessions 35–42).
 
 ## Key Findings
 
 ### Recommended Stack
 
-The Python scientific stack around mpmath is the only viable choice for this project. No alternative provides the combination of arbitrary-precision special functions (essential for zeta evaluation near the critical line), machine-precision bulk computation (essential for random matrix ensembles and spectral analysis), symbolic manipulation, and interactive visualization that this project requires. The stack is mature, stable, and well-documented. SageMath should be explicitly avoided as a primary dependency -- it conflicts with modern Python packaging (uv, virtual environments), has inferior notebook integration, and its constituent libraries (mpmath, SymPy, NumPy/SciPy) are better used directly without the 8GB dependency weight.
-
-For formal verification, Lean 4 with Mathlib4 is the unambiguous choice given the active mathematical formalization community, dependent type theory expressiveness, and the best-maintained mathematical library (100,000+ theorems). The Lean 4 project lives in a separate `lean/` subdirectory and communicates with Python exclusively through file-based exchange (Python writes `.lean` files, invokes lake CLI, parses structured output). There is no stable Python-Lean FFI and none should be attempted.
+The existing stack (mpmath, numpy, scipy, sympy, gmpy2) already provides everything needed for heat kernel evaluation, Selberg trace formula computation, and Rankin-Selberg L-function series. The sole new dependency is python-flint 0.8.0, which wraps FLINT/Arb ball arithmetic and returns interval-valued modular form evaluations with machine-certified error bounds. This is required for the correction bounds phase, where floating-point approximations are insufficient: the total error budget is 0.036 and any unverified rounding error can exhaust it. Windows x86-64 wheels are on PyPI; installation is `pip install python-flint>=0.7.0`.
 
 **Core technologies:**
-- **mpmath + gmpy2**: Arbitrary-precision arithmetic and zeta evaluation -- the only production-quality option in Python; gmpy2 provides 2-10x acceleration as mpmath's C backend; use for all critical strip evaluation
-- **NumPy + SciPy**: Machine-precision bulk computation for random matrix ensembles, spectral analysis, and FFTs -- non-negotiable scientific Python foundation; use where float64 (~15 digits) suffices
-- **SymPy**: Symbolic computation for formula derivation and algebraic manipulation before numerical evaluation
-- **Matplotlib + Plotly + ipywidgets**: Static 2D publication plots (Matplotlib), interactive 3D visualization (Plotly), and parameter controls (ipywidgets); Plotly is essential for the higher-dimensional projection theater
-- **JupyterLab**: Primary user interface for all exploration; required, not optional; classic Jupyter Notebook is in maintenance mode and must not be used
-- **Lean 4 + Mathlib4**: Formal verification layer; installed via elan/lake; Mathlib ~3GB compiled; use `lake exe cache get` to avoid 30-60 minute from-source builds
-- **uv**: Modern Python package and project management replacing pip+venv; 10-100x faster dependency resolution with proper lockfile support
-- **numba**: JIT compilation for machine-precision numerical loops; does NOT work with mpmath; use only for float64 bottlenecks in random matrix sampling or Monte Carlo
-- **SQLite + h5py**: Zero database (SQLite, zero-config, handles millions of rows) and large array storage (h5py/HDF5)
-- **pandas**: Tabular organization of computed results as the intermediate format between computation and visualization
-- **scikit-learn + umap-learn**: PCA, t-SNE, UMAP for dimensionality reduction in the N-dimensional projection pipeline
-- **panel (HoloViz)**: Dashboard and widget framework for Jupyter; preferred over Streamlit (forces separate server) and Dash (Plotly-only)
-- **Ruff + pytest**: Python linting/formatting and testing; pytest validates computational modules against known zero values
+
+- **mpmath (>=1.3.0):** Arbitrary-precision special functions (besselk, legenp/q, gammainc, quad, nsum, pslq, findpoly, identify) — handles all heat kernel orbital integrals, CM point algebraic recognition, and Rankin-Selberg Dirichlet series
+- **python-flint 0.8.0 (NEW):** Ball arithmetic for certified modular form evaluation — acb.modular_j, acb.eisenstein, acb.modular_eta, acb.modular_delta with rigorous interval bounds; use mpmath for exploration, python-flint for certification
+- **scipy.special:** Machine-precision Bessel K functions (kv) for bulk heat kernel parameter sweeps where 50-digit precision is not needed
+- **numpy/scipy.linalg:** Matrix operations and eigenvalue storage for Selberg trace formula spectral data
+- **Existing lmfdb_client.py:** Pre-computed Maass form spectral parameters (r_j values, first 100+) from LMFDB — do not reimplement Hejhal's algorithm; LMFDB has eigenvalues to 30+ digits
+
+SageMath is explicitly rejected: 2+ GB install, incompatible with the project's pip/venv setup, and all needed functions (j-invariant, Eisenstein series, eta function) are available in python-flint at a fraction of the footprint.
 
 ### Expected Features
 
-The MVP must answer: "Can this platform show me something about the Riemann zeta function that I cannot trivially see in Mathematica or SageMath?" The critical path running T1 (zeta evaluation) --> T2 (zero computation) --> T8 (zero statistics) --> D3 (RMT comparison) is the longest dependency chain gating meaningful research. Nothing downstream functions without this foundation.
+The research identifies six table-stakes features (T1–T6) and six differentiating features (D1–D6). The critical path is T2 + T3 -> T1 -> T4 -> T5 -> proof. The bottleneck is T3 (Eisenstein continuous spectrum): the non-compact surface SL(2,Z)\H has both a discrete spectrum (Maass cusp forms) and a continuous spectrum starting at lambda = 1/4, and both must be included in the heat kernel trace. Ignoring the continuous spectrum is never acceptable, even for exploratory computation.
 
-**Must have (table stakes -- Phase 1):**
-- Arbitrary-precision zeta function evaluation (T1) -- via mpmath wrapping with unified backend API; never float64 for critical strip evaluation
-- Non-trivial zero computation (T2) -- mpmath.zetazero() initially, with SQLite caching and validation against Odlyzko tables
-- Critical line visualization + domain coloring (T3, T4) -- interactive zoom/pan with parameter sliders; perceptually uniform colormaps only
-- Session-based research workbench -- structured experiment logging, annotation, evidence-level tagging from day one; not bolted on later
-- Zero distribution statistics (T8) -- nearest-neighbor spacing, GUE comparison; the first cross-disciplinary connection and genuinely differentiating result
+**Must have (table stakes):**
 
-**Should have (competitive differentiators -- Phases 2-4):**
-- Higher-dimensional computation framework (D1) -- even a prototype delivers unique value: zeros as R^k feature points, PCA/t-SNE/UMAP projection, structure detection
-- Random matrix theory laboratory (D3) -- generate GUE/GOE ensembles, compare eigenvalue statistics to zero statistics interactively side-by-side
-- Spectral operator analysis (D2) -- construct and diagonalize candidate operators (Berry-Keating Hamiltonian); compare eigenvalue spectra to zeros
-- Related function evaluation (T7) -- Dirichlet L-functions, xi function, Hardy's Z-function; essential for cross-disciplinary connections
-- Numerical verification framework (T9) -- stress-test every "interesting" pattern against expanded data before excitement; distinguish structure from artifact
-- Information-theoretic analysis of zero distributions (D5) -- entropy, mutual information, compression complexity; novel unconventional angle
-- Anomaly detection in zero structure (D11) -- automated flagging of deviations from GUE statistics or Riemann-von Mangoldt formula
-- Trace formula workbench (D10) -- explicit formulas connecting zeros to prime-counting functions
-- Experiment reproducibility (T6) -- full parameter serialization, result caching with checksums, seed management
+- T1: Heat kernel trace on SL(2,Z)\H — discrete Maass form sum plus continuous Eisenstein integral; neither alone gives correct values
+- T2: Maass form eigenvalue database — first 100+ eigenvalues from LMFDB (r_1 ~ 9.534, r_2 ~ 12.173); stored in data/maass_forms.json
+- T3: Eisenstein continuous spectrum contribution — integral of exp(-(1/4+r^2)*t) * (-phi'/phi)(1/2+ir) dr; involves zeta'/zeta explicitly; this is the highest-risk component
+- T4: Barrier-to-heat-kernel comparison engine — parameter identification t = t(L); four candidate mappings exist, none confirmed; Phase 1 must resolve this
+- T5: Correction bound computation — bound |K(t) - B(L)|; error budget is 0.036 total; explicit constants required throughout
+- T6: Selberg trace formula implementation — both spectral and geometric sides for SL(2,Z) with test function h(r) = 1/(L^2+r^2)
 
-**Defer (Phases 5+):**
-- Lean 4 formalization pipeline (D8) -- no discoveries to formalize yet; scaffold the pipeline but do not use it until genuine conjectures with maturity threshold are met
-- Modular forms toolkit (D4) -- rich but self-contained; add as a module after cross-disciplinary analysis is established
-- Adelic/p-adic computation (D12) -- specialized; defer until exploration suggests need
-- Dimensional projection theater real-time rendering (D9) -- static projections from D1 suffice initially; real-time WebGL is Phase 5+ polish
-- Cross-disciplinary analogy engine (D6) -- requires multiple analysis domains to exist first; highest-value feature but last to be buildable
-- AI conjecture generation pipeline (D7) -- needs accumulated structured data and mature workbench infrastructure first
+**Should have (differentiators):**
 
-**Explicitly out of scope (anti-features):**
-- General-purpose CAS (SageMath/Mathematica already exist; integrate as backends, do not replicate)
-- Reimplementing zeta from scratch (use mpmath; correct arbitrary-precision zeta is a multi-decade problem)
-- GPU-accelerated large-scale zero verification (use LMFDB/Odlyzko tables; HPC infrastructure is out of scope)
-- Web deployment or multi-user features (single-user local tool by design)
-- Teaching/tutorial infrastructure (Claude is the teacher; no curriculum needed)
+- D1: GL(1)->GL(2) lift — translates the Weil explicit formula (GL(1) barrier) into the Selberg trace formula (GL(2) heat kernel) framework; introduces identity, hyperbolic, elliptic, and parabolic geometric contributions that must all be computed
+- D2: Rankin-Selberg L-value check — parallel proof path: if B(L) = L(1, f x f_bar) for some Maass form f, positivity is automatic from Petersson norm; check L(1, f x f_bar) for low-lying Maass forms
+- D6: Spectral-geometric duality verification — both sides of the Selberg trace formula agree to 10+ digits at 20+ parameter values; a correctness check, not a proof
+
+**Defer (post-v2.0):**
+
+- D3: q-series fitting — diagnostic only; pursue only if D2 Rankin-Selberg check finds a partial match
+- D4: CM point evaluation — speculative; only worth pursuing after modular form connection is established by D3
+- D5: Laplacian eigenvalue computation from scratch — avoid reimplementing Hejhal's algorithm; use LMFDB data
+
+**Anti-features to avoid:**
+
+- Direct analytic proof of B(L) > 0 — proven circular in 40+ sessions; Session 42 audit documented this exhaustively
+- Full Hejhal algorithm implementation — use LMFDB data; Hejhal is a research-grade eigenvalue solver requiring careful K-Bessel evaluation at large arguments
+- Lean 4 formalization before numerical validation — the heat kernel interpretation is still a hypothesis; formalizing it prematurely wastes effort
+- Symbolic heat kernel manipulation via sympy — integrals involve delicate special function cancellations; numerical-first is the only viable strategy
 
 ### Architecture Approach
 
-The platform follows a six-layer architecture with strict downward dependency flow. The Formalization Pipeline sits beside the main stack as a separate Lean 4 process communicating via file exchange rather than on top of it. Boundary rules between layers are non-negotiable: the computation engine never visualizes; the visualization layer never computes mathematical results; analysis modules receive data and return results without persisting or rendering. Violating these boundaries creates the "God Notebook" anti-pattern where computation logic entangles with UI state, destroying reproducibility and cacheability.
-
-The two-precision-regime principle runs through all computation: use NumPy/SciPy at machine precision for bulk exploration (random matrix ensembles, spectral statistics, FFTs) and mpmath at arbitrary precision for targeted verification (zeta values, zero location, formal results). Mixing these regimes without clear boundaries is the most common technical mistake in this domain. The architecture enforces this boundary through typed mathematical objects (ZetaZero, AnalysisResult dataclasses distinguishing mpf/mpc from float/complex) and a precision context manager that makes scope explicit and prevents global state leakage.
+All new v2.0 code lives in `src/riemann/analysis/` as six new flat modules, following the existing function-based, dataclass-returning pattern established in v1.0. No new packages, no new abstractions — extend the existing structure. The modules form a strict dependency DAG: heat_kernel.py and selberg_trace.py are independent foundations; rankin_selberg.py and cm_evaluation.py consume heat_kernel.py; barrier_bridge.py consumes both foundation modules; proof_assembly.py is the terminal orchestrator.
 
 **Major components:**
-1. **Computation Engine (Layer 1)** -- all numerical evaluation: zeta evaluator, zero finder, L-function evaluator, spectral operator engine, random matrix generator, modular form evaluator; exposes a `precision()` context manager; functions tagged as arbitrary-precision or machine-precision; conversion between regimes is always explicit with logged warnings
-2. **Data / Object Store (Layer 0)** -- SQLite zero database with SQL query support, content-addressed computation cache keyed by (function, parameters, precision), YAML session state files, NumPy .npy/.npz files for large array storage; dumb persistence layer that never computes or interprets
-3. **Analysis Modules (Layer 2)** -- pluggable cross-disciplinary analysis via a standard `AnalysisModule` protocol and plugin registry; modules register at startup, new modules added without modifying existing code; planned: ZeroSpacingAnalyzer, GUEComparator, SpectralOperatorModule, EntropyAnalyzer, ModularFormBridge, HighDimGeometryModule
-4. **Visualization Layer (Layer 3)** -- composable N-dimensional projection pipeline (custom steps + scikit-learn), Plotly 3D interactive renderer, Matplotlib 2D publication renderer, Panel dashboards, domain coloring complex plane viewer; artifacts warnings and quantitative metrics built into every projection output
-5. **Research Workbench (Layer 4)** -- Jupyter magic commands, session management, experiment runner with full parameter capture, conjecture tracker with enforced epistemological hierarchy (Level 0-3), insight journal with dead-ends registry, Claude interface layer for structured formalism prompts
-6. **Formalization Pipeline (Layer 5, separate Lean 4 process)** -- Lean 4 project under `lean/` with lakefile.lean and pinned toolchain, Python-side statement translator (Python conjecture --> Lean 4 syntax), proof skeleton generator with sorry placeholders, lake CLI runner with structured output parsing, proof state tracker (sorry count vs. proven theorems)
 
-Key architectural patterns: mathematical objects as typed first-class citizens, precision context manager, plugin registry for extensible analysis, composable projection pipeline, experiment-as-reproducible-unit dataclass, file-exchange Lean protocol.
+1. **heat_kernel.py** — Compute K_t(z,z) on SL(2,Z)\H: constant term + Maass cusp form spectral sum + Eisenstein continuous integral; returns `HeatKernelResult`; depends only on existing modular_forms.py and data/maass_forms.json; no v2.0 dependencies
+2. **selberg_trace.py** — Selberg trace formula (spectral side vs. all four geometric contributions) for test function h(r) = 1/(L^2+r^2); GL(1)->GL(2) lift of the Weil explicit formula; returns `SelbergTraceResult`; depends only on existing trace_formula.py and engine/zeros.py
+3. **rankin_selberg.py** — Compute L(s, f x f_bar) for cusp forms via Hecke eigenvalue Dirichlet series; check Petersson norm identity at s=1 (L(1,fxf) = (4pi)^k * ||f||^2 / (k-1)!); returns `RankinSelbergResult`
+4. **cm_evaluation.py** — Evaluate barrier and heat kernel at the nine Heegner CM points using python-flint for certified j-invariant values; algebraic recognition via mpmath.findpoly; returns `CMEvaluationResult`; depends on heat_kernel.py
+5. **barrier_bridge.py** — Bound |K_t(trace) - B(L)|; the make-or-break correction between heat kernel trace and actual barrier; uses validated_computation with P-vs-2P precision validation throughout; returns `CorrectionBoundResult` with `proof_viable` flag; depends on heat_kernel.py and selberg_trace.py
+6. **proof_assembly.py** — Orchestrate the full proof chain; register three conjectures in the workbench (heat positivity, correction bound, barrier positivity), link experiments as evidence, trigger Lean 4 generation only after evidence_level >= 2
+
+**Key patterns throughout:** validated_computation with P-vs-2P validation for all spectral sums; convergence monitoring on every truncated infinite sum (tail_variation metric); heat_trace and correction_bound computed at matching precision; Lean 4 generation gated behind numerical evidence.
 
 ### Critical Pitfalls
 
-1. **Silent precision collapse in zeta evaluation** -- Using float64/scipy near the critical strip silently returns garbage for large Im(s); for Im(s) ~ 10^6 you need 50+ digit precision; build precision canary tests that run before every session; validate all computation against known Odlyzko zero tables before any exploration begins. This is a Phase 1 blocker -- do not explore until this is verified.
+The pitfalls research distills 40+ sessions of failed approaches and literature review into 13 pitfalls. These five are most likely to invalidate v2.0:
 
-2. **Building infrastructure instead of doing mathematics** -- Software engineering feels productive; mathematical exploration feels uncertain. Enforce a 70/30 exploration-to-infrastructure ratio; define mathematical milestones (not just engineering milestones) in every phase; compute zeta zeros in raw Jupyter on Day 1 before any platform abstraction exists; time-box any infrastructure feature to two days maximum.
+1. **Circularity in correction bounds (CRITICAL)** — The heat kernel trace is trivially positive; the barrier is not the heat kernel trace; the gap between them is the entire mathematical content of the proof; bounding that gap likely requires controlling prime distribution information that is equivalent to zero-location information. Prevention: write the complete logical dependency graph before writing correction-bound code; apply the "random primes" test (would the bound still hold if primes were replaced by random integers of the same density?); ban big-O notation — every bound must have an explicit constant.
 
-3. **Confusing numerical evidence with mathematical proof** -- The RH has been verified for 10^13 zeros; that is not a proof. Build a strict epistemological hierarchy into the workbench schema from day one: Level 0 (computational observation) through Level 3 (Lean 4 verified); every conjecture tagged with its level; actively seek counterexamples before investing in understanding why a pattern holds.
+2. **Continuous spectrum trap (CRITICAL)** — The scattering matrix determinant phi(s) for SL(2,Z) contains zeta(s) explicitly; the Eisenstein integral involves phi'/phi, which involves zeta'/zeta; the zeros of zeta appear directly in the continuous spectrum contribution; this contribution has no definite sign and may individually exceed the 0.036 error budget. Prevention: compute the Eisenstein contribution numerically at every L value of interest in Phase 1; if its magnitude exceeds 0.036, the "manifestly positive heat kernel" argument is vacuous.
 
-4. **Premature Lean 4 formalization** -- Gate formalization behind a maturity threshold: result must be Level 2 (conditional, heuristic justification) and stable for 2+ weeks before formalization begins; start Lean 4 learning with known established results (functional equation, Euler product) not novel conjectures; formalization effort is typically 10-100x the informal statement.
+3. **Heat kernel vs. barrier confusion** — The connection between B(L) and K(t) is "moral" (Session 47's word), not a proven identity; the exact equation B(L) = Z(L) + E(L) + R(L) with explicitly computed Z (discrete spectrum), E (Eisenstein integral), and R (GL(1)->GL(2) lift remainder) must be derived before any positivity argument. Prevention: compute each term independently; if E(L) is comparable in magnitude to B(L), the approach is not valid.
 
-5. **Visualization artifacts mistaken for mathematical structure** -- Human visual pattern recognition finds structure in noise. Always use perceptually uniform colormaps (viridis/inferno/cividis, never jet/rainbow); show every high-dimensional projection with at least two independent projection methods; display quantitative metrics alongside every visualization; build automated artifact detection (render at two resolutions, flag discrepancies) into the visualization module from Phase 2.
+4. **GL(1)->GL(2) lift errors** — The lift introduces four geometric contributions (identity term proportional to the fundamental domain area, hyperbolic term summing over prime geodesics with norms log(N(gamma)) — NOT log(p) for rational primes, elliptic term from fixed points at i and rho, parabolic term from the cusp); failing to compute all four and treating the lift as a simple identity will produce incorrect bounds. Prevention: compute all four contributions numerically; compare to barrier; read Wong's CUNY thesis on the precise connection.
+
+5. **Insufficient rigor in bounds (the 0.036 problem)** — The margin-drain gap is ~0.036; any O() notation without explicit constants, any tail bound verified numerically but not proved analytically, or any asymptotic estimate valid only for L >= L_0 without handling smaller L will fail to close the proof. Prevention: establish an error budget document before Phase 3; allocate the 0.036 budget across independent error terms explicitly; use python-flint interval arithmetic for all bounds that feed into proof_assembly.py.
 
 ## Implications for Roadmap
 
-Based on combined research, the architecture's build-order dependency graph maps directly to phase structure. The architecture document establishes a clear 6-phase build order grounded in dependency analysis; the features research confirms the critical path; the pitfalls research identifies which risks are phase-specific and must be addressed before proceeding.
+The mathematical dependencies are strict and dictate phase order: you cannot bound corrections without first knowing what the corrections are, and you cannot know the corrections without establishing the parameter mapping t(L) and computing the continuous spectrum contribution. The circularity risk assessment must happen at the boundary between Phase 1 and Phase 3 — this is a logical gate, not just a schedule checkpoint.
 
-### Phase 1: Computational Foundation
+### Phase 1: Heat Kernel Interpretation and Parameter Identification
 
-**Rationale:** Nothing else can function without numerical results. The critical path runs T1 --> T2 --> T8; blocking any step blocks all downstream work. Precision correctness must be established in this phase -- retrofitting precision validation after patterns have been "discovered" is a project-ending mistake that undermines trust in all prior results. The computation engine must also expose correct boundaries (precision context manager, typed objects) so that later layers cannot accidentally violate precision contracts.
+**Rationale:** The foundational hypothesis has not been numerically confirmed with full rigor. Phase 1 answers: "Is B(L) approximately K(t(L))? What is t(L)? How large is the continuous spectrum contribution?" Without these answers, nothing downstream has direction.
 
-**Delivers:** Working arbitrary-precision zeta evaluation with mpmath/gmpy2 backend; non-trivial zero computation with mpmath.zetazero(); SQLite zero database with caching; precision validation framework with canary tests that run at startup; functional equation symmetry checks as assertions; Euler product independent verification path; test suite validating all computation against known zero locations (Odlyzko tables); mathematical exploration in raw Jupyter notebooks from Day 1.
+**Delivers:** A numerically confirmed decomposition B(L) = K(t(L)) + epsilon(L) with independent computation of all three terms (discrete Maass sum, Eisenstein continuous integral, and their sum vs. the barrier); the parameter mapping t = t(L) identified to 6+ significant figures at 50+ L values; a characterization of the Eisenstein contribution's magnitude relative to the 0.036 threshold; a three-regime map (small L, medium L, large L) showing different dominant behaviors.
 
-**Addresses features:** T1 (zeta evaluation), T2 (zero computation), T6 (reproducibility foundations), T9 (numerical verification core)
+**Addresses features:** T2 (Maass eigenvalue database), T3 (Eisenstein continuous spectrum), T1 (heat kernel trace assembly), T4 (barrier comparison)
 
-**Avoids:** Pitfall 1 (precision collapse -- validation framework built in, not bolted on), Pitfall 13 (reinventing existing wheels -- audit mpmath/scipy/FLINT before writing any custom algorithm), Pitfall 3 (infrastructure trap -- mathematical exploration in raw notebooks begins Day 1, not after "the engine is ready")
+**Avoids:** Pitfall 2 (heat kernel vs. barrier confusion — exact equation written term-by-term before any claim), Pitfall 3 (continuous spectrum never ignored), Pitfall 10 (three-regime map established here)
 
-**Research flag:** Standard patterns (mpmath, SQLite, gmpy2, pytest). Skip research-phase for this phase.
+**Implements:** heat_kernel.py (no v2.0 dependencies, the mathematical foundation)
 
----
+**Exit criterion:** K(t(L)) and B(L) agree to 6+ significant figures for 50+ values of L; Eisenstein contribution computed and compared to 0.036 threshold; if Eisenstein contribution exceeds 0.036 at any L, Phase 3 approach must be redesigned before proceeding.
 
-### Phase 2: Visualization and Research Workbench
+**Standard patterns:** LMFDB data fetching, Maass eigenvalue loading, heat kernel special functions (besselk, incomplete gamma, quad) all follow established patterns; no additional research needed for infrastructure.
 
-**Rationale:** The user is an explorer who builds intuition visually. Without seeing results, exploration cannot be directed and validated. Early visualization also provides sanity-checking of computation results -- visual anomalies often reveal precision issues or implementation bugs before they contaminate analysis. The research workbench must launch here, not later, because the epistemological hierarchy and dead-ends registry must be present from the first real exploration session. Retrofitting evidence-level tagging after conjectures have already been formed is psychologically difficult and architecturally messy.
+### Phase 2: Selberg Trace Formula and GL(1)->GL(2) Bridge
 
-**Delivers:** Critical line magnitude and phase plots with interactive zoom/pan (T3); complex plane domain coloring with perceptually uniform colormaps and zoom (T4); Panel dashboards with parameter sliders and linked views; session management with evidence-level tagging enforced by workbench schema; experiment runner with full parameter capture and result linking; conjecture tracker (Level 0-3 taxonomy); insight journal with dead-ends registry; Jupyter magic commands for common operations; rich display formatters for mathematical objects.
+**Rationale:** The Selberg trace formula provides the theoretical grounding for why K(t) relates to B(L) and decomposes the correction into identifiable geometric terms. It must follow Phase 1 (the parameter mapping is needed to specify the test function) and must precede Phase 3 (geometric decomposition reveals which correction terms need bounding).
 
-**Uses:** Matplotlib + Plotly + ipywidgets, Panel, JupyterLab, ipywidgets
+**Delivers:** A verified numerical implementation of both sides of the Selberg trace formula for h(r) = 1/(L^2+r^2); decomposition of epsilon(L) into identity, hyperbolic, elliptic, and parabolic contributions with magnitudes established numerically; spectral-geometric duality verified to 10+ digits at 20+ parameter values; explicit confirmation that the Lorentzian test function satisfies admissibility conditions (or identification of a smoothed variant that does).
 
-**Implements:** Visualization Layer (Layer 3) + Research Workbench (Layer 4)
+**Addresses features:** T6 (Selberg trace formula), D1 (GL(1)->GL(2) lift), D6 (spectral-geometric verification)
 
-**Avoids:** Pitfall 5 (visualization artifacts -- perceptual colormaps and multiple projection methods built in from start; quantitative metrics alongside every plot), Pitfall 2 (evidence-level confusion -- workbench schema enforces hierarchy, cannot be skipped), Pitfall 10 (research amnesia -- structured session logging and dead-ends registry required by workflow, not optional)
+**Avoids:** Pitfall 4 (all four geometric contributions computed), Pitfall 8 (test function decay rate verified — the Lorentzian's r^{-2} decay is borderline and may require a smooth cutoff), Pitfall 11 (Maass forms vs. holomorphic modular forms kept strictly distinct)
 
-**Research flag:** Panel + current JupyterLab compatibility should be verified before starting. May warrant a quick research-phase on the HoloViz ecosystem current state.
+**Implements:** selberg_trace.py
 
----
+**Needs research:** The admissibility of the Lorentzian test function under the Selberg trace formula's decay condition (borderline r^{-2} case); whether a smooth cutoff is required and how it modifies both sides of the formula. Wong's CUNY thesis ("Explicit Formulae and Trace Formulae") is the primary reference for the GL(1)->GL(2) connection and should be read carefully before implementation.
 
-### Phase 3: Cross-Disciplinary Analysis Modules
+### Phase 3: Correction Bound Estimation and Circularity Gate
 
-**Rationale:** With computation and visualization working, cross-disciplinary analysis modules can be built against real data and immediately visualized. These modules are the platform's differentiating value over Mathematica and SageMath. The analogy engine (D6) -- the highest-value feature of the entire platform -- requires multiple analysis domains to exist first, so this phase systematically builds those domains. The pluggable module architecture means each module can be added independently without disrupting existing ones.
+**Rationale:** This is the make-or-break phase. The circularity risk must be assessed explicitly before any bounding code is written — this is a logical gate, not just documentation. Phase 3 runs two parallel tracks: correction bounds (T5) and Rankin-Selberg identification (D2) as a fallback.
 
-**Delivers:** Zero spacing statistics and GUE comparison (T8, D3 -- Montgomery-Odlyzko law); higher-dimensional framework prototype with zeros as R^k feature points and PCA/t-SNE/UMAP projection (D1 prototype); information-theoretic analysis with entropy and mutual information of zero sequences (D5); anomaly detection flagging deviations from GUE predictions (D11); 3D interactive Plotly visualizations with rotation/zoom; related function evaluation including Dirichlet L-functions and Hardy's Z-function (T7); pluggable analysis module registry fully operational.
+**Delivers:** Either (a) a rigorous bound |epsilon(L)| < K(t(L)) - delta for some delta > 0, proven with explicit constants and no circularity — establishing B(L) > 0; or (b) an identification B(L) = L(1, f x f_bar) for a specific Maass form f, with positivity from the Petersson norm; or (c) a documented obstruction stating exactly which step requires unconditional zero-location information and why it cannot be avoided.
 
-**Addresses features:** D1 (prototype), D3, D5, D7 (early), D11, T7, T8
+**Addresses features:** T5 (correction bounds), D2 (Rankin-Selberg L-value check), D3 (q-series fitting as diagnostic for D2)
 
-**Avoids:** Pitfall 7 (scope explosion -- investigation stack with maximum depth of 3; time-boxed tangents with explicit success criteria defined before each exploration begins; quarterly pruning of backlog), Pitfall 9 (performance death spiral -- profile every computation from day one; use precision hierarchy; aggressive caching with LRU eviction; multiprocessing for parallel zero evaluation because GIL blocks threading)
+**Avoids:** Pitfall 1 (circularity — dependency graph reviewed and peer-tested before code; "random primes" test applied), Pitfall 5 (explicit constants throughout; error budget allocated), Pitfall 6 (Rankin-Selberg identification must be explicit — find the form f, do not assume it exists)
 
-**Research flag:** UMAP integration (separate `umap-learn` package), Panel advanced dashboard features, and higher-dimensional feature space design may warrant research-phase. The HighDimGeometryModule is inherently exploratory -- the right feature space for embedding zeros is unknown until exploration reveals it; architecture must remain flexible.
+**Implements:** rankin_selberg.py, barrier_bridge.py
 
----
+**Critical gate:** Before any correction-bound code is written, produce a written dependency graph from "heat kernel trace > 0" to "B(L) > 0" with every bound step identified. Test each step: does it invoke zero-location information, zero-free regions, or GRH-conditional results? If any path from the conclusion leads back to RH, the approach must be restructured or documented as a reformulation, not a proof.
 
-### Phase 4: Spectral Operators and Full Higher-Dimensional Expansion
+**Needs research:** Whether the correction epsilon(L) has any component provably bounded by purely geometric (prime geodesic) information without invoking zeta zeros; whether B(L) has an Euler product structure consistent with a Rankin-Selberg L-function.
 
-**Rationale:** Spectral operator analysis (D2) and the complete higher-dimensional framework (D1 full, D9 projection theater) are the most computationally demanding and architecturally complex features. They require the Phase 3 cross-disciplinary infrastructure to be solid before adding another layer of complexity. The Berry-Keating Hamiltonian and related operators require careful numerical linear algebra that is sensitive to discretization choices -- getting this wrong produces plausible but incorrect spectra. Modular forms (D4) and trace formula workbench (D10) also land here as they depend on related function evaluation from Phase 3.
+### Phase 4: CM Point Evaluation (Conditional)
 
-**Delivers:** Candidate operator construction and diagonalization (Berry-Keating Hamiltonian and variants) with discretization error reporting; N-dimensional projection pipeline with composable steps (PCA, UMAP, stereographic, custom geometric projections) and artifact metadata; full interactive 3D projection theater with rotation/zoom/selection; modular form evaluator with Hecke eigenvalues and Fourier coefficients; modular form bridge to L-function zero structure; trace formula workbench connecting zero contributions to prime-counting functions with truncation effect visualization.
+**Rationale:** CM point evaluation is diagnostic, not a primary proof path. It is only worth pursuing if Phase 3's q-series fitting (D3) finds that B(L) has a clean modular parametrization. If B(L) is not a modular function (no q-series structure), evaluation at Heegner points is numerically meaningless — Pitfall 7 explicitly.
 
-**Avoids:** Pitfall 9 (performance at high dimensions with high precision -- use NumPy/SciPy at machine precision for structure detection in high-dim spaces, mpmath only for targeted verification of interesting findings; this combination makes high-dimensional exploration tractable)
+**Delivers:** If gated: algebraic values of the barrier at the nine Heegner CM points (D = -3,-4,-7,-8,-11,-19,-43,-67,-163) using python-flint for certified j-invariant evaluation; confirmation or refutation of modular algebraic structure.
 
-**Research flag:** Spectral operator discretization and convergence properties are mathematically subtle. Modular form computation library options (python-flint maturity on Windows, LMFDB API for precomputed data, potential selective SageMath component reuse) need research-phase before starting. Verify LMFDB API availability for precomputed zero and modular form data.
+**Addresses features:** D4 (CM point evaluation)
 
----
+**Avoids:** Pitfall 7 (false algebraicity — only pursued after modular form connection is established; q-series test must pass first)
 
-### Phase 5: Lean 4 Formalization Pipeline
+**Implements:** cm_evaluation.py (uses python-flint acb.modular_j for certified values; mpmath.findpoly for algebraic recognition)
 
-**Rationale:** Formalization only makes sense after the exploration pipeline has generated genuine conjectures -- statements that have survived counterexample searches, are at evidence Level 2 or above, and have been stable for multiple weeks. Beginning formalization before this wastes enormous effort (10-100x overhead) on mathematics that may shift. The Lean 4 learning curve is also steep; this phase must include explicit dedicated learning time on known established results before any project-specific formalization begins.
+**Gate:** Skip entirely if Phase 3 D3 q-series fitting finds no clean modular parametrization. This saves implementation effort with no mathematical cost.
 
-**Delivers:** Lean 4 project under `lean/` with Mathlib4 dependency and pinned toolchain; Python-side statement translator (Python conjecture format --> Lean 4 syntax); proof skeleton generator with sorry placeholders and Mathlib references; lake CLI runner with structured error parsing; proof state tracker (sorry-to-proof ratio, per-lemma status); initial formalizations of established results (functional equation, Euler product, basic zeta properties in the critical strip) to build Lean 4 skill on known-correct mathematics; first attempted formalization of a platform-generated conjecture that has met maturity threshold.
+### Phase 5: Proof Assembly and Lean 4 Formalization
 
-**Avoids:** Pitfall 4 (premature formalization -- maturity threshold gate enforced by workbench; formalization readiness checklist required), Pitfall 6 (Lean 4 learning curve -- explicit 2-4 week learning period on tutorials and known results before any project code; Claude handles Lean 4 writing; pin Lean 4 and Mathlib versions and do not upgrade mid-phase), Pitfall 11 (Python-Lean mismatch -- interval arithmetic in Python for formalization-bound computations; ARB/FLINT for rigorous enclosures rather than point estimates)
+**Rationale:** Formalization should follow a validated proof, not anticipate one. The workbench infrastructure is well-established; the new content is the heat_kernel Lean 4 domain. Mathlib has limited analytic number theory coverage — the Selberg trace formula, Rankin-Selberg integrals, and heat kernels on hyperbolic surfaces likely require building new foundational material.
 
-**Research flag:** This phase needs a research-phase before planning. Key questions: What does Mathlib4 currently have formalized for complex analysis, Dirichlet series, and zeta function properties? What is the current state of lake file-exchange integration? Does elan work correctly on Windows Server 2025 (the development platform)? What is the Python-to-Lean statement translation best practice for analytic number theory results?
+**Delivers:** proof_assembly.py orchestrating the full proof chain with workbench conjecture/experiment/evidence entries; if proof path succeeded: Lean 4 files (HeatKernelPositivity.lean, CorrectionBound.lean, ModularBarrier.lean) generated by the existing translator with new "heat_kernel" domain imports; if Lean 4 is blocked by Mathlib gaps: a rigorous informal proof manuscript.
 
----
+**Addresses features:** Phase 4 features from FEATURES.md (formal proof assembly)
 
-### Phase 6: Advanced Integration and Proof Discovery
+**Avoids:** Pitfall 13 (Lean 4 formalization gap — two-tier approach: informal proof first, Lean 4 second if Mathlib coverage allows), Pitfall 4 anti-pattern (premature formalization — proof_assembly.py only triggers Lean generation after evidence_level >= 2 and stress tests pass)
 
-**Rationale:** The cross-disciplinary analogy engine (D6) and AI conjecture generation pipeline (D7) are the most synthesis-intensive features -- they require all preceding analysis domains to be operational and populated with results. Adelic/p-adic computation (D12) is the most specialized feature with the most uncertain implementation path. This phase is deliberately left loosely defined because its design must be shaped by what Phases 1-5 discover. Do not detail-plan Phase 6 until Phase 4 is complete.
+**Implements:** proof_assembly.py; new Lean domain "heat_kernel" in formalization/translator.py
 
-**Delivers:** Cross-disciplinary analogy engine mapping structures between spectral, RMT, modular form, and information-theoretic domains; AI conjecture generation pipeline with structured evidence chains stored in workbench; adelic/p-adic computation module; automated background anomaly surfacing; publication-quality dashboard output for research reporting.
-
-**Research flag:** This phase requires a full research-phase when approached. Its scope and design will be entirely determined by what prior phases discover. Do not attempt to research it in advance.
-
----
+**Standard patterns:** Workbench integration and Lean 4 file generation follow v1.0 patterns. The new Mathlib imports (NumberTheory.LSeries.RiemannZeta, NumberTheory.ModularForms.JacobiTheta.Basic) need one-time lookup but no novel research.
 
 ### Phase Ordering Rationale
 
-- **Dependency-driven order:** The computation engine (Layer 1) must precede visualization (Layer 3) which must precede analysis modules (Layer 2 consuming computed data and producing visualizable results); the formalization pipeline is an independent branch that runs beside the main stack and comes last. This ordering is derived from the architecture's component dependency graph, not from arbitrary sequencing.
-- **User-facing feedback as early as possible:** Phase 2 delivers visualization immediately after computation, so the user can see results and direct research before any cross-disciplinary infrastructure exists. This prevents the platform from becoming a black box that produces numbers without insight.
-- **Pitfall mitigation requires early foundation:** Precision validation (Phase 1), evidence-level hierarchy (Phase 2), and projection artifact warnings (Phase 2) must be designed into the system early. Retrofitting these after "patterns have been discovered" is psychologically resisted and architecturally disruptive.
-- **Lean 4 deliberately last:** The Lean 4 learning curve is steep, formalization effort is 10-100x the informal statement, and premature formalization is the second most dangerous pitfall identified. Lean 4 work belongs only after the platform has generated genuine conjectures that have survived scrutiny.
-- **Higher-dimensional work after basics:** The platform's core differentiator (D1, D6, D9) cannot be validated or sensibly designed without first understanding what structures emerge from basic zero analysis (Phases 1-3). Attempting N-dimensional projection before basic 2D/3D works produces confusing results that cannot be distinguished from projection artifacts.
+- Phase 1 before Phase 2: the parameter mapping t(L) must be established before the Selberg trace formula can be applied to the specific test function corresponding to the barrier
+- Phase 2 before Phase 3: the geometric decomposition from the Selberg trace formula reveals which correction components need bounding; starting bounds without this decomposition means bounding opaque quantities
+- Circularity gate between Phases 2 and 3: this is the single highest-risk checkpoint in the project; it is a logical gate, not a schedule date
+- Phase 4 is conditional on Phase 3 D3 output: if no modular structure is found in B(L), Phase 4 is skipped, preserving several sessions of effort
+- Phase 5 is terminal: formalization adds no mathematical content; it records what has been established and should not be started until the proof path is clear
 
 ### Research Flags
 
 Phases needing deeper research during planning:
-- **Phase 2:** Panel + current JupyterLab compatibility; verify current HoloViz widget ecosystem state before committing to Panel as the dashboard framework
-- **Phase 4:** Modular form computation library options (python-flint Windows binary availability, LMFDB API, selective SageMath component reuse without full SageMath dependency); spectral operator discretization best practices and convergence validation
-- **Phase 5:** Current Mathlib4 analytic number theory coverage (what is already formalized); current lake project setup and file-exchange patterns; elan installation and Lean 4 toolchain on Windows Server 2025; Python-to-Lean translation best practices for analytic number theory
-- **Phase 6:** Design is inherently shaped by prior discoveries; requires full research-phase when approached; do not pre-research
 
-Phases with standard patterns (skip research-phase):
-- **Phase 1:** mpmath, SQLite, gmpy2, pytest, uv patterns are extremely well-documented with stable APIs; no research needed before starting
-- **Phase 3:** NumPy/SciPy analysis patterns, scikit-learn dimensionality reduction, pandas organization -- all highly standard; UMAP package integration is minor; higher-dimensional feature space design is exploratory but the projection infrastructure is straightforward
+- **Phase 2:** The admissibility of h(r) ~ 1/(L^2+r^2) under the Selberg trace formula requires mathematical clarification before implementation. The borderline r^{-2} decay may require a smooth cutoff, which modifies both sides of the trace formula by a controllable amount; this must be worked out before the implementation begins.
+- **Phase 3:** The central open question — whether epsilon(L) can be bounded without circularly invoking zeta zeros — cannot be resolved by literature search alone; it requires working through the mathematics of the correction term and checking the dependency graph. Plan a dedicated pre-coding mathematical analysis step before Phase 3 implementation begins.
+
+Phases with standard patterns (skip additional research):
+
+- **Phase 1 infrastructure:** LMFDB data fetching, Maass form eigenvalue loading, and heat kernel special function evaluation (Bessel K, incomplete gamma) all follow established codebase patterns; no additional research needed.
+- **Phase 5:** Workbench integration and Lean 4 pipeline follow v1.0 established patterns; the new "heat_kernel" Mathlib import list needs a one-time lookup.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | MEDIUM-HIGH | Core library choices (mpmath, NumPy/SciPy, Lean 4, JupyterLab, uv) are HIGH confidence; specific version numbers need validation with `uv pip index versions`; Panel/Jupyter compatibility is MEDIUM; python-flint Windows binary availability is LOW |
-| Features | MEDIUM | Library capabilities and feature priorities are HIGH confidence based on domain knowledge of RH research; actual user workflow and which cross-disciplinary connections prove fruitful are inherently LOW confidence given the exploratory nature; higher-dimensional approach is genuinely novel with LOW confidence on specific implementation details |
-| Architecture | MEDIUM-HIGH | Layered architecture with plugin modules is well-established for research platforms; component boundaries and data flow are clear; SQLite for zeros and file-exchange Lean protocol are well-reasoned and conservative; Panel dashboard framework compatibility is MEDIUM |
-| Pitfalls | HIGH | Core pitfalls (precision collapse, infrastructure trap, evidence confusion, Lean learning curve) are universally documented in the relevant communities with consistent warnings; specific performance characteristics are MEDIUM depending on hardware and exact algorithms chosen |
+| Stack | HIGH | python-flint 0.8.0 verified on PyPI with Windows x86-64 wheels (wraps FLINT 3.3.1); all other libraries already in pyproject.toml and in production use; no version conflicts |
+| Features | MEDIUM | Mathematical theory for T1–T6 is well-established; the novel integration path connecting B(L) to K(t) is the project's central unresolved hypothesis; feature scope is accurate but feasibility of T5 (correction bound) is genuinely uncertain |
+| Architecture | MEDIUM | Module boundaries and data flow follow established v1.0 patterns and are well-reasoned; implementation of the mathematical content (heat kernel, Selberg trace, Rankin-Selberg) is inferred from literature and codebase analysis rather than prior implementation experience |
+| Pitfalls | HIGH | Pitfall catalogue is grounded in direct project history (Sessions 35–43) plus peer-reviewed academic sources; circularity risk and continuous spectrum trap are documented from multiple angles; 0.036 margin-drain gap is experimentally verified at 800+ points |
 
 **Overall confidence:** MEDIUM
 
 ### Gaps to Address
 
-- **Lean 4 on Windows Server 2025:** elan installation and Lean 4 toolchain behavior on Windows needs explicit validation before Phase 5 planning. The Lean 4 community is primarily Linux/macOS and Windows support may have rough edges. Validate early so Phase 5 can be planned around actual constraints.
-- **Mathlib4 analytic number theory coverage:** The extent to which Mathlib has formalized complex analysis, Dirichlet series, and zeta function properties determines how much from-scratch formalization Phase 5 requires versus building on existing Mathlib infrastructure. Must be audited before Phase 5 planning begins.
-- **python-flint Windows binaries:** python-flint (FLINT/Arb bindings) is needed for performance-critical zeta evaluation paths and for rigorous interval arithmetic required by the Lean 4 formalization pipeline. Binary availability on Windows should be checked before Phase 3 (where performance optimization may first be needed) and confirmed before Phase 5.
-- **Panel + JupyterLab current compatibility:** Panel is the recommended dashboard framework but Jupyter widget compatibility changes with JupyterLab major versions. Verify with live documentation before starting Phase 2 to avoid mid-phase framework pivots.
-- **LMFDB API current state and data availability:** LMFDB is the primary source for large-scale precomputed zero data, modular form data, and L-function databases. The API, data availability, and query interface should be confirmed before Phase 3-4 to avoid reimplementing what is already queryable.
-- **Higher-dimensional feature space design:** The HighDimGeometryModule is genuinely novel. The research provides a starting point (zeros as R^k points with spacing/derivative/local-density features, projected via PCA/UMAP), but the right feature space is unknown until exploration reveals it. The architecture must remain flexible to redesign this module based on what Phase 3 discovers.
-- **Modular forms computation without SageMath:** Modular form evaluation outside SageMath requires either python-flint (FLINT has modular form support), LMFDB API queries for precomputed data, or very careful custom implementation. The right approach depends on python-flint maturity and LMFDB coverage, which must be checked before Phase 4.
+- **Parameter identification t = t(L):** The precise mapping between the barrier parameter L and the heat kernel time t is the first unknown to be resolved in Phase 1; four candidate mappings are documented in FEATURES.md and none has been confirmed. This is not resolvable by research — it requires computation.
+- **Eisenstein contribution magnitude:** Whether the continuous spectrum integral is within the 0.036 error budget at proof-relevant L values is not known. Computing it numerically in Phase 1 will determine whether the entire approach is viable before Phase 2-3 investment. This is the highest-priority Phase 1 diagnostic.
+- **Correction bound non-circularity:** Whether bounding epsilon(t,L) rigorously requires unconditional zero-location information is the central mathematical uncertainty of v2.0. This cannot be resolved by research; it requires working through the math in Phase 3. If it turns out to be circular, v2.0 becomes a reformulation of RH, not a proof — valuable, but a different outcome.
+- **Mathlib coverage for Selberg trace and heat kernels:** Before committing to Lean 4 formalization in Phase 5, the extent of Mathlib's analytic number theory coverage must be audited. Likely coverage: partial for spectral theory, minimal for Selberg trace formula, near-zero for heat kernels on hyperbolic surfaces. This could extend Phase 5 substantially.
 
 ## Sources
 
 ### Primary (HIGH confidence)
-- mpmath official documentation and source (training data through v1.3; stable library, infrequent breaking changes) -- zeta evaluation, zetazero(), arbitrary-precision arithmetic, gmpy2 backend
-- NumPy/SciPy official documentation (training data through NumPy 2.0, SciPy 1.12-1.13) -- machine-precision computation, spectral analysis, linear algebra, statistics
-- Lean 4 / Mathlib community documentation (training data through early 2025) -- theorem prover setup, Mathlib structure, lake build system
-- Odlyzko zero tables (publicly available, stable) -- known zero data for validation and testing
-- LMFDB database (lmfdb.org, stable public database) -- precomputed zeros, modular forms, L-functions
+- [mpmath docs: identification, Bessel, Legendre, quad, nsum](https://mpmath.org/doc/current/) — PSLQ/findpoly/identify, besselk, legenp/q, quad, nsum capabilities verified against stable library documentation
+- [python-flint PyPI and FLINT acb_modular docs](https://pypi.org/project/python-flint/) — v0.8.0 Windows x86-64 wheels confirmed; acb.modular_j, acb.eisenstein, acb.modular_delta stable API
+- [LMFDB Maass forms database](https://www.lmfdb.org/ModularForm/GL2/Q/Maass/) — spectral parameters for first 100+ Maass forms with 30+ digit precision; already integrated via lmfdb_client.py
+- [Marklof: Selberg's Trace Formula, An Introduction (Bristol)](https://people.maths.bris.ac.uk/~majm/bib/selberg.pdf) — detailed SL(2,Z) formulas, test function conditions, scattering matrix
+- [Zagier: Eisenstein Series and the Selberg Trace Formula I and II](https://people.mpim-bonn.mpg.de/zagier/) — authoritative source for continuous spectrum contribution to trace formula
+- Session 35–47 project history — direct source for pitfall catalogue, margin-drain gap (0.036), and killed-approach inventory
 
 ### Secondary (MEDIUM confidence)
-- Lean 4 formalization community experience reports -- learning curve estimates, Mathlib naming conventions, sorry-to-proof ratios
-- HoloViz/Panel documentation (training data) -- dashboard framework capabilities and Jupyter integration
-- Scientific visualization best practices literature (Borland and Taylor on rainbow colormaps; Wattenberg on dimensionality reduction distortions) -- visualization artifact prevention methodology
-- Riemann Hypothesis computational literature (Montgomery-Odlyzko, Keating-Snaith, Berry-Keating) -- domain knowledge for feature prioritization and approach validation
+- [Booker-Strombergsson: Numerical computations with the trace formula](https://www2.math.uu.se/~ast10761/papers/stfz14march06.pdf) — rigorous eigenvalue verification methodology; Maass form tables cross-checked
+- [Pollack: Rankin-Selberg Method User's Guide (UCSD)](https://mathweb.ucsd.edu/~apollack/rankin-selberg.pdf) — L(s, f x f_bar) integral representation, convergence conditions, unfolding step
+- [Lapid: Nonnegativity of Rankin-Selberg L-functions at center of symmetry](https://academic.oup.com/imrn/article-abstract/2003/2/65/660341) — conditions for central value positivity; clarifies when Petersson norm positivity transfers
+- [Kim-Sarnak: On Selberg's Eigenvalue Conjecture](https://www.researchgate.net/publication/227031617) — lambda_1 >= 975/4096 for SL(2,Z) proved unconditionally; relevant for Phase 3 spectral bounds
+- [Boulanger: Heat kernel and Selberg pre-trace formula](https://arxiv.org/abs/1902.06580v2) — orbital decomposition methodology for the heat kernel on SL(2,Z)\H
 
-### Tertiary (LOW confidence, needs live validation)
-- python-flint binding maturity and Windows binary availability -- check PyPI before Phase 3
-- Panel + JupyterLab current compatibility matrix -- check HoloViz documentation before Phase 2
-- elan and Lean 4 toolchain on Windows Server 2025 -- test environment before Phase 5 planning
-- Specific latest version numbers for all packages -- training data cutoff May 2025; validate with `uv pip index versions <pkg>` before installation
+### Tertiary (MEDIUM-LOW confidence, verify before use)
+- [Tian An Wong: Explicit Formulae and Trace Formulae (CUNY thesis)](https://academicworks.cuny.edu/gc_etds/1542/) — most detailed source for the precise GL(1)->GL(2) connection; key reference for Phase 2; must be read carefully before implementation
+- [Grigor'yan: Heat kernel on hyperbolic space](https://www.math.uni-bielefeld.de/~grigor/nog.pdf) — closed-form heat kernel formula reference; PDF not machine-readable but mathematics is standard
+- [Borthwick: Spectral geometry lectures (Dartmouth)](https://math.dartmouth.edu/~specgeom/Borthwick_slides.pdf) — Selberg trace formula computational framework; MEDIUM confidence on completeness
+- [Heat kernel on Cayley graph of PSL2Z (2025)](https://arxiv.org/html/2506.02340) — recent work on heat kernel on the modular group; may have relevant asymptotic bounds
 
 ---
-*Research completed: 2026-03-18*
+*Research completed: 2026-04-04*
 *Ready for roadmap: yes*
