@@ -426,6 +426,16 @@ The spectral action program of Connes and Chamseddine \cite{ConnesChamseddine199
 Connes and Consani's spectral triples \cite{CC2025} construct operators $H_N$ whose eigenvalues approximate the zeta zeros with extraordinary precision. The spectral invariant $\mathrm{tr}(H_N^{-2})$ should converge to $\mathcal{Z}/2$ as $N \to \infty$, providing~$\mathcal{Z}$ with a spectral-geometric interpretation. This computation has not been performed.
 \end{remark}
 
+\begin{remark}[Tur\'an inequalities and the Jensen--P\'olya program]\label{rem:turan}
+The Taylor coefficients $c_k = (-1)^k \xi^{(2k)}(\tfrac{1}{2})/(2k)!$ of $\xi(\tfrac{1}{2} + it)/\xi(\tfrac{1}{2}) = \sum c_k t^{2k}$ satisfy the Tur\'an inequalities $c_k^2 \geq c_{k-1} c_{k+1}$ for $k = 1, \ldots, 15$ (our computation), with ratios $c_k^2/(c_{k-1}c_{k+1})$ decreasing from $2.15$ to $1.09$. These inequalities are necessary and sufficient for $\xi(\tfrac{1}{2} + it)$ to belong to the Laguerre--P\'olya class of entire functions with only real zeros, which is equivalent to~RH.
+
+Griffin, Ono, Rolen, and Zagier \cite{GORZ2019} proved unconditionally that the Jensen polynomials of~$\xi$ are hyperbolic (all real zeros) for all degrees~$d \geq 1$ at sufficiently large shifts, and for all shifts when $d \leq 8$ (extended to $d \leq 2 \times 10^{17}$ by Chasse). For large shifts, the Jensen polynomials converge to Hermite polynomials---a manifestation of GUE universality.
+
+The gap---hyperbolicity at small shifts for large degrees---has the same structure as our sign lemma wall: the asymptotic regime is handled, finite cases need checking, and the checking never reaches all cases. The Tur\'an ratios approaching~$1$ from above correspond to our Schur margin approaching~$0$ from below.
+
+The structural parallel with misaligned supersymmetry (Remark~\ref{rem:susy}) suggests a path: in non-supersymmetric string theory, modular invariance forces log-concavity of partition function coefficients at \emph{all} levels simultaneously \cite{Dienes1994}. The functional equation $\xi(s) = \xi(1-s)$ is the number-theoretic analogue of modular invariance. A proof that the functional equation forces uniform Tur\'an inequalities would close the Jensen--P\'olya program and prove~RH.
+\end{remark}
+
 %======================================================================
 \section{Conclusions}
 %======================================================================
@@ -497,6 +507,17 @@ G.~Ba\c{s}ar, A.~Cherman, and D.~McGady,
 \emph{Bose--Fermi cancellations without supersymmetry},
 Phys.\ Rev.\ D \textbf{99} (2019), 065014.
 arXiv:1812.04642.
+
+\bibitem{Dienes1994}
+K.~R.~Dienes,
+\emph{Modular invariance, finiteness, and misaligned supersymmetry},
+Nucl.\ Phys.\ B \textbf{429} (1994), 533--588.
+arXiv:hep-th/9402006.
+
+\bibitem{GORZ2019}
+M.~Griffin, K.~Ono, L.~Rolen, and D.~Zagier,
+\emph{Jensen polynomials for the Riemann zeta function and other sequences},
+Proc.\ Natl.\ Acad.\ Sci.\ USA \textbf{116} (2019), 11103--11110.
 
 \bibitem{ConnesChamseddine1996}
 A.~Connes and A.~Chamseddine,
