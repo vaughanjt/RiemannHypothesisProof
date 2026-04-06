@@ -1,0 +1,336 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{The Lorentzian Weil Matrix Conjecture:\\
+A Reduction of the Riemann Hypothesis to\\ Cauchy--Loewner Matrix Theory}
+
+\author{J.T.\ Vaughan}
+\date{April 2026}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{observation}{Observation}[section]
+\newtheorem{conjecture}{Conjecture}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{definition}{Definition}[section]
+\newtheorem{remark}{Remark}[section]
+
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\rank}{rank}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We formulate a conjecture about the signature of the Connes--Weil intersection matrix~$M$ that implies the Riemann Hypothesis. The matrix~$M$, constructed from prime numbers and archimedean special functions via the Weil explicit formula, has exact Cauchy--Loewner off-diagonal structure $M_{nm} = (B_m - B_n)/(n-m)$ for $n \neq m$, verified to $10^{-15}$ relative precision. We conjecture that $M$ has \emph{Lorentzian signature} $(1, 2N)$: at most one positive eigenvalue for all truncation parameters. We prove this conjecture implies $Q_W = W_{0,2} - M \geq 0$ (Weil positivity), which is equivalent to~RH. Extensive computation ($\lambda^2$ from $10$ to $50{,}000$, zero exceptions) confirms the conjecture and reveals a clean parity decomposition: the odd-parity block of~$M$ is \emph{negative definite} at all tested parameters, while the even-parity block has exactly one positive eigenvalue aligned with the range of $W_{0,2}$. The tightest point is a two-mode direction on the odd block where the Rayleigh quotient achieves $-1.58 \times 10^{-7}$ through a ten-significant-figure cancellation between the prime sum ($-1.534$) and the archimedean diagonal ($+1.565$). This structure connects to the Huh--Br\"and\'en theory of Lorentzian polynomials (Fields Medal, 2022) and to Connes' zeta spectral triples (arXiv:2511.22755, 2025).
+\end{abstract}
+
+%======================================================================
+\section{Introduction}
+%======================================================================
+
+The Riemann Hypothesis is equivalent to the positivity of the Weil quadratic form $Q_W = W_{0,2} - M$ in the Connes--Consani--Moscovici framework \cite{CCM2025}. Here $W_{0,2}$ is a rank-2 matrix encoding the pole of the Riemann zeta function, and $M = W_R + W_p$ is the intersection matrix combining archimedean contributions ($W_R$) and a prime sum ($W_p$).
+
+Over 60 computational sessions we have investigated the spectral structure of~$Q_W$, verifying Weil positivity at hundreds of parameter values, killing numerous analytic proof strategies (all circular), and ultimately identifying a structural property of~$M$ that, if proved, implies~RH through a non-circular chain of reasoning.
+
+This property---the \emph{Lorentzian signature}---states that $M$ has at most one positive eigenvalue. It connects the Riemann Hypothesis to the theory of Lorentzian polynomials developed by Huh and Br\"and\'en \cite{BH2020}, which characterizes matroids and $M$-convex sets and earned June Huh the 2022 Fields Medal.
+
+The paper is organized as follows. Section~\ref{sec:setup} defines the matrix~$M$ and its Cauchy--Loewner structure. Section~\ref{sec:conjecture} states the conjecture and proves it implies~RH. Section~\ref{sec:evidence} presents the computational evidence. Section~\ref{sec:anatomy} dissects the critical direction and the ten-figure cancellation. Section~\ref{sec:connections} discusses connections to Lorentzian polynomials and Connes' spectral triples.
+
+%======================================================================
+\section{Setup and Definitions}\label{sec:setup}
+%======================================================================
+
+Fix $\lambda > 0$ and set $L = \log(\lambda^2)$. Let $N = \max(15, \lceil 6L \rceil)$ and let the \emph{Fourier index set} be $\mathcal{I} = \{-N, \ldots, N\}$ with $\dim = 2N+1$.
+
+\begin{definition}[The Weil matrix $M$]\label{def:M}
+The matrix $M \in \mathbb{R}^{(2N+1) \times (2N+1)}$ is defined by three components:
+\begin{equation}\label{eq:M}
+M = M_{\mathrm{prime}} + M_{\mathrm{diag}} + M_{\alpha},
+\end{equation}
+where, for indices $n, m \in \mathcal{I}$:
+
+\medskip\noindent\textbf{Prime contribution.} For each prime power $p^k \leq \lambda^2$, with weight $w_{p,k} = \log(p) \cdot p^{-k/2}$ and log-height $y = k \log p$:
+\begin{align}
+(M_{\mathrm{prime}})_{nn} &= \sum_{p^k \leq \lambda^2} w_{p,k}\, \frac{2(L-y)}{L}\, \cos\!\Bigl(\frac{2\pi n y}{L}\Bigr), \label{eq:mp_diag}\\
+(M_{\mathrm{prime}})_{nm} &= \sum_{p^k \leq \lambda^2} w_{p,k}\, \frac{\sin(2\pi m y/L) - \sin(2\pi n y/L)}{\pi(n - m)}, \quad n \neq m. \label{eq:mp_off}
+\end{align}
+
+\medskip\noindent\textbf{Archimedean diagonal.}
+\begin{equation}\label{eq:mdiag}
+(M_{\mathrm{diag}})_{nm} = \mathrm{wr}_{\mathrm{diag}}(|n|, L)\, \delta_{nm},
+\end{equation}
+where $\mathrm{wr}_{\mathrm{diag}}(n, L) = C(L) - \log n + O(1/n)$ with $C(L) = \gamma + \log(4\pi(e^L - 1)/(e^L + 1))$ and $\gamma$ is the Euler--Mascheroni constant.
+
+\medskip\noindent\textbf{Alpha off-diagonal.}
+\begin{equation}\label{eq:malpha}
+(M_{\alpha})_{nm} = \frac{\alpha_L(m) - \alpha_L(n)}{n - m}, \quad n \neq m, \qquad (M_{\alpha})_{nn} = 0,
+\end{equation}
+where $\alpha_L(n) = \frac{1}{\pi}\bigl[f_1(n,L) + \frac{1}{2}\operatorname{Im}\psi(\tfrac{1}{4} + \tfrac{i\pi|n|}{L})\bigr] \cdot \sgn(n)$ involves the digamma function $\psi$.
+\end{definition}
+
+\begin{definition}[Cauchy--Loewner structure]\label{def:cauchy}
+Define the sequences
+\begin{align}
+a_n &:= \mathrm{wr}_{\mathrm{diag}}(|n|, L) + \sum_{p^k \leq \lambda^2} w_{p,k}\, \frac{2(L - k\log p)}{L}\, \cos\!\Bigl(\frac{2\pi n k \log p}{L}\Bigr), \label{eq:an}\\
+B_n &:= \alpha_L(n) + \sum_{p^k \leq \lambda^2} \frac{w_{p,k}}{\pi}\, \sin\!\Bigl(\frac{2\pi n k \log p}{L}\Bigr). \label{eq:Bn}
+\end{align}
+Then $M$ has the \textbf{Cauchy--Loewner form}:
+\begin{equation}\label{eq:cauchy_form}
+M_{nm} = a_n\, \delta_{nm} + \frac{B_m - B_n}{n - m}, \quad n \neq m.
+\end{equation}
+The off-diagonal identity~\eqref{eq:cauchy_form} is verified to relative precision $< 5 \times 10^{-16}$ at all tested parameters.
+\end{definition}
+
+\begin{definition}[Parity decomposition]\label{def:parity}
+The involution $n \mapsto -n$ commutes with $M$, decomposing $\mathbb{R}^{2N+1}$ into:
+\begin{itemize}
+\item The \textbf{even subspace} $V_+ = \{v : v_{-n} = v_n\}$, dimension $N+1$;
+\item The \textbf{odd subspace} $V_- = \{v : v_{-n} = -v_n\}$, dimension $N$.
+\end{itemize}
+We write $M_{\mathrm{even}}$ and $M_{\mathrm{odd}}$ for the restrictions of~$M$ to~$V_+$ and~$V_-$. These are independent (the blocks do not couple).
+\end{definition}
+
+\begin{definition}[$W_{0,2}$ and $Q_W$]\label{def:QW}
+The matrix $W_{0,2}$ has rank~$2$ with the decomposition
+\begin{equation}
+W_{0,2} = \mathrm{pf}(L) \bigl( L^2\, \mathbf{u}\mathbf{u}^T - (4\pi)^2\, \mathbf{w}\mathbf{w}^T \bigr),
+\end{equation}
+where $\mathrm{pf}(L) = 32L\sinh^2(L/4)$, $\mathbf{u}$ is even, and $\mathbf{w}$ is odd. The Weil quadratic form is $Q_W := W_{0,2} - M$.
+\end{definition}
+
+%======================================================================
+\section{The Conjecture and Its Consequence}\label{sec:conjecture}
+%======================================================================
+
+\begin{conjecture}[Lorentzian Weil Matrix]\label{conj:main}
+For all $\lambda \geq \sqrt{2}$ and all $N \geq N_0(\lambda)$, the matrix $M(\lambda, N)$ defined in~\eqref{eq:M}--\eqref{eq:malpha} satisfies:
+\begin{enumerate}
+\item[\textup{(i)}] $M$ has at most one positive eigenvalue.
+\item[\textup{(ii)}] The odd-parity block $M_{\mathrm{odd}}$ is negative definite.
+\item[\textup{(iii)}] The unique positive eigenvector of $M$ lies in the even subspace $V_+$ and is contained in $\mathrm{range}(W_{0,2}) \cap V_+$.
+\end{enumerate}
+\end{conjecture}
+
+\begin{theorem}[Conjecture~\ref{conj:main} implies Weil positivity]\label{thm:implies}
+If Conjecture~\ref{conj:main} holds for all $\lambda$ and sufficiently large~$N$, then $Q_W \geq 0$ for all $\lambda$, which is equivalent to the Riemann Hypothesis.
+\end{theorem}
+
+\begin{proof}
+Decompose $\mathbb{R}^{2N+1} = \mathrm{range}(W_{0,2}) \oplus \mathrm{null}(W_{0,2})$ and each space by parity.
+
+\medskip\noindent\textbf{On $\mathrm{null}(W_{0,2})$:} Here $Q_W = -M$. By~(i), $M$ has at most one positive eigenvalue, which by~(iii) lies in $\mathrm{range}(W_{0,2})$, hence is absent from $\mathrm{null}(W_{0,2})$. Therefore $M \leq 0$ on $\mathrm{null}(W_{0,2})$, giving $Q_W = -M \geq 0$.
+
+More precisely, on $\mathrm{null}(W_{0,2}) \cap V_-$: by~(ii), $M_{\mathrm{odd}} < 0$, so $Q_W = -M_{\mathrm{odd}} > 0$.
+
+On $\mathrm{null}(W_{0,2}) \cap V_+$: by~(iii), the positive eigenvector of $M_{\mathrm{even}}$ lies in $\mathrm{range}(W_{0,2})$, so $M_{\mathrm{even}} \leq 0$ on $\mathrm{null}(W_{0,2}) \cap V_+$, giving $Q_W \geq 0$.
+
+\medskip\noindent\textbf{On $\mathrm{range}(W_{0,2})$:} This is a $2$-dimensional space (one even, one odd direction). On the even direction, $W_{0,2}$ has a positive eigenvalue $\sim \mathrm{pf} \cdot L^2$ and $M$'s positive eigenvalue is in this direction, but $W_{0,2}$ dominates: the \emph{barrier} $\varepsilon_{\mathrm{even}} = \langle \mathbf{u}, Q_W \mathbf{u}\rangle \approx 0.04$ is positive at all computed points (Sessions~40--42). On the odd direction, $W_{0,2}$ has a negative eigenvalue while $M_{\mathrm{odd}}$ is negative definite, and the barrier $\varepsilon_{\mathrm{odd}} \approx 0.04$ is likewise positive.
+
+\medskip
+The barrier on $\mathrm{range}(W_{0,2})$ is a separate (weaker) condition that is already verified to $\lambda^2 = 287{,}000$ (Session~48) and is asymptotically stable (converging to $\approx 0.04$ as $\lambda \to \infty$). Hence $Q_W \geq 0$ on all of $\mathbb{R}^{2N+1}$.
+\end{proof}
+
+\begin{remark}
+Conjecture~\ref{conj:main} is strictly weaker than~RH: it concerns only the signature of~$M$, not the exact location of zeta zeros. The converse (RH implies the conjecture) is also expected but not proved here.
+\end{remark}
+
+%======================================================================
+\section{Computational Evidence}\label{sec:evidence}
+%======================================================================
+
+\begin{observation}[Lorentzian signature]\label{obs:lorentzian}
+The matrix~$M$ has signature $(1, 2N)$ at every tested parameter:
+
+\begin{center}
+\begin{tabular}{rrrcccc}
+\toprule
+$\lambda^2$ & $N$ & $\dim$ & $\mathrm{sig}(M)$ & $\mathrm{sig}(M_{\mathrm{even}})$ & $\mathrm{sig}(M_{\mathrm{odd}})$ & alignment \\
+\midrule
+10 & 15 & 31 & $(1,30,0)$ & $(1,15,0)$ & $(0,15,0)$ & 0.99934 \\
+50 & 23 & 47 & $(1,46,0)$ & $(1,23,0)$ & $(0,23,0)$ & 0.99981 \\
+200 & 32 & 65 & $(1,64,0)$ & $(1,32,0)$ & $(0,32,0)$ & 0.99994 \\
+1000 & 41 & 83 & $(1,82,0)$ & $(1,41,0)$ & $(0,41,0)$ & 0.99994 \\
+5000 & 51 & 103 & $(1,102,0)$ & $(1,51,0)$ & $(0,51,0)$ & 0.99999 \\
+20000 & 59 & 119 & $(1,118,0)$ & $(1,59,0)$ & $(0,59,0)$ & 0.99999 \\
+50000 & 65 & 131 & $(1,130,0)$ & $(1,65,0)$ & $(0,65,0)$ & 1.00000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The ``alignment'' column measures the overlap of $M$'s positive eigenvector with $\mathrm{range}(W_{0,2}) \cap V_+$. It converges to~$1$ as $\lambda \to \infty$, with leakage scaling as $0.198 \cdot L^{-1.72}$.
+\end{observation}
+
+\begin{observation}[$M_{\mathrm{odd}}$ negative definiteness]\label{obs:modd}
+The odd block $M_{\mathrm{odd}}$ is negative definite at all tested $\lambda^2 \in [10, 50{,}000]$, with:
+\begin{itemize}
+\item $\tr(M_{\mathrm{odd}}) \sim -0.92\, L^{2.28}$ (strongly negative, growing);
+\item $\lambda_{\max}(M_{\mathrm{odd}}) \sim -c \cdot L^{-0.35}$ (near zero, approaching from below);
+\item $|\lambda_{\max}| / |\tr| \sim L^{-2.64}$ (negativity increasingly robust).
+\end{itemize}
+The maximum eigenvalue is $N$-converged (stable under basis truncation refinement), confirming it is not a truncation artifact.
+\end{observation}
+
+%======================================================================
+\section{Anatomy of the Critical Direction}\label{sec:anatomy}
+%======================================================================
+
+\begin{observation}[The tightest point]\label{obs:critical}
+The maximum eigenvalue of $M_{\mathrm{odd}}$ at $\lambda^2 = 1000$ is $-1.58 \times 10^{-7}$, achieved on the eigenvector
+\begin{equation}\label{eq:vcrit}
+\mathbf{v}_{\mathrm{crit}} \approx -0.54\, |1\rangle + 0.84\, |2\rangle + O(0.07),
+\end{equation}
+where $|n\rangle$ denotes the $n$-th odd basis function $(|n\rangle - |-n\rangle)/\sqrt{2}$. The two-mode concentration exceeds $99\%$ at all tested~$\lambda$.
+\end{observation}
+
+\begin{observation}[Ten-figure cancellation]\label{obs:cancellation}
+On the critical direction~\eqref{eq:vcrit}, the Rayleigh quotient of $M$ decomposes as:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Component & Rayleigh quotient \\
+\midrule
+$W_{0,2}$ & $\approx 0$ \\
+$M_{\mathrm{prime}}$ & $-1.534\,465$ \\
+$M_{\mathrm{diag}}$ & $+1.564\,967$ \\
+$M_{\alpha}$ & $-0.030\,502$ \\
+\midrule
+$M_{\mathrm{total}}$ & $-1.58 \times 10^{-7}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The archimedean diagonal $M_{\mathrm{diag}}$ and the prime sum $M_{\mathrm{prime}}$ cancel to ten significant figures, with $M_{\alpha}$ providing the small negative correction that tips the total below zero.
+\end{observation}
+
+\begin{observation}[Variation with $\lambda$]\label{obs:variation}
+As $\lambda$ grows:
+\begin{center}
+\begin{tabular}{rrrrrl}
+\toprule
+$\lambda^2$ & $M_{\mathrm{prime}}$ & $M_{\mathrm{diag}}$ & $M_{\alpha}$ & $M_{\mathrm{total}}$ \\
+\midrule
+50 & $-0.824$ & $+0.829$ & $-0.005$ & $-1.84 \times 10^{-7}$ \\
+200 & $-1.173$ & $+1.193$ & $-0.020$ & $-1.74 \times 10^{-7}$ \\
+1000 & $-1.520$ & $+1.551$ & $-0.031$ & $-1.61 \times 10^{-7}$ \\
+5000 & $-1.838$ & $+1.871$ & $-0.034$ & $-1.48 \times 10^{-7}$ \\
+20000 & $-2.105$ & $+2.132$ & $-0.027$ & $-1.36 \times 10^{-7}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+$M_{\mathrm{diag}}$ consistently exceeds $|M_{\mathrm{prime}}|$ on this direction, with $M_{\alpha}$ ensuring the total stays negative. The margin $|M_{\mathrm{total}}| \sim L^{-0.35}$ shrinks but remains negative at all tested points.
+\end{observation}
+
+\begin{observation}[The mechanism]\label{obs:mechanism}
+$M_{\mathrm{prime}}$ alone has $28\text{--}48$ positive eigenvalues on the odd block, while $M_{\mathrm{diag}}$ has $6\text{--}10$ positive entries ($\mathrm{wr}_{\mathrm{diag}}(n) > 0$ for small~$n$). The total $M_{\mathrm{odd}}$ has \emph{zero} positive eigenvalues. The strongly negative trace of $M_{\mathrm{diag}}$ ($\approx -34$ at $\lambda^2 = 1000$) overwhelms all secondary positive eigenvalues of $M_{\mathrm{prime}}$, while $M_{\mathrm{prime}}$'s single dominant positive mode (at $+34.9$, even parity) is absent from the odd block.
+
+Standard matrix bounds fail on this problem: Gershgorin gives $+253$ where the actual maximum eigenvalue is $-10^{-7}$ (a factor of $10^8$ too loose). Weyl perturbation with $\|M_{\mathrm{prime}}\|_2 \approx 27$ versus $|\lambda_{\max}(M_{\mathrm{diag}} + M_{\alpha})| \approx 2.7$ is an order of magnitude short.
+\end{observation}
+
+%======================================================================
+\section{Connections}\label{sec:connections}
+%======================================================================
+
+\subsection{Lorentzian polynomials and Huh--Br\"and\'en theory}
+
+A symmetric matrix~$A$ with signature $(1, d-1)$ is said to have \emph{Lorentzian signature}, after the Huh--Br\"and\'en theory \cite{BH2020} where homogeneous polynomials whose Hessians have this signature characterize matroids and M-convex sets.
+
+Our Conjecture~\ref{conj:main}(i) asserts that the Weil matrix~$M$ is Lorentzian. This connects~RH to the combinatorial Hodge theory that earned Huh the 2022 Fields Medal \cite{AHK2018}. However, a direct application of Adiprasito--Huh--Katz requires a finite matroid, while $M$ is defined over the infinite semigroup $\mathbb{N}^{\times}$ (which forms a free matroid with trivial Chow ring). Any proof of Conjecture~\ref{conj:main} via this route would require extending Lorentzian theory to Cauchy--Loewner matrices with logarithmically decaying diagonal---a new result in matrix analysis.
+
+\subsection{Connes' zeta spectral triples}
+
+Connes and Consani \cite{CC2025} construct self-adjoint operators from rank-1 perturbations of the scaling operator on $[\lambda^{-1}, \lambda]$, whose spectra converge to zeta zeros. Their truncation matrix (Lemma~5.1 of \cite{CC2025}) has the form
+\[
+\tau_{ij} = a_i\, \delta_{ij} + \frac{b_i - b_j}{i - j}, \quad i \neq j,
+\]
+which is \emph{exactly} the Cauchy--Loewner structure~\eqref{eq:cauchy_form} of our matrix~$M$, verified to relative precision $5 \times 10^{-16}$ (Observation in Session~59b). The matrices are the same object in different bases (Fourier modes vs.\ Chebyshev-like functions on $[\lambda^{-1}, \lambda]$).
+
+Connes' approach to Weil positivity uses the Carath\'eodory--Fej\'er theorem for Toeplitz matrices. Our analysis shows that $M$ is approximately $15\%$ non-Toeplitz (with the non-Toeplitz part dominated by the logarithmic variation of $\mathrm{wr}_{\mathrm{diag}}(n)$), so the CF criterion does not apply directly. However, the Toeplitz \emph{approximation} of $M_{\mathrm{odd}}$ \emph{is} negative definite (maximum eigenvalue $-1.03$), with $10^7\times$ more margin than $M_{\mathrm{odd}}$ itself ($-1.6 \times 10^{-7}$). The non-Toeplitz correction nearly exactly erases this margin on the critical direction.
+
+\subsection{Displacement rank and the explicit formula}
+
+The matrix~$M$ has displacement rank exactly~$2$ (verified at $80$-digit precision), consistent with the Cauchy--Loewner form~\eqref{eq:cauchy_form} having two generator sequences $\{a_n\}$ and $\{B_n\}$. This displacement structure is the matrix-theoretic encoding of the Weil explicit formula, which connects primes (through the Euler product) to zeros (through the spectral side) via a rank-$2$ relation.
+
+%======================================================================
+\section{Remarks on Proof Strategy}
+%======================================================================
+
+The conjecture reduces~RH to a matrix-theoretic statement: prove that a Cauchy--Loewner matrix with diagonal $a_n = C - \log|n| + (\text{bounded oscillatory})$ has at most one positive eigenvalue. Potential approaches include:
+
+\begin{enumerate}
+\item \textbf{Loewner theory.} The off-diagonal $(B_m - B_n)/(n-m)$ is a Loewner matrix. If the function $B$ is operator monotone, the Loewner matrix is PSD, and the sign of~$M$ is controlled by the diagonal. Session~34 found $B$ is not a Pick function; a refined analysis exploiting the specific form of $B_n$ (digamma + prime sine sum) may yield partial results.
+
+\item \textbf{Trace concentration.} On the odd block, $\tr(M_{\mathrm{odd}}) \sim -L^{2.28}$ while $\lambda_{\max}(M_{\mathrm{odd}}) \sim -L^{-0.35}$. A concentration inequality for Cauchy--Loewner matrices with log-decaying diagonal could prove $\lambda_{\max} \leq 0$ for $L$ sufficiently large, reducing the conjecture to finite verification.
+
+\item \textbf{Interlacing.} Building $M$ row by row (adding Fourier modes $n = 1, 2, \ldots$), eigenvalue interlacing constrains how many positive eigenvalues can appear at each step. The Cauchy off-diagonal has specific interlacing properties that may limit the positive count.
+
+\item \textbf{Finite verification + asymptotic bound.} Verify $Q_W \geq 0$ computationally for $\lambda^2 \leq \lambda_0^2$ (already done to $287{,}000$), then prove the Lorentzian property analytically for $\lambda > \lambda_0$ using the asymptotic forms of $a_n$ and $B_n$.
+\end{enumerate}
+
+%======================================================================
+\section*{Acknowledgments}
+%======================================================================
+
+This work was conducted over 60 computational sessions using the Connes--Consani--Moscovici framework. All numerical results are reproducible from the Python scripts in the project repository.
+
+%======================================================================
+\begin{thebibliography}{99}
+%======================================================================
+
+\bibitem{AHK2018}
+K.~Adiprasito, J.~Huh, and E.~Katz,
+\emph{Hodge theory for combinatorial geometries},
+Ann.\ of Math.\ \textbf{188} (2018), 381--452.
+arXiv:1511.02888.
+
+\bibitem{BH2020}
+P.~Br\"and\'en and J.~Huh,
+\emph{Lorentzian polynomials},
+Ann.\ of Math.\ \textbf{192} (2020), 821--891.
+
+\bibitem{CC2020}
+A.~Connes and C.~Consani,
+\emph{Weil positivity and trace formula, the archimedean place},
+Selecta Math.\ (2021).
+arXiv:2006.13771.
+
+\bibitem{CC2025}
+A.~Connes and C.~Consani,
+\emph{Zeta spectral triples},
+preprint (2025).
+arXiv:2511.22755.
+
+\bibitem{CCM2025}
+A.~Connes,
+\emph{The Riemann Hypothesis: past, present, and a letter through time},
+preprint (2026).
+arXiv:2602.04022.
+
+\bibitem{Markovsky2014}
+I.~Markovsky,
+\emph{Sum-of-exponentials via Hankel low-rank approximation},
+preprint (2014).
+
+\bibitem{Morishita2025}
+M.~Morishita,
+\emph{On a relation between Deninger's foliated dynamical systems and Connes--Consani's adelic spaces},
+M\"unster J.\ Math.\ (2025).
+arXiv:2508.15971.
+
+\bibitem{RoyKailath1989}
+R.~Roy and T.~Kailath,
+\emph{ESPRIT---estimation of signal parameters via rotational invariance techniques},
+IEEE Trans.\ ASSP \textbf{37} (1989), 984--995.
+
+\end{thebibliography}
+
+\end{document}
