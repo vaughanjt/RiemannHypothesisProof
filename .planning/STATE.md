@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: The Modular Barrier
-status: session55_literature_complete
-stopped_at: "Sessions 54-55 complete. S54: Cramer concentration killed. S55: literature deep-dive mapped Connes-Consani program (2015-2026). Hard Lefschetz NOT proved by anyone. Connes pursuing spectral triples (arXiv:2511.22755) not algebraic geometry. Lead: spectral triples may BE the Hodge star construction. Next: test whether Connes 2025 rank-1 perturbation maps onto our Q_W structure."
-last_updated: "2026-04-05T15:00:00.000Z"
+status: sessions54_60_complete_conjecture_formulated
+stopped_at: "Sessions 54-60 complete. Major arc: Cramer killed (54), literature mapped (55), Lorentzian signature discovered (56), parity decomposition (57), critical direction anatomy (58), Cauchy structure confirmed (59), ESPRIT/palindromic probed (60). Lorentzian Weil Matrix conjecture formulated — reduces RH to matrix theory on Cauchy-Loewner matrices. NEXT SESSION 61: write up conjecture as formal document. SESSION 62: attack via matrix analysis."
+last_updated: "2026-04-05T18:00:00.000Z"
 last_activity: 2026-04-05
 progress:
   total_phases: 4
@@ -513,3 +513,84 @@ Memory: project_session55_literature.md
   Recommendation: B. This is the most concrete lead from the
   literature dive, and it's computationally testable with our
   existing infrastructure.
+
+## Sessions 56-60 (complete) — Lorentzian discovery + ESPRIT probes
+
+**Session 56: M has Lorentzian signature (1, d-1).**
+Verified at all lambda^2 from 10 to 50000. M_odd is NEGATIVE DEFINITE.
+M_even has exactly 1 positive eigenvalue. Positive eigenvector is
+purely even, 99.994% aligned with u_hat/range(W02). Mechanism:
+M_diag (archimedean, trace -64.6) overwhelms M_prime's 58 secondary
+positive eigenvalues, leaving only the dominant coherent mode.
+
+**Session 57: Parity decomposition.**
+M splits by n -> -n parity into independent blocks:
+  M_even: signature (1, N) — Lorentzian
+  M_odd:  signature (0, N) — NEGATIVE DEFINITE
+RH = two independent half-dimensional problems.
+
+**Session 58: Critical direction anatomy.**
+M_odd's near-zero eigenvalue (-1.58e-7) corresponds to v ~ -0.54|1> +
+0.84|2> in the odd basis. Rayleigh quotient: M_prime(-1.534) +
+M_diag(+1.565) + M_alpha(-0.031) = -1.58e-7. Ten-figure cancellation.
+Eigenvector drifts with lambda (c1: 0.45->0.63, c2: 0.89->0.78).
+Gershgorin off by 10^8x. Standard bounds useless.
+
+**Session 59: Cauchy structure + Connes bridge.**
+59a: M_odd ~15% non-Toeplitz. Toeplitz approx IS neg def (margin -1.03).
+59b: M has EXACT Cauchy off-diagonal (B_m-B_n)/(n-m) to 10^{-15}.
+     This IS Connes' matrix tau from arXiv:2511.22755.
+59c: Archimedean (M_diag+M_alpha) NOT neg def on odd. Weyl fails.
+     Toeplitz(Mda_odd) IS neg def. Non-Toeplitz correction flips it.
+
+**Session 60: ESPRIT pipeline + palindromic test.**
+60a: Primes -> barrier -> ESPRIT -> zeros (no zeta). Eigenvalues within
+     1.1% of unit circle, improving with signal length.
+60b: Displacement rank 2 of Hankel is trivial (all Hankel matrices).
+60c: Equal displacement svals NOT the distinguishing feature.
+60d: Palindromic kernel test fails (barrier has ~100 frequencies,
+     no clean Hankel kernel). Markovsky condition not applicable.
+
+**The Lorentzian Weil Matrix Conjecture (formulated Session 60):**
+
+  Let M(lambda) be the Cauchy-Loewner matrix with:
+    M[n,m] = a_n delta + (B_m - B_n)/(n-m)
+  where a_n and B_n are determined by wr_diag, alpha, and primes.
+
+  Conjecture: (i) M has at most 1 positive eigenvalue for all lambda.
+  (ii) On the odd subspace, M is negative definite.
+  (iii) The unique positive eigenvector is even, in range(W02).
+
+  Consequence: (i)-(iii) + range barrier (~0.04) => Q_W >= 0 => RH.
+
+  Verified: lambda^2 = 10 to 50000. Zero exceptions.
+
+Commits: ac22387 (S54), 28258e5 (landscape), f94751b (S55),
+         9d4a081 (S56), 8730d2f (S56b), 9502abf (S57), 8a87ab8 (S58a),
+         8a0df87 (S58b), 3e2ab69 (S58c), fac7c3e (S59a), 3b8f5cb (S59b),
+         b198757 (S59c), 03a3f1d (S60a), 00f2c45 (S60b-c), 6fc39c4 (S60d)
+
+Memory: project_session56_lorentzian.md, project_session57_parity.md,
+        project_session58_odd_block.md, project_session60_esprit_palindromic.md
+
+## NEXT SESSIONS (user-directed)
+
+**Session 61: Write up the Lorentzian Weil Matrix conjecture.**
+  Formal document (LaTeX or structured markdown) with:
+  - Precise statement of the conjecture (parts i-iii)
+  - All definitions (M, a_n, B_n, Cauchy-Loewner form)
+  - Computational evidence table
+  - Proof that (i)-(iii) => Q_W >= 0 => RH
+  - The critical direction anatomy (10-figure cancellation)
+  - Connection to Huh-Branden Lorentzian polynomials
+  - Connection to Connes' arXiv:2511.22755
+
+**Session 62: Attack the conjecture using matrix analysis.**
+  Tools to deploy:
+  - Loewner matrix theory (operator monotone functions)
+  - Cauchy matrix eigenvalue bounds
+  - Interlacing arguments (build M row by row)
+  - Structured perturbation (M = M_arch + M_prime)
+  - Trace + concentration for matrices with log-decaying diagonal
+  - Pushnitski-Treil spectral involution for Cauchy matrices
+  Option C (back pocket): pivot to Levinson-Conrey / GUE / Rodgers-Tao
