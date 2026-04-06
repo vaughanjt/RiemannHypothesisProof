@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-06T02:38:41.841Z",
+  "phase": "sessions-54-60",
+  "phase_name": "Lorentzian discovery + conjecture formulation",
+  "phase_dir": ".planning",
+  "plan": 0,
+  "task": 0,
+  "total_tasks": 0,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": 54, "name": "Cramer concentration killed", "status": "done", "commit": "ac22387"},
+    {"id": 55, "name": "Literature deep-dive: scaling site geometry", "status": "done", "commit": "f94751b"},
+    {"id": 56, "name": "M has Lorentzian signature (1,d-1)", "status": "done", "commit": "9d4a081"},
+    {"id": 57, "name": "Parity decomposition: M_odd neg def, M_even Lorentzian", "status": "done", "commit": "9502abf"},
+    {"id": 58, "name": "Critical direction anatomy: 10-figure cancellation", "status": "done", "commit": "8a0df87"},
+    {"id": 59, "name": "Cauchy structure confirmed, Connes bridge established", "status": "done", "commit": "3b8f5cb"},
+    {"id": 60, "name": "ESPRIT/palindromic probes, conjecture formulated", "status": "done", "commit": "6fc39c4"}
+  ],
+  "remaining_tasks": [
+    {"id": 61, "name": "Write up Lorentzian Weil Matrix conjecture as formal document", "status": "not_started"},
+    {"id": 62, "name": "Attack conjecture using matrix analysis (Loewner, interlacing, concentration)", "status": "not_started"}
+  ],
+  "blockers": [],
+  "human_actions_pending": [],
+  "decisions": [
+    {"decision": "Formulated Lorentzian Weil Matrix Conjecture as clean RH reduction", "rationale": "Strips number theory from RH, exposes matrix skeleton: M has at most 1 positive eigenvalue, M_odd<0, positive eigvec in even/range(W02). Verified lambda^2=10-50000.", "phase": "60"},
+    {"decision": "ESPRIT/palindromic/displacement routes explored and bounded", "rationale": "ESPRIT detects but can't prove. Displacement rank 2 trivial for Hankel. Palindromic needs few-freq signal. These are ruled out as proof paths.", "phase": "60"},
+    {"decision": "Option C (Levinson-Conrey/GUE/Rodgers-Tao) held in back pocket", "rationale": "User directive: chase Connes first, keep alternatives ready", "phase": "59"}
+  ],
+  "uncommitted_files": [],
+  "next_action": "Session 61: Create docs/lorentzian_weil_conjecture.tex — formal write-up of the conjecture with definitions, evidence, proof that (i)-(iii) implies RH, connections to Huh-Branden and Connes arXiv:2511.22755.",
+  "context_notes": "Seven sessions in one afternoon (54-60). Went from 'everything is circular' to a clean conjecture that reduces RH to matrix theory on Cauchy-Loewner matrices. The conjecture has three parts: (i) M Lorentzian, (ii) M_odd neg def, (iii) positive eigvec even. The 10^{-7} barrier on M_odd (Session 58) is the single tightest point. User wants Session 61 = write-up, Session 62 = matrix analysis attack. User feedback: stop saying 'honest', the work IS honest by default."
+}
