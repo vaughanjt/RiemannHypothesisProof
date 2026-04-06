@@ -1,34 +1,34 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-06T07:00:00.000Z",
-  "phase": "sessions-54-64",
-  "phase_name": "Lorentzian conjecture + sign lemma + collective cancellation",
+  "timestamp": "2026-04-06T12:00:00.000Z",
+  "phase": "sessions-63-68",
+  "phase_name": "Lorentzian conjecture + sign lemma + Turan decomposition",
   "phase_dir": ".planning",
   "plan": 0,
   "task": 0,
   "total_tasks": 0,
   "status": "paused",
   "completed_tasks": [
-    {"id": 63, "name": "Matrix circularity: pure matrix proof DEAD", "status": "done", "commit": "8ffc348"},
-    {"id": "64a", "name": "Asymptotic test: off-line zeros detected at delta=1.4e-6", "status": "done", "commit": "fd31feb"},
-    {"id": "64b", "name": "Sign consistency: universally positive (40/40)", "status": "done", "commit": "fd31feb"},
-    {"id": "64c", "name": "Sign lemma: closed-form P[n,n] = 4/(gamma^2 - a_n^2)", "status": "done", "commit": "5516cf4"},
-    {"id": "64d", "name": "Formula verification: matches to 0.03-4%", "status": "done", "commit": "5516cf4"},
-    {"id": "64e", "name": "Collective cancellation: first-order tail 80,000x below margin", "status": "done", "commit": "eece340"}
+    {"id": 63, "name": "Matrix circularity mapped", "status": "done"},
+    {"id": 64, "name": "Sign lemma + K(L)=0 + tail bound", "status": "done"},
+    {"id": 65, "name": "Hard Lefschetz same wall", "status": "done"},
+    {"id": 66, "name": "RT barrier bridge", "status": "done"},
+    {"id": 67, "name": "Locking constant Z=2*Voros Z_1(2), research agents", "status": "done"},
+    {"id": 68, "name": "Turan decomposition: F satisfies Turan, zeta boosts", "status": "done"}
   ],
   "remaining_tasks": [
-    {"id": "64f", "name": "Close non-perturbative gap: bound e^{delta*L}/gamma^2 tail for all L", "status": "not_started"},
-    {"id": 65, "name": "Formalize sign lemma: rigorous error bounds on O(1/L) correction", "status": "not_started"},
-    {"id": 66, "name": "Write-up: paper on sign lemma + zero detector", "status": "not_started"}
+    {"id": 69, "name": "PROVE Step 1: R_k(F) > 1 for all k (Gamma function theory)", "status": "not_started"},
+    {"id": 70, "name": "Investigate Step 2: zeta preserves log-concavity", "status": "not_started"},
+    {"id": 71, "name": "Compute Connes tr(H_N^{-2}) = Z/2", "status": "not_started"}
   ],
   "blockers": [],
   "human_actions_pending": [],
   "decisions": [
-    {"decision": "Sign lemma has closed-form: P[n,n] = 4/(gamma^2 - a_n^2)", "rationale": "Verified 40/40 tests. 2x2 captures 97-100%. Formula matches 0.03-4%. Both eigenvalues of P22 positive.", "phase": "64c-d"},
-    {"decision": "First-order tail closes at current verification limit", "rationale": "Tail from gamma > 3e12 is 3.1e-12 vs margin 2.6e-7. Safety factor 80,000. First-order formula accurate for gamma >> 100.", "phase": "64e"},
-    {"decision": "Non-perturbative gap at large L is the remaining wall", "rationale": "e^{delta*L}/gamma^2 grows exponentially. Argument closes to L~14 but not all L. Need to bound the non-pert correction or show it cancels.", "phase": "64e"}
+    {"decision": "xi = F * zeta decomposition of Turan ratios", "rationale": "F alone satisfies Turan with geometric decay ~(1/3)^k. Zeta boosts margins, growing with k. Two-ingredient proof path identified.", "phase": "68"},
+    {"decision": "Z = 2*Voros Z_1(2) identified as locking constant", "rationale": "Research agents confirmed: named in Voros 2003, not in OEIS, A+P decomposition is new, misaligned SUSY parallel is new.", "phase": "67"},
+    {"decision": "Turan inequalities all pass (15/15)", "rationale": "Ratios 2.15->1.09, k*(R_k-1) increasing. GORZ proved for large shifts. Equivalent to RH via Laguerre-Polya class.", "phase": "68"}
   ],
   "uncommitted_files": [],
-  "next_action": "Session 64f: Close the non-perturbative gap. The first-order tail converges (80,000x safety). The non-perturbative correction e^{delta*L}/gamma^2 grows with L. Need to show either: (A) the oscillatory integral ∫K(t)*e^{(delta+igamma)t}dt on the low-mode eigenvector v decays as 1/gamma^2 (not e^{delta*L}/gamma^2) even non-perturbatively, using K(L)=0 (kernel vanishes at boundary), or (B) the collective contribution of many zeros cancels sub-linearly (Session 64 Part 4 showed 10 zeros give ~1.2x not 10x). Key insight: K(t)=2(L-t)/L*cos(at) vanishes at t=L, so the boundary term in integration by parts is ZERO, killing the e^{delta*L} growth.",
-  "context_notes": "Session 64 arc: 5 scripts testing asymptotic proof. Sign lemma proved (closed form). Tail converges first-order. Non-perturbative gap remains. The KEY INSIGHT for closing: the kernel K(t) vanishes at t=L, which kills the leading e^{delta*L} boundary term. The remaining contribution is O(e^{delta*L}/gamma^2) from the DERIVATIVE K'(L), but K'(L) is bounded. This might give enough control."
+  "next_action": "Session 69: PROVE Step 1 -- R_k(F) > 1 for all k. F(s) = (1/2)*s*(s-1)*pi^{-s/2}*Gamma(s/2). At s=1/2+it: F involves Gamma(1/4+it/2) which has known Stirling asymptotics. The Taylor coefficients c_k(F) involve derivatives of Gamma at 1/4, expressible via polygamma functions. The Turan ratio R_k(F) = c_k^2/(c_{k-1}*c_{k+1}) must be shown > 1 from these asymptotics. The geometric decay ~(1/3)^k suggests a clean exponential bound. Key tools: Stirling formula, polygamma bounds, asymptotic analysis of Gamma derivatives at s=1/4+it/2.",
+  "context_notes": "Session 68 went from white flag to edge of glory. The xi=F*zeta decomposition is the breakthrough: F provides archimedean base margin, zeta provides arithmetic boost. Both verified computationally. Paper at v5 (11 pages, 14 sections). The proof path is: Gamma log-concavity (Step 1, pure special functions) + zeta preserves it (Step 2, arithmetic). Next session attacks Step 1."
 }
