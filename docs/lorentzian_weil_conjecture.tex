@@ -400,7 +400,31 @@ Equality holds in~\eqref{eq:lock} if and only if every $\delta_k = 0$, i.e., if 
 
 The constant~$\mathcal{Z}$ is computable to arbitrary precision without reference to the zeros, via the Dirichlet eta function $\eta(s) = \sum (-1)^{n+1} n^{-s}$, which converges at $s = \tfrac{1}{2}$. The relation $\zeta(s) = \eta(s)/(1 - 2^{1-s})$ bypasses the natural boundary of the prime zeta function at $\mathrm{Re}(s) = 1$.
 
-The locking constant satisfies $\mathcal{Z} \approx 2 + \gamma_{\mathrm{E}} - \log(4\pi)$ to $0.04\%$, where the right side is the known Hadamard constant $\sum_\rho 1/(\rho(1-\rho))$. The $0.04\%$ discrepancy arises from the higher moment $\sum 1/(\gamma^2(\tfrac{1}{4} + \gamma^2))$.
+\begin{remark}[Identification]
+The locking constant is twice the Voros superzeta function \cite{Voros2003} at $s = 2$:
+\begin{equation}
+\mathcal{Z} = 2\,\mathcal{Z}_1(2), \qquad \mathcal{Z}_1(s) = \sum_{\gamma_k > 0} \frac{1}{\gamma_k^s}.
+\end{equation}
+It satisfies $\mathcal{Z} \approx 2 + \gamma_{\mathrm{E}} - \log(4\pi)$ to $0.04\%$, where the right side is the Hadamard constant $\sum_\rho 1/(\rho(1-\rho))$. The $0.04\%$ discrepancy ($9.28 \times 10^{-6}$) arises from the higher moment $\sum 1/(4\gamma^2(\tfrac{1}{4} + \gamma^2))$. The decomposition~\eqref{eq:decomp}, the $80{:}1$ cancellation ratio, the locking identity~\eqref{eq:lock}, and the connection to the Cauchy--Loewner matrix framework appear to be new.
+\end{remark}
+
+\begin{remark}[Hilbert--P\'olya operator]
+The Taylor expansion $\xi(\tfrac{1}{2} + i\sqrt{w})/\xi(\tfrac{1}{2}) = \sum c_k w^k$ defines a polynomial whose roots are $w_k = \gamma_k^2$. Its companion matrix has eigenvalues $\gamma_k^2$ and is constructed entirely from the derivatives $\xi^{(2k)}(\tfrac{1}{2})/\xi(\tfrac{1}{2})$, computable via the eta function without reference to the zeros. With $K = 6$ moments, the first six zeros are recovered to full floating-point precision. This provides an explicit (though ad hoc) Hilbert--P\'olya-type operator.
+\end{remark}
+
+\begin{remark}[Physics parallel: misaligned supersymmetry]\label{rem:susy}
+The $80{:}1$ cancellation between archimedean and arithmetic contributions is structurally parallel to Bose--Fermi cancellations in non-supersymmetric gauge theories, where modular invariance of the partition function forces the vacuum energy to be non-negative despite massive cancellations between bosonic and fermionic state counts \cite{Basar2019}. In both settings:
+\begin{itemize}
+\item Two structurally distinct sectors (geometric/archimedean vs.\ arithmetic/prime, or bosonic vs.\ fermionic) contribute terms of opposite sign;
+\item A symmetry constraint (functional equation vs.\ modular invariance) forces near-cancellation;
+\item The residual is non-negative, with its positivity encoding deep structural information.
+\end{itemize}
+The spectral action program of Connes and Chamseddine \cite{ConnesChamseddine1996} connects these two worlds through noncommutative geometry, but no one has yet closed the loop from the physics of modular invariance to a proof of Weil positivity.
+\end{remark}
+
+\begin{remark}[Open computation]
+Connes and Consani's spectral triples \cite{CC2025} construct operators $H_N$ whose eigenvalues approximate the zeta zeros with extraordinary precision. The spectral invariant $\mathrm{tr}(H_N^{-2})$ should converge to $\mathcal{Z}/2$ as $N \to \infty$, providing~$\mathcal{Z}$ with a spectral-geometric interpretation. This computation has not been performed.
+\end{remark}
 
 %======================================================================
 \section{Conclusions}
@@ -416,11 +440,13 @@ Extensive diagnostics establish that the Lorentzian property cannot be proved fr
 
 The remaining gap---the margin decays as $L^{-0.97}$ while the tail is a positive constant---is structural: it requires either a positive lower bound on the margin (which would be stronger than~RH) or a fundamentally new argument that connects the archimedean--prime cancellation to the zero distribution without passing through the natural boundary.
 
+The structural parallel with misaligned supersymmetry (Remark~\ref{rem:susy}) suggests a possible path: modular invariance of partition functions forces Bose--Fermi cancellations to leave non-negative residuals in non-supersymmetric gauge theories. The functional equation of~$\zeta$ is the number-theoretic analogue of modular invariance. A proof that this analogy can be made rigorous---that the functional equation forces the locking identity~\eqref{eq:lock} to hold with equality---would constitute a proof of~RH. The uncomputed spectral invariant $\mathrm{tr}(H_N^{-2})$ for Connes' operators is a concrete first step.
+
 %======================================================================
 \section*{Acknowledgments}
 %======================================================================
 
-This work was conducted over 67 computational sessions using the Connes--Consani--Moscovici framework. All numerical results are reproducible from the Python scripts in the project repository.
+This work was conducted over 67 computational sessions using the Connes--Consani--Moscovici framework, with literature review assisted by automated research agents. All numerical results are reproducible from the Python scripts in the project repository.
 
 %======================================================================
 \begin{thebibliography}{99}
@@ -466,10 +492,27 @@ M.~Morishita,
 M\"unster J.\ Math.\ (2025).
 arXiv:2508.15971.
 
+\bibitem{Basar2019}
+G.~Ba\c{s}ar, A.~Cherman, and D.~McGady,
+\emph{Bose--Fermi cancellations without supersymmetry},
+Phys.\ Rev.\ D \textbf{99} (2019), 065014.
+arXiv:1812.04642.
+
+\bibitem{ConnesChamseddine1996}
+A.~Connes and A.~Chamseddine,
+\emph{The spectral action principle},
+Comm.\ Math.\ Phys.\ \textbf{186} (1997), 731--750.
+arXiv:hep-th/9606001.
+
 \bibitem{Platt2021}
 D.~Platt and T.~Trudgian,
 \emph{The Riemann hypothesis is true up to $3 \times 10^{12}$},
 Bull.\ London Math.\ Soc.\ \textbf{53} (2021), 792--797.
+
+\bibitem{Voros2003}
+A.~Voros,
+\emph{Zeta functions for the Riemann zeros},
+Ann.\ Inst.\ Fourier \textbf{53} (2003), 665--699.
 
 \bibitem{RoyKailath1989}
 R.~Roy and T.~Kailath,
