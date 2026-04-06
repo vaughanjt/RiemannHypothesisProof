@@ -368,22 +368,59 @@ Hodge--Riemann: $Q < 0$ on $H^1_{\mathrm{prim}}$ & $M \leq 0$ on $\mathrm{null}(
 The second eigenvalue of~$M$ is continuous in~$\lambda$, always negative, and approaches zero from below as $\lambda \to \infty$ with rate $\sim L^{-0.35}$. The Lorentzian cone (at most one positive eigenvalue) is closed, and~$M$ never exits it in the verified range. However, the asymptotic approach to zero prevents extending this argument to all~$\lambda$ without additional input.
 
 %======================================================================
+\section{The Zero-Encoding Constant}\label{sec:constant}
+%======================================================================
+
+The sign lemma's total sensitivity is controlled by a single constant.
+
+\begin{definition}[The locking constant]
+Define
+\begin{equation}\label{eq:Z}
+\mathcal{Z} = \frac{\xi''(\tfrac{1}{2})}{\xi(\tfrac{1}{2})} = 0.046209986230837941\ldots
+\end{equation}
+\end{definition}
+
+This constant connects three worlds: the archimedean place (through $\pi$ and $\Gamma$), the prime distribution (through $\zeta$), and the zeros (through the Hadamard sum). It decomposes as
+\begin{equation}\label{eq:decomp}
+\mathcal{Z} = \underbrace{\Bigl(-8 + \frac{\pi^2}{4} + 2G\Bigr)}_{\displaystyle A = -3.7007\ldots} + \underbrace{\Bigl(\frac{\zeta''}{\zeta} - \Bigl(\frac{\zeta'}{\zeta}\Bigr)^{\!2}\Bigr)\!\Bigg|_{s=1/2}}_{\displaystyle P = +3.7469\ldots}
+\end{equation}
+where $G = 0.9160\ldots$ is Catalan's constant. The archimedean part~$A$ involves only $\pi$ and~$G$; the prime part~$P$ requires~$\zeta$. Their $80{:}1$ cancellation ($|A|/\mathcal{Z} \approx 80.08$) leaves the small positive residual~$\mathcal{Z}$.
+
+\begin{observation}[Locking identity]
+From the Hadamard product, each zero pair contributes
+\begin{equation}
+f(\delta_k, \gamma_k) = \frac{2(\gamma_k^2 - \delta_k^2)}{(\delta_k^2 + \gamma_k^2)^2} \leq \frac{2}{\gamma_k^2},
+\end{equation}
+with equality if and only if $\delta_k = 0$ (on-line). The sum is fixed:
+\begin{equation}\label{eq:lock}
+\mathcal{Z} = \sum_{\mathrm{pairs}} f(\delta_k, \gamma_k) \leq \sum_{\mathrm{pairs}} \frac{2}{\gamma_k^2}.
+\end{equation}
+Equality holds in~\eqref{eq:lock} if and only if every $\delta_k = 0$, i.e., if and only if~RH is true.
+\end{observation}
+
+The constant~$\mathcal{Z}$ is computable to arbitrary precision without reference to the zeros, via the Dirichlet eta function $\eta(s) = \sum (-1)^{n+1} n^{-s}$, which converges at $s = \tfrac{1}{2}$. The relation $\zeta(s) = \eta(s)/(1 - 2^{1-s})$ bypasses the natural boundary of the prime zeta function at $\mathrm{Re}(s) = 1$.
+
+The locking constant satisfies $\mathcal{Z} \approx 2 + \gamma_{\mathrm{E}} - \log(4\pi)$ to $0.04\%$, where the right side is the known Hadamard constant $\sum_\rho 1/(\rho(1-\rho))$. The $0.04\%$ discrepancy arises from the higher moment $\sum 1/(\gamma^2(\tfrac{1}{4} + \gamma^2))$.
+
+%======================================================================
 \section{Conclusions}
 %======================================================================
 
 We have formulated the Lorentzian Weil Matrix Conjecture (Conjecture~\ref{conj:main}), proved it implies~RH (Theorem~\ref{thm:implies}), and developed a sign lemma (Theorem~\ref{thm:sign}) that detects off-line zeros with sensitivity $\delta_{\mathrm{crit}} \approx 1.4 \times 10^{-6}$---three orders of magnitude beyond the Vinogradov--Korobov zero-free region.
 
-The kernel-vanishing property $K(L) = 0$ eliminates exponential growth of the zero-tail perturbation, yielding an $L$-independent bound. Combined with verified zeros up to height $3 \times 10^{12}$ and computational verification of $Q_W \geq 0$ to $\lambda^2 = 287{,}000$, the effective verification range extends to $\lambda^2 < e^{240{,}000}$ with a safety factor of $80{,}000$.
+The kernel-vanishing property $K(L) = 0$ eliminates exponential growth of the zero-tail perturbation, yielding an $L$-independent bound (Remark~\ref{rem:KL0}). Combined with verified zeros up to height $3 \times 10^{12}$ and computational verification of $Q_W \geq 0$ to $\lambda^2 = 287{,}000$, the effective verification range extends to $\lambda^2 < e^{240{,}000}$ with a safety factor of $80{,}000$ (Theorem~\ref{thm:tail}).
 
-The conjecture cannot be proved from the Cauchy--Loewner structure alone (the Cram\'er model fails), nor from the geometric Hodge framework (which maps cleanly but hits the same quantitative wall). The Lorentzian property encodes the specific distribution of primes enforced by the zeros of~$\zeta$, and any proof must engage with this arithmetic content.
+The locking constant $\mathcal{Z} = \xi''(\tfrac{1}{2})/\xi(\tfrac{1}{2})$ encodes the total sensitivity of the Lorentzian property to zero displacement. It arises from an $80{:}1$ cancellation between the archimedean contribution ($A = -8 + \pi^2/4 + 2G$, involving only~$\pi$ and Catalan's constant) and the prime contribution ($P \approx 3.747$, involving~$\zeta$ at the critical point). The locking identity~\eqref{eq:lock} reformulates~RH as the equality $\mathcal{Z} = \sum 2/\gamma_k^2$---each zero contributes maximally when on the critical line. This identity is verifiable to arbitrary precision: the left side through the eta function, the right side through the computed zeros.
 
-The remaining gap---the margin decays as $L^{-0.97}$ while the tail is constant---requires either a positive lower bound on the margin (unlikely, as this would be stronger than~RH) or a fundamentally new argument connecting the Cauchy--Loewner structure to the zeros of~$\zeta$.
+Extensive diagnostics establish that the Lorentzian property cannot be proved from the Cauchy--Loewner structure alone (the Cram\'er model gives $0/150$ negative-definite trials), nor from the geometric Hodge framework (which maps cleanly but hits the same quantitative wall), nor from any convergent prime sum (the natural boundary of the prime zeta function at $\mathrm{Re}(s) = 1$ prevents continuation to the critical point). The Lorentzian property encodes the specific distribution of primes enforced by the zeros of~$\zeta$, and any proof must engage with this arithmetic content.
+
+The remaining gap---the margin decays as $L^{-0.97}$ while the tail is a positive constant---is structural: it requires either a positive lower bound on the margin (which would be stronger than~RH) or a fundamentally new argument that connects the archimedean--prime cancellation to the zero distribution without passing through the natural boundary.
 
 %======================================================================
 \section*{Acknowledgments}
 %======================================================================
 
-This work was conducted over 65 computational sessions using the Connes--Consani--Moscovici framework. All numerical results are reproducible from the Python scripts in the project repository.
+This work was conducted over 67 computational sessions using the Connes--Consani--Moscovici framework. All numerical results are reproducible from the Python scripts in the project repository.
 
 %======================================================================
 \begin{thebibliography}{99}
