@@ -1,21 +1,23 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-07T06:00:00.000Z",
-  "phase": "sessions-76-78",
-  "phase_name": "Signal space, geometry land, line constraint, knife-edge",
-  "status": "active_hot_lead",
+  "timestamp": "2026-04-07T09:00:00.000Z",
+  "phase": "sessions-78-79",
+  "phase_name": "Line constraint, knife-edge, Schur gap ~4",
+  "status": "active_proof_attempt",
   "completed_tasks": [
-    {"id": 76, "name": "Signal space probe: '15-dim' was truncation artifact. Margin converges. 73 near-zero eigenvalues converged."},
-    {"id": 77, "name": "Geometry land: Loewner inertia, CND, Bezoutian, interlacing -- all 4 killed."},
-    {"id": "78a", "name": "Line constraint: dh/d(sigma)=0 at sigma=1/2 (functional equation). h_pair minimized. Curvatures isotropic (Laplace)."},
-    {"id": "78b", "name": "Critical tube: delta_crit~0.01. First zero carries 70% of curvature. Explicit formula constrains sum."},
-    {"id": "78c", "name": "Dual test functions: Lorentzian=minimum, Gaussian/Power-s=2=maximum. Squeeze from both directions."},
-    {"id": "78-knife", "name": "KNIFE-EDGE: Lorentzian property exists ONLY at exact Gamma diagonal (scale=1.00). -log(n) is unique critical rate."}
+    {"id": "78a", "name": "Line constraint: dh/d(sigma)=0 at sigma=1/2 (functional equation). h_pair minimized. Curvatures isotropic."},
+    {"id": "78b", "name": "Critical tube: delta_crit~0.01. First zero carries 70%."},
+    {"id": "78c", "name": "Dual test functions squeeze zeros from both directions."},
+    {"id": "78-knife", "name": "KNIFE-EDGE: Lorentzian only at exact Gamma diagonal (scale=1.00). -log(n) unique."},
+    {"id": "79a", "name": "Phase transition mapped: upper edge at 1.000000037, 52 eigenvalue avalanche."},
+    {"id": "79b", "name": "0/2200 random alternatives Lorentzian. 100% arithmetic."},
+    {"id": "79c", "name": "Turan d=2 and Lorentzian are independent (not same fact)."},
+    {"id": "79d", "name": "Mechanism: n=0 mode survives. SCHUR GAP ~4 discovered (not 10^{-7})."}
   ],
   "remaining_tasks": [
-    {"id": "79-map", "name": "Map the phase transition precisely: eigenvalue count vs diagonal scale, locate transition width, characterize the mechanism"},
-    {"id": "79-prove", "name": "Prove Step 3: -log(n) diagonal + Cauchy off-diagonal + prime sum => Lorentzian signature. The spectral phase transition."}
+    {"id": "80-prove-A", "name": "PROVE (c.v0)^2 < |a1| * |lambda_0| with gap >= constant. This has 5 orders of magnitude more room than eigenvalue margin."},
+    {"id": "80-prove-B", "name": "PROVE residual coupling < gap. Gets easier at large lambda (ratio -> 0)."}
   ],
-  "next_action": "MAP the knife-edge phase transition in fine detail (eigenvalue count vs scale, transition sharpness, mechanism), then PROVE that -log(n) is the critical exponent. This is a spectral theory question: the logarithmic diagonal decay from Gamma(s/2) is the unique rate producing exactly 1 positive eigenvalue in M = diag(C - log n) + Cauchy + prime_sum.",
-  "context_notes": "Session 78 found the deepest structural insight in 78 sessions. The Lorentzian property (1 positive eigenvalue) is a CRITICAL PHENOMENON at the exact Gamma function diagonal value. The trivial zeros at s=-2,-4,-6,... produce wr_diag = C - log(n), which is the UNIQUE diagonal that creates Lorentzian signature. Scale by 5% either direction: breaks. Replace -log(n) with any -n^alpha: breaks. The proof chain is: (1) trivial zeros -> Gamma -> -log(n) diagonal [textbook], (2) -log(n) is critical exponent for Lorentzian [THIS IS THE GAP], (3) Lorentzian -> Q_W >= 0 -> RH [proved]. Proving step (2) transforms 'prove RH' into 'prove a spectral phase transition occurs at the logarithmic rate'. Key infrastructure: session78_line_constraint.py, session78b_critical_tube.py, session78c_tightness.py. Paper at v7: docs/lorentzian_weil_conjecture.tex (682 lines). 220 commits on main."
+  "next_action": "PROVE the dominant Schur inequality (c.v0)^2 < |a1|*|lambda_0(B)|. Gap is ~4 across all tested lambda (25 points, lam^2=15 to 200000). All three quantities determined by the explicit formula. The 10^{-7} eigenvalue margin was the wrong decomposition — the REAL margin is ~4 at the dominant mode level. Then bound the residual coupling (which shrinks to <1% of the gap at large lambda).",
+  "context_notes": "Sessions 78-79 produced the deepest structural arc: (1) functional equation forces dh/d(sigma)=0, (2) Gamma diagonal is knife-edge at exact scale=1.0, (3) 0/2200 random alternatives, (4) dominant Schur inequality has gap ~4 not 10^{-7}. The proof reduces to one product inequality plus a residual bound. All quantities determined by explicit formula. Key files: session79d_mechanism.py (the gap computation). Paper at v7. 228 commits."
 }
