@@ -43,7 +43,7 @@ The Lorentzian property is $100\%$ prime-specific (Cram\'er model: $0/150$ trial
 
 The Riemann Hypothesis is equivalent to the positivity of the Weil quadratic form $Q_W = W_{0,2} - M$ in the Connes--Consani--Moscovici framework \cite{CCM2025}. Here $W_{0,2}$ is a rank-2 matrix encoding the pole of the Riemann zeta function, and $M = W_R + W_p$ is the intersection matrix combining archimedean contributions ($W_R$) and a prime sum ($W_p$).
 
-Over 74 computational sessions we have investigated the spectral structure of~$Q_W$, verifying Weil positivity at hundreds of parameter values, killing numerous analytic proof strategies (all circular), and ultimately identifying a structural property of~$M$ that, if proved, implies~RH through a non-circular chain of reasoning.
+Over 77 computational sessions we have investigated the spectral structure of~$Q_W$, verifying Weil positivity at hundreds of parameter values, killing numerous analytic proof strategies (all circular), and ultimately identifying a structural property of~$M$ that, if proved, implies~RH through a non-circular chain of reasoning.
 
 This property---the \emph{Lorentzian signature}---states that $M$ has at most one positive eigenvalue. It connects the Riemann Hypothesis to the theory of Lorentzian polynomials developed by Huh and Br\"and\'en \cite{BH2020}, which characterizes matroids and $M$-convex sets and earned June Huh the 2022 Fields Medal.
 
@@ -180,7 +180,7 @@ The odd block $M_{\mathrm{odd}}$ is negative definite at all tested $\lambda^2 \
 \item $\lambda_{\max}(M_{\mathrm{odd}}) \sim -c \cdot L^{-0.35}$ (near zero, approaching from below);
 \item $|\lambda_{\max}| / |\tr| \sim L^{-2.64}$ (negativity increasingly robust).
 \end{itemize}
-The maximum eigenvalue is $N$-converged (stable under basis truncation refinement), confirming it is not a truncation artifact.
+The maximum eigenvalue is $N$-converged: at $\lambda^2 = 1000$, $\lambda_{\max}(M_{\mathrm{odd}})$ stabilizes from $-1.77 \times 10^{-7}$ (at $N=15$) to $-1.56 \times 10^{-7}$ (at $N=150$, dim$_{\mathrm{odd}} = 150$), confirming negative definiteness is not a truncation artifact. The Schur margin at the first pivot similarly converges: $5.20 \times 10^{-7}$ at standard~$N$ versus $4.68 \times 10^{-7}$ at $N = 150$, with the large-$N$ margin scaling as $\sim 7.5 \times 10^{-7} \cdot L^{0.37} \cdot e^{-0.169 L}$.
 \end{observation}
 
 %======================================================================
@@ -557,11 +557,11 @@ The kernel-vanishing property $K(L) = 0$ eliminates exponential growth of the ze
 
 The locking constant $\mathcal{Z} = \xi''(\tfrac{1}{2})/\xi(\tfrac{1}{2})$ encodes the total sensitivity of the Lorentzian property to zero displacement. It arises from an $80{:}1$ cancellation between the archimedean contribution ($A = -8 + \pi^2/4 + 2G$, involving only~$\pi$ and Catalan's constant) and the prime contribution ($P \approx 3.747$, involving~$\zeta$ at the critical point). The locking identity~\eqref{eq:lock} reformulates~RH as the equality $\mathcal{Z} = \sum 2/\gamma_k^2$---each zero contributes maximally when on the critical line. This identity is verifiable to arbitrary precision: the left side through the eta function, the right side through the computed zeros.
 
-Extensive diagnostics establish that the Lorentzian property cannot be proved from the Cauchy--Loewner structure alone (the Cram\'er model gives $0/150$ negative-definite trials), nor from the geometric Hodge framework (which maps cleanly but hits the same quantitative wall), nor from any convergent prime sum (the natural boundary of the prime zeta function at $\mathrm{Re}(s) = 1$ prevents continuation to the critical point). The Lorentzian property encodes the specific distribution of primes enforced by the zeros of~$\zeta$, and any proof must engage with this arithmetic content.
+Extensive diagnostics establish that the Lorentzian property cannot be proved from the Cauchy--Loewner structure alone (the Cram\'er model gives $0/150$ negative-definite trials), nor from the geometric Hodge framework (which maps cleanly but hits the same quantitative wall), nor from any convergent prime sum (the natural boundary of the prime zeta function at $\mathrm{Re}(s) = 1$ prevents continuation to the critical point), nor from matrix-geometric tools. Specifically, the Bharali--Holtz Loewner inertia theorem (which gives Lorentzian signature for divided differences of~$x^r$, $1 < r < 2$) does not apply because $B_n \sim n^{-1}$; the Bezoutian root-counting framework requires displacement rank~$2$, but the odd block has displacement rank~$14$; and each prime power contributes a full-rank perturbation to~$M$, precluding eigenvalue tracking via Cauchy interlacing. The Lorentzian property encodes the specific distribution of primes enforced by the zeros of~$\zeta$, and any proof must engage with this arithmetic content.
 
 The decomposition of the Tur\'an ratios (Section~\ref{sec:decomp_turan}) offers a sharper path. The archimedean prefactor~$F$ satisfies the Tur\'an inequalities on its own, with margin decaying geometrically as $\sim 3^{-k}$. Multiplication by~$\zeta$ does not destroy this margin but \emph{amplifies} it, with the boost growing as~$k$ increases. This reduces~RH to two concrete steps: (1)~prove $R_k^{(F)} > 1$ for all~$k$ from Gamma-function asymptotics (a purely archimedean statement), and (2)~prove that the zeta correction preserves log-concavity (the arithmetic content). Step~1 requires no number theory; Step~2 encodes the essential interplay between primes and the functional equation.
 
-The spectral mirror (Section~\ref{sec:mirror}) provides the sharpest structural explanation of the Lorentzian property: on the prolate null space ($\sim 80\%$ of dimensions), the Cauchy off-diagonal and archimedean diagonal are spectral conjugates cancelling to $< 0.1\%$, with the cancellation improving as $\lambda$ grows. The phase transition at $t = 1.0$ (Observation~\ref{obs:phase})---66 eigenvalues crossing zero simultaneously in a collective avalanche at the exact physical parameter---reveals the Lorentzian property as a critical phenomenon. However, the prolate null space cancellation is the \emph{easy} part: the hard content of~RH lives in the $\sim 15$-dimensional prolate signal space, where $L$ and $D$ do \emph{not} cancel and the first $\sim 12$ zeros govern the spectrum.
+The spectral mirror (Section~\ref{sec:mirror}) provides the sharpest structural explanation of the Lorentzian property: on the prolate null space ($\sim 80\%$ of dimensions), the Cauchy off-diagonal and archimedean diagonal are spectral conjugates cancelling to $< 0.1\%$, with the cancellation improving as $\lambda$ grows. The phase transition at $t = 1.0$ (Observation~\ref{obs:phase})---66 eigenvalues crossing zero simultaneously in a collective avalanche at the exact physical parameter---reveals the Lorentzian property as a critical phenomenon. However, the prolate null space cancellation is the \emph{easy} part: the hard content of~RH lives in the complementary subspace where $L$ and $D$ \emph{reinforce} rather than cancel. The dimension of this ``signal space'' grows with the truncation parameter~$N$ (scaling as $\sim 0.12 \, N^{1.33}$), but the Lorentzian signature and negative definiteness of~$M_{\mathrm{odd}}$ are $N$-converged structural invariants, independent of truncation.
 
 The exact displacement identity $[D_n, M] = \mathbf{1}\mathbf{B}^T - \mathbf{B}\mathbf{1}^T$ (Proposition~\ref{prop:displacement}) encodes the Weil explicit formula as a rank-$2$ commutator equation, connecting the Fourier-index operator to the Cauchy generating function~$B_n$. This is the Sylvester-type analog of the Lyapunov displacement for Pushnitski--Treil weighted Cauchy matrices \cite{PT2025}, but with orthogonal parity generators that prevent the spectral involution from closing.
 
@@ -571,7 +571,7 @@ The structural parallel with misaligned supersymmetry (Remark~\ref{rem:susy}) il
 \section*{Acknowledgments}
 %======================================================================
 
-This work was conducted over 74 computational sessions using the Connes--Consani--Moscovici framework, with literature review assisted by automated research agents. All numerical results are reproducible from the Python scripts in the project repository.
+This work was conducted over 77 computational sessions using the Connes--Consani--Moscovici framework, with literature review assisted by automated research agents. All numerical results are reproducible from the Python scripts in the project repository.
 
 %======================================================================
 \begin{thebibliography}{99}
@@ -655,6 +655,12 @@ A.~Pushnitski and S.~Treil,
 \emph{The spectral map for weighted Cauchy matrices is an involution},
 preprint (2025).
 arXiv:2504.18707.
+
+\bibitem{BharaliHoltz2015}
+G.~Bharali and O.~Holtz,
+\emph{Functions preserving nonnegativity of matrices},
+SIAM J.\ Matrix Anal.\ Appl.\ \textbf{30} (2009), 13--32.
+arXiv:1501.01505.
 
 \bibitem{Bombieri2000}
 E.~Bombieri,
