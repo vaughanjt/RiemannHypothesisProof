@@ -1,23 +1,24 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-07T09:00:00.000Z",
-  "phase": "sessions-78-79",
-  "phase_name": "Line constraint, knife-edge, Schur gap ~4",
-  "status": "active_proof_attempt",
+  "timestamp": "2026-04-07T10:00:00.000Z",
+  "phase": "sessions-76-79",
+  "phase_name": "Signal space, geometry, line constraint, Schur gap",
+  "status": "proof_attempt_open",
   "completed_tasks": [
-    {"id": "78a", "name": "Line constraint: dh/d(sigma)=0 at sigma=1/2 (functional equation). h_pair minimized. Curvatures isotropic."},
-    {"id": "78b", "name": "Critical tube: delta_crit~0.01. First zero carries 70%."},
-    {"id": "78c", "name": "Dual test functions squeeze zeros from both directions."},
-    {"id": "78-knife", "name": "KNIFE-EDGE: Lorentzian only at exact Gamma diagonal (scale=1.00). -log(n) unique."},
-    {"id": "79a", "name": "Phase transition mapped: upper edge at 1.000000037, 52 eigenvalue avalanche."},
-    {"id": "79b", "name": "0/2200 random alternatives Lorentzian. 100% arithmetic."},
-    {"id": "79c", "name": "Turan d=2 and Lorentzian are independent (not same fact)."},
-    {"id": "79d", "name": "Mechanism: n=0 mode survives. SCHUR GAP ~4 discovered (not 10^{-7})."}
+    {"id": 76, "name": "Signal space: 15-dim was truncation artifact. Margin converges at large N. 73 near-zero eigenvalues converged."},
+    {"id": 77, "name": "Geometry: Loewner inertia, CND, Bezoutian, interlacing -- all 4 killed."},
+    {"id": "78a-c", "name": "Line constraint: dh/d(sigma)=0, h_pair minimized, dual test functions squeeze, tube width delta~0.01."},
+    {"id": "78-knife", "name": "KNIFE-EDGE: Lorentzian only at exact Gamma diagonal. -log(n) unique critical rate. Scale 0.95->57pos, 1.00->1pos, 1.05->13pos."},
+    {"id": "79a", "name": "Phase transition mapped: upper edge at scale=1.000000037, 52 eigenvalue avalanche, primes required."},
+    {"id": "79b", "name": "0/2200 random alternatives Lorentzian. 100% arithmetic. Cramer best eig_max=+4.26 vs actual -1.6e-7."},
+    {"id": "79c", "name": "Turan d=2 and Lorentzian are independent paths (not same fact). Prior Turan kills stand."},
+    {"id": "79d", "name": "SCHUR GAP ~4: dominant inequality (c.v0)^2 < |a1|*|lam0| has gap 2-6 across all lambda. Residual/gap ratio shrinks to 0.35% at large lambda. 5 orders of magnitude more room than eigenvalue margin."}
   ],
   "remaining_tasks": [
-    {"id": "80-prove-A", "name": "PROVE (c.v0)^2 < |a1| * |lambda_0| with gap >= constant. This has 5 orders of magnitude more room than eigenvalue margin."},
-    {"id": "80-prove-B", "name": "PROVE residual coupling < gap. Gets easier at large lambda (ratio -> 0)."}
+    {"id": "prove-gap", "name": "PROVE (c.v0)^2 < |a1|*|lambda_0(B)| analytically from the explicit formula. Gap ~4. All three quantities determined by primes + Gamma."},
+    {"id": "prove-residual", "name": "PROVE residual coupling < gap. Residual = sum_{k>0} (c.u_k)^2/|lam_k|. Shrinks relative to gap at large lambda."},
+    {"id": "paper-v8", "name": "Update paper with Sessions 78-79 findings (knife-edge, Schur gap, proof structure)."}
   ],
-  "next_action": "PROVE the dominant Schur inequality (c.v0)^2 < |a1|*|lambda_0(B)|. Gap is ~4 across all tested lambda (25 points, lam^2=15 to 200000). All three quantities determined by the explicit formula. The 10^{-7} eigenvalue margin was the wrong decomposition — the REAL margin is ~4 at the dominant mode level. Then bound the residual coupling (which shrinks to <1% of the gap at large lambda).",
-  "context_notes": "Sessions 78-79 produced the deepest structural arc: (1) functional equation forces dh/d(sigma)=0, (2) Gamma diagonal is knife-edge at exact scale=1.0, (3) 0/2200 random alternatives, (4) dominant Schur inequality has gap ~4 not 10^{-7}. The proof reduces to one product inequality plus a residual bound. All quantities determined by explicit formula. Key files: session79d_mechanism.py (the gap computation). Paper at v7. 228 commits."
+  "next_action": "Prove the dominant Schur inequality. The gap is ~4 (not 10^{-7}). Approach options: (1) bound (c.v0)^2 via Cauchy structure of the off-diagonal, (2) bound |lambda_0(B)| via interlacing + trace constraints, (3) use the explicit formula identity to relate a_1, lambda_0, and c algebraically, (4) find a convexity/variational argument that forces the gap positive.",
+  "context_notes": "228 commits. 79 sessions. The proof reduces to one product inequality with gap ~4 plus a residual bound. The eigenvalue margin 10^{-7} was the wrong decomposition -- the Schur decomposition reveals a 2.7% gap at the dominant mode level. The residual (2.7% of total coupling) fills most of this gap but doesn't exceed it. At large lambda, the residual becomes negligible (<1% of gap). Key infrastructure: session79d_mechanism.py, session79b_explicit_formula_forces_lorentzian.py. Paper at v7 (682 lines). The knife-edge discovery (Gamma diagonal at exact scale=1.0) and 0/2200 arithmetic specificity are the strongest structural results."
 }
