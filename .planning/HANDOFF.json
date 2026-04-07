@@ -1,23 +1,22 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-06T14:00:00.000Z",
-  "phase": "sessions-63-69",
-  "phase_name": "Lorentzian conjecture through Gaussianization",
+  "timestamp": "2026-04-07T01:00:00.000Z",
+  "phase": "sessions-70-75",
+  "phase_name": "Kills, spectral mirror, coupling ratio",
   "status": "paused",
   "completed_tasks": [
-    {"id": 63, "name": "Matrix circularity mapped"},
-    {"id": 64, "name": "Sign lemma + K(L)=0 + tail bound to e^240000"},
-    {"id": 65, "name": "Hard Lefschetz same wall"},
-    {"id": 66, "name": "RT barrier bridge"},
-    {"id": 67, "name": "Locking constant Z=2*Voros Z_1(2), 4 research agents"},
-    {"id": 68, "name": "Turan ALL PASS, moment problem, F*zeta decomposition"},
-    {"id": 69, "name": "LP is 100% arithmetic, Gaussianization mechanism identified"}
+    {"id": 70, "name": "Cumulant expansion diverges (16.5^k), Jensen margin 0.688^d, F fails d>=4"},
+    {"id": 71, "name": "BH eigenvector NOT log-concave (0/100), BH Loewner killed (diagonal does all work), displacement [D,M]=1*B^T-B*1^T exact"},
+    {"id": 72, "name": "Connes tr(H_N^{-2})=Z/2 killed as tautology"},
+    {"id": 73, "name": "Phase transition t=1.0 exact, spectral mirror (0.077% cancellation on prolate null), 66/67 avalanche, mirror is arithmetic and improves with lambda"},
+    {"id": 74, "name": "PT spectral involution doesn't extend (rank-2 Sylvester, orthogonal parity generators)"},
+    {"id": 75, "name": "Coupling ratio -> 1, margin ~ 2e-6*L^{-0.38}*exp(-0.089L), 97.3% from one eigencomponent, no closed form"}
   ],
   "remaining_tasks": [
-    {"id": 70, "name": "Connect cumulant decay to Jensen hyperbolicity at ALL scales"},
-    {"id": 71, "name": "Prove Euler product Gaussianization forces LP (the proof)"},
-    {"id": 72, "name": "Compute Connes tr(H_N^{-2}) = Z/2"}
+    {"id": "paper-polish", "name": "Paper v6 committed, needs final polish and submission"},
+    {"id": "signal-space", "name": "The ~15-dim prolate signal space where RH actually lives -- unexplored"},
+    {"id": "publish", "name": "75 sessions, ~20 novel results. Write up and submit."}
   ],
-  "next_action": "Session 70: The proof path is now: Euler product Gaussianization (formal group, arXiv:2602.20211) forces xi to be near-Gaussian. Gaussian IS LP. Show the corrections (higher cumulants) preserve LP at all scales. Four angles converge: GORZ Hermite, formal group, our F/xi decomp, misaligned SUSY. The key computation: verify cumulant decay rate kappa_{2k} is fast enough to satisfy Jensen hyperbolicity at ALL (d,n), not just large n. This connects formal group theory to the GORZ program. Paper is at v5 (11 pages, 14 sections).",
-  "context_notes": "Session went from white flag to proof path in one sitting. Key discoveries: (1) Z=2*Voros Z_1(2) identified, (2) Turan inequalities all pass, (3) F fails d>=3 but xi passes, (4) LP is 100% arithmetic, (5) Euler product Gaussianization IS the mechanism (four angles). The d=2 Turan was already proved (CNV 1986). The real frontier: d>=3 at small shifts. 200 commits on main branch."
+  "next_action": "WRITE THE PAPER. 75 sessions mapped the complete landscape. All computational directions exhausted. Novel results: Lorentzian signature (fully novel), spectral mirror (fully novel), Turan decomposition (mostly novel), phase transition (fully novel), displacement identity (new). Paper v6 at docs/lorentzian_weil_conjecture.tex has all material. Alternative: probe the 15-dim signal space.",
+  "context_notes": "Sessions 70-75 killed 6 approaches (cumulant, BH eigenvector, BH Loewner, Connes trace, PT involution, Gaussianization proof path) and found 2 structural phenomena (spectral mirror on prolate null space + exact displacement identity). The wall is the ~15-dim prolate signal space governed by first ~12 zeros. Mirror cancellation on null space is easy (no signal). Coupling ratio 0.997-0.999 is tightest bottleneck, decays exponentially. 215 commits on main. Research agent confirmed: Lorentzian signature, spectral mirror, Turan decomposition, phase transition are all novel and publishable."
 }
