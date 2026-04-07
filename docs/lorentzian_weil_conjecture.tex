@@ -43,11 +43,11 @@ The Lorentzian property is $100\%$ prime-specific (Cram\'er model: $0/150$ trial
 
 The Riemann Hypothesis is equivalent to the positivity of the Weil quadratic form $Q_W = W_{0,2} - M$ in the Connes--Consani--Moscovici framework \cite{CCM2025}. Here $W_{0,2}$ is a rank-2 matrix encoding the pole of the Riemann zeta function, and $M = W_R + W_p$ is the intersection matrix combining archimedean contributions ($W_R$) and a prime sum ($W_p$).
 
-Over 60 computational sessions we have investigated the spectral structure of~$Q_W$, verifying Weil positivity at hundreds of parameter values, killing numerous analytic proof strategies (all circular), and ultimately identifying a structural property of~$M$ that, if proved, implies~RH through a non-circular chain of reasoning.
+Over 74 computational sessions we have investigated the spectral structure of~$Q_W$, verifying Weil positivity at hundreds of parameter values, killing numerous analytic proof strategies (all circular), and ultimately identifying a structural property of~$M$ that, if proved, implies~RH through a non-circular chain of reasoning.
 
 This property---the \emph{Lorentzian signature}---states that $M$ has at most one positive eigenvalue. It connects the Riemann Hypothesis to the theory of Lorentzian polynomials developed by Huh and Br\"and\'en \cite{BH2020}, which characterizes matroids and $M$-convex sets and earned June Huh the 2022 Fields Medal.
 
-The paper is organized as follows. Section~\ref{sec:setup} defines the matrix~$M$ and its Cauchy--Loewner structure. Section~\ref{sec:conjecture} states the conjecture and proves it implies~RH. Section~\ref{sec:evidence} presents the computational evidence. Section~\ref{sec:anatomy} dissects the critical direction. Section~\ref{sec:connections} discusses connections to Lorentzian polynomials and Connes' spectral triples. Section~\ref{sec:circularity} establishes the prime-specificity of the conjecture. Section~\ref{sec:sign} develops the sign lemma. Section~\ref{sec:tail} derives the effective verification range. Section~\ref{sec:geometric} maps the geometric structure.
+The paper is organized as follows. Section~\ref{sec:setup} defines the matrix~$M$ and its Cauchy--Loewner structure. Section~\ref{sec:conjecture} states the conjecture and proves it implies~RH. Section~\ref{sec:evidence} presents the computational evidence. Section~\ref{sec:anatomy} dissects the critical direction. Section~\ref{sec:connections} discusses connections to Lorentzian polynomials and Connes' spectral triples. Section~\ref{sec:circularity} establishes the prime-specificity of the conjecture. Section~\ref{sec:sign} develops the sign lemma. Section~\ref{sec:tail} derives the effective verification range. Section~\ref{sec:geometric} maps the geometric structure. Section~\ref{sec:mirror} presents the spectral mirror phenomenon and the phase transition at $t=1$. Section~\ref{sec:displacement} derives the exact displacement identity.
 
 %======================================================================
 \section{Setup and Definitions}\label{sec:setup}
@@ -422,8 +422,8 @@ The $80{:}1$ cancellation between archimedean and arithmetic contributions is st
 The spectral action program of Connes and Chamseddine \cite{ConnesChamseddine1996} connects these two worlds through noncommutative geometry, but no one has yet closed the loop from the physics of modular invariance to a proof of Weil positivity.
 \end{remark}
 
-\begin{remark}[Open computation]
-Connes and Consani's spectral triples \cite{CC2025} construct operators $H_N$ whose eigenvalues approximate the zeta zeros with extraordinary precision. The spectral invariant $\mathrm{tr}(H_N^{-2})$ should converge to $\mathcal{Z}/2$ as $N \to \infty$, providing~$\mathcal{Z}$ with a spectral-geometric interpretation. This computation has not been performed.
+\begin{remark}[Spectral trace identity]
+For any operator $H_N$ whose eigenvalues are the first~$N$ zeta zero ordinates $\gamma_k$, $\tr(H_N^{-2}) = \sum_{k=1}^N 1/\gamma_k^2 \to \mathcal{Z}$ as $N \to \infty$. This is the trace identity and holds for diagonal, companion, Jacobi, and unitarily conjugated realizations alike. Convergence is slow: $O((\log N)^2/N)$, requiring $\sim 10^6$ zeros for $6$ digits. The ``spectral-geometric interpretation'' of $\mathcal{Z}$ through Connes' spectral triples \cite{CC2025} is a conceptual question about the meaning of $\tr(D^{-2})$ in noncommutative geometry, not a numerical identity.
 \end{remark}
 
 \begin{remark}[Tur\'an inequalities and the Jensen--P\'olya program]\label{rem:turan}
@@ -459,6 +459,94 @@ This decomposition suggests a two-ingredient proof of~RH:
 \end{enumerate}
 Together: $R_k^{(\xi)} \geq R_k^{(F)} > 1$ for all~$k$, placing $\xi(\tfrac{1}{2}+it)$ in the Laguerre--P\'olya class, proving~RH.
 
+\begin{observation}[Jensen polynomial frontier]\label{obs:jensen}
+Jensen polynomials $J_{d,n}(x) = \sum_{j=0}^d \binom{d}{j} c_{n+j} x^j$ are hyperbolic (all real zeros) for all tested $(d, n)$ with $d \leq 15$. The margin (relative root gap) at $n = 0$ decays exponentially: $\mathrm{margin}(d) \approx 0.65 \times 0.688^d$. The archimedean prefactor~$F$ alone fails Jensen hyperbolicity at $d \geq 4$ ($n = 0$) and $d \geq 3$ ($n \geq 1$): all higher-degree LP is $100\%$ arithmetic.
+
+The extrapolated limit $k \cdot (R_k - 1) \to 1.38$ as $k \to \infty$ (fitted from $k = 1, \ldots, 14$) exceeds the GORZ Hermite prediction of $0.5$ by a factor of $2.76$, reflecting the ``zeta boost'' from the Euler product.
+
+The cumulant expansion of $\xi(\tfrac{1}{2} + it)/\xi(\tfrac{1}{2})$ \emph{diverges}: the normalized cumulants $\kappa_{2k}/\kappa_2^k$ grow as $\sim 16.5^k$. The near-Gaussian structure lives in the log-series coefficients $b_k$ (which decay as $\sim 0.043^k$), not in the cumulants. This rules out perturbative proof strategies based on cumulant expansions.
+\end{observation}
+
+%======================================================================
+\section{The Spectral Mirror}\label{sec:mirror}
+%======================================================================
+
+Decomposing $M$ into its Cauchy off-diagonal and diagonal parts reveals a striking cancellation on most of the space.
+
+\begin{definition}[Cauchy--diagonal decomposition]
+Write $M = L + D$ where $L_{nm} = (B_m - B_n)/(n-m)$ for $n \neq m$ with diagonal filled by the centered finite-difference limit, and $D = \diag(a_n - L_{nn})$ is the diagonal mismatch.
+\end{definition}
+
+\begin{observation}[Spectral mirror on the near-zero subspace]\label{obs:mirror}
+The eigenvalues of~$M$ separate into three groups:
+\begin{center}
+\begin{tabular}{llrl}
+\toprule
+Group & Eigenvalue range & Count & Character \\
+\midrule
+Top positive & $+10$ to $+109$ & $1$ & grows with $\lambda$ \\
+Near-zero & $-8 \times 10^{-3}$ to $-6 \times 10^{-8}$ & $67$--$94$ & the Lorentzian content \\
+Bulk negative & $-0.04$ to $-61$ & $15$--$16$ & \textbf{constant count} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+On the near-zero subspace $V_0$ (dimension~$d_0$), $L$ and $D$ are \textbf{spectral mirrors}: $L|_{V_0}$ has signature $(d_0-1, 1)$ while $D|_{V_0}$ has signature $(1, d_0-1)$, and they cancel to extraordinary precision:
+\begin{equation}
+\frac{\|L|_{V_0} + D|_{V_0}\|}{\|L|_{V_0}\|} \sim 10^{-3}\text{--}10^{-5},
+\end{equation}
+with the cancellation \emph{improving} as $\lambda$ grows: from $0.24\%$ at $\lambda^2 = 50$ to $0.0036\%$ at $\lambda^2 = 10{,}000$.
+\end{observation}
+
+\begin{observation}[Prolate null space]\label{obs:prolate}
+The near-zero subspace coincides with the prolate null space: $d_0 \approx 2N+1 - 2\pi N/L$, the dimensions outside the time-bandwidth product. The $\sim 15$ bulk eigenvalues occupy the prolate \emph{signal} space.
+\end{observation}
+
+\begin{observation}[Phase transition at $t = 1$]\label{obs:phase}
+In the one-parameter family $M(t) = L + t\,D$, the number of positive eigenvalues undergoes a sharp phase transition:
+
+\begin{center}
+\begin{tabular}{rl}
+\toprule
+$t$ & \# positive eigenvalues \\
+\midrule
+$0.0$ & $69$ \\
+$0.5$ & $68$ \\
+$0.9$ & $68$ \\
+$0.95$ & $67$ \\
+$1.0$ & $\mathbf{1}$ \\
+$1.01$ & $2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Of $67$ eigenvalue zero-crossings, $66$ occur in $[0.95, 1.00)$---a single histogram spike. The transition point $t = 1.0000$ is \textbf{exact at all tested~$\lambda$} ($\lambda^2 = 50$ through $5{,}000$). The second eigenvalue has a parabolic minimum at $t = 1$ (positive on both sides), achieved through an eigenvector swap---the second eigenvector at $t = 0.99$ has overlap $0.006$ with the second eigenvector at $t = 1.01$.
+\end{observation}
+
+The spectral mirror has two consequences. First, the Lorentzian property is a \emph{collective} phenomenon: all $\sim 66$ near-zero eigenvalues scale linearly as $c_k \cdot (1 - t)$, crossing zero simultaneously at $t = 1$. Second, the effective rank of~$M$ at $1\%$ threshold is approximately~$15$, \emph{constant} as matrix dimension grows from $47$ to $111$---the prolate signal space carries all significant spectral content.
+
+The mirror is $100\%$ prime-specific: Cram\'er-model primes produce zero near-zero eigenvalues ($31 \pm 5$ positive eigenvalues in every trial). Adding actual primes cumulatively, the near-zero cluster \emph{emerges gradually}: it appears at $\sim 10$ primes, grows linearly, and reaches full size only with all primes included.
+
+%======================================================================
+\section{The Displacement Identity}\label{sec:displacement}
+%======================================================================
+
+\begin{proposition}[Rank-$2$ displacement]\label{prop:displacement}
+Let $D_n = \diag(-N, \ldots, N)$ be the position operator. Then
+\begin{equation}\label{eq:displacement}
+[D_n, M] := D_n M - M D_n = \mathbf{1}\, \mathbf{B}^T - \mathbf{B}\, \mathbf{1}^T,
+\end{equation}
+where $\mathbf{1} = (1, \ldots, 1)^T$ and $\mathbf{B} = (B_{-N}, \ldots, B_N)^T$ from~\eqref{eq:Bn}. The right side has rank exactly~$2$.
+\end{proposition}
+
+\begin{proof}
+For $n \neq m$: $([D_n, M])_{nm} = n M_{nm} - M_{nm} m = (n-m) \cdot (B_m - B_n)/(n-m) = B_m - B_n = (\mathbf{1}\, \mathbf{B}^T - \mathbf{B}\, \mathbf{1}^T)_{nm}$. The diagonal is zero on both sides since $M$ is symmetric. Verified to relative precision $< 4 \times 10^{-15}$ at all tested parameters.
+\end{proof}
+
+The generators $\mathbf{1}$ (even) and $\mathbf{B}$ (odd) live in orthogonal parity subspaces, so the displacement couples only the even--odd cross terms. Within each parity block, $M$ commutes with the position operator projected to that block---a strong constraint that is trivially satisfied because $D_n$ maps even functions to odd and vice versa.
+
+This is the Sylvester-type analog of the Lyapunov displacement $CD + DC = \mathbf{v}\mathbf{v}^T$ studied by Pushnitski--Treil \cite{PT2025} for weighted Cauchy matrices $C_{jk} = \sqrt{A_j A_k}/(a_j + a_k)$. Their spectral map is an involution; ours is not (the rank-$2$ antisymmetric structure maps to a different matrix class under spectral duality), but the displacement identity~\eqref{eq:displacement} is exact and encodes the Weil explicit formula in a single algebraic equation.
+
 %======================================================================
 \section{Conclusions}
 %======================================================================
@@ -473,13 +561,17 @@ Extensive diagnostics establish that the Lorentzian property cannot be proved fr
 
 The decomposition of the Tur\'an ratios (Section~\ref{sec:decomp_turan}) offers a sharper path. The archimedean prefactor~$F$ satisfies the Tur\'an inequalities on its own, with margin decaying geometrically as $\sim 3^{-k}$. Multiplication by~$\zeta$ does not destroy this margin but \emph{amplifies} it, with the boost growing as~$k$ increases. This reduces~RH to two concrete steps: (1)~prove $R_k^{(F)} > 1$ for all~$k$ from Gamma-function asymptotics (a purely archimedean statement), and (2)~prove that the zeta correction preserves log-concavity (the arithmetic content). Step~1 requires no number theory; Step~2 encodes the essential interplay between primes and the functional equation.
 
+The spectral mirror (Section~\ref{sec:mirror}) provides the sharpest structural explanation of the Lorentzian property: on the prolate null space ($\sim 80\%$ of dimensions), the Cauchy off-diagonal and archimedean diagonal are spectral conjugates cancelling to $< 0.1\%$, with the cancellation improving as $\lambda$ grows. The phase transition at $t = 1.0$ (Observation~\ref{obs:phase})---66 eigenvalues crossing zero simultaneously in a collective avalanche at the exact physical parameter---reveals the Lorentzian property as a critical phenomenon. However, the prolate null space cancellation is the \emph{easy} part: the hard content of~RH lives in the $\sim 15$-dimensional prolate signal space, where $L$ and $D$ do \emph{not} cancel and the first $\sim 12$ zeros govern the spectrum.
+
+The exact displacement identity $[D_n, M] = \mathbf{1}\mathbf{B}^T - \mathbf{B}\mathbf{1}^T$ (Proposition~\ref{prop:displacement}) encodes the Weil explicit formula as a rank-$2$ commutator equation, connecting the Fourier-index operator to the Cauchy generating function~$B_n$. This is the Sylvester-type analog of the Lyapunov displacement for Pushnitski--Treil weighted Cauchy matrices \cite{PT2025}, but with orthogonal parity generators that prevent the spectral involution from closing.
+
 The structural parallel with misaligned supersymmetry (Remark~\ref{rem:susy}) illuminates both steps: modular invariance of partition functions forces Bose--Fermi cancellations to leave non-negative residuals in non-supersymmetric gauge theories \cite{Dienes1994}. The functional equation of~$\zeta$ is the number-theoretic analogue of modular invariance. In both settings, a symmetry constraint forces near-cancellation with a positive residual, and the positivity of the residual has deep structural consequences.
 
 %======================================================================
 \section*{Acknowledgments}
 %======================================================================
 
-This work was conducted over 68 computational sessions using the Connes--Consani--Moscovici framework, with literature review assisted by automated research agents. All numerical results are reproducible from the Python scripts in the project repository.
+This work was conducted over 74 computational sessions using the Connes--Consani--Moscovici framework, with literature review assisted by automated research agents. All numerical results are reproducible from the Python scripts in the project repository.
 
 %======================================================================
 \begin{thebibliography}{99}
@@ -557,6 +649,22 @@ Bull.\ London Math.\ Soc.\ \textbf{53} (2021), 792--797.
 A.~Voros,
 \emph{Zeta functions for the Riemann zeros},
 Ann.\ Inst.\ Fourier \textbf{53} (2003), 665--699.
+
+\bibitem{PT2025}
+A.~Pushnitski and S.~Treil,
+\emph{The spectral map for weighted Cauchy matrices is an involution},
+preprint (2025).
+arXiv:2504.18707.
+
+\bibitem{Bombieri2000}
+E.~Bombieri,
+\emph{Remarks on Weil's quadratic functional in the theory of prime numbers},
+Atti Accad.\ Naz.\ Lincei Cl.\ Sci.\ Fis.\ Mat.\ Nat.\ Rend.\ Lincei \textbf{11} (2000), 183--233.
+
+\bibitem{CNV1986}
+G.~Csordas, T.~S.~Norfolk, and R.~S.~Varga,
+\emph{The Riemann hypothesis and the Tur\'an inequalities},
+Trans.\ Amer.\ Math.\ Soc.\ \textbf{296} (1986), 521--541.
 
 \bibitem{RoyKailath1989}
 R.~Roy and T.~Kailath,
