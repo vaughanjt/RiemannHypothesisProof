@@ -1,22 +1,21 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-07T01:00:00.000Z",
-  "phase": "sessions-70-75",
-  "phase_name": "Kills, spectral mirror, coupling ratio",
-  "status": "paused",
+  "timestamp": "2026-04-07T06:00:00.000Z",
+  "phase": "sessions-76-78",
+  "phase_name": "Signal space, geometry land, line constraint, knife-edge",
+  "status": "active_hot_lead",
   "completed_tasks": [
-    {"id": 70, "name": "Cumulant expansion diverges (16.5^k), Jensen margin 0.688^d, F fails d>=4"},
-    {"id": 71, "name": "BH eigenvector NOT log-concave (0/100), BH Loewner killed (diagonal does all work), displacement [D,M]=1*B^T-B*1^T exact"},
-    {"id": 72, "name": "Connes tr(H_N^{-2})=Z/2 killed as tautology"},
-    {"id": 73, "name": "Phase transition t=1.0 exact, spectral mirror (0.077% cancellation on prolate null), 66/67 avalanche, mirror is arithmetic and improves with lambda"},
-    {"id": 74, "name": "PT spectral involution doesn't extend (rank-2 Sylvester, orthogonal parity generators)"},
-    {"id": 75, "name": "Coupling ratio -> 1, margin ~ 2e-6*L^{-0.38}*exp(-0.089L), 97.3% from one eigencomponent, no closed form"}
+    {"id": 76, "name": "Signal space probe: '15-dim' was truncation artifact. Margin converges. 73 near-zero eigenvalues converged."},
+    {"id": 77, "name": "Geometry land: Loewner inertia, CND, Bezoutian, interlacing -- all 4 killed."},
+    {"id": "78a", "name": "Line constraint: dh/d(sigma)=0 at sigma=1/2 (functional equation). h_pair minimized. Curvatures isotropic (Laplace)."},
+    {"id": "78b", "name": "Critical tube: delta_crit~0.01. First zero carries 70% of curvature. Explicit formula constrains sum."},
+    {"id": "78c", "name": "Dual test functions: Lorentzian=minimum, Gaussian/Power-s=2=maximum. Squeeze from both directions."},
+    {"id": "78-knife", "name": "KNIFE-EDGE: Lorentzian property exists ONLY at exact Gamma diagonal (scale=1.00). -log(n) is unique critical rate."}
   ],
   "remaining_tasks": [
-    {"id": "paper-polish", "name": "Paper v6 committed, needs final polish and submission"},
-    {"id": "signal-space", "name": "The ~15-dim prolate signal space where RH actually lives -- unexplored"},
-    {"id": "publish", "name": "75 sessions, ~20 novel results. Write up and submit."}
+    {"id": "79-map", "name": "Map the phase transition precisely: eigenvalue count vs diagonal scale, locate transition width, characterize the mechanism"},
+    {"id": "79-prove", "name": "Prove Step 3: -log(n) diagonal + Cauchy off-diagonal + prime sum => Lorentzian signature. The spectral phase transition."}
   ],
-  "next_action": "WRITE THE PAPER. 75 sessions mapped the complete landscape. All computational directions exhausted. Novel results: Lorentzian signature (fully novel), spectral mirror (fully novel), Turan decomposition (mostly novel), phase transition (fully novel), displacement identity (new). Paper v6 at docs/lorentzian_weil_conjecture.tex has all material. Alternative: probe the 15-dim signal space.",
-  "context_notes": "Sessions 70-75 killed 6 approaches (cumulant, BH eigenvector, BH Loewner, Connes trace, PT involution, Gaussianization proof path) and found 2 structural phenomena (spectral mirror on prolate null space + exact displacement identity). The wall is the ~15-dim prolate signal space governed by first ~12 zeros. Mirror cancellation on null space is easy (no signal). Coupling ratio 0.997-0.999 is tightest bottleneck, decays exponentially. 215 commits on main. Research agent confirmed: Lorentzian signature, spectral mirror, Turan decomposition, phase transition are all novel and publishable."
+  "next_action": "MAP the knife-edge phase transition in fine detail (eigenvalue count vs scale, transition sharpness, mechanism), then PROVE that -log(n) is the critical exponent. This is a spectral theory question: the logarithmic diagonal decay from Gamma(s/2) is the unique rate producing exactly 1 positive eigenvalue in M = diag(C - log n) + Cauchy + prime_sum.",
+  "context_notes": "Session 78 found the deepest structural insight in 78 sessions. The Lorentzian property (1 positive eigenvalue) is a CRITICAL PHENOMENON at the exact Gamma function diagonal value. The trivial zeros at s=-2,-4,-6,... produce wr_diag = C - log(n), which is the UNIQUE diagonal that creates Lorentzian signature. Scale by 5% either direction: breaks. Replace -log(n) with any -n^alpha: breaks. The proof chain is: (1) trivial zeros -> Gamma -> -log(n) diagonal [textbook], (2) -log(n) is critical exponent for Lorentzian [THIS IS THE GAP], (3) Lorentzian -> Q_W >= 0 -> RH [proved]. Proving step (2) transforms 'prove RH' into 'prove a spectral phase transition occurs at the logarithmic rate'. Key infrastructure: session78_line_constraint.py, session78b_critical_tube.py, session78c_tightness.py. Paper at v7: docs/lorentzian_weil_conjecture.tex (682 lines). 220 commits on main."
 }
