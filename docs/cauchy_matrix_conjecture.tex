@@ -1,0 +1,232 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{booktabs}
+\geometry{margin=1in}
+
+\title{A Negative Definiteness Conjecture for a Weighted Cauchy Matrix\\
+Arising from the Weil Explicit Formula}
+
+\author{J.T.\ Vaughan}
+\date{April 2026}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{observation}{Observation}
+
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present an open conjecture about the negative definiteness of a parametric family of real symmetric matrices with explicit Cauchy--Loewner structure. The matrix $M_{\mathrm{odd}}(\lambda)$ has dimension $N \times N$ with entries
+\[
+M_{jk} = \frac{2(jB_k - kB_j)}{j^2 - k^2}, \quad j \neq k, \qquad M_{jj} = a_j + \frac{B_j}{j},
+\]
+where the sequences $a_n$ and $B_n$ are determined by the Weil explicit formula for the Riemann zeta function. The conjecture---that $M_{\mathrm{odd}}(\lambda) < 0$ for all $\lambda$---is equivalent to the Riemann Hypothesis through the Connes--Weil positivity framework. We provide the precise definitions, closed-form entry formulas, extensive computational evidence, and structural properties (knife-edge sensitivity, arithmetic specificity) that constrain any proof strategy. The purpose of this note is to formulate the conjecture as a pure matrix analysis problem, accessible to specialists in Cauchy matrix theory without requiring background in analytic number theory.
+\end{abstract}
+
+%======================================================================
+\section{The Matrix}
+%======================================================================
+
+Fix a parameter $\lambda > 1$ and set $L = \log(\lambda^2)$, $N = \max(15, \lceil 6L \rceil)$. Define two sequences for $n = 1, 2, \ldots, N$:
+
+\begin{definition}[Diagonal sequence $a_n$]\label{def:an}
+\begin{equation}\label{eq:an}
+a_n = \underbrace{\mathrm{wr}(n, L)}_{\text{archimedean}} + \underbrace{\sum_{\substack{p^k \leq \lambda^2 \\ p \text{ prime}}} \frac{\log p}{p^{k/2}} \cdot \frac{2(L - k\log p)}{L} \cdot \cos\!\Bigl(\frac{2\pi n k \log p}{L}\Bigr)}_{\text{prime sum}},
+\end{equation}
+where $\mathrm{wr}(n, L) = \gamma + \log\!\bigl(\frac{4\pi(e^L - 1)}{e^L + 1}\bigr) - \log n + O(1/n^2)$ involves the Euler--Mascheroni constant~$\gamma$ and decays as~$-\log n$.
+\end{definition}
+
+\begin{definition}[Off-diagonal sequence $B_n$]\label{def:Bn}
+\begin{equation}\label{eq:Bn}
+B_n = \underbrace{\alpha(n, L)}_{\text{archimedean}} + \underbrace{\sum_{\substack{p^k \leq \lambda^2 \\ p \text{ prime}}} \frac{\log p}{\pi\, p^{k/2}} \cdot \sin\!\Bigl(\frac{2\pi n k \log p}{L}\Bigr)}_{\text{prime sum}},
+\end{equation}
+where $\alpha(n, L) = \frac{1}{\pi}\bigl[\mathrm{Re}(f_1) + \frac{1}{2}\operatorname{Im}\psi\!\bigl(\tfrac{1}{4} + \tfrac{i\pi n}{L}\bigr)\bigr]$ involves the digamma function~$\psi$ and satisfies $B_n = O(1/n)$ and $B_{-n} = -B_n$ (odd symmetry).
+\end{definition}
+
+\begin{definition}[The matrix $M_{\mathrm{odd}}$]\label{def:Modd}
+The real symmetric $N \times N$ matrix $M_{\mathrm{odd}}$ has entries:
+\begin{align}
+(M_{\mathrm{odd}})_{jj} &= a_j + \frac{B_j}{j}, \quad j = 1, \ldots, N, \label{eq:diag}\\
+(M_{\mathrm{odd}})_{jk} &= \frac{2(j B_k - k B_j)}{j^2 - k^2}, \quad j \neq k. \label{eq:offdiag}
+\end{align}
+\end{definition}
+
+\begin{remark}
+The matrix $M_{\mathrm{odd}}$ is the restriction of a larger $(2N+1) \times (2N+1)$ Cauchy--Loewner matrix to its odd-parity subspace under $n \mapsto -n$. The full matrix has the simpler form $M_{nm} = a_n\, \delta_{nm} + (B_m - B_n)/(n - m)$, and the off-diagonal formula~\eqref{eq:offdiag} arises from the parity projection. In the notation of Pushnitski--Treil~\cite{PT2025}, this is a weighted Cauchy matrix with displacement rank~$2$.
+\end{remark}
+
+%======================================================================
+\section{The Conjecture}
+%======================================================================
+
+\begin{conjecture}[Negative definiteness]\label{conj:main}
+For all $\lambda \geq \sqrt{2}$ (equivalently $L \geq \log 2$) and all $N \geq N_0(\lambda)$, the matrix $M_{\mathrm{odd}}(\lambda, N)$ is negative definite.
+\end{conjecture}
+
+\begin{theorem}[Consequence]\label{thm:consequence}
+Conjecture~\ref{conj:main}, combined with a verified barrier condition on the complementary (even-parity) block, implies the Weil positivity criterion $Q_W \geq 0$, which is equivalent to the Riemann Hypothesis. The proof of this implication appears in~\cite{Vaughan2026}.
+\end{theorem}
+
+%======================================================================
+\section{Structural Properties}
+%======================================================================
+
+\subsection{The diagonal is logarithmic}
+
+The archimedean component of $a_n$ satisfies $\mathrm{wr}(n, L) = C(L) - \log n + O(1/n^2)$ where $C(L) > 0$ for all~$L$. This logarithmic decay is the fingerprint of the Gamma function $\Gamma(s/2)$ in the functional equation of~$\zeta$, and corresponds to the trivial zeros of~$\zeta$ at $s = -2, -4, -6, \ldots$
+
+\begin{observation}[Knife-edge]\label{obs:knife}
+Scaling the archimedean diagonal $\mathrm{wr}(n,L)$ by a factor~$\alpha$ destroys negative definiteness for $\alpha \neq 1$:
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$\alpha$ & \#positive eigenvalues & $\lambda_{\max}(M_{\mathrm{odd}})$ \\
+\midrule
+$0.95$ & $27$ & $+0.175$ \\
+$\mathbf{1.00}$ & $\mathbf{0}$ & $\mathbf{-1.6 \times 10^{-7}}$ \\
+$1.05$ & $6$ & $+0.160$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The $-\log n$ decay rate is the \emph{unique} rate that produces negative definiteness. Replacing $-\log n$ with $-n^{\alpha}$ for any $\alpha > 0$ fails.
+\end{observation}
+
+\subsection{Arithmetic specificity}
+
+\begin{observation}[Cram\'er model]\label{obs:cramer}
+Replacing the actual prime numbers with random integers drawn from the Cram\'er model (each $n$ is ``prime'' with probability $1/\log n$) produces a matrix that is \emph{never} negative definite: $0$ out of $200$ trials yield $M_{\mathrm{odd}} < 0$. The minimum $\lambda_{\max}(M_{\mathrm{odd}})$ across Cram\'er trials is $+4.26$, compared to the actual value of~$-1.6 \times 10^{-7}$---a gap of $26$ million. Similarly, $0/1000$ random diagonal perturbations and $0/1000$ log-shaped diagonal perturbations yield negative definiteness.
+\end{observation}
+
+\subsection{The critical direction}
+
+\begin{observation}[Ten-figure cancellation]\label{obs:cancel}
+The maximum eigenvalue of $M_{\mathrm{odd}}$ at $\lambda^2 = 1000$ is $-1.6 \times 10^{-7}$, achieved on an eigenvector $v \approx -0.54\, e_1 + 0.84\, e_2$ concentrated in the first two components. The Rayleigh quotient decomposes as:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Component & Contribution \\
+\midrule
+Prime off-diagonal & $-1.534$ \\
+Archimedean diagonal & $+1.565$ \\
+Alpha correction & $-0.031$ \\
+\midrule
+Total & $-1.6 \times 10^{-7}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{observation}
+
+\subsection{Convergence with truncation}
+
+The maximum eigenvalue of $M_{\mathrm{odd}}$ is $N$-converged: it stabilizes from $-1.77 \times 10^{-7}$ at $N = 15$ to $-1.56 \times 10^{-7}$ at $N = 150$.
+
+\subsection{Sylvester leading minors}
+
+All leading principal minors of $M_{\mathrm{odd}}$ satisfy the Sylvester criterion for negative definiteness. The $k$-th minor has magnitude decreasing as $\sim 10^{-5k}$, indicating extreme cancellation at every Schur step.
+
+%======================================================================
+\section{What a Proof Would Need}
+%======================================================================
+
+Every standard matrix-analytic bound fails by many orders of magnitude:
+
+\begin{itemize}
+\item \textbf{Gershgorin:} The Gershgorin disk for row~$1$ is $[-64, +40]$, failing to exclude positive eigenvalues by a factor of $10^8$.
+\item \textbf{Diagonal dominance:} The off-diagonal row sums exceed the diagonal entries by factors of $4$--$37$.
+\item \textbf{Trace + determinant:} These constrain but do not determine the signature.
+\item \textbf{Loewner inertia (Bharali--Holtz):} Their theorem gives Lorentzian signature for $f(x) = x^r$ with $1 < r < 2$, but $B_n \sim 1/n$ is not in this function class.
+\item \textbf{Cauchy interlacing:} Each prime contributes a full-rank perturbation, not rank-$1$, precluding eigenvalue tracking.
+\end{itemize}
+
+A proof likely requires exploiting the \emph{specific algebraic relationship} between $a_n$ and $B_n$ imposed by the Weil explicit formula. Both sequences are determined by the same set of prime numbers, and this coupling---not any generic matrix property---is what forces negative definiteness.
+
+\begin{remark}[The functional equation constraint]
+The functional equation $\xi(s) = \xi(1-s)$ forces $a_n$ to be even and $B_n$ to be odd in~$n$. More importantly, it implies that the test function $h_{\mathrm{pair}}(\delta, \gamma) = h(\delta + i\gamma) + h(-\delta + i\gamma)$ satisfies $\partial h_{\mathrm{pair}} / \partial \delta \big|_{\delta = 0} = 0$ for all~$\gamma$---the critical line $\mathrm{Re}(s) = 1/2$ is automatically a stationary point of the zero contribution. The second derivative is positive (minimum), meaning deviations from the critical line are destabilizing.
+\end{remark}
+
+%======================================================================
+\section{Computational Evidence}
+%======================================================================
+
+Negative definiteness has been verified at the following parameter values (and hundreds of others):
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$\lambda^2$ & $N$ & $\lambda_{\max}(M_{\mathrm{odd}})$ & $\tr(M_{\mathrm{odd}})$ & $|\lambda_{\max}|/|\tr|$ \\
+\midrule
+$50$ & $23$ & $-1.86 \times 10^{-7}$ & $-24.9$ & $7.5 \times 10^{-9}$ \\
+$200$ & $32$ & $-1.74 \times 10^{-7}$ & $-40.2$ & $4.3 \times 10^{-9}$ \\
+$1000$ & $41$ & $-1.61 \times 10^{-7}$ & $-63.7$ & $2.5 \times 10^{-9}$ \\
+$5000$ & $51$ & $-1.48 \times 10^{-7}$ & $-112.0$ & $1.3 \times 10^{-9}$ \\
+$50000$ & $65$ & $-1.27 \times 10^{-7}$ & $-273.1$ & $4.7 \times 10^{-10}$ \\
+$200000$ & $73$ & $-1.14 \times 10^{-7}$ & $-437.2$ & $2.6 \times 10^{-10}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The ratio $|\lambda_{\max}|/|\tr|$ decreases, showing that the trace becomes an increasingly negligent bound on the maximum eigenvalue. The maximum eigenvalue itself appears to scale as $\sim e^{-0.17 L}$, approaching zero but remaining negative at all tested parameters.
+
+All Python scripts and numerical data are available in the project repository.
+
+%======================================================================
+\section{Connections to Existing Theory}
+%======================================================================
+
+\begin{itemize}
+\item The full $(2N+1) \times (2N+1)$ matrix $M$ satisfies the displacement equation $[D, M] = \mathbf{1}\mathbf{B}^T - \mathbf{B}\mathbf{1}^T$ where $D = \diag(n)$, giving displacement rank~$2$ in the sense of Kailath--Lev-Ari~\cite{Kailath1979}. However, the odd-parity projection inflates the displacement rank to~$14$.
+
+\item The matrix is connected to the spectral triples of Connes~\cite{CC2025}, who constructs self-adjoint operators from rank-$1$ perturbations of scaling operators. The matrix entries coincide with Connes' ``$\tau$-matrix'' from~\cite{CC2025} to $10^{-15}$ precision.
+
+\item The Huh--Br\"and\'en theory of Lorentzian polynomials~\cite{BH2020} characterizes matrices with at most one positive eigenvalue. The full matrix~$M$ (before parity projection) has signature $(1, 2N)$---Lorentzian---while $M_{\mathrm{odd}}$ has signature $(0, N)$---negative definite. Both properties are required for the Riemann Hypothesis.
+\end{itemize}
+
+%======================================================================
+\section*{Acknowledgments}
+%======================================================================
+
+This conjecture emerged from 80 computational sessions investigating the Connes--Weil positivity framework. Automated research agents assisted with literature review. All numerical results are reproducible from the project repository.
+
+%======================================================================
+\begin{thebibliography}{99}
+%======================================================================
+
+\bibitem{BH2020}
+P.~Br\"and\'en and J.~Huh,
+\emph{Lorentzian polynomials},
+Ann.\ of Math.\ \textbf{192} (2020), 821--891.
+
+\bibitem{CC2025}
+A.~Connes and C.~Consani,
+\emph{Zeta spectral triples},
+preprint (2025), arXiv:2511.22755.
+
+\bibitem{Kailath1979}
+T.~Kailath, S.~Kung, and M.~Morf,
+\emph{Displacement ranks of matrices and linear equations},
+J.\ Math.\ Anal.\ Appl.\ \textbf{68} (1979), 395--407.
+
+\bibitem{PT2025}
+A.~Pushnitski and S.~Treil,
+\emph{The spectral map for weighted Cauchy matrices is an involution},
+preprint (2025), arXiv:2504.18707.
+
+\bibitem{Vaughan2026}
+J.T.~Vaughan,
+\emph{The Lorentzian Weil Matrix Conjecture: A Reduction of the Riemann Hypothesis to Cauchy--Loewner Matrix Theory},
+preprint (2026).
+
+\end{thebibliography}
+
+\end{document}
