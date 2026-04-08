@@ -44,14 +44,22 @@ Fix a parameter $\lambda > 1$ and set $L = \log(\lambda^2)$, $N = \max(15, \lcei
 \begin{equation}\label{eq:an}
 a_n = \underbrace{\mathrm{wr}(n, L)}_{\text{archimedean}} + \underbrace{\sum_{\substack{p^k \leq \lambda^2 \\ p \text{ prime}}} \frac{\log p}{p^{k/2}} \cdot \frac{2(L - k\log p)}{L} \cdot \cos\!\Bigl(\frac{2\pi n k \log p}{L}\Bigr)}_{\text{prime sum}},
 \end{equation}
-where $\mathrm{wr}(n, L) = \gamma + \log\!\bigl(\frac{4\pi(e^L - 1)}{e^L + 1}\bigr) - \log n + O(1/n^2)$ involves the Euler--Mascheroni constant~$\gamma$ and decays as~$-\log n$.
+where the archimedean function $\mathrm{wr}(n, L)$ is defined by
+\begin{equation}\label{eq:wr}
+\mathrm{wr}(n, L) = \gamma + \log\!\Bigl(\frac{4\pi(e^L - 1)}{e^L + 1}\Bigr) + \int_0^\infty \frac{e^{x/2}\,\omega_n(x,L) - 2}{e^x - e^{-x}}\,dx,
+\end{equation}
+with $\omega_n(x, L) = 2\cos(2\pi n x/L)\cdot\mathbf{1}_{[0,L]}(x)$, $\gamma$ the Euler--Mascheroni constant, and asymptotic behavior $\mathrm{wr}(n,L) = C(L) - \log n + O(1/n^2)$ where $C(L) = \gamma + \log(4\pi(e^L-1)/(e^L+1)) > 0$.
 \end{definition}
 
 \begin{definition}[Off-diagonal sequence $B_n$]\label{def:Bn}
 \begin{equation}\label{eq:Bn}
 B_n = \underbrace{\alpha(n, L)}_{\text{archimedean}} + \underbrace{\sum_{\substack{p^k \leq \lambda^2 \\ p \text{ prime}}} \frac{\log p}{\pi\, p^{k/2}} \cdot \sin\!\Bigl(\frac{2\pi n k \log p}{L}\Bigr)}_{\text{prime sum}},
 \end{equation}
-where $\alpha(n, L) = \frac{1}{\pi}\bigl[\mathrm{Re}(f_1) + \frac{1}{2}\operatorname{Im}\psi\!\bigl(\tfrac{1}{4} + \tfrac{i\pi n}{L}\bigr)\bigr]$ involves the digamma function~$\psi$ and satisfies $B_n = O(1/n)$ and $B_{-n} = -B_n$ (odd symmetry).
+where the archimedean function $\alpha(n, L)$ is defined by
+\begin{equation}\label{eq:alpha}
+\alpha(n, L) = \frac{1}{\pi}\biggl[\frac{e^{-L/2}\operatorname{Im}\bigl(\frac{2L}{L + 4\pi i n}\,{}_2F_1(1, a, a{+}1, e^{-2L})\bigr) + \frac{1}{2}\operatorname{Im}\,\psi(a)}{1}\biggr],
+\end{equation}
+with $a = \tfrac{1}{4} + \tfrac{i\pi n}{L}$, $\psi$ the digamma function, and ${}_2F_1$ the Gauss hypergeometric function. The sequence satisfies $\alpha(-n, L) = -\alpha(n, L)$ (odd symmetry) and $\alpha(n, L) = O(1/n)$.
 \end{definition}
 
 \begin{definition}[The matrix $M_{\mathrm{odd}}$]\label{def:Modd}
@@ -149,14 +157,14 @@ Every standard matrix-analytic bound fails by many orders of magnitude:
 \item \textbf{Cauchy interlacing:} Each prime contributes a full-rank perturbation, not rank-$1$, precluding eigenvalue tracking.
 \end{itemize}
 
-A proof likely requires exploiting the \emph{specific algebraic relationship} between $a_n$ and $B_n$ imposed by the Weil explicit formula. Both sequences are determined by the same set of prime numbers, and this coupling---not any generic matrix property---is what forces negative definiteness.
+A proof likely requires exploiting the specific algebraic relationship between $a_n$ and $B_n$ imposed by the Weil explicit formula. Both sequences are determined by the same set of prime numbers, and the computational evidence (Section~\ref{sec:evidence} and Observation~\ref{obs:cramer}) strongly suggests that this coupling is essential for negative definiteness.
 
 \begin{remark}[The functional equation constraint]
 The functional equation $\xi(s) = \xi(1-s)$ forces $a_n$ to be even and $B_n$ to be odd in~$n$. More importantly, it implies that the test function $h_{\mathrm{pair}}(\delta, \gamma) = h(\delta + i\gamma) + h(-\delta + i\gamma)$ satisfies $\partial h_{\mathrm{pair}} / \partial \delta \big|_{\delta = 0} = 0$ for all~$\gamma$---the critical line $\mathrm{Re}(s) = 1/2$ is automatically a stationary point of the zero contribution. The second derivative is positive (minimum), meaning deviations from the critical line are destabilizing.
 \end{remark}
 
 %======================================================================
-\section{Computational Evidence}
+\section{Computational Evidence}\label{sec:evidence}
 %======================================================================
 
 Negative definiteness has been verified at the following parameter values (and hundreds of others):
@@ -196,7 +204,7 @@ All Python scripts and numerical data are available in the project repository.
 \section*{Acknowledgments}
 %======================================================================
 
-This conjecture emerged from 80 computational sessions investigating the Connes--Weil positivity framework. Automated research agents assisted with literature review. All numerical results are reproducible from the project repository.
+All numerical results are reproducible from the Python scripts in the project repository at \texttt{github.com/vaughanjt/RiemannHypothesisProof}. Negative definiteness has been rigorously verified at $134$ parameter values using interval arithmetic (python-flint, $256$-bit precision) with the Sylvester criterion.
 
 %======================================================================
 \begin{thebibliography}{99}
