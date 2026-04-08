@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{hyperref}
+\usepackage{url}
 \usepackage{geometry}
 \usepackage{booktabs}
 \geometry{margin=1in}
@@ -57,7 +58,7 @@ B_n = \underbrace{\alpha(n, L)}_{\text{archimedean}} + \underbrace{\sum_{\substa
 \end{equation}
 where the archimedean function $\alpha(n, L)$ is defined by
 \begin{equation}\label{eq:alpha}
-\alpha(n, L) = \frac{1}{\pi}\biggl[\frac{e^{-L/2}\operatorname{Im}\bigl(\frac{2L}{L + 4\pi i n}\,{}_2F_1(1, a, a{+}1, e^{-2L})\bigr) + \frac{1}{2}\operatorname{Im}\,\psi(a)}{1}\biggr],
+\alpha(n, L) = \frac{1}{\pi}\biggl[e^{-L/2}\operatorname{Im}\!\Bigl(\frac{2L}{L + 4\pi i n}\,{}_2F_1(1, a, a{+}1, e^{-2L})\Bigr) + \frac{1}{2}\operatorname{Im}\,\psi(a)\biggr],
 \end{equation}
 with $a = \tfrac{1}{4} + \tfrac{i\pi n}{L}$, $\psi$ the digamma function, and ${}_2F_1$ the Gauss hypergeometric function. The sequence satisfies $\alpha(-n, L) = -\alpha(n, L)$ (odd symmetry) and $\alpha(n, L) = O(1/n)$.
 \end{definition}
@@ -182,12 +183,12 @@ Negative definiteness has been verified at the following parameter values (and h
 \toprule
 $\lambda^2$ & $N$ & $\lambda_{\max}(M_{\mathrm{odd}})$ & $\tr(M_{\mathrm{odd}})$ & $|\lambda_{\max}|/|\tr|$ \\
 \midrule
-$50$ & $23$ & $-1.86 \times 10^{-7}$ & $-24.9$ & $7.5 \times 10^{-9}$ \\
+$50$ & $23$ & $-1.84 \times 10^{-7}$ & $-24.9$ & $7.4 \times 10^{-9}$ \\
 $200$ & $32$ & $-1.74 \times 10^{-7}$ & $-40.2$ & $4.3 \times 10^{-9}$ \\
 $1000$ & $41$ & $-1.61 \times 10^{-7}$ & $-63.7$ & $2.5 \times 10^{-9}$ \\
 $5000$ & $51$ & $-1.48 \times 10^{-7}$ & $-112.0$ & $1.3 \times 10^{-9}$ \\
-$50000$ & $65$ & $-1.27 \times 10^{-7}$ & $-273.1$ & $4.7 \times 10^{-10}$ \\
-$200000$ & $73$ & $-1.14 \times 10^{-7}$ & $-437.2$ & $2.6 \times 10^{-10}$ \\
+$50000$ & $65$ & $-1.27 \times 10^{-7}$ & $-273.1$ & $4.6 \times 10^{-10}$ \\
+$200000$ & $73$ & $-1.12 \times 10^{-7}$ & $-500.8$ & $2.2 \times 10^{-10}$ \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -246,9 +247,9 @@ preprint (2025), arXiv:2504.18707.
 
 \bibitem{Vaughan2026}
 J.T.~Vaughan,
-\emph{The Lorentzian Weil Matrix Conjecture: A Reduction of the Riemann Hypothesis to Cauchy--Loewner Matrix Theory},
+\emph{The Lorentzian Weil Matrix Conjecture: An Equivalent Formulation of the Riemann Hypothesis in Cauchy--Loewner Matrix Theory},
 preprint (2026).
-Available at \texttt{github.com/vaughanjt/RiemannHypothesisProof/blob/main/docs/lorentzian\_weil\_conjecture.tex}.
+Available at \url{https://github.com/vaughanjt/RiemannHypothesisProof}.
 
 \end{thebibliography}
 
