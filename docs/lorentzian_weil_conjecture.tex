@@ -6,7 +6,7 @@
 \geometry{margin=1in}
 
 \title{The Lorentzian Weil Matrix Conjecture:\\
-A Reduction of the Riemann Hypothesis to\\ Cauchy--Loewner Matrix Theory}
+An Equivalent Formulation of the Riemann Hypothesis\\ in Cauchy--Loewner Matrix Theory}
 
 \author{J.T.\ Vaughan}
 \date{April 2026}
@@ -32,7 +32,7 @@ A Reduction of the Riemann Hypothesis to\\ Cauchy--Loewner Matrix Theory}
 \begin{abstract}
 We formulate a conjecture about the signature of the Connes--Weil intersection matrix~$M$ that implies the Riemann Hypothesis, and develop a zero-detecting sign lemma that verifies it with sensitivity three orders of magnitude beyond the Vinogradov--Korobov zero-free region. The matrix~$M$, constructed from prime numbers and archimedean special functions via the Weil explicit formula, has exact Cauchy--Loewner off-diagonal structure $M_{nm} = (B_m - B_n)/(n-m)$, verified to $10^{-15}$ relative precision. We conjecture that $M$ has \emph{Lorentzian signature} $(1, 2N)$: at most one positive eigenvalue for all truncation parameters, and prove this implies Weil positivity ($Q_W \geq 0$), equivalent to~RH.
 
-The sign lemma (Theorem~\ref{thm:sign}) shows that shifting any zeta zero off the critical line by $\delta > 0$ increases $\lambda_{\max}(M_{\mathrm{odd}})$, with closed-form first-order coefficient $P_{\mathrm{odd}}[n,n] = 4/(\gamma^2 - (2\pi n/L)^2) > 0$. The critical shift is $\delta_{\mathrm{crit}} \approx 1.4 \times 10^{-6}$, compared to $\delta_{\mathrm{VK}} \approx 3.6 \times 10^{-3}$ from the zero-free region. A kernel-vanishing property ($K(L) = 0$) eliminates exponential growth of the zero-tail perturbation, yielding an $L$-independent bound. Combined with verified zeros up to height $3 \times 10^{12}$, the effective verification range extends to $\lambda^2 < e^{240{,}000}$ with safety factor $80{,}000$.
+The sign lemma (Observation~\ref{thm:sign}) shows that shifting any zeta zero off the critical line by $\delta > 0$ increases $\lambda_{\max}(M_{\mathrm{odd}})$, with closed-form first-order coefficient $P_{\mathrm{odd}}[n,n] = 4/(\gamma^2 - (2\pi n/L)^2) > 0$. The critical shift is $\delta_{\mathrm{crit}} \approx 1.4 \times 10^{-6}$, compared to $\delta_{\mathrm{VK}} \approx 3.6 \times 10^{-3}$ from the zero-free region. A kernel-vanishing property ($K(L) = 0$) eliminates exponential growth of the zero-tail perturbation, yielding an $L$-independent bound. Combined with verified zeros up to height $3 \times 10^{12}$, the effective verification range extends to $\lambda^2 < e^{240{,}000}$ with safety factor $80{,}000$.
 
 The Lorentzian property is $100\%$ prime-specific (Cram\'er model: $0/150$ trials) and cannot be proved from the Cauchy--Loewner structure alone. Every prime is load-bearing: removing any single prime flips the sign. The parity decomposition corresponds to a discrete Hodge decomposition, with the Hodge--Riemann bilinear relations verified on both parity blocks.
 \end{abstract}
@@ -43,7 +43,7 @@ The Lorentzian property is $100\%$ prime-specific (Cram\'er model: $0/150$ trial
 
 The Riemann Hypothesis is equivalent to the positivity of the Weil quadratic form $Q_W = W_{0,2} - M$ in the Connes--Consani--Moscovici framework \cite{CCM2025}. Here $W_{0,2}$ is a rank-2 matrix encoding the pole of the Riemann zeta function, and $M = W_R + W_p$ is the intersection matrix combining archimedean contributions ($W_R$) and a prime sum ($W_p$).
 
-Over 77 computational sessions we have investigated the spectral structure of~$Q_W$, verifying Weil positivity at hundreds of parameter values, killing numerous analytic proof strategies (all circular), and ultimately identifying a structural property of~$M$ that, if proved, implies~RH through a non-circular chain of reasoning.
+We have investigated the spectral structure of~$Q_W$, verifying Weil positivity at hundreds of parameter values and identifying a structural property of~$M$ that, if proved, implies~RH through a non-circular chain of reasoning.
 
 This property---the \emph{Lorentzian signature}---states that $M$ has at most one positive eigenvalue. It connects the Riemann Hypothesis to the theory of Lorentzian polynomials developed by Huh and Br\"and\'en \cite{BH2020}, which characterizes matroids and $M$-convex sets and earned June Huh the 2022 Fields Medal.
 
@@ -72,13 +72,21 @@ where, for indices $n, m \in \mathcal{I}$:
 \begin{equation}\label{eq:mdiag}
 (M_{\mathrm{diag}})_{nm} = \mathrm{wr}_{\mathrm{diag}}(|n|, L)\, \delta_{nm},
 \end{equation}
-where $\mathrm{wr}_{\mathrm{diag}}(n, L) = C(L) - \log n + O(1/n)$ with $C(L) = \gamma + \log(4\pi(e^L - 1)/(e^L + 1))$ and $\gamma$ is the Euler--Mascheroni constant.
+where $\mathrm{wr}_{\mathrm{diag}}(n, L)$ is defined by the integral
+\[
+\mathrm{wr}_{\mathrm{diag}}(n, L) = C(L) + \int_0^\infty \frac{e^{x/2}\bigl(2\cos(2\pi n x/L)\cdot\mathbf{1}_{[0,L]}(x)\bigr) - 2}{e^x - e^{-x}}\,dx,
+\]
+with $C(L) = \gamma + \log(4\pi(e^L - 1)/(e^L + 1))$, $\gamma$ the Euler--Mascheroni constant. Asymptotically, $\mathrm{wr}_{\mathrm{diag}}(n, L) = C(L) - \log n + O(1/n^2)$.
 
 \medskip\noindent\textbf{Alpha off-diagonal.}
 \begin{equation}\label{eq:malpha}
 (M_{\alpha})_{nm} = \frac{\alpha_L(m) - \alpha_L(n)}{n - m}, \quad n \neq m, \qquad (M_{\alpha})_{nn} = 0,
 \end{equation}
-where $\alpha_L(n) = \frac{1}{\pi}\bigl[f_1(n,L) + \frac{1}{2}\operatorname{Im}\psi(\tfrac{1}{4} + \tfrac{i\pi|n|}{L})\bigr] \cdot \sgn(n)$ involves the digamma function $\psi$.
+where, setting $a = \tfrac{1}{4} + \tfrac{i\pi|n|}{L}$ and $z = e^{-2L}$,
+\[
+\alpha_L(n) = \frac{\sgn(n)}{\pi}\biggl[e^{-L/2}\operatorname{Im}\!\Bigl(\frac{2L}{L + 4\pi i|n|}\,{}_2F_1(1, a, a{+}1, z)\Bigr) + \frac{1}{2}\operatorname{Im}\,\psi(a)\biggr],
+\]
+with $\psi$ the digamma function and ${}_2F_1$ the Gauss hypergeometric function.
 \end{definition}
 
 \begin{definition}[Cauchy--Loewner structure]\label{def:cauchy}
@@ -108,7 +116,7 @@ The matrix $W_{0,2}$ has rank~$2$ with the decomposition
 \begin{equation}
 W_{0,2} = \mathrm{pf}(L) \bigl( L^2\, \mathbf{u}\mathbf{u}^T - (4\pi)^2\, \mathbf{w}\mathbf{w}^T \bigr),
 \end{equation}
-where $\mathrm{pf}(L) = 32L\sinh^2(L/4)$, $\mathbf{u}$ is even, and $\mathbf{w}$ is odd. The Weil quadratic form is $Q_W := W_{0,2} - M$.
+where $\mathrm{pf}(L) = 32L\sinh^2(L/4)$ is the prefactor from the pole residue of the Lorentzian test function $h(r) = L/(L^2/4 + r^2)$ at the pole $s = 1$ of~$\zeta$, $\mathbf{u}$ is even, and $\mathbf{w}$ is odd. The Weil quadratic form is $Q_W := W_{0,2} - M$.
 \end{definition}
 
 %======================================================================
@@ -125,7 +133,7 @@ For all $\lambda \geq \sqrt{2}$ and all $N \geq N_0(\lambda)$, the matrix $M(\la
 \end{conjecture}
 
 \begin{theorem}[Conjecture~\ref{conj:main} implies Weil positivity]\label{thm:implies}
-If Conjecture~\ref{conj:main} holds for all $\lambda$ and sufficiently large~$N$, then $Q_W \geq 0$ for all $\lambda$, which is equivalent to the Riemann Hypothesis.
+Assume Conjecture~\ref{conj:main} holds for all $\lambda$ and sufficiently large~$N$, and assume the \textbf{barrier condition}: $\langle \mathbf{u}, Q_W \mathbf{u}\rangle > 0$ on $\mathrm{range}(W_{0,2})$ for all~$\lambda$. Then $Q_W \geq 0$ for all $\lambda$, which is equivalent to the Riemann Hypothesis.
 \end{theorem}
 
 \begin{proof}
@@ -137,11 +145,12 @@ More precisely, on $\mathrm{null}(W_{0,2}) \cap V_-$: by~(ii), $M_{\mathrm{odd}}
 
 On $\mathrm{null}(W_{0,2}) \cap V_+$: by~(iii), the positive eigenvector of $M_{\mathrm{even}}$ lies in $\mathrm{range}(W_{0,2})$, so $M_{\mathrm{even}} \leq 0$ on $\mathrm{null}(W_{0,2}) \cap V_+$, giving $Q_W \geq 0$.
 
-\medskip\noindent\textbf{On $\mathrm{range}(W_{0,2})$:} This is a $2$-dimensional space (one even, one odd direction). On the even direction, $W_{0,2}$ has a positive eigenvalue $\sim \mathrm{pf} \cdot L^2$ and $M$'s positive eigenvalue is in this direction, but $W_{0,2}$ dominates: the \emph{barrier} $\varepsilon_{\mathrm{even}} = \langle \mathbf{u}, Q_W \mathbf{u}\rangle \approx 0.04$ is positive at all computed points (Sessions~40--42). On the odd direction, $W_{0,2}$ has a negative eigenvalue while $M_{\mathrm{odd}}$ is negative definite, and the barrier $\varepsilon_{\mathrm{odd}} \approx 0.04$ is likewise positive.
-
-\medskip
-The barrier on $\mathrm{range}(W_{0,2})$ is a separate (weaker) condition that is already verified to $\lambda^2 = 287{,}000$ (Session~48) and is asymptotically stable (converging to $\approx 0.04$ as $\lambda \to \infty$). Hence $Q_W \geq 0$ on all of $\mathbb{R}^{2N+1}$.
+\medskip\noindent\textbf{On $\mathrm{range}(W_{0,2})$:} This is a $2$-dimensional space (one even, one odd direction). The barrier condition assumed above gives $Q_W > 0$ on this subspace.
 \end{proof}
+
+\begin{remark}[Barrier condition]
+The barrier $\varepsilon = \langle \mathbf{u}, Q_W \mathbf{u}\rangle \approx 0.04$ is a weaker condition than Conjecture~\ref{conj:main}: it is verified to $\lambda^2 = 287{,}000$ via interval arithmetic and converges to $\approx 0.04$ as $\lambda \to \infty$. It is stated separately because it involves the $2$-dimensional range of~$W_{0,2}$, not the $(2N-1)$-dimensional null space where the Lorentzian property acts.
+\end{remark}
 
 \begin{remark}
 Conjecture~\ref{conj:main} is strictly weaker than~RH: it concerns only the signature of~$M$, not the exact location of zeta zeros. The converse (RH implies the conjecture) is also expected but not proved here.
@@ -256,7 +265,7 @@ Connes and Consani \cite{CC2025} construct self-adjoint operators from rank-1 pe
 \[
 \tau_{ij} = a_i\, \delta_{ij} + \frac{b_i - b_j}{i - j}, \quad i \neq j,
 \]
-which is \emph{exactly} the Cauchy--Loewner structure~\eqref{eq:cauchy_form} of our matrix~$M$, verified to relative precision $5 \times 10^{-16}$ (Observation in Session~59b). The matrices are the same object in different bases (Fourier modes vs.\ Chebyshev-like functions on $[\lambda^{-1}, \lambda]$).
+which is \emph{exactly} the Cauchy--Loewner structure~\eqref{eq:cauchy_form} of our matrix~$M$, verified to relative precision $5 \times 10^{-16}$. The matrices are the same object in different bases (Fourier modes vs.\ Chebyshev-like functions on $[\lambda^{-1}, \lambda]$).
 
 Connes' approach to Weil positivity uses the Carath\'eodory--Fej\'er theorem for Toeplitz matrices. Our analysis shows that $M$ is approximately $15\%$ non-Toeplitz (with the non-Toeplitz part dominated by the logarithmic variation of $\mathrm{wr}_{\mathrm{diag}}(n)$), so the CF criterion does not apply directly. However, the Toeplitz \emph{approximation} of $M_{\mathrm{odd}}$ \emph{is} negative definite (maximum eigenvalue $-1.03$), with $10^7\times$ more margin than $M_{\mathrm{odd}}$ itself ($-1.6 \times 10^{-7}$). The non-Toeplitz correction nearly exactly erases this margin on the critical direction.
 
@@ -298,19 +307,19 @@ P_{nm}(\gamma) = -2\,\mathrm{Re}\!\left[\int_0^L K(n,m,t)\, t\, e^{i\gamma t}\, 
 where $K(n,m,t)$ is the prime-sum kernel from~\eqref{eq:mp_diag}--\eqref{eq:mp_off}. This is the first-order eigenvalue response to shifting~$\rho$ off the critical line by $\delta > 0$.
 \end{definition}
 
-\begin{theorem}[Sign lemma]\label{thm:sign}
-Let $\mathbf{v}$ be the eigenvector of $M_{\mathrm{odd}}$ corresponding to its maximum eigenvalue. Then
+\begin{observation}[Sign lemma]\label{thm:sign}
+Let $\mathbf{v}$ be the eigenvector of $M_{\mathrm{odd}}$ corresponding to its maximum eigenvalue. Computationally,
 \begin{equation}\label{eq:sign}
 \mathbf{v}^T P_{\mathrm{odd}}(\gamma)\, \mathbf{v} > 0 \quad \text{for all } \gamma \geq \gamma_1 = 14.1347\ldots
 \end{equation}
-That is, moving any zero off the critical line increases $\lambda_{\max}(M_{\mathrm{odd}})$.
-\end{theorem}
+at every tested parameter. That is, moving any zero off the critical line increases $\lambda_{\max}(M_{\mathrm{odd}})$.
+\end{observation}
 
-The proof rests on three observations. First, $\mathbf{v}$ is concentrated on the $n = 1, 2$ modes ($97\%$+ of the norm, Observation~\ref{obs:critical}). Second, $P_{\mathrm{odd}}$ restricted to $\{n=1, n=2\}$ is positive definite. Third, the diagonal entries satisfy the closed-form approximation
+The observation rests on three empirical facts. First, $\mathbf{v}$ is concentrated on the $n = 1, 2$ modes ($97\%$+ of the norm, Observation~\ref{obs:critical}). Second, $P_{\mathrm{odd}}$ restricted to $\{n=1, n=2\}$ is positive definite at all tested parameters. Third, the diagonal entries satisfy the approximation
 \begin{equation}\label{eq:Pdiag}
 P_{\mathrm{odd}}[n,n] \approx \frac{4}{\gamma^2 - (2\pi n/L)^2},
 \end{equation}
-verified to $0.03\%$ relative precision for $L \geq 7$. Since $\gamma \geq 14.13 > 2\pi \cdot 2 / L$ for all $L > 0.89$, both diagonal entries are positive, giving~\eqref{eq:sign}.
+with relative error $< 0.1\%$ for $L \geq 7$. Since $\gamma \geq 14.13 > 2\pi \cdot 2 / L$ for all $L > 0.89$, both diagonal entries are positive, giving~\eqref{eq:sign}.
 
 \begin{remark}[Critical shift]
 The smallest $\delta$ that flips $\lambda_{\max}(M_{\mathrm{odd}})$ from negative to positive is $\delta_{\mathrm{crit}} \approx 1.4 \times 10^{-6}$, constant across all tested~$\lambda$. This is $2{,}000$ times more sensitive than the Vinogradov--Korobov zero-free region ($\delta_{\mathrm{VK}} \approx 3.6 \times 10^{-3}$).
@@ -408,19 +417,6 @@ The locking constant is twice the Voros superzeta function \cite{Voros2003} at $
 It satisfies $\mathcal{Z} \approx 2 + \gamma_{\mathrm{E}} - \log(4\pi)$ to $0.04\%$, where the right side is the Hadamard constant $\sum_\rho 1/(\rho(1-\rho))$. The $0.04\%$ discrepancy ($9.28 \times 10^{-6}$) arises from the higher moment $\sum 1/(4\gamma^2(\tfrac{1}{4} + \gamma^2))$. The decomposition~\eqref{eq:decomp}, the $80{:}1$ cancellation ratio, the locking identity~\eqref{eq:lock}, and the connection to the Cauchy--Loewner matrix framework appear to be new.
 \end{remark}
 
-\begin{remark}[Hilbert--P\'olya operator]
-The Taylor expansion $\xi(\tfrac{1}{2} + i\sqrt{w})/\xi(\tfrac{1}{2}) = \sum c_k w^k$ defines a polynomial whose roots are $w_k = \gamma_k^2$. Its companion matrix has eigenvalues $\gamma_k^2$ and is constructed entirely from the derivatives $\xi^{(2k)}(\tfrac{1}{2})/\xi(\tfrac{1}{2})$, computable via the eta function without reference to the zeros. With $K = 6$ moments, the first six zeros are recovered to full floating-point precision. This provides an explicit (though ad hoc) Hilbert--P\'olya-type operator.
-\end{remark}
-
-\begin{remark}[Physics parallel: misaligned supersymmetry]\label{rem:susy}
-The $80{:}1$ cancellation between archimedean and arithmetic contributions is structurally parallel to Bose--Fermi cancellations in non-supersymmetric gauge theories, where modular invariance of the partition function forces the vacuum energy to be non-negative despite massive cancellations between bosonic and fermionic state counts \cite{Basar2019}. In both settings:
-\begin{itemize}
-\item Two structurally distinct sectors (geometric/archimedean vs.\ arithmetic/prime, or bosonic vs.\ fermionic) contribute terms of opposite sign;
-\item A symmetry constraint (functional equation vs.\ modular invariance) forces near-cancellation;
-\item The residual is non-negative, with its positivity encoding deep structural information.
-\end{itemize}
-The spectral action program of Connes and Chamseddine \cite{ConnesChamseddine1996} connects these two worlds through noncommutative geometry, but no one has yet closed the loop from the physics of modular invariance to a proof of Weil positivity.
-\end{remark}
 
 \begin{remark}[Spectral trace identity]
 For any operator $H_N$ whose eigenvalues are the first~$N$ zeta zero ordinates $\gamma_k$, $\tr(H_N^{-2}) = \sum_{k=1}^N 1/\gamma_k^2 \to \mathcal{Z}$ as $N \to \infty$. This is the trace identity and holds for diagonal, companion, Jacobi, and unitarily conjugated realizations alike. Convergence is slow: $O((\log N)^2/N)$, requiring $\sim 10^6$ zeros for $6$ digits. The ``spectral-geometric interpretation'' of $\mathcal{Z}$ through Connes' spectral triples \cite{CC2025} is a conceptual question about the meaning of $\tr(D^{-2})$ in noncommutative geometry, not a numerical identity.
@@ -433,7 +429,7 @@ Griffin, Ono, Rolen, and Zagier \cite{GORZ2019} proved unconditionally that the 
 
 The gap---hyperbolicity at small shifts for large degrees---has the same structure as our sign lemma wall: the asymptotic regime is handled, finite cases need checking, and the checking never reaches all cases. The Tur\'an ratios approaching~$1$ from above correspond to our Schur margin approaching~$0$ from below.
 
-The structural parallel with misaligned supersymmetry (Remark~\ref{rem:susy}) suggests a path: in non-supersymmetric string theory, modular invariance forces log-concavity of partition function coefficients at \emph{all} levels simultaneously \cite{Dienes1994}. The functional equation $\xi(s) = \xi(1-s)$ is the number-theoretic analogue of modular invariance. A proof that the functional equation forces uniform Tur\'an inequalities would close the Jensen--P\'olya program and prove~RH.
+A proof that the functional equation $\xi(s) = \xi(1-s)$ forces uniform Tur\'an inequalities at all orders would close the Jensen--P\'olya program and prove~RH.
 \end{remark}
 
 %======================================================================
@@ -551,7 +547,7 @@ This is the Sylvester-type analog of the Lyapunov displacement $CD + DC = \mathb
 \section{Conclusions}
 %======================================================================
 
-We have formulated the Lorentzian Weil Matrix Conjecture (Conjecture~\ref{conj:main}), proved it implies~RH (Theorem~\ref{thm:implies}), and developed a sign lemma (Theorem~\ref{thm:sign}) that detects off-line zeros with sensitivity $\delta_{\mathrm{crit}} \approx 1.4 \times 10^{-6}$---three orders of magnitude beyond the Vinogradov--Korobov zero-free region.
+We have formulated the Lorentzian Weil Matrix Conjecture (Conjecture~\ref{conj:main}), proved it implies~RH under an explicit barrier condition (Theorem~\ref{thm:implies}), and developed a sign lemma (Observation~\ref{thm:sign}) that detects off-line zeros with sensitivity $\delta_{\mathrm{crit}} \approx 1.4 \times 10^{-6}$---three orders of magnitude beyond the Vinogradov--Korobov zero-free region.
 
 The kernel-vanishing property $K(L) = 0$ eliminates exponential growth of the zero-tail perturbation, yielding an $L$-independent bound (Remark~\ref{rem:KL0}). Combined with verified zeros up to height $3 \times 10^{12}$ and computational verification of $Q_W \geq 0$ to $\lambda^2 = 287{,}000$, the effective verification range extends to $\lambda^2 < e^{240{,}000}$ with a safety factor of $80{,}000$ (Theorem~\ref{thm:tail}).
 
@@ -565,13 +561,12 @@ The spectral mirror (Section~\ref{sec:mirror}) provides the sharpest structural 
 
 The exact displacement identity $[D_n, M] = \mathbf{1}\mathbf{B}^T - \mathbf{B}\mathbf{1}^T$ (Proposition~\ref{prop:displacement}) encodes the Weil explicit formula as a rank-$2$ commutator equation, connecting the Fourier-index operator to the Cauchy generating function~$B_n$. This is the Sylvester-type analog of the Lyapunov displacement for Pushnitski--Treil weighted Cauchy matrices \cite{PT2025}, but with orthogonal parity generators that prevent the spectral involution from closing.
 
-The structural parallel with misaligned supersymmetry (Remark~\ref{rem:susy}) illuminates both steps: modular invariance of partition functions forces Bose--Fermi cancellations to leave non-negative residuals in non-supersymmetric gauge theories \cite{Dienes1994}. The functional equation of~$\zeta$ is the number-theoretic analogue of modular invariance. In both settings, a symmetry constraint forces near-cancellation with a positive residual, and the positivity of the residual has deep structural consequences.
 
 %======================================================================
 \section*{Acknowledgments}
 %======================================================================
 
-This work was conducted over 77 computational sessions using the Connes--Consani--Moscovici framework, with literature review assisted by automated research agents. All numerical results are reproducible from the Python scripts in the project repository.
+All numerical results are reproducible from the Python scripts in the project repository at \texttt{github.com/vaughanjt/RiemannHypothesisProof}. Negative definiteness of~$M_{\mathrm{odd}}$ has been rigorously verified at $134$ parameter values ($\lambda^2 = 5$ to $300{,}000$) using interval arithmetic (python-flint, $256$-bit precision) with the Sylvester criterion.
 
 %======================================================================
 \begin{thebibliography}{99}
@@ -617,28 +612,10 @@ M.~Morishita,
 M\"unster J.\ Math.\ (2025).
 arXiv:2508.15971.
 
-\bibitem{Basar2019}
-G.~Ba\c{s}ar, A.~Cherman, and D.~McGady,
-\emph{Bose--Fermi cancellations without supersymmetry},
-Phys.\ Rev.\ D \textbf{99} (2019), 065014.
-arXiv:1812.04642.
-
-\bibitem{Dienes1994}
-K.~R.~Dienes,
-\emph{Modular invariance, finiteness, and misaligned supersymmetry},
-Nucl.\ Phys.\ B \textbf{429} (1994), 533--588.
-arXiv:hep-th/9402006.
-
 \bibitem{GORZ2019}
 M.~Griffin, K.~Ono, L.~Rolen, and D.~Zagier,
 \emph{Jensen polynomials for the Riemann zeta function and other sequences},
 Proc.\ Natl.\ Acad.\ Sci.\ USA \textbf{116} (2019), 11103--11110.
-
-\bibitem{ConnesChamseddine1996}
-A.~Connes and A.~Chamseddine,
-\emph{The spectral action principle},
-Comm.\ Math.\ Phys.\ \textbf{186} (1997), 731--750.
-arXiv:hep-th/9606001.
 
 \bibitem{Platt2021}
 D.~Platt and T.~Trudgian,
