@@ -30,7 +30,7 @@ An Equivalent Formulation of the Riemann Hypothesis\\ in Cauchy--Loewner Matrix 
 \maketitle
 
 \begin{abstract}
-We formulate a conjecture about the signature of the Connes--Weil intersection matrix~$M$ that implies the Riemann Hypothesis, and develop a zero-detecting sign lemma that verifies it with sensitivity three orders of magnitude beyond the Vinogradov--Korobov zero-free region. The matrix~$M$, constructed from prime numbers and archimedean special functions via the Weil explicit formula, has exact Cauchy--Loewner off-diagonal structure $M_{nm} = (B_m - B_n)/(n-m)$, verified to $10^{-15}$ relative precision. We conjecture that $M$ has \emph{Lorentzian signature} $(1, 2N)$: at most one positive eigenvalue for all truncation parameters, and prove this implies Weil positivity ($Q_W \geq 0$), equivalent to~RH.
+The Connes--Consani matrix formulation of Weil positivity expresses the Riemann Hypothesis as positive semidefiniteness of parity blocks of an intersection matrix built from the explicit formula. We give explicit Cauchy--Loewner entry formulas for the odd-parity block $M_{\mathrm{odd}}$, with off-diagonal $M_{jk} = 2(jB_k - kB_j)/(j^2 - k^2)$, and conjecture it has \emph{Lorentzian signature}: the full matrix~$M$ has at most one positive eigenvalue, confined to the even subspace. We develop several new tools for this reformulation: a zero-detecting sign lemma with sensitivity three orders of magnitude beyond the Vinogradov--Korobov zero-free region; a spectral mirror phenomenon with a collective phase transition at $t = 1$; a Tur\'an ratio decomposition into archimedean base plus arithmetic boost; and an exact rank-$2$ displacement identity encoding the explicit formula as a commutator equation.
 
 The sign lemma (Observation~\ref{thm:sign}) shows that shifting any zeta zero off the critical line by $\delta > 0$ increases $\lambda_{\max}(M_{\mathrm{odd}})$, with closed-form first-order coefficient $P_{\mathrm{odd}}[n,n] = 4/(\gamma^2 - (2\pi n/L)^2) > 0$. The critical shift is $\delta_{\mathrm{crit}} \approx 1.4 \times 10^{-6}$, compared to $\delta_{\mathrm{VK}} \approx 3.6 \times 10^{-3}$ from the zero-free region. A kernel-vanishing property ($K(L) = 0$) eliminates exponential growth of the zero-tail perturbation, yielding an $L$-independent bound. Combined with verified zeros up to height $3 \times 10^{12}$, the effective verification range extends to $\lambda^2 < e^{240{,}000}$ with safety factor $80{,}000$.
 
@@ -41,11 +41,9 @@ The Lorentzian property is $100\%$ prime-specific (Cram\'er model: $0/150$ trial
 \section{Introduction}
 %======================================================================
 
-The Riemann Hypothesis is equivalent to the positivity of the Weil quadratic form $Q_W = W_{0,2} - M$ in the Connes--Consani--Moscovici framework \cite{CCM2025}. Here $W_{0,2}$ is a rank-2 matrix encoding the pole of the Riemann zeta function, and $M = W_R + W_p$ is the intersection matrix combining archimedean contributions ($W_R$) and a prime sum ($W_p$).
+The Riemann Hypothesis is equivalent to the positivity of the Weil quadratic form $Q_W = W_{0,2} - M$ in the Connes--Consani framework \cite{CC2020, CCM2025}. Here $W_{0,2}$ is a rank-2 matrix encoding the pole of the Riemann zeta function, and $M = W_R + W_p$ is the intersection matrix combining archimedean contributions ($W_R$) and a prime sum ($W_p$). Connes and Consani \cite{CC2020} gave a matrix formulation in a cosine--sine basis, splitting $Q_W$ into even and odd parity blocks $\sigma^+ \oplus \sigma^-$, and showed that positive semidefiniteness of these blocks for all truncation lengths is equivalent to~RH. The matrix~$M_{\mathrm{odd}}$ studied in this paper is $-\sigma^-$ in their notation, so our Conjecture~\ref{conj:main}(ii) ($M_{\mathrm{odd}} < 0$) is their $\sigma^- > 0$.
 
-We have investigated the spectral structure of~$Q_W$, verifying Weil positivity at hundreds of parameter values and identifying a structural property of~$M$ that, if proved, implies~RH through a non-circular chain of reasoning.
-
-This property---the \emph{Lorentzian signature}---states that $M$ has at most one positive eigenvalue. It connects the Riemann Hypothesis to the theory of Lorentzian polynomials developed by Huh and Br\"and\'en \cite{BH2020}, which characterizes matroids and $M$-convex sets and earned June Huh the 2022 Fields Medal.
+\medskip\noindent\textbf{What is known vs.\ what is new.} The equivalence between Weil positivity and~RH is due to Weil (1952) and Bombieri (2000) \cite{Bombieri2000}; its matrix formulation is due to Connes--Consani \cite{CC2020}. The sensitivity to individual primes (``knife-edge'' behavior) was already observed numerically in \cite{CC2020, CCM2025}. Stricker \cite{Stricker2026} independently develops a related finite Gram-matrix stability framework. Our contributions are: (1)~explicit Cauchy--Loewner entry formulas for the odd-parity block (Definition~\ref{def:cauchy}); (2)~the sign lemma and its consequence for effective verification range (Section~\ref{sec:sign}--\ref{sec:tail}); (3)~the spectral mirror phenomenon and phase transition at $t = 1$ (Section~\ref{sec:mirror}); (4)~the Tur\'an ratio decomposition into archimedean base plus zeta boost (Section~\ref{sec:decomp_turan}); (5)~the exact displacement identity (Section~\ref{sec:displacement}); (6)~rigorous interval-arithmetic verification of negative definiteness at $134$ parameter values; and (7)~the connection to Lorentzian polynomials in the sense of Huh--Br\"and\'en \cite{BH2020}.
 
 The paper is organized as follows. Section~\ref{sec:setup} defines the matrix~$M$ and its Cauchy--Loewner structure. Section~\ref{sec:conjecture} states the conjecture and proves it implies~RH. Section~\ref{sec:evidence} presents the computational evidence. Section~\ref{sec:anatomy} dissects the critical direction. Section~\ref{sec:connections} discusses connections to Lorentzian polynomials and Connes' spectral triples. Section~\ref{sec:circularity} establishes the prime-specificity of the conjecture. Section~\ref{sec:sign} develops the sign lemma. Section~\ref{sec:tail} derives the effective verification range. Section~\ref{sec:geometric} maps the geometric structure. Section~\ref{sec:mirror} presents the spectral mirror phenomenon and the phase transition at $t=1$. Section~\ref{sec:displacement} derives the exact displacement identity.
 
@@ -653,6 +651,12 @@ Trans.\ Amer.\ Math.\ Soc.\ \textbf{296} (1986), 521--541.
 R.~Roy and T.~Kailath,
 \emph{ESPRIT---estimation of signal parameters via rotational invariance techniques},
 IEEE Trans.\ ASSP \textbf{37} (1989), 984--995.
+
+\bibitem{Stricker2026}
+M.~Stricker,
+\emph{A spectral stability framework for finite Gram matrices derived from the Weil explicit formula},
+preprint (2026).
+Available at ResearchGate.
 
 \end{thebibliography}
 
