@@ -1,28 +1,23 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-07T23:00:00.000Z",
-  "phase": "sessions-76-80",
-  "phase_name": "Signal space, geometry, line constraint, Schur gap, papers shipped",
-  "status": "arc_complete",
+  "timestamp": "2026-04-08T22:00:00.000Z",
+  "phase": "session-81",
+  "phase_name": "Zero-coordinate factoring, fractal analysis, Dickman",
+  "status": "exploration_complete",
   "completed_tasks": [
-    {"id": 76, "name": "Signal space: 15-dim was truncation artifact. Margin converges. 73 near-zero converged."},
-    {"id": 77, "name": "Geometry: Loewner inertia, CND, Bezoutian, interlacing -- all 4 killed."},
-    {"id": "78a-c", "name": "Line constraint: dh/d(sigma)=0, h_pair minimized, dual test functions, tube delta~0.01."},
-    {"id": "78-knife", "name": "KNIFE-EDGE: Lorentzian only at exact Gamma diagonal. -log(n) unique."},
-    {"id": "79a-d", "name": "Phase transition mapped. 0/2200 arithmetic. Turan independent. Schur gap ~4 (not 1e-7)."},
-    {"id": "80a", "name": "Closed-form entries. 2x2 det formula (gap was wrong decomposition, actual det=0.0014)."},
-    {"id": "80b", "name": "RIGOROUS interval verification: 134 points, ALL PASS, lam^2=5 to 300000."},
-    {"id": "80c", "name": "Dense verification: 134 points, max spacing 0.18 (need <0.72). 4x safety factor."},
-    {"id": "80-mono", "name": "Monotonicity KILLED (113/430 negative). Eigenvalue oscillates."},
-    {"id": "80-kato", "name": "Kato analyticity confirmed: eigenvalue simple (gap 1.5-2.4x, growing)."},
-    {"id": "80-papers", "name": "Holtz paper v4 (5pp) and main paper v9 (13pp) finalized, compiled, pushed."},
-    {"id": "80-research", "name": "3-agent literature deep dive: no existing theorem covers our matrix. Genuinely new territory."}
+    {"id": "81a", "name": "Zero-coordinate factoring: deconvolution works perfectly at small scale (10^5). Each zero gives independent integer test."},
+    {"id": "81b", "name": "FFT factoring: DEAD. Factors rank 30000/65536. No spectral peaks at factor locations. 9-360x slower than trial division."},
+    {"id": "81-seed", "name": "Seeded ZERO_COORDINATE_SEED.md into primefinder project. Other session tested it -- doesn't scale to RSA-100 (needs O(q) zeros)."},
+    {"id": "81-fractal-gap", "name": "Fractal analysis of Schur gap: NOT fractal. Box dim 0.55, power spectrum f^{-2.2} (smooth). Gap is a well-behaved function."},
+    {"id": "81-fractal-zeros", "name": "Fractal analysis of zero spacings: anti-persistent (H=0.33, GUE level repulsion), weakly multifractal (dh=0.11). Not a proof path."},
+    {"id": "81-dickman", "name": "Dickman function correlation: 0.994 but spurious (exponent 0.07, no better than simple exponential). Smooth number density doesn't reach eigenvalues."},
+    {"id": "81-turan25", "name": "25 Turan ratios at 100-digit precision. R_k ~ 1 + 1.127/k^{0.93}. All pass. Zeta boost 1.04-1.43x above Hermite baseline."}
   ],
   "remaining_tasks": [
-    {"id": "asymptotic", "name": "Prove exponential decay eig_max ~ exp(-0.057L) analytically (closes proof for all L)"},
-    {"id": "holtz", "name": "Email sent to holtz@math.berkeley.edu. Await response."},
-    {"id": "next-hunt", "name": "User has a different direction for next session."}
+    {"id": "holtz", "name": "Holtz email pending. Paper at docs/cauchy_matrix_conjecture.pdf (v4, 5pp)."},
+    {"id": "asymptotic", "name": "Prove exponential decay margin ~ exp(-0.057L) for all L. THE gap."},
+    {"id": "next", "name": "Awaiting user direction. All computational angles explored."}
   ],
-  "next_action": "User directing next session to a different hunt. RH arc paused at: papers shipped, 134-point rigorous verification complete, asymptotic bound open, Holtz email pending.",
-  "context_notes": "237 commits. 80 sessions. Papers: cauchy_matrix_conjecture.pdf (Holtz, 5pp, v4) and lorentzian_weil_conjecture.pdf (main, 13pp, v9). Both cite Connes-Consani 2021 properly, acknowledge known equivalences, list novel contributions honestly. Interval verification covers lam^2=5 to 300000. Kato analyticity confirmed but monotonicity killed. Literature exhaustively searched (3 agents): BFJ, Bhatia-Sano, Pushnitski-Treil all close but insufficient. Experts identified: Holtz (primary), Pushnitski, Bharali, Bhatia, Treil."
+  "next_action": "Awaiting user. All explorations from Session 81 killed or catalogued. Zero-coordinate factoring doesn't scale. Fractals don't help. Dickman doesn't reach. The proof gap remains: prove the margin stays positive for all L.",
+  "context_notes": "240 commits. 81 sessions. Holtz paper ready (v4). Main paper ready (v9). Primefinder seed delivered and tested (doesn't scale). Three killed explorations in one session (FFT factoring, fractal gap, Dickman). Zero spacing analysis confirms GUE with weak multifractality. 25 Turan ratios computed to 100 digits."
 }
