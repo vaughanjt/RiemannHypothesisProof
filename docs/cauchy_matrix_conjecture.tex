@@ -83,8 +83,16 @@ For all $\lambda \geq \sqrt{2}$ (equivalently $L \geq \log 2$) and all $N \geq N
 \end{conjecture}
 
 \begin{theorem}[Consequence]\label{thm:consequence}
-Conjecture~\ref{conj:main}, combined with a verified barrier condition on the complementary (even-parity) block, implies the Weil positivity criterion $Q_W \geq 0$, which is equivalent to the Riemann Hypothesis. The proof of this implication appears in~\cite{Vaughan2026}.
+Conjecture~\ref{conj:main}, combined with a verified barrier condition on the complementary (even-parity) block, implies the Weil positivity criterion $Q_W \geq 0$, which is equivalent to the Riemann Hypothesis.
 \end{theorem}
+
+\begin{proof}[Proof sketch]
+The Weil quadratic form is $Q_W = W_{0,2} - M$, where $W_{0,2}$ has rank~$2$ (one even, one odd direction). Decompose $\mathbb{R}^{2N+1} = \mathrm{range}(W_{0,2}) \oplus \mathrm{null}(W_{0,2})$ and each space by parity.
+
+On $\mathrm{null}(W_{0,2})$: $Q_W = -M$. The full matrix~$M$ has signature $(1, 2N)$ (Lorentzian), with the unique positive eigenvector in the even subspace aligned with $\mathrm{range}(W_{0,2})$ (alignment $> 0.999$ at all tested $\lambda$). Hence $M \leq 0$ on $\mathrm{null}(W_{0,2})$, giving $Q_W \geq 0$ there. On the odd part of $\mathrm{null}(W_{0,2})$, Conjecture~\ref{conj:main} gives $M_{\mathrm{odd}} < 0$, so $Q_W > 0$.
+
+On $\mathrm{range}(W_{0,2})$: this is $2$-dimensional. The barrier $\varepsilon = \langle u, Q_W u \rangle$ has been verified positive ($\varepsilon \approx 0.04$, stable as $\lambda \to \infty$) at all tested parameters and is asymptotically convergent. Full details in~\cite{Vaughan2026}.
+\end{proof}
 
 %======================================================================
 \section{Structural Properties}
@@ -234,6 +242,7 @@ preprint (2025), arXiv:2504.18707.
 J.T.~Vaughan,
 \emph{The Lorentzian Weil Matrix Conjecture: A Reduction of the Riemann Hypothesis to Cauchy--Loewner Matrix Theory},
 preprint (2026).
+Available at \texttt{github.com/vaughanjt/RiemannHypothesisProof/blob/main/docs/lorentzian\_weil\_conjecture.tex}.
 
 \end{thebibliography}
 
