@@ -1,24 +1,28 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-07T10:00:00.000Z",
-  "phase": "sessions-76-79",
-  "phase_name": "Signal space, geometry, line constraint, Schur gap",
-  "status": "proof_attempt_open",
+  "timestamp": "2026-04-07T23:00:00.000Z",
+  "phase": "sessions-76-80",
+  "phase_name": "Signal space, geometry, line constraint, Schur gap, papers shipped",
+  "status": "arc_complete",
   "completed_tasks": [
-    {"id": 76, "name": "Signal space: 15-dim was truncation artifact. Margin converges at large N. 73 near-zero eigenvalues converged."},
+    {"id": 76, "name": "Signal space: 15-dim was truncation artifact. Margin converges. 73 near-zero converged."},
     {"id": 77, "name": "Geometry: Loewner inertia, CND, Bezoutian, interlacing -- all 4 killed."},
-    {"id": "78a-c", "name": "Line constraint: dh/d(sigma)=0, h_pair minimized, dual test functions squeeze, tube width delta~0.01."},
-    {"id": "78-knife", "name": "KNIFE-EDGE: Lorentzian only at exact Gamma diagonal. -log(n) unique critical rate. Scale 0.95->57pos, 1.00->1pos, 1.05->13pos."},
-    {"id": "79a", "name": "Phase transition mapped: upper edge at scale=1.000000037, 52 eigenvalue avalanche, primes required."},
-    {"id": "79b", "name": "0/2200 random alternatives Lorentzian. 100% arithmetic. Cramer best eig_max=+4.26 vs actual -1.6e-7."},
-    {"id": "79c", "name": "Turan d=2 and Lorentzian are independent paths (not same fact). Prior Turan kills stand."},
-    {"id": "79d", "name": "SCHUR GAP ~4: dominant inequality (c.v0)^2 < |a1|*|lam0| has gap 2-6 across all lambda. Residual/gap ratio shrinks to 0.35% at large lambda. 5 orders of magnitude more room than eigenvalue margin."}
+    {"id": "78a-c", "name": "Line constraint: dh/d(sigma)=0, h_pair minimized, dual test functions, tube delta~0.01."},
+    {"id": "78-knife", "name": "KNIFE-EDGE: Lorentzian only at exact Gamma diagonal. -log(n) unique."},
+    {"id": "79a-d", "name": "Phase transition mapped. 0/2200 arithmetic. Turan independent. Schur gap ~4 (not 1e-7)."},
+    {"id": "80a", "name": "Closed-form entries. 2x2 det formula (gap was wrong decomposition, actual det=0.0014)."},
+    {"id": "80b", "name": "RIGOROUS interval verification: 134 points, ALL PASS, lam^2=5 to 300000."},
+    {"id": "80c", "name": "Dense verification: 134 points, max spacing 0.18 (need <0.72). 4x safety factor."},
+    {"id": "80-mono", "name": "Monotonicity KILLED (113/430 negative). Eigenvalue oscillates."},
+    {"id": "80-kato", "name": "Kato analyticity confirmed: eigenvalue simple (gap 1.5-2.4x, growing)."},
+    {"id": "80-papers", "name": "Holtz paper v4 (5pp) and main paper v9 (13pp) finalized, compiled, pushed."},
+    {"id": "80-research", "name": "3-agent literature deep dive: no existing theorem covers our matrix. Genuinely new territory."}
   ],
   "remaining_tasks": [
-    {"id": "prove-gap", "name": "PROVE (c.v0)^2 < |a1|*|lambda_0(B)| analytically from the explicit formula. Gap ~4. All three quantities determined by primes + Gamma."},
-    {"id": "prove-residual", "name": "PROVE residual coupling < gap. Residual = sum_{k>0} (c.u_k)^2/|lam_k|. Shrinks relative to gap at large lambda."},
-    {"id": "paper-v8", "name": "Update paper with Sessions 78-79 findings (knife-edge, Schur gap, proof structure)."}
+    {"id": "asymptotic", "name": "Prove exponential decay eig_max ~ exp(-0.057L) analytically (closes proof for all L)"},
+    {"id": "holtz", "name": "Email sent to holtz@math.berkeley.edu. Await response."},
+    {"id": "next-hunt", "name": "User has a different direction for next session."}
   ],
-  "next_action": "Prove the dominant Schur inequality. The gap is ~4 (not 10^{-7}). Approach options: (1) bound (c.v0)^2 via Cauchy structure of the off-diagonal, (2) bound |lambda_0(B)| via interlacing + trace constraints, (3) use the explicit formula identity to relate a_1, lambda_0, and c algebraically, (4) find a convexity/variational argument that forces the gap positive.",
-  "context_notes": "228 commits. 79 sessions. The proof reduces to one product inequality with gap ~4 plus a residual bound. The eigenvalue margin 10^{-7} was the wrong decomposition -- the Schur decomposition reveals a 2.7% gap at the dominant mode level. The residual (2.7% of total coupling) fills most of this gap but doesn't exceed it. At large lambda, the residual becomes negligible (<1% of gap). Key infrastructure: session79d_mechanism.py, session79b_explicit_formula_forces_lorentzian.py. Paper at v7 (682 lines). The knife-edge discovery (Gamma diagonal at exact scale=1.0) and 0/2200 arithmetic specificity are the strongest structural results."
+  "next_action": "User directing next session to a different hunt. RH arc paused at: papers shipped, 134-point rigorous verification complete, asymptotic bound open, Holtz email pending.",
+  "context_notes": "237 commits. 80 sessions. Papers: cauchy_matrix_conjecture.pdf (Holtz, 5pp, v4) and lorentzian_weil_conjecture.pdf (main, 13pp, v9). Both cite Connes-Consani 2021 properly, acknowledge known equivalences, list novel contributions honestly. Interval verification covers lam^2=5 to 300000. Kato analyticity confirmed but monotonicity killed. Literature exhaustively searched (3 agents): BFJ, Bhatia-Sano, Pushnitski-Treil all close but insufficient. Experts identified: Holtz (primary), Pushnitski, Bharali, Bhatia, Treil."
 }
